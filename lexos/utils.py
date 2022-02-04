@@ -8,10 +8,12 @@ import zipfile
 from pathlib import Path
 from bs4 import UnicodeDammit
 from rich.progress import Progress
-from typing import Any, List, Union
+from typing import Any, Collection, List, Tuple, Type, TypeVar, Union
 from time import sleep
 from lexos import constants
 from lexos.exceptions import LexosException
+
+AnyVal = TypeVar("AnyVal")
 
 def ensure_list(item: Any) -> List:
     """Ensure string is converted to a Path.
@@ -49,6 +51,36 @@ def is_url(s: str) -> bool:
         r"(\.\w+)*" # top-level domain (optional, can have > 1)
         r"([\w\-\._\~/]*)*(?<!\.)" # path, params, anchors, etc. (optional)
     , s))
+
+def to_collection(
+    val: Union[AnyVal, Collection[AnyVal]],
+    val_type: Union[Type[Any], Tuple[Type[Any], ...]],
+    col_type: Type[Any],
+) -> Collection[AnyVal]:
+    """
+    Validate and cast a value or values to a collection.
+    Args:
+        val (object): Value or values to validate and cast.
+        val_type (type): Type of each value in collection, e.g. ``int`` or ``(str, bytes)``.
+        col_type (type): Type of collection to return, e.g. ``tuple`` or ``set``.
+    Returns:
+        Collection of type ``col_type`` with values all of type ``val_type``.
+    Raises:
+        TypeError
+    """
+    if val is None:
+        return None
+    if isinstance(val, val_type):
+        return col_type([val])
+    elif isinstance(val, (tuple, list, set, frozenset)):
+        if not all(isinstance(v, val_type) for v in val):
+            raise TypeError(f"not all values are of type {val_type}")
+        return col_type(val)
+    else:
+        # TODO: use standard error message, maybe?
+        raise TypeError(
+            f"values must be {val_type} or a collection thereof, not {type(val)}"
+        )
 
 def unzip_archive(archive_path: str, extract_dir: str):
     """Extract a zip archive.
