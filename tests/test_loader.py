@@ -4,7 +4,7 @@ Test the Loader API for the Lexos project.
 
 Notes:
 
-- To run from the command line, `cd` to the `tests` folder and run:
+- To run from the command line:
 
   ```
   poetry run python test_loader.py
@@ -15,8 +15,8 @@ Notes:
 from lexos.io import basic
 
 data = [
-    "test_data/Austen_Pride.txt",
-    "test_data/Austen_Sense.txt"
+    "tests/test_data/Austen_Pride.txt",
+    "tests/test_data/Austen_Sense.txt"
 ]
 
 loader = basic.Loader()
