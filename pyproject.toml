@@ -13,6 +13,11 @@ cytoolz = "^0.11.2"
 catalogue = "^2.0.6"
 rich = "^11.1.0"
 typer = "^0.4.0"
+spacy = "^3.2.1"
+pandas = "^1.4.0"
+
+[tool.poetry.dependencies.xx_sent_ud_sm]
+url = "https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.2.0/xx_sent_ud_sm-3.2.0.tar.gz"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
