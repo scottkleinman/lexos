@@ -7,9 +7,11 @@ into a list of texts which can then be accessed by text processing tools.
 The Loader class does not yet filter for file format.
 """
 
-import requests
-from typing import Any, List, Union
 from pathlib import Path
+from typing import Any, List, Union
+
+import requests
+
 from lexos import utils
 from lexos.exceptions import LexosException
 

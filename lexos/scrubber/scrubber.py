@@ -4,9 +4,12 @@
 """
 from inspect import getfullargspec
 from typing import Callable, List, Union
+
 from lexos import utils
-from . import pipeline
 from lexos.exceptions import LexosException
+
+from . import pipeline
+
 
 class Scrubber:
     """Scrubber class.

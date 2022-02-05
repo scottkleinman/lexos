@@ -1,5 +1,6 @@
 """registry.py."""
 import catalogue
+
 from . import normalize, remove, replace
 
 # Create the registry

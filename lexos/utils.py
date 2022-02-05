@@ -2,14 +2,16 @@
 
     This file contains helper functions used by multiple modules.
 """
-import chardet
 import re
 import zipfile
 from pathlib import Path
+from time import sleep
+from typing import Any, Collection, List, Tuple, Type, TypeVar, Union
+
+import chardet
 from bs4 import UnicodeDammit
 from rich.progress import Progress
-from typing import Any, Collection, List, Tuple, Type, TypeVar, Union
-from time import sleep
+
 from lexos import constants
 from lexos.exceptions import LexosException
 

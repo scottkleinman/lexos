@@ -16,8 +16,9 @@ def get_tags(text):
     """
     import json
     import re
-    from natsort import humansorted
     from xml.etree import ElementTree
+
+    from natsort import humansorted
 
     tags = []
     attributes = []

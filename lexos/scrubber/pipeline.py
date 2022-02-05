@@ -1,10 +1,12 @@
 """pipeline.py."""
 
+from functools import partial, update_wrapper
 from typing import Callable
 
-from functools import partial, update_wrapper
 from cytoolz import functoolz
+
 from lexos.scrubber import normalize, remove, replace
+
 
 def pipe(func: Callable, *args, **kwargs) -> Callable:
     """Apply functool.partial and add `__name__` to the partial function.

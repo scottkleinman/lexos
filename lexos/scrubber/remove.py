@@ -6,8 +6,8 @@ import sys
 import unicodedata
 from typing import Collection, Optional, Union
 
-from . import resources
 from .. import utils
+from . import resources
 
 
 def accents(text: str,

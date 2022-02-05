@@ -1,12 +1,14 @@
 """replace.py."""
 from __future__ import annotations
-from typing import Collection, List, Optional, Union
 
 import html
 import re
 import sys
 import unicodedata
+from typing import Collection, List, Optional, Union
+
 from lexos import utils
+
 from . import resources
 
 
@@ -238,6 +240,8 @@ def special_characters(
     return text
 
 from typing import Dict
+
+
 def tag_map(text: str,
     # xmlhandlingoptions: List[dict],
     map: Dict[str],

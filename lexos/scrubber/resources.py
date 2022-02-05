@@ -1,3 +1,5 @@
+"""resources.py."""
+
 import functools
 import html.parser
 import re
@@ -7,10 +9,11 @@ from typing import Any, Dict, Pattern
 
 
 class HTMLTextExtractor(html.parser.HTMLParser):
-    """
-    Simple subclass of :class:`html.parser.HTMLParser` to collect data elements
-    (non-tag, -comment, -pi, etc. elements) fed to the parser, then make them
-    available as stripped, concatenated text via :meth:`HTMLTextExtractor.get_text()`.
+    """Simple subclass of :class:`html.parser.HTMLParser`.
+
+    Collects data elements (non-tag, -comment, -pi, etc. elements)
+    fed to the parser, then make them available as stripped, concatenated
+    text via `HTMLTextExtractor.get_text()`.
 
     Note:
         Users probably shouldn't deal with this class directly;
@@ -18,13 +21,16 @@ class HTMLTextExtractor(html.parser.HTMLParser):
     """
 
     def __init__(self):
+        """Initialize the parser."""
         super().__init__()
         self.data = []
 
     def handle_data(self, data):
+        """Handle data elements."""
         self.data.append(data)
 
     def get_text(self, sep: str = "") -> str:
+        """Return the collected text."""
         return sep.join(self.data).strip()
 
 
@@ -179,6 +185,7 @@ def _get_punct_translation_table():
 
 # Hello, PEP 562: https://www.python.org/dev/peps/pep-0562
 def __getattr__(name: str) -> Any:
+    """Call an attribute lookup from a table."""
     if name == "PUNCT_TRANSLATION_TABLE":
         return _get_punct_translation_table()
     else:

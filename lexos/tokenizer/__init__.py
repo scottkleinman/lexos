@@ -1,8 +1,13 @@
+"""__init__.py."""
+
 from typing import List, Union
-from lexos import utils
-from . import extensions, lexosdoc
 
 import spacy
+
+from lexos import utils
+
+from . import extensions, lexosdoc
+
 default_model = spacy.load("xx_sent_ud_sm")
 
 def make_doc(text: str,
