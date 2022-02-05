@@ -28,7 +28,7 @@ class Scrubber:
         """
         self.pipeline = pipeline.make_pipeline(funcs)
 
-    def get_pipeline(self):
+    def get_pipeline(self) -> tuple:
         """Return a tuple representation of the pipeline."""
         pipeline = []
         for f in self.pipeline:
@@ -46,6 +46,9 @@ class Scrubber:
         keyword arguments as a dictionary. This is useful if you wanted to
         modify the pipeline after initialisation based on the output of
         `get_pipeline()`, rather than passing callables.
+
+        Args:
+            pipeline (tuple): A tuple of functions.
         """
         new_pipeline = []
         for x in pipeline:
@@ -55,13 +58,16 @@ class Scrubber:
                 new_pipeline.append(eval(x))
         self.pipeline = pipeline.make_pipeline(new_pipeline)
 
-    def scrub(self, data: Union[List[str], str]):
+    def scrub(self, data: Union[List[str], str]) -> List[str]:
         """Scrub a text or list of texts.
 
         Args:
             data (Union[List[str], str]): The text or list of texts to scrub.
+
+        Returns:
+            list: A list of scrubbed texts.
         """
         for text in utils.ensure_list(data):
-            print(type(text))
-            self.texts.append(self.pipeline(text))
+            self.texts.append(self.pipeline[0](text))
+        return self.texts
 
