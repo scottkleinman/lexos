@@ -10,10 +10,10 @@ The Loader class does not yet filter for file format.
 from pathlib import Path
 from typing import Any, List, Union
 
+import requests
+
 from lexos import utils
 from lexos.exceptions import LexosException
-
-import requests
 
 LANG = {
     "bad_source": "The source does not contain valid URL, file path, or directory path. Ensure that your source is a string, Path, or list of either.",
