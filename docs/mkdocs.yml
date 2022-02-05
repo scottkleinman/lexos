@@ -1,0 +1,113 @@
+site_name: The Lexos API
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Tutorial: tutorial.md
+  - API:
+    - Index: api/index.md
+    - Overview: api/overview.md
+    - IO:
+      - Index: api/io/index.md
+      - Basic: api/io/basic.md
+    - Scrubber:
+      - Index: api/scrubber/index.md
+      - Overview: api/scrubber/overview.md
+      - Normalize: api/scrubber/normalize.md
+      - Pipeline: api/scrubber/pipeline.md
+      - Registry: api/scrubber/registry.md
+      - Remove: api/scrubber/remove.md
+      - Replace: api/scrubber/replace.md
+      - Resources: api/scrubber/resources.md
+      - Scrubber: api/scrubber/scrubber.md
+      - Utils: api/scrubber/utils.md
+    - Tokenizer:
+      - Index: api/tokenizer/index.md
+      - Overview: api/tokenizer/overview.md
+      - Extensions: api/tokenizer/extensions.md
+      - LexosDoc: api/tokenizer/lexosdoc.md
+    - Utils: api/utils.md
+
+theme:
+  favicon: http://lexos.wheatoncollege.edu/static/favicon.png
+  name: material
+  custom_dir: overrides
+  language: en
+  search: true
+  features:
+  # - navigation.tabs
+  - navigation.top
+  - navigation.indexes
+  icon:
+    logo: lexos/dragon
+    repo: fontawesome/brands/github
+  palette:
+  - media: "(prefers-color-scheme: light)"
+    scheme: default
+    primary: teal
+    accent: purple
+    toggle:
+      icon: material/weather-sunny
+      name: Switch to dark mode
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    primary: black
+    accent: lime
+    toggle:
+      icon: material/weather-night
+      name: Switch to light mode
+
+markdown_extensions:
+  - meta
+  - admonition
+  - pymdownx.details
+  - pymdownx.emoji
+  - pymdownx.magiclink
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.tasklist
+  - pymdownx.keys
+  - attr_list
+  - pymdownx.snippets:
+      check_paths: true
+  - tables
+  - toc:
+      permalink: "¤"
+
+extra_css:
+  - stylesheets/extra.css
+
+# extra_javascript:
+  # - https://code.jquery.com/jquery-3.6.0.slim.min.js
+  # - javascripts/mark.es6.min.js
+
+copyright: Copyright &copy; 2022- <a href="https://wheatoncollege.edu/academics/special-projects-initiatives/lexomics/" target="_blank">The Lexomics Project</a>
+
+repo_url: https://github.com/scottkleinman/lexos
+
+extra:
+  social:
+    - icon: fontawesome/solid/globe
+      link: http://lexos.wheatoncollege.edu/
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/Lexomics
+    - icon: fontawesome/brands/github
+      link: https://github.com/WheatonCS/Lexos/
+
+plugins:
+    - search
+    - section-index
+    - macros
+    - autorefs
+    - mkdocstrings:
+        handlers:
+          python:
+            setup_commands:
+            - import sys
+            - sys.path.append("..")
+            # selection:
+            #   new_path_syntax: yes
+        # watch:
+        # - ../api_lexos
