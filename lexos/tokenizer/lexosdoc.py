@@ -1,7 +1,10 @@
 """lexosdoc.py."""
 from typing import List
+
 import pandas as pd
+
 from . import extensions
+
 
 class LexosDoc():
     """A wrapper class for a spaCy doc which allows for extra methods.
