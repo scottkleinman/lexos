@@ -19,7 +19,7 @@ class LexosDoc():
 
     def get_tokens(self):
         """Return a list of tokens in the doc."""
-        return self.doc._.get_tokens()
+        return [token.text for token in self.doc]
 
     def get_token_attrs(self):
         """Get a list of attributes for each token in the doc.
