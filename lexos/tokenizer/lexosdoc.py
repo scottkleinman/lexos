@@ -29,6 +29,8 @@ class LexosDoc():
                         end: Any = None,
                         filters: List[Union[Dict[str, str], str]] = None,
                         regex: bool = False,
+                        normalize: bool = False,
+                        normalize_with_filters: bool = False,
                         as_df = False) -> Union[List, pd.DataFrame]:
         """Get a list of word counts for each token in the doc.
 
@@ -39,6 +41,9 @@ class LexosDoc():
             end: The index of the last token to count after limit is applied.
             filters: A list of Doc attributes to ignore.
             regex (bool): Whether to match the dictionary value using regex.
+            normalize (bool): Whether to return raw counts or relative frequencies.
+            normalize_with_filters (bool): Whether to normalize based on the number
+                of tokens after filters are applied.
             as_df: Whether to return a pandas dataframe.
 
         Returns:
@@ -61,8 +66,17 @@ class LexosDoc():
             and self._dict_filter(token, dict_filters, regex=regex)
         ]
         term_counts = Counter(tokens).most_common(limit)[start:end]
+        columns = ["term", "count"]
+        if normalize_with_filters:
+            normalize = True
+            num_tokens = len(tokens)
+        else:
+            num_tokens = len(self.doc)
+        if normalize:
+            term_counts = [(x[0], x[1]/num_tokens) for x in term_counts]
+            columns[1] = "frequency"
         if as_df:
-            return pd.DataFrame(term_counts, columns=["term", "count"])
+            return pd.DataFrame(term_counts, columns=columns)
         else:
             return term_counts
 
