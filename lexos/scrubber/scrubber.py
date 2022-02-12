@@ -20,6 +20,7 @@ class Scrubber:
         scrubber.to_lower(doc)
     """
     def __init__(self):
+        """Initialize the Scrubber class."""
         self.texts = []
         self.pipeline = None
 

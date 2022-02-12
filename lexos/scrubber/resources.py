@@ -174,6 +174,7 @@ QUOTE_TRANSLATION_TABLE: Dict[int, int] = {
 
 @functools.lru_cache(maxsize=None)
 def _get_punct_translation_table():
+    """Get the punctuation translation table."""
     return dict.fromkeys(
         (
             i for i in range(sys.maxunicode)

@@ -1,8 +1,7 @@
 """lexosdoc.py."""
-from typing import Any, Dict, List, Union
-
-from collections import Counter
 import re
+from collections import Counter
+from typing import Any, Dict, List, Union
 
 import pandas as pd
 
@@ -21,6 +20,7 @@ class LexosDoc():
     extensions.
     """
     def __init__(self, doc: object):
+        """Initialize a LexosDoc object."""
         self.doc = doc
 
     def get_term_counts(self,
