@@ -1,11 +1,207 @@
 """dtm.py."""
+import re
+from collections import Counter
 from typing import Any, Dict, List, Union
 
-from collections import Counter
-import re
-
 import pandas as pd
+from natsort import natsort_keygen, ns
 
+from lexos.tokenizer.lexosdoc import LexosDoc
+
+# This should probably be moved to constants.py
+SORTING_ALGORITHM = natsort_keygen(alg=ns.LOCALE)
+
+
+class DTM():
+    """Class for a document-term matrix."""
+    def __init__(self, docs = List[object], labels = List[str]):
+        """Initialise the DTM."""
+        self.docs = docs
+        self.table = None
+        self.labels = labels
+        self.vectorizer_settings = {}
+        self.vectorizer = self.set_vectorizer(new=True)
+        self.build()
+
+    def build(self):
+        """Build a new DTM matrix based on the current vectorizer."""
+        doc_tokens = [[token.text for token in doc] for doc in self.docs]
+        self.matrix = self.vectorizer.fit_transform(doc_tokens)
+        # Require explicit calling of get_table after each build to ensure table is up to date.
+        # Ensures that the two processes can be kept separate if desired.
+        self.table = None
+
+    def get_table(self, transpose: bool = False) -> pd.DataFrame:
+        """Get a Textacy document-term matrix as a pandas dataframe.
+
+        Args:
+            transpose (bool): If True, terms are columns and docs are rows.
+
+        Returns:
+                pd.Dataframe
+        """
+        if self.table is not None:
+            return self.table
+        else:
+            rows = []
+            for term in self.vectorizer.terms_list:
+                row = [term]
+                terms = self.vectorizer.vocabulary_terms[term]
+                freq = self.matrix[0:, terms].toarray()
+                [row.append(item[0]) for item in freq]
+                rows.append(row)
+            df = pd.DataFrame(rows, columns=["terms"] + self.labels)
+            if transpose:
+                df.rename({"terms": "docs"}, axis=1, inplace=True)
+                df = df.T
+            self.table = df
+            return df
+
+    def get_freq_table(self, rounding: int = 3, as_percent: bool = False) -> pd.DataFrame:
+        """Get a table with the relative frequencies of terms in each document.
+
+        Args:
+            rounding (int): The number of digits to round floats.
+            as_percent (bool): Whether to return the frequencies as percentages.
+
+        Returns:
+            pd.DataFrame: A dataframe with the relative frequencies.
+        """
+        df = self.get_table().copy()
+        df.set_index("terms", inplace=True)
+        if as_percent:
+            return df.apply(lambda row: ((row / row.sum()) * 100).round(rounding), axis=1).reset_index()
+        else:
+            return df.apply(lambda row: row / row.sum().round(rounding), axis=1).reset_index()
+
+    def get_stats_table(self, stats: Union[List[str], str] = "sum", rounding: int = 3) -> pd.DataFrame:
+        """Get a table with the sum, mean, and/or median calculated for each row.
+
+        Args:
+            stats (Union[List[str], str]): One or more of "sum", "mean", and/or "median".
+            rounding (int): The number of digits to round floats.
+
+        Returns:
+            pd.DataFrame: A dataframe with the calculated statistics.
+        """
+        df = self.get_table()
+        tmp = df.copy()
+        if "sum" in stats:
+            tmp["sum"] = df.sum(axis=1)
+        if "mean" in stats:
+            tmp["mean"] = df.mean(axis=1).round(rounding)
+        if "median" in stats:
+            median = df.median(axis=1)
+            tmp["median"] = median.round(rounding)
+        return tmp
+
+    def get_terms(self):
+        """Get an alphabetical list of terms."""
+        return self.vectorizer.vocabulary_terms
+
+    def get_term_counts(self,
+                        sort_by: Union[list, List[str]] = ["terms", "sum"],
+                        ascending: Union[bool, List[bool]] = True,
+                        alg=SORTING_ALGORITHM) -> List[tuple]:
+        """Get a list of term counts with optional sorting.
+
+        Args:
+            sort_by Union[list, List[str]]): The column(s) to sort by in order of preference.
+            ascending (Union[bool, List[bool]]): Whether to sort values in ascending or descending order.
+
+        Returns:
+            List(tuple): A list of tuples containing terms and counts.
+        """
+        df = self.get_stats_table("sum").sort_values(
+            by=sort_by,
+            ascending=ascending,
+            key=alg
+        )
+        terms = df["terms"].values.tolist()
+        sums = df["sum"].values.tolist()
+        return [(terms[i], sums[i]) for i, _ in enumerate(terms)]
+
+    def least_frequent(self,
+                    max_n_terms:int = 100,
+                    start: int = -1 ) -> pd.DataFrame:
+        """Get the most frequent terms in the DTM.
+
+        Args:
+            max_n_terms (int): The number of terms to return.
+            start: int = 0: The start index in the DTM table.
+
+        Returns:
+            pd.DataFrame: The reduced DTM table.
+
+        Note: This function should not be used if `min_df` or `max_df` is set in
+        the vectorizer because the table will be cut twice.
+
+        """
+
+        df = self.get_stats_table("sum").sort_values(by="sum", ascending=True)
+        return df[start:max_n_terms]
+
+    def most_frequent(self,
+                    max_n_terms:int = 100,
+                    start: int = 0 ) -> pd.DataFrame:
+        """Get the most frequent terms in the DTM.
+
+        Args:
+            max_n_terms (int): The number of terms to return.
+            start: int = 0: The start index in the DTM table.
+
+        Returns:
+            pd.DataFrame: The reduced DTM table.
+
+        Note: This function should not be used if `min_df` or `max_df` is set in
+        the vectorizer because the table will be cut twice.
+        """
+
+        df = self.get_stats_table("sum").sort_values(by="sum", ascending=False)
+        return df[start:max_n_terms]
+
+    def set_vectorizer(self,
+                        tf_type: str = "linear",
+                        idf_type: str = None,
+                        dl_type: str = None,
+                        norm: Union[list, str] = None,
+                        min_df: Union[float, int] = 1,
+                        max_df: Union[float, int] = 1.0,
+                        max_n_terms: int = None,
+                        vocabulary_terms: Union[list, str] = None,
+                        new: bool = False
+    ):
+        """Set the vectorizer.
+
+        By default, returns a vectorizer that gets raw counts.
+        """
+        from textacy.representations.vectorizers import Vectorizer
+        vectorizer = Vectorizer(
+            tf_type = tf_type,
+            idf_type = idf_type,
+            dl_type = dl_type,
+            norm = norm,
+            min_df = min_df,
+            max_df = max_df,
+            max_n_terms = max_n_terms,
+            vocabulary_terms = vocabulary_terms
+        )
+        self.vectorizer_settings = {
+            "tf_type": tf_type,
+            "idf_type": idf_type,
+            "norm": norm,
+            "min_df": min_df,
+            "max_df": max_df,
+            "max_n_terms": max_n_terms,
+        }
+        if new:
+            return vectorizer
+        else:
+            self.vectorizer = vectorizer
+
+
+# The code below is technically superseded by the DTM class,
+# but, it is a nice convenience method.
 
 def get_doc_term_counts(docs,
                     limit: int = None,
@@ -108,4 +304,3 @@ def _dict_filter(token, filters: List[Dict[str, str]], regex: bool = False) -> b
                 return True
     else:
         return True
-
