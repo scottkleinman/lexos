@@ -9,7 +9,9 @@ poetry run python test_cli_loader.py "test_data/Austen_Pride.txt" "test_data/Aus
 ```
 """
 from typing import List
+
 import typer
+
 from lexos.io import basic
 
 LANG = {

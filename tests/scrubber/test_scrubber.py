@@ -1,3 +1,5 @@
+"""test_scrubber.py."""
+
 # Import a minimal text loader class, the functions for scrubber pipelines,
 # and the scrubber function registry
 from lexos.io.basic import Loader

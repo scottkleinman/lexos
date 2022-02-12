@@ -1,4 +1,7 @@
+"""test_lexos.py."""
+
 from lexos import __version__
+
 
 def test_version():
     """Test the version of the package."""

@@ -1,8 +1,11 @@
+"""test_custom.py."""
+
 # Import a minimal text loader class, the functions for scrubber pipelines,
 # and the scrubber function registry
 from lexos.io.basic import Loader
 from lexos.scrubber.pipeline import make_pipeline, pipe
-from lexos.scrubber.registry import scrubber_components, load_components
+from lexos.scrubber.registry import load_components, scrubber_components
+
 
 # Define a custom component and register it
 def title_case(text: str) -> str:

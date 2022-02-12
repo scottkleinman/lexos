@@ -1,8 +1,9 @@
+"""test_lexosdoc.py."""
+
 # Import a minimal text loader class, the functions for scrubber pipelines,
 # and the scrubber function registry
 from lexos.io.basic import Loader
-from lexos.tokenizer import make_doc
-from lexos.tokenizer import lexosdoc
+from lexos.tokenizer import lexosdoc, make_doc
 
 # Load a text
 data = ["tests/test_data/Austen_Pride.txt"]
