@@ -39,6 +39,14 @@ scrubber_components.register("tag_map", func=replace.tag_map)
 scrubber_components.register("urls", func=replace.urls)
 scrubber_components.register("user_handles", func=replace.user_handles)
 
+def load_component(s: str):
+    """Load a single component from a string.
+
+    Args:
+        s: The name of the function.
+    """
+    return scrubber_components.get(s)
+
 def load_components(t: tuple):
     """Load components from a tuple.
 
