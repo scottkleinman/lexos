@@ -16,6 +16,7 @@ typer = "^0.4.0"
 spacy = "^3.2.1"
 pandas = "^1.4.0"
 isort = "^5.10.1"
+wordcloud = "^1.8.1"
 
 [tool.poetry.dependencies.xx_sent_ud_sm]
 url = "https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.2.0/xx_sent_ud_sm-3.2.0.tar.gz"

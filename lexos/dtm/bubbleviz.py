@@ -171,9 +171,9 @@ class BubbleChart:
         """Draw the bubble plot.
 
         Args:
-        ax (matplotlib.axes.Axes): The matplotlib axes.
-        labels (List[str]): The labels of the bubbles.
-        colors (List[str]): The colors of the bubbles.
+            ax (matplotlib.axes.Axes): The matplotlib axes.
+            labels (List[str]): The labels of the bubbles.
+            colors (List[str]): The colors of the bubbles.
         """
         color_num = 0
         for i in range(len(self.bubbles)):

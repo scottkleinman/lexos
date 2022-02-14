@@ -184,3 +184,73 @@ def make_multiclouds(docs: List[Union[dict, object, str, tuple]],
     # If `show=False`, return the multiclouds list.
     if not show:
         return multiclouds
+
+def plotly_wc(wc):
+    """Convert a Python word cloud to a Plotly word cloud.
+
+    This is some prototype code for generating word clouds in Plotly.
+    Based on https://github.com/PrashantSaikia/Wordcloud-in-Plotly.
+
+    Doesn't handle counts because `WordCloud.layout_` returns frequencies.
+    `WordCloud.layout_` always seems to return `None` for orientation.
+    Plotly sizing works differently and needs to be handled from options.
+    To round the corners of a Plotly graph you would have to `change go.layout.Shape`.
+
+    For Jupyter notebooks, requires:
+
+    ```python
+    import plotly.graph_objects as go
+    from plotly.offline import iplot, init_notebook_mode
+    init_notebook_mode(connected=True)
+    ```
+
+    Run with:
+
+    ```python
+    wc = make_wordcloud(sums, opts, show=False, figure_opts={"figsize": (15, 8)})
+    plotly_wc = plotly_wc(wc)
+    plotly_wc.show()
+    ```
+    """
+    word_list=[]
+    freq_list=[]
+    fontsize_list=[]
+    position_list=[]
+    orientation_list=[]
+    color_list=[]
+    for (word, freq), fontsize, position, orientation, color in wc.layout_:
+        word_list.append(word)
+        freq_list.append(freq)
+        fontsize_list.append(fontsize)
+        position_list.append(position)
+        orientation_list.append(orientation)
+        color_list.append(color)
+    # get the positions
+    x=[]
+    y=[]
+    for i in position_list:
+        x.append(i[0])
+        y.append(i[1])
+    # get the relative occurence frequencies
+    new_freq_list = []
+    for i in freq_list:
+        new_freq_list.append(f"{round(i*100, 2)}%")
+    new_freq_list
+    trace = go.Scatter(x=x,
+                       y=y,
+                       textfont = dict(size=fontsize_list, color=color_list),
+                       hoverinfo='text',
+                       hovertext=[f'{w}: {f}' for w, f in zip(word_list, new_freq_list)],
+                       mode='text',
+                       text=word_list
+                      )
+    layout = go.Layout({'xaxis': {'showgrid': False, 'showticklabels': False, 'zeroline': False},
+                        'yaxis': {'showgrid': False, 'showticklabels': False, 'zeroline': False}})
+    fig = go.Figure(data=[trace], layout=layout)
+    fig.update_layout(
+        autosize=False,
+        width=750,
+        height=750,
+        margin=dict(l=50,r=50,b=100,t=100,pad=4)
+    )
+    return fig
