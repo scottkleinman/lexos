@@ -203,7 +203,7 @@ class DTM():
 # The code below is technically superseded by the DTM class,
 # but, it is a nice convenience method.
 
-def get_doc_term_counts(docs,
+def get_doc_term_counts(docs: List[object],
                     limit: int = None,
                     start: Any = 0,
                     end: Any = None,
@@ -215,16 +215,15 @@ def get_doc_term_counts(docs,
     """Get a list of word counts for each token in the doc.
 
     Args:
-        self: A spaCy doc.
-        limit: The maximum number of tokens to count.
-        start: The index of the first token to count.
-        end: The index of the last token to count after limit is applied.
-        filters: A list of Doc attributes to ignore.
+        docs (List[object]): A list of spaCy docs.
+        limit (int): The maximum number of tokens to count.
+        start (int): The index of the first token to count.
+        end (int): The index of the last token to count after limit is applied.
+        filters (List[Union[Dict[str, str], str]]): A list of Doc attributes to ignore.
         regex (bool): Whether to match the dictionary value using regex.
         normalize (bool): Whether to return raw counts or relative frequencies.
-        normalize_with_filters (bool): Whether to normalize based on the number
-         of tokens after filters are applied.
-        as_df: Whether to return a pandas dataframe.
+        normalize_with_filters (bool): Whether to normalize based on the number of tokens after filters are applied.
+        as_df (bool): Whether to return a pandas dataframe.
 
     Returns:
         Union[List, pd.DataFrame]: A list of word count tuples for
@@ -287,8 +286,7 @@ def _dict_filter(token, filters: List[Dict[str, str]], regex: bool = False) -> b
 
     Args:
         token (object): A spaCy token.
-        filters (List[Dict[str, str]]): A list of filter dictionaries with keys
-        as spaCy token attributes.
+        filters (List[Dict[str, str]]): A list of filter dictionaries with keys as spaCy token attributes.
         regex (bool): Whether to match the dictionary value using regex.
 
     Returns:
