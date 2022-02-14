@@ -260,10 +260,125 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../../tutorial/">Tutorial</a>
+          
+            <label for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Tutorial" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          
+            Tutorial
+          
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../../tutorial/" class="md-nav__link">
-        Tutorial
+      <a href="../../../tutorial/getting_started/" class="md-nav__link">
+        Getting Started
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorial/loading_texts/" class="md-nav__link">
+        Loading Texts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorial/scrubbing_texts/" class="md-nav__link">
+        Scrubbing Texts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorial/tokenising_texts/" class="md-nav__link">
+        Tokenising Texts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorial/the_document_term_matrix/" class="md-nav__link">
+        The Document-Term Matrix
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -329,10 +444,77 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../dtm/">DTM</a>
+          
+            <label for="__nav_4_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="DTM" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          
+            DTM
+          
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../overview/" class="md-nav__link">
-        Overview
+      <a href="../../dtm/wordcloud/" class="md-nav__link">
+        Wordcloud
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dtm/bubbleviz/" class="md-nav__link">
+        Bubble Charts
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -439,8 +621,6 @@
         
           
         
-          
-        
       
       
         
@@ -463,20 +643,6 @@
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../overview/" class="md-nav__link">
-        Overview
-      </a>
-    </li>
-  
-
             
           
             
@@ -550,6 +716,13 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lexos.scrubber.registry.load_component" class="md-nav__link">
+    load_component()
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.registry.load_components" class="md-nav__link">
@@ -666,8 +839,6 @@
         
           
         
-          
-        
       
       
         
@@ -690,20 +861,6 @@
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../tokenizer/overview/" class="md-nav__link">
-        Overview
-      </a>
-    </li>
-  
-
             
           
             
@@ -788,6 +945,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#lexos.scrubber.registry.load_component" class="md-nav__link">
+    load_component()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#lexos.scrubber.registry.load_components" class="md-nav__link">
     load_components()
   </a>
@@ -817,6 +981,56 @@ a catalogue of registered functions that can be imported individually as
 needed. The registry enables the functions to be referenced by name using
 string values. The code registry is created and accessed using the <a href="https://github.com/explosion/catalogue" target="_blank">catalogue</a> library by Explosion.</p>
 <p>Registered functions can be retrieved individually using <code>lower_case = scrubber_components.get("lower_case")</code>. Multiple functions can be loaded using the <code>load_components</code> function:</p>
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="lexos.scrubber.registry.load_component" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">load_component</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></code>
+
+
+<a href="#lexos.scrubber.registry.load_component" class="headerlink" title="Permanent link">¤</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Load a single component from a string.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>s</code></td>
+        <td><code>str</code></td>
+        <td><p>The name of the function.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>lexos\scrubber\registry.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">load_component</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load a single component from a string.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        s: The name of the function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">scrubber_components</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
 
 
   <div class="doc doc-object doc-function">

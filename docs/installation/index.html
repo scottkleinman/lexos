@@ -291,6 +291,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#running-the-development-library-locally" class="md-nav__link">
+    Running the Development Library Locally
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -306,10 +313,125 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../tutorial/">Tutorial</a>
+          
+            <label for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Tutorial" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          
+            Tutorial
+          
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../tutorial/" class="md-nav__link">
-        Tutorial
+      <a href="../tutorial/getting_started/" class="md-nav__link">
+        Getting Started
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/loading_texts/" class="md-nav__link">
+        Loading Texts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/scrubbing_texts/" class="md-nav__link">
+        Scrubbing Texts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/tokenising_texts/" class="md-nav__link">
+        Tokenising Texts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial/the_document_term_matrix/" class="md-nav__link">
+        The Document-Term Matrix
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -373,10 +495,77 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../api/dtm/">DTM</a>
+          
+            <label for="__nav_4_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="DTM" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          
+            DTM
+          
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../api/overview/" class="md-nav__link">
-        Overview
+      <a href="../api/dtm/wordcloud/" class="md-nav__link">
+        Wordcloud
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/dtm/bubbleviz/" class="md-nav__link">
+        Bubble Charts
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -481,8 +670,6 @@
         
           
         
-          
-        
       
       
         
@@ -505,20 +692,6 @@
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/scrubber/overview/" class="md-nav__link">
-        Overview
-      </a>
-    </li>
-  
-
             
           
             
@@ -662,8 +835,6 @@
         
           
         
-          
-        
       
       
         
@@ -686,20 +857,6 @@
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/tokenizer/overview/" class="md-nav__link">
-        Overview
-      </a>
-    </li>
-  
-
             
           
             
@@ -790,6 +947,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#running-the-development-library-locally" class="md-nav__link">
+    Running the Development Library Locally
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -816,14 +980,37 @@ $ poetry --version
 Poetry version 1.1.11
 </code></pre></div>
 <p>The Poetry website contains extensive documentation on <a href="https://python-poetry.org/docs/#installation">how to install it</a> on different operating systems.</p>
-<p>My running theory is that they way to install the Lexos API prior to publication is to complete following steps:</p>
+<p>My running theory is that the best way to install the Lexos API prior to release is to complete following steps:</p>
 <ol>
 <li>Install Poetry.</li>
 <li>Clone the repo.</li>
 <li><code>cd</code> to the local repo directory.</li>
 <li>Run <code>poetry init</code>.</li>
 </ol>
-<p>This is as yet untested.</p>
+<p>This is as yet untested. If you are only evaluating the API and not modifying the code base, you can probably just clone the repo and run the library locally by following the instructions below.</p>
+<h2 id="running-the-development-library-locally">Running the Development Library Locally<a class="headerlink" href="#running-the-development-library-locally" title="Permanent link">¤</a></h2>
+<p>Although you can call the Lexos API from command-line scripts or the Python command line, the easiest method is to call it from a Jupyter notebook. However, you may find that Jupyter has trouble finding the module if it has not been added to your Python environment. There is an easy workaround for this.</p>
+<ol>
+<li><code>cd</code> to the directory containing the API. If you cloned the repository, this will be the <code>lexos</code> folder (not the <code>lexos</code> subfolder inside it).</li>
+<li>Then fire up <code>jupyter notebook</code> or <code>jupyter lab</code>.</li>
+<li>In the first cell of your notebook, run the following code:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">LEXOS_PATH</span> <span class="o">=</span> <span class="s2">&quot;lexos&quot;</span>
+<span class="k">if</span> <span class="s2">&quot;NOTEBOOK_INITIATED_FLAG&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">():</span>
+    <span class="n">NOTEBOOK_INITIATED_FLAG</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">module_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">module_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">LEXOS_PATH</span><span class="p">))</span>
+        <span class="o">%</span><span class="n">cd</span> <span class="n">lexos</span>
+        <span class="o">%</span><span class="n">pwd</span>
+    <span class="k">if</span> <span class="n">module_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">module_path</span><span class="p">)</span>
+</code></pre></div>
+<p>If you are starting your notebook from another directory, you can modify <code>LEXOS_PATH</code> to point to the <code>lexos</code> subfolder.</p>
+<p>You should now be able to import the <code>lexos</code> API module from your local directory.</p>
 
               
             </article>
@@ -863,7 +1050,7 @@ Poetry version 1.1.11
               <span class="md-footer__direction">
                 Next
               </span>
-              Tutorial
+              Index
             </div>
           </div>
           <div class="md-footer__button md-icon">

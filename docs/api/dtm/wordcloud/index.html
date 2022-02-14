@@ -13,7 +13,7 @@
     
     
       
-        <title>Pipeline - The Lexos API</title>
+        <title>Wordcloud - The Lexos API</title>
       
     
     
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pipeline" class="md-skip">
+        <a href="#word-clouds" class="md-skip">
           Skip to content
         </a>
       
@@ -99,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Pipeline
+              Wordcloud
             
           </span>
         </div>
@@ -443,12 +443,14 @@
               
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" checked>
       
       
       
@@ -466,7 +468,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../dtm/">DTM</a>
+          <a href="../">DTM</a>
           
             <label for="__nav_4_2">
               <span class="md-nav__icon md-icon"></span>
@@ -489,11 +491,71 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../dtm/wordcloud/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-nav__icon md-icon"></span>
+          
+            <a href="./" class="md-nav__link md-nav__link--active"
+              style="margin: initial; padding: initial; pointer-events: initial">
+          
+            Wordcloud
+          </a>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Wordcloud
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#lexos.dtm.wordcloud.get_rows" class="md-nav__link">
+    get_rows()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lexos.dtm.wordcloud.make_wordcloud" class="md-nav__link">
+    make_wordcloud()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lexos.dtm.wordcloud.make_multiclouds" class="md-nav__link">
+    make_multiclouds()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -505,7 +567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dtm/bubbleviz/" class="md-nav__link">
+      <a href="../bubbleviz/" class="md-nav__link">
         Bubble Charts
       </a>
     </li>
@@ -589,14 +651,12 @@
               
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_4" type="checkbox" id="__nav_4_4" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_4" type="checkbox" id="__nav_4_4" >
       
       
       
@@ -626,7 +686,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../">Scrubber</a>
+          <a href="../../scrubber/">Scrubber</a>
           
             <label for="__nav_4_4">
               <span class="md-nav__icon md-icon"></span>
@@ -651,7 +711,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../normalize/" class="md-nav__link">
+      <a href="../../scrubber/normalize/" class="md-nav__link">
         Normalize
       </a>
     </li>
@@ -663,71 +723,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          <span class="md-nav__icon md-icon"></span>
-          
-            <a href="./" class="md-nav__link md-nav__link--active"
-              style="margin: initial; padding: initial; pointer-events: initial">
-          
-            Pipeline
-          </a>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../scrubber/pipeline/" class="md-nav__link">
         Pipeline
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.pipeline.make_pipeline" class="md-nav__link">
-    make_pipeline()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.pipeline.make_pipeline_from_tuple" class="md-nav__link">
-    make_pipeline_from_tuple()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.pipeline.pipe" class="md-nav__link">
-    pipe()
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -739,7 +739,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../registry/" class="md-nav__link">
+      <a href="../../scrubber/registry/" class="md-nav__link">
         Registry
       </a>
     </li>
@@ -753,7 +753,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../remove/" class="md-nav__link">
+      <a href="../../scrubber/remove/" class="md-nav__link">
         Remove
       </a>
     </li>
@@ -767,7 +767,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../replace/" class="md-nav__link">
+      <a href="../../scrubber/replace/" class="md-nav__link">
         Replace
       </a>
     </li>
@@ -781,7 +781,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../resources/" class="md-nav__link">
+      <a href="../../scrubber/resources/" class="md-nav__link">
         Resources
       </a>
     </li>
@@ -795,7 +795,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../scrubber/" class="md-nav__link">
+      <a href="../../scrubber/scrubber/" class="md-nav__link">
         Scrubber
       </a>
     </li>
@@ -809,7 +809,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../utils/" class="md-nav__link">
+      <a href="../../scrubber/utils/" class="md-nav__link">
         Utils
       </a>
     </li>
@@ -952,22 +952,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#lexos.scrubber.pipeline.make_pipeline" class="md-nav__link">
-    make_pipeline()
+  <a href="#lexos.dtm.wordcloud.get_rows" class="md-nav__link">
+    get_rows()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#lexos.scrubber.pipeline.make_pipeline_from_tuple" class="md-nav__link">
-    make_pipeline_from_tuple()
+  <a href="#lexos.dtm.wordcloud.make_wordcloud" class="md-nav__link">
+    make_wordcloud()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#lexos.scrubber.pipeline.pipe" class="md-nav__link">
-    pipe()
+  <a href="#lexos.dtm.wordcloud.make_multiclouds" class="md-nav__link">
+    make_multiclouds()
   </a>
   
 </li>
@@ -984,46 +984,28 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/scottkleinman/lexos/edit/master/docs/api/scrubber/pipeline.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/scottkleinman/lexos/edit/master/docs/api/dtm/wordcloud.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
 
-<h1 id="pipeline">Pipeline<a class="headerlink" href="#pipeline" title="Permanent link">¤</a></h1>
-<p>The <code>pipeline</code> component of <code>Scrubber</code> is used
-    to manage an ordered application of <code>Scrubber</code> component
-    functions to text.</p>
+<h1 id="word-clouds">Word Clouds<a class="headerlink" href="#word-clouds" title="Permanent link">¤</a></h1>
+<p>The <code>lexos.dtm.wordcloud</code> module contains classes and functions that facilitate the production of word cloud images directly from the document-term matrix. Images are produced with <code>matplotlib</code> and the Python <a href="https://amueller.github.io/word_cloud/">Wordcloud</a> library.</p>
 
 
   <div class="doc doc-object doc-function">
 
 
 
-<h3 id="lexos.scrubber.pipeline.make_pipeline" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">make_pipeline</span><span class="p">(</span><span class="o">*</span><span class="n">funcs</span><span class="p">)</span></code>
+<h3 id="lexos.dtm.wordcloud.get_rows" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">dtm</span><span class="o">.</span><span class="n">wordcloud</span><span class="o">.</span><span class="n">get_rows</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span></code>
 
 
-<a href="#lexos.scrubber.pipeline.make_pipeline" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#lexos.dtm.wordcloud.get_rows" class="headerlink" title="Permanent link">¤</a></h3>
 
     <div class="doc doc-contents first">
 
-      <p>Make a callable pipeline.</p>
-<p>Make a callable pipeline that passes a text through a series of
-functions in sequential order, then outputs a (scrubbed) text string.</p>
-<p>This function is intended as a lightweight convenience for users,
-allowing them to flexibly specify scrubbing options and their order,which (and in which order) preprocessing
-treating the whole thing as a single callable.</p>
-<p><code>python -m pip install cytoolz</code> is required for this function to work.</p>
-<p>Use <code>pipe</code> (an alias for <code>functools.partial</code>) to pass arguments to preprocessors.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos</span> <span class="kn">import</span> <span class="n">scrubber</span>
-<span class="n">scrubber</span> <span class="o">=</span> <span class="n">Scrubber</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">make_pipeline</span><span class="p">(</span>
-    <span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">hashtags</span><span class="p">,</span>
-    <span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">emojis</span><span class="p">,</span>
-    <span class="n">pipe</span><span class="p">(</span><span class="n">scrubber</span><span class="o">.</span><span class="n">remove</span><span class="o">.</span><span class="n">punctuation</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="s2">&quot;!&quot;</span><span class="p">])</span>
-<span class="p">)</span>
-<span class="n">scrubber</span><span class="p">(</span><span class="s2">&quot;@spacy_io is OSS for industrial-strength NLP in Python developed by @explosion_ai 💥&quot;</span><span class="p">)</span>
-<span class="s1">&#39;_USER_ is OSS for industrial-strength NLP in Python developed by _USER_ _EMOJI_&#39;</span>
-</code></pre></div>
+      <p>Yield successive n-sized rows from a list of documents.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1037,10 +1019,115 @@ treating the whole thing as a single callable.</p>
   </thead>
   <tbody>
       <tr>
-        <td><code>*funcs</code></td>
+        <td><code>lst</code></td>
+        <td><code>list</code></td>
+        <td><p>A list of documents.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>n</code></td>
+        <td><code>int</code></td>
+        <td><p>The number of columns in the row.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Yields:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>list</code></td>
+      <td><p>A generator with the documents separated into rows.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>lexos\dtm\wordcloud.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_rows</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Yield successive n-sized rows from a list of documents.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        lst (list): A list of documents.</span>
+<span class="sd">        n (int): The number of columns in the row.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        list: A generator with the documents separated into rows.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">),</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">lst</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">n</span><span class="p">]</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="lexos.dtm.wordcloud.make_wordcloud" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">dtm</span><span class="o">.</span><span class="n">wordcloud</span><span class="o">.</span><span class="n">make_wordcloud</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figure_opts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">round</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+<a href="#lexos.dtm.wordcloud.make_wordcloud" class="headerlink" title="Permanent link">¤</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Make a word cloud.</p>
+<p>Accepts data from a string, list of lists or tuples, a dict with
+terms as keys and counts/frequencies as values, or a dataframe.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>Union[dict, list, object, str, tuple]</code></td>
+        <td><p>The data. Accepts a text string, a list of lists or tuples,
+a dict with the terms as keys and the counts/frequencies as values, or a dataframe with "term" and
+"count" or "frequency" columns.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>opts</code></td>
         <td><code>dict</code></td>
-        <td><p>A series of functions to be applied to the text.</p></td>
-        <td><code>()</code></td>
+        <td><p>The WordCloud() options.
+For testing, try {"background_color": "white", "max_words": 2000, "contour_width": 3, "contour_width": "steelblue"}</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>show</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to show the plotted word cloud or return it as a WordCloud object.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>figure_opts</code></td>
+        <td><code>dict</code></td>
+        <td><p>A dict of matplotlib figure options.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>round</code></td>
+        <td><code>int</code></td>
+        <td><p>An integer (generally between 100-300) to apply a mask that rounds the word cloud.</p></td>
+        <td><code>None</code></td>
       </tr>
   </tbody>
 </table>
@@ -1054,126 +1141,101 @@ treating the whole thing as a single callable.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>Callable[[str], str]</code></td>
-      <td><p>Pipeline composed of <code>*funcs</code> that applies each in sequential order.</p></td>
+      <td><code>object</code></td>
+      <td><p>A WordCloud object if show is set to False.</p></td>
     </tr>
   </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\pipeline.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_pipeline</span><span class="p">(</span><span class="o">*</span><span class="n">funcs</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Make a callable pipeline.</span>
-
-<span class="sd">    Make a callable pipeline that passes a text through a series of</span>
-<span class="sd">    functions in sequential order, then outputs a (scrubbed) text string.</span>
-
-<span class="sd">    This function is intended as a lightweight convenience for users,</span>
-<span class="sd">    allowing them to flexibly specify scrubbing options and their order,which (and in which order) preprocessing</span>
-<span class="sd">    treating the whole thing as a single callable.</span>
-
-<span class="sd">    `python -m pip install cytoolz` is required for this function to work.</span>
-
-<span class="sd">    Use `pipe` (an alias for `functools.partial`) to pass arguments to preprocessors.</span>
-
-<span class="sd">    ```python</span>
-<span class="sd">    from lexos import scrubber</span>
-<span class="sd">    scrubber = Scrubber.pipeline.make_pipeline(</span>
-<span class="sd">        scrubber.replace.hashtags,</span>
-<span class="sd">        scrubber.replace.emojis,</span>
-<span class="sd">        pipe(scrubber.remove.punctuation, only=[&quot;.&quot;, &quot;?&quot;, &quot;!&quot;])</span>
-<span class="sd">    )</span>
-<span class="sd">    scrubber(&quot;@spacy_io is OSS for industrial-strength NLP in Python developed by @explosion_ai 💥&quot;)</span>
-<span class="sd">    &#39;_USER_ is OSS for industrial-strength NLP in Python developed by _USER_ _EMOJI_&#39;</span>
-<span class="sd">    ```</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        *funcs (dict): A series of functions to be applied to the text.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Pipeline composed of ``*funcs`` that applies each in sequential order.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">functoolz</span><span class="o">.</span><span class="n">compose_left</span><span class="p">(</span><span class="o">*</span><span class="n">funcs</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.scrubber.pipeline.make_pipeline_from_tuple" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">make_pipeline_from_tuple</span><span class="p">(</span><span class="n">funcs</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.pipeline.make_pipeline_from_tuple" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Return a pipeline from a tuple.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>funcs</code></td>
-        <td><code>tuple</code></td>
-        <td><p>A tuple containing callables or string names of functions.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>      <p>Returns a tuple of functions.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\pipeline.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_pipeline_from_tuple</span><span class="p">(</span><span class="n">funcs</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Return a pipeline from a tuple.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        funcs (tuple): A tuple containing callables or string names of functions.</span>
-
-<span class="sd">    Returns a tuple of functions.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">eval</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">funcs</span><span class="p">])</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><code>lexos.scrubber.pipeline.make_pipeline_from_tuple</code> is deprecated.
-It should not be necessary if you are using <code>lexos.scrubber.registry</code>.</p>
+</table>      <div class="admonition notes">
+<p class="admonition-title">Notes</p>
+<ul>
+<li>For a full list of options, see <a href="https://amueller.github.io/word_cloud/generated/wordcloud.WordCloud.html#wordcloud-wordcloud">https://amueller.github.io/word_cloud/generated/wordcloud.WordCloud.html#wordcloud-wordcloud</a>.</li>
+<li>If <code>show=False</code> the function expects to be called with something like <code>wordcloud = make_wordcloud(data, show=False)</code>.
+    This returns WordCloud object which can be manipulated by any of its methods, such as <code>to_file()</code>. See the
+    WordCloud documentation for a list of methods.</li>
+</ul>
 </div>
 
+        <details class="quote">
+          <summary>Source code in <code>lexos\dtm\wordcloud.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_wordcloud</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">],</span>
+                   <span class="n">opts</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                   <span class="n">figure_opts</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="nb">round</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+                  <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Make a word cloud.</span>
+
+<span class="sd">    Accepts data from a string, list of lists or tuples, a dict with</span>
+<span class="sd">    terms as keys and counts/frequencies as values, or a dataframe.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (Union[dict, list, object, str, tuple]): The data. Accepts a text string, a list of lists or tuples,</span>
+<span class="sd">            a dict with the terms as keys and the counts/frequencies as values, or a dataframe with &quot;term&quot; and</span>
+<span class="sd">            &quot;count&quot; or &quot;frequency&quot; columns.</span>
+<span class="sd">        opts (dict): The WordCloud() options.</span>
+<span class="sd">            For testing, try {&quot;background_color&quot;: &quot;white&quot;, &quot;max_words&quot;: 2000, &quot;contour_width&quot;: 3, &quot;contour_width&quot;: &quot;steelblue&quot;}</span>
+<span class="sd">        show (bool): Whether to show the plotted word cloud or return it as a WordCloud object.</span>
+<span class="sd">        figure_opts (dict): A dict of matplotlib figure options.</span>
+<span class="sd">        round (int): An integer (generally between 100-300) to apply a mask that rounds the word cloud.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        object: A WordCloud object if show is set to False.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        - For a full list of options, see https://amueller.github.io/word_cloud/generated/wordcloud.WordCloud.html#wordcloud-wordcloud.</span>
+<span class="sd">        - If `show=False` the function expects to be called with something like `wordcloud = make_wordcloud(data, show=False)`.</span>
+<span class="sd">            This returns WordCloud object which can be manipulated by any of its methods, such as `to_file()`. See the</span>
+<span class="sd">            WordCloud documentation for a list of methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">round</span><span class="p">:</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ogrid</span><span class="p">[:</span><span class="mi">300</span><span class="p">,</span> <span class="p">:</span><span class="mi">300</span><span class="p">]</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">150</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="mi">150</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&gt;</span> <span class="nb">round</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">*</span> <span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;mask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">wordcloud</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span><span class="o">**</span><span class="n">opts</span><span class="p">)</span><span class="o">.</span><span class="n">generate_from_text</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">}</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="n">term_counts</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;term&quot;</span><span class="p">]:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">term_counts</span><span class="p">}</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;term&quot;</span><span class="p">]:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;frequency&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">term_counts</span><span class="p">}</span>
+        <span class="n">wordcloud</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span><span class="o">**</span><span class="n">opts</span><span class="p">)</span><span class="o">.</span><span class="n">generate_from_frequencies</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">figure_opts</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="o">**</span><span class="n">figure_opts</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">wordcloud</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">wordcloud</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
 
   <div class="doc doc-object doc-function">
 
 
 
-<h3 id="lexos.scrubber.pipeline.pipe" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<h3 id="lexos.dtm.wordcloud.make_multiclouds" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">dtm</span><span class="o">.</span><span class="n">wordcloud</span><span class="o">.</span><span class="n">make_multiclouds</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">opts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figure_opts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">round</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
-<a href="#lexos.scrubber.pipeline.pipe" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#lexos.dtm.wordcloud.make_multiclouds" class="headerlink" title="Permanent link">¤</a></h3>
 
     <div class="doc doc-contents first">
 
-      <p>Apply functool.partial and add <code>__name__</code> to the partial function.</p>
-<p>This allows the function to be passed to the pipeline along with
-keyword arguments.</p>
+      <p>Make multiclouds.</p>
+<p>Accepts data from a string, list of lists or tuples, a dict with
+terms as keys and counts/frequencies as values, or a dataframe.</p>
+<p>The best input is a dtm produced by <code>get_dtm_table()</code>.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1187,10 +1249,55 @@ keyword arguments.</p>
   </thead>
   <tbody>
       <tr>
-        <td><code>func</code></td>
-        <td><code>Callable</code></td>
-        <td><p>A callable.</p></td>
+        <td><code>docs</code></td>
+        <td><code>List[Union[dict, object, str, tuple]]</code></td>
+        <td><p>The data. Accepts a list of text strings, a list of tuples,
+or dicts with the terms as keys and the counts/frequencies as values, or a dataframe with "term" and
+"count" or "frequency" columns.</p></td>
         <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>opts</code></td>
+        <td><code>dict</code></td>
+        <td><p>The WordCloud() options.
+For testing, try {"background_color": "white", "max_words": 2000, "contour_width": 3, "contour_width": "steelblue"}</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>ncols</code></td>
+        <td><code>int</code></td>
+        <td><p>The number of columns in the grid.</p></td>
+        <td><code>3</code></td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>str</code></td>
+        <td><p>The title of the grid.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>labels</code></td>
+        <td><code>List[str]</code></td>
+        <td><p>The document labels for each subplot.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>show</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to show the plotted word cloud or return it as a WordCloud object.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>figure_opts</code></td>
+        <td><code>dict</code></td>
+        <td><p>A dict of matplotlib figure options.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>round</code></td>
+        <td><code>int</code></td>
+        <td><p>An integer (generally between 100-300) to apply a mask that rounds the word cloud.</p></td>
+        <td><code>None</code></td>
       </tr>
   </tbody>
 </table>
@@ -1204,30 +1311,128 @@ keyword arguments.</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>Callable</code></td>
-      <td><p>A partial function with <code>__name__</code> set to the name of the function.</p></td>
+      <td><code>object</code></td>
+      <td><p>A WordCloud object if show is set to False.</p></td>
     </tr>
   </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\pipeline.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">pipe</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Apply functool.partial and add `__name__` to the partial function.</span>
+</table>      <div class="admonition notes">
+<p class="admonition-title">Notes</p>
+<ul>
+<li>For a full list of options, see <a href="https://amueller.github.io/word_cloud/generated/wordcloud.WordCloud.html#wordcloud-wordcloud">https://amueller.github.io/word_cloud/generated/wordcloud.WordCloud.html#wordcloud-wordcloud</a>.</li>
+<li>If <code>show=False</code> the function expects to be called with something like <code>wordcloud = make_wordcloud(data, show=False)</code>.
+    This returns WordCloud object which can be manipulated by any of its methods, such as <code>to_file()</code>. See the
+    WordCloud documentation for a list of methods.</li>
+</ul>
+</div>
 
-<span class="sd">    This allows the function to be passed to the pipeline along with</span>
-<span class="sd">    keyword arguments.</span>
+        <details class="quote">
+          <summary>Source code in <code>lexos\dtm\wordcloud.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_multiclouds</span><span class="p">(</span><span class="n">docs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]],</span>
+                   <span class="n">opts</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="n">ncols</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+                   <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                   <span class="n">figure_opts</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="nb">round</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+                  <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Make multiclouds.</span>
+
+<span class="sd">    Accepts data from a string, list of lists or tuples, a dict with</span>
+<span class="sd">    terms as keys and counts/frequencies as values, or a dataframe.</span>
+
+<span class="sd">    The best input is a dtm produced by `get_dtm_table()`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        func (Callable): A callable.</span>
+<span class="sd">        docs (List[Union[dict, object, str, tuple]]): The data. Accepts a list of text strings, a list of tuples,</span>
+<span class="sd">            or dicts with the terms as keys and the counts/frequencies as values, or a dataframe with &quot;term&quot; and</span>
+<span class="sd">            &quot;count&quot; or &quot;frequency&quot; columns.</span>
+<span class="sd">        opts (dict): The WordCloud() options.</span>
+<span class="sd">            For testing, try {&quot;background_color&quot;: &quot;white&quot;, &quot;max_words&quot;: 2000, &quot;contour_width&quot;: 3, &quot;contour_width&quot;: &quot;steelblue&quot;}</span>
+<span class="sd">        ncols (int): The number of columns in the grid.</span>
+<span class="sd">        title (str): The title of the grid.</span>
+<span class="sd">        labels (List[str]): The document labels for each subplot.</span>
+<span class="sd">        show (bool): Whether to show the plotted word cloud or return it as a WordCloud object.</span>
+<span class="sd">        figure_opts (dict): A dict of matplotlib figure options.</span>
+<span class="sd">        round (int): An integer (generally between 100-300) to apply a mask that rounds the word cloud.</span>
+
 <span class="sd">    Returns:</span>
-<span class="sd">        A partial function with `__name__` set to the name of the function.</span>
+<span class="sd">        object: A WordCloud object if show is set to False.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        - For a full list of options, see https://amueller.github.io/word_cloud/generated/wordcloud.WordCloud.html#wordcloud-wordcloud.</span>
+<span class="sd">        - If `show=False` the function expects to be called with something like `wordcloud = make_wordcloud(data, show=False)`.</span>
+<span class="sd">            This returns WordCloud object which can be manipulated by any of its methods, such as `to_file()`. See the</span>
+<span class="sd">            WordCloud documentation for a list of methods.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">func</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">partial_func</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">update_wrapper</span><span class="p">(</span><span class="n">partial_func</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">partial_func</span>
+    <span class="c1"># Process the docs data into a list</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+        <span class="c1"># Assumes a df with columns: Terms, Doc_Label, DocLabel,...</span>
+        <span class="c1"># Transpose the df</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="n">docs</span><span class="o">.</span><span class="n">T</span>
+        <span class="c1"># Grab the first row for the header</span>
+        <span class="n">new_header</span> <span class="o">=</span> <span class="n">docs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Drop the first row</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="n">docs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="c1"># Set the header row as the df header</span>
+        <span class="n">docs</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">new_header</span>
+        <span class="c1"># Return a dict</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="n">docs</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">)</span>
+    <span class="c1"># Ensure that anything that is not a list of strings is converted</span>
+    <span class="c1"># to the appropriate format.</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">docs</span> <span class="o">=</span> <span class="p">[{</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">}</span> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">]</span>
+
+    <span class="c1"># List for multiple word clouds if they are to be returned.</span>
+    <span class="n">multiclouds</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Create a rounded mask.</span>
+    <span class="k">if</span> <span class="nb">round</span><span class="p">:</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ogrid</span><span class="p">[:</span><span class="mi">300</span><span class="p">,</span> <span class="p">:</span><span class="mi">300</span><span class="p">]</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">150</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="mi">150</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&gt;</span> <span class="nb">round</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">*</span> <span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">opts</span><span class="p">[</span><span class="s2">&quot;mask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask</span>
+    <span class="c1"># Constrain the layout</span>
+    <span class="n">figure_opts</span><span class="p">[</span><span class="s2">&quot;constrained_layout&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="c1"># Create the figure.</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="o">**</span><span class="n">figure_opts</span><span class="p">)</span>
+    <span class="c1"># Add the title</span>
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="c1"># Calculate the number of rows and columns.</span>
+    <span class="n">nrows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span> <span class="o">/</span> <span class="n">ncols</span><span class="p">))</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_gridspec</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">)</span>
+    <span class="c1"># Divide the data into rows.</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">get_rows</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">ncols</span><span class="p">))</span>
+    <span class="c1"># Set an index for labels</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># Loop through the rows.</span>
+    <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">doc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
+        <span class="c1"># Loop through the documents in the row.</span>
+        <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+            <span class="c1"># Create a subplot.</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">])</span>
+            <span class="c1"># Generate the subplot&#39;s word cloud.</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">wordcloud</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span><span class="o">**</span><span class="n">opts</span><span class="p">)</span><span class="o">.</span><span class="n">generate_from_text</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">wordcloud</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span><span class="o">**</span><span class="n">opts</span><span class="p">)</span><span class="o">.</span><span class="n">generate_from_frequencies</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="c1"># If `show=True`, show the word cloud.</span>
+            <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">wordcloud</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+                <span class="c1"># Set the image title from the label</span>
+                <span class="k">if</span> <span class="n">labels</span><span class="p">:</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># Otherwise, add the word cloud to the multiclouds list.</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">multiclouds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wordcloud</span><span class="p">)</span>
+    <span class="c1"># If `show=False`, return the multiclouds list.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">show</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">multiclouds</span>
 </code></pre></div>
         </details>
     </div>
@@ -1251,7 +1456,7 @@ keyword arguments.</p>
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../normalize/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1260,19 +1465,19 @@ keyword arguments.</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Normalize
+              Index
             </div>
           </div>
         </a>
       
       
-        <a href="../registry/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../bubbleviz/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Registry
+              Bubble Charts
             </div>
           </div>
           <div class="md-footer__button md-icon">

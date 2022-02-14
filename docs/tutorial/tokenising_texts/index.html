@@ -13,14 +13,14 @@
     
     
       
-        <title>Overview - The Lexos API</title>
+        <title>Tokenising Texts - The Lexos API</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.2b4465f4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2b4465f4.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
         
       
     
@@ -34,11 +34,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#overview" class="md-skip">
+        <a href="#language-models" class="md-skip">
           Skip to content
         </a>
       
@@ -80,7 +80,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="The Lexos API" class="md-header__button md-logo" aria-label="The Lexos API" data-md-component="logo">
+    <a href="../.." title="The Lexos API" class="md-header__button md-logo" aria-label="The Lexos API" data-md-component="logo">
       
   
   <svg id="lexos-dragon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245.59 217.84"><defs><style>.circle{fill:#e3e3e3;}.base{fill:#fff;}.shadow{fill:#909090;}.lines{fill:none;stroke:#505050;stroke-miterlimit:10;stroke-width:6px;}.iris{fill:#47bcff;}</style></defs><g id="circle"><circle class="circle" cx="114.34" cy="108.92" r="108.92"></circle></g><g id="base"><path class="base" d="M18.22,71.24S25,76.48,54.38,65c-.59-8.7-1.73-31.14-1.73-34.15,6.77,0,26,19.57,36.25,25.95,12,1.09,46.16,2,64.91,4.59,9.58,1,45.8,21,51.72,30.09s10,19,16.18,25.41,17.08,18,20.95,23.6,7.89,18.49,3.11,21.72S231,172.29,231,172.29l1.87-6.92-7.19-.75L215,170s1.6-5.85,1.2-9.6c-4-3-11.92-9.25-14.12-10.62s-6.69,12.09-6.25,14.79c.34,2.11,15,22.4,18,24.68,2-1.88,4.11-6.56,4.11-6.56s1.29,5.68-1.34,9.75c-6,9.33-12.5,10.71-15.92,10.56s-10.63,1-15.11-2.35-25.74-14-40.87-25.28c-11.4-8.49-19.18-15.74-19.18-15.74s-33.95,6.6-40.56,9.07-32.35,11.61-32.35,11.61a74,74,0,0,0-1.78-20.6c.57-1.05-17.28,15.62-17.28,15.62S10,148.77,11.09,107.2C11.7,84.17,18.22,71.24,18.22,71.24Z" transform="translate(-5.97 -0.51)"></path></g><g id="shadow"><path class="shadow" d="M125.92,133.44c0-4.87-46.64-12.73-58.75-15.06-12-2.3-37.58-5.19-48.44-6.37-.35,0,17.14,11.38,25.93,25.37a63.82,63.82,0,0,1,9.69,29.21S84.24,159.82,125.92,133.44Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M217.52,139.28c-.46,2.91,1.44,5.56,3,7.16s5.5,6.43,8.54,4.46c2.28-1.49-.78-4.62-1.77-6.16C225.77,142.41,218.12,135.4,217.52,139.28Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M174.72,142.19c-3.07,2.28-8.46,4.56-9.34,11.55s4,10.86,6.15,14.73a57.17,57.17,0,0,0,6.34,8.49,61.6,61.6,0,0,0,5.13,5.11c3.08,2.73,7.78,6.15,9,6.38a39.8,39.8,0,0,0,12-1.87c-.37,3-.3,4.48-.41,6.61,3,.63,11.42-2.66,10.57-3.45-2.41-2.23-7.33-8.68-8.59-10.5s-8.74-11.48-9.41-14.17c-.54-2.16,3.31-12.84,5.17-14.53S174.72,142.19,174.72,142.19Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M127.26,107.61c-.56,4.3-101.15-6.45-101.15-6.45S42.93,90.52,48.94,81.42a45.67,45.67,0,0,0,7-33.93S127.9,102.73,127.26,107.61Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M154.48,62.57c-1.6-2.2-5.36-5.24-16-19-15.42-19.92-19-28.08-19.85-23.13s2.32,39.7,2.32,39.7A229.63,229.63,0,0,1,154.48,62.57Z" transform="translate(-5.97 -0.51)"></path></g><g id="lines"><path class="lines" d="M150.41,84.12s-11.85,3.42-26-3.19S85.25,55.64,74.77,47.21A228,228,0,0,0,51.53,31.26s-2,2.68,0,8.14,5,22.74,4,27.21c0,0-26.79,5.83-38,6.64" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M231.3,172.77c4.52.91,8.5-5.42,8.5-5.42a39.46,39.46,0,0,0,7.91-9.39c2.73-5-2-12.7-2-12.7s-5.47-9.34-10.48-13.35-12.76-13.31-17.32-20.37S206.54,94,201.07,86.93s-17.77-12.07-23.7-15l-23.24-10a305.76,305.76,0,0,1-20.5-27.34c-8.21-12.53-15-14.13-15-14.13L122,59.19s-.06,1.17-5,.86c-8.93-.57-24.75.42-24.75.42" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M202.44,192.2c2.28-2.51,3.9-7.81,3.9-7.81S197,189.24,191.5,189l-10.94-8.2c-5.92-6.16-8.65-11.17-12.76-17.32s-4.1-13,0-17.54,7.75-5.93,9.57-4.33,18.23,5.69,25.07,8.65l14.12,10.62c0,5.56-3.39,10.71-3.39,10.71s12.49-3.29,12.82-6.5" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M125.92,133.44c-4.63-6.33-34.22-11.65-57-14.61s-44.84-3.48-50.52-5.92" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M224.24,141c2.28,1.59,7.29,8.55,6.38,9.69s-4.41,1.15-6-.44" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M211.55,200.4a11.76,11.76,0,0,1-5.92,3.19c-7.82,1.76-18.23,0-18.23,0L164.73,189s-19.26-12.08-26.09-18.16a121.25,121.25,0,0,0-12.76-10c-9.57,1-45.57,9.05-53.77,11.86S53,180.81,53,180.81s-3.58-3.14,0-9.18-3.71-25.8-9.22-34.25c-6.16-9.43-14.89-16.75-22.37-22.33-4.75-3.54-7.51-4.72-11.41-10.37,0,0,4.41-3.82,8.76-4.67s13.09-1.7,20.6-8.79S48,82.7,48,82.7" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M217.06,182.4s-1.93,5.47-5.12,7.69l-6.84-9s-8.11-12.45-10.36-15.81c-.62-.93,1.57-10.16,5.58-15.35" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M14.35,108.56" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M52.93,159.72s-13.63,4.74-19.34,15.62" transform="translate(-5.97 -0.51)"></path></g><g id="iris" style="opacity: 1;"><path class="iris" d="M172.94,103.12c3.17,2.4,7.91,12.46,7.91,12.46a30.43,30.43,0,0,1-14.18-1.9c-7.72-3.53-9-12-9-12S167,98.79,172.94,103.12Z" transform="translate(-5.97 -0.51)"></path></g><g id="eye" style="opacity: 1;"><path class="lines" d="M170.15,114.64c5.93,1.14,13.65.16,13.65.16a140.92,140.92,0,0,0-9.21-12.8c-4.11-4.79-17.19-3.11-17.19-3.11" transform="translate(-5.97 -0.51)"></path></g><g id="eye-2" style="opacity: 0;"><polyline class="lines" points="176.53 116.69 169.13 99.84 151.42 98.37"></polyline></g></svg>
@@ -99,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              Tokenising Texts
             
           </span>
         </div>
@@ -200,7 +200,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="The Lexos API" class="md-nav__button md-logo" aria-label="The Lexos API" data-md-component="logo">
+    <a href="../.." title="The Lexos API" class="md-nav__button md-logo" aria-label="The Lexos API" data-md-component="logo">
       
   
   <svg id="lexos-dragon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245.59 217.84"><defs><style>.circle{fill:#e3e3e3;}.base{fill:#fff;}.shadow{fill:#909090;}.lines{fill:none;stroke:#505050;stroke-miterlimit:10;stroke-width:6px;}.iris{fill:#47bcff;}</style></defs><g id="circle"><circle class="circle" cx="114.34" cy="108.92" r="108.92"></circle></g><g id="base"><path class="base" d="M18.22,71.24S25,76.48,54.38,65c-.59-8.7-1.73-31.14-1.73-34.15,6.77,0,26,19.57,36.25,25.95,12,1.09,46.16,2,64.91,4.59,9.58,1,45.8,21,51.72,30.09s10,19,16.18,25.41,17.08,18,20.95,23.6,7.89,18.49,3.11,21.72S231,172.29,231,172.29l1.87-6.92-7.19-.75L215,170s1.6-5.85,1.2-9.6c-4-3-11.92-9.25-14.12-10.62s-6.69,12.09-6.25,14.79c.34,2.11,15,22.4,18,24.68,2-1.88,4.11-6.56,4.11-6.56s1.29,5.68-1.34,9.75c-6,9.33-12.5,10.71-15.92,10.56s-10.63,1-15.11-2.35-25.74-14-40.87-25.28c-11.4-8.49-19.18-15.74-19.18-15.74s-33.95,6.6-40.56,9.07-32.35,11.61-32.35,11.61a74,74,0,0,0-1.78-20.6c.57-1.05-17.28,15.62-17.28,15.62S10,148.77,11.09,107.2C11.7,84.17,18.22,71.24,18.22,71.24Z" transform="translate(-5.97 -0.51)"></path></g><g id="shadow"><path class="shadow" d="M125.92,133.44c0-4.87-46.64-12.73-58.75-15.06-12-2.3-37.58-5.19-48.44-6.37-.35,0,17.14,11.38,25.93,25.37a63.82,63.82,0,0,1,9.69,29.21S84.24,159.82,125.92,133.44Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M217.52,139.28c-.46,2.91,1.44,5.56,3,7.16s5.5,6.43,8.54,4.46c2.28-1.49-.78-4.62-1.77-6.16C225.77,142.41,218.12,135.4,217.52,139.28Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M174.72,142.19c-3.07,2.28-8.46,4.56-9.34,11.55s4,10.86,6.15,14.73a57.17,57.17,0,0,0,6.34,8.49,61.6,61.6,0,0,0,5.13,5.11c3.08,2.73,7.78,6.15,9,6.38a39.8,39.8,0,0,0,12-1.87c-.37,3-.3,4.48-.41,6.61,3,.63,11.42-2.66,10.57-3.45-2.41-2.23-7.33-8.68-8.59-10.5s-8.74-11.48-9.41-14.17c-.54-2.16,3.31-12.84,5.17-14.53S174.72,142.19,174.72,142.19Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M127.26,107.61c-.56,4.3-101.15-6.45-101.15-6.45S42.93,90.52,48.94,81.42a45.67,45.67,0,0,0,7-33.93S127.9,102.73,127.26,107.61Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M154.48,62.57c-1.6-2.2-5.36-5.24-16-19-15.42-19.92-19-28.08-19.85-23.13s2.32,39.7,2.32,39.7A229.63,229.63,0,0,1,154.48,62.57Z" transform="translate(-5.97 -0.51)"></path></g><g id="lines"><path class="lines" d="M150.41,84.12s-11.85,3.42-26-3.19S85.25,55.64,74.77,47.21A228,228,0,0,0,51.53,31.26s-2,2.68,0,8.14,5,22.74,4,27.21c0,0-26.79,5.83-38,6.64" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M231.3,172.77c4.52.91,8.5-5.42,8.5-5.42a39.46,39.46,0,0,0,7.91-9.39c2.73-5-2-12.7-2-12.7s-5.47-9.34-10.48-13.35-12.76-13.31-17.32-20.37S206.54,94,201.07,86.93s-17.77-12.07-23.7-15l-23.24-10a305.76,305.76,0,0,1-20.5-27.34c-8.21-12.53-15-14.13-15-14.13L122,59.19s-.06,1.17-5,.86c-8.93-.57-24.75.42-24.75.42" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M202.44,192.2c2.28-2.51,3.9-7.81,3.9-7.81S197,189.24,191.5,189l-10.94-8.2c-5.92-6.16-8.65-11.17-12.76-17.32s-4.1-13,0-17.54,7.75-5.93,9.57-4.33,18.23,5.69,25.07,8.65l14.12,10.62c0,5.56-3.39,10.71-3.39,10.71s12.49-3.29,12.82-6.5" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M125.92,133.44c-4.63-6.33-34.22-11.65-57-14.61s-44.84-3.48-50.52-5.92" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M224.24,141c2.28,1.59,7.29,8.55,6.38,9.69s-4.41,1.15-6-.44" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M211.55,200.4a11.76,11.76,0,0,1-5.92,3.19c-7.82,1.76-18.23,0-18.23,0L164.73,189s-19.26-12.08-26.09-18.16a121.25,121.25,0,0,0-12.76-10c-9.57,1-45.57,9.05-53.77,11.86S53,180.81,53,180.81s-3.58-3.14,0-9.18-3.71-25.8-9.22-34.25c-6.16-9.43-14.89-16.75-22.37-22.33-4.75-3.54-7.51-4.72-11.41-10.37,0,0,4.41-3.82,8.76-4.67s13.09-1.7,20.6-8.79S48,82.7,48,82.7" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M217.06,182.4s-1.93,5.47-5.12,7.69l-6.84-9s-8.11-12.45-10.36-15.81c-.62-.93,1.57-10.16,5.58-15.35" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M14.35,108.56" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M52.93,159.72s-13.63,4.74-19.34,15.62" transform="translate(-5.97 -0.51)"></path></g><g id="iris" style="opacity: 1;"><path class="iris" d="M172.94,103.12c3.17,2.4,7.91,12.46,7.91,12.46a30.43,30.43,0,0,1-14.18-1.9c-7.72-3.53-9-12-9-12S167,98.79,172.94,103.12Z" transform="translate(-5.97 -0.51)"></path></g><g id="eye" style="opacity: 1;"><path class="lines" d="M170.15,114.64c5.93,1.14,13.65.16,13.65.16a140.92,140.92,0,0,0-9.21-12.8c-4.11-4.79-17.19-3.11-17.19-3.11" transform="translate(-5.97 -0.51)"></path></g><g id="eye-2" style="opacity: 0;"><polyline class="lines" points="176.53 116.69 169.13 99.84 151.42 98.37"></polyline></g></svg>
@@ -231,7 +231,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         Home
       </a>
     </li>
@@ -246,23 +246,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../installation/" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         Installation
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../tutorial/" class="md-nav__link">
-        Tutorial
       </a>
     </li>
   
@@ -281,7 +266,7 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
       
       
@@ -305,7 +290,234 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../">API</a>
+          <a href="../">Tutorial</a>
+          
+            <label for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Tutorial" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          
+            Tutorial
+          
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../loading_texts/" class="md-nav__link">
+        Loading Texts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scrubbing_texts/" class="md-nav__link">
+        Scrubbing Texts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-nav__icon md-icon"></span>
+          
+            <a href="./" class="md-nav__link md-nav__link--active"
+              style="margin: initial; padding: initial; pointer-events: initial">
+          
+            Tokenising Texts
+          </a>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Tokenising Texts
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#language-models" class="md-nav__link">
+    Language Models
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tokenised-documents" class="md-nav__link">
+    Tokenised Documents
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spacy-docs" class="md-nav__link">
+    spaCy Docs
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lexosdocs" class="md-nav__link">
+    LexosDocs
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ngrams" class="md-nav__link">
+    Ngrams
+  </a>
+  
+    <nav class="md-nav" aria-label="Ngrams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generating-word-ngrams" class="md-nav__link">
+    Generating Word Ngrams
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generating-character-ngrams" class="md-nav__link">
+    Generating Character Ngrams
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-of-workflow" class="md-nav__link">
+    Summary of Workflow
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../the_document_term_matrix/" class="md-nav__link">
+        The Document-Term Matrix
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../api/">API</a>
           
             <label for="__nav_4">
               <span class="md-nav__icon md-icon"></span>
@@ -329,10 +541,77 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../api/dtm/">DTM</a>
+          
+            <label for="__nav_4_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="DTM" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          
+            DTM
+          
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../overview/" class="md-nav__link">
-        Overview
+      <a href="../../api/dtm/wordcloud/" class="md-nav__link">
+        Wordcloud
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/dtm/bubbleviz/" class="md-nav__link">
+        Bubble Charts
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -363,7 +642,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../io/">IO</a>
+          <a href="../../api/io/">IO</a>
           
             <label for="__nav_4_3">
               <span class="md-nav__icon md-icon"></span>
@@ -388,7 +667,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../io/basic/" class="md-nav__link">
+      <a href="../../api/io/basic/" class="md-nav__link">
         Basic
       </a>
     </li>
@@ -437,14 +716,12 @@
         
           
         
-          
-        
       
       
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../scrubber/">Scrubber</a>
+          <a href="../../api/scrubber/">Scrubber</a>
           
             <label for="__nav_4_4">
               <span class="md-nav__icon md-icon"></span>
@@ -469,21 +746,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scrubber/overview/" class="md-nav__link">
-        Overview
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../scrubber/normalize/" class="md-nav__link">
+      <a href="../../api/scrubber/normalize/" class="md-nav__link">
         Normalize
       </a>
     </li>
@@ -497,7 +760,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scrubber/pipeline/" class="md-nav__link">
+      <a href="../../api/scrubber/pipeline/" class="md-nav__link">
         Pipeline
       </a>
     </li>
@@ -511,7 +774,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scrubber/registry/" class="md-nav__link">
+      <a href="../../api/scrubber/registry/" class="md-nav__link">
         Registry
       </a>
     </li>
@@ -525,7 +788,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scrubber/remove/" class="md-nav__link">
+      <a href="../../api/scrubber/remove/" class="md-nav__link">
         Remove
       </a>
     </li>
@@ -539,7 +802,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scrubber/replace/" class="md-nav__link">
+      <a href="../../api/scrubber/replace/" class="md-nav__link">
         Replace
       </a>
     </li>
@@ -553,7 +816,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scrubber/resources/" class="md-nav__link">
+      <a href="../../api/scrubber/resources/" class="md-nav__link">
         Resources
       </a>
     </li>
@@ -567,7 +830,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scrubber/scrubber/" class="md-nav__link">
+      <a href="../../api/scrubber/scrubber/" class="md-nav__link">
         Scrubber
       </a>
     </li>
@@ -581,7 +844,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../scrubber/utils/" class="md-nav__link">
+      <a href="../../api/scrubber/utils/" class="md-nav__link">
         Utils
       </a>
     </li>
@@ -600,14 +863,12 @@
               
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_5" type="checkbox" id="__nav_4_5" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_5" type="checkbox" id="__nav_4_5" >
       
       
       
@@ -620,14 +881,12 @@
         
           
         
-          
-        
       
       
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../">Tokenizer</a>
+          <a href="../../api/tokenizer/">Tokenizer</a>
           
             <label for="__nav_4_5">
               <span class="md-nav__icon md-icon"></span>
@@ -650,76 +909,9 @@
               
   
   
-    
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          <span class="md-nav__icon md-icon"></span>
-          
-            <a href="./" class="md-nav__link md-nav__link--active"
-              style="margin: initial; padding: initial; pointer-events: initial">
-          
-            Overview
-          </a>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        Overview
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.tokenizer.make_doc" class="md-nav__link">
-    make_doc()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.tokenizer.make_docs" class="md-nav__link">
-    make_docs()
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
   
     <li class="md-nav__item">
-      <a href="../extensions/" class="md-nav__link">
+      <a href="../../api/tokenizer/extensions/" class="md-nav__link">
         Extensions
       </a>
     </li>
@@ -733,7 +925,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../lexosdoc/" class="md-nav__link">
+      <a href="../../api/tokenizer/lexosdoc/" class="md-nav__link">
         LexosDoc
       </a>
     </li>
@@ -754,7 +946,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utils/" class="md-nav__link">
+      <a href="../../api/utils/" class="md-nav__link">
         Utils
       </a>
     </li>
@@ -785,8 +977,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -795,15 +985,63 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#lexos.tokenizer.make_doc" class="md-nav__link">
-    make_doc()
+  <a href="#language-models" class="md-nav__link">
+    Language Models
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#lexos.tokenizer.make_docs" class="md-nav__link">
-    make_docs()
+  <a href="#tokenised-documents" class="md-nav__link">
+    Tokenised Documents
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spacy-docs" class="md-nav__link">
+    spaCy Docs
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lexosdocs" class="md-nav__link">
+    LexosDocs
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ngrams" class="md-nav__link">
+    Ngrams
+  </a>
+  
+    <nav class="md-nav" aria-label="Ngrams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generating-word-ngrams" class="md-nav__link">
+    Generating Word Ngrams
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generating-character-ngrams" class="md-nav__link">
+    Generating Character Ngrams
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-of-workflow" class="md-nav__link">
+    Summary of Workflow
   </a>
   
 </li>
@@ -820,182 +1058,143 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/scottkleinman/lexos/edit/master/docs/api/tokenizer/overview.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/scottkleinman/lexos/edit/master/docs/tutorial/tokenising_texts.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
 
-<h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¤</a></h1>
-<p>The <code>Tokenizer</code> uses spaCy to convert texts to documents using one of the functions below. If no language model is specified, spaCy's multi-lingual <code>xx_sent_ud_sm</code> model is used.</p>
+  <h1>Tokenising Texts</h1>
 
+<h2 id="language-models">Language Models<a class="headerlink" href="#language-models" title="Permanent link">¤</a></h2>
+<p>The <code>tokenizer</code> module is a big change for Lexos, as it formally separates tokenisation from preprocessing. In the Lexos app, the user employs Scrubber to massage the text into shape using his or her implicit knowledge about the text's language. Tokenisation then takes place by splitting the text according to a regular expression pattern (normally whitespace). By contrast, the Lexos API uses a language model that formalises the implicit rules and thus automates the tokenisation process. Language models can implement both rule-based and probabilistic strategies for separating document strings into tokens. Because they have built-in procedures appropriate to specific languages, language models can often do a better job of tokenisation than the approach used in the Lexos app.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>There are some trade-offs to using language models. Because the algorithm does more than split strings, processing times can be greater. In addition, tokenisation is no longer (explicitly) language agnostic. A language model is "opinionated" and it may overfit the data. At the same time, if no language model exist for the language being tokenised, the results may not be satisfactory. The Lexos API strategy for handling this situation is described below.</p>
+</div>
+<h2 id="tokenised-documents">Tokenised Documents<a class="headerlink" href="#tokenised-documents" title="Permanent link">¤</a></h2>
+<p>A tokenised document can be defined as a text split into tokens in which each token is stored with any number of annotations assigned by the model. These annotations are token "attributes". The structure of a tokenised document can then be conceived in theory as a list of tuples like</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+    <span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;The&quot;</span><span class="p">,</span> <span class="n">part_of_speech</span><span class="o">=</span><span class="s2">&quot;noun&quot;</span><span class="p">,</span> <span class="n">is_stopword</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="n">part_of_speech</span><span class="o">=</span><span class="s2">&quot;noun&quot;</span><span class="p">,</span> <span class="n">is_stopword</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">),</span>
 
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.tokenizer.make_doc" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[])</span></code>
-
-
-<a href="#lexos.tokenizer.make_doc" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Return a doc from a text.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text to be parsed.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>model</code></td>
-        <td><code>object</code></td>
-        <td><p>The model to be used.</p></td>
-        <td><code>&#39;xx_sent_ud_sm&#39;</code></td>
-      </tr>
-      <tr>
-        <td><code>disable</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>A list of spaCy pipeline components to disable.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>object</code></td>
-      <td><p>A spaCy doc object.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_doc</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-			  <span class="n">model</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span>
-			  <span class="n">disable</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Return a doc from a text.</span>
-
-<span class="sd">	Args:</span>
-<span class="sd">		text (str): The text to be parsed.</span>
-<span class="sd">		model (object): The model to be used.</span>
-<span class="sd">		disable (List[str]): A list of spaCy pipeline components to disable.</span>
-
-<span class="sd">	Returns:</span>
-<span class="sd">		object: A spaCy doc object.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-    <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="n">disable</span><span class="p">)</span>
+<span class="p">]</span>
 </code></pre></div>
-        </details>
-    </div>
+<p>It is then a simple matter to iterate through the document and retrieve all the tokens that are not stopwords using a Python list comprehension. Many filtering procedures are easy to implement in this way.</p>
+<p>For languages such as Modern English, language models exist that can automatically annotate tokens with information like part of speech, lemmas, stop words, and other information. However, token attributes can also be set after the text has been tokenised.</p>
+<p>If no language model exists for the text's language, it will only be possible to tokenise using general rules, and it will not be possible to add other labels (at the tokenisation stage). But new language models, including models for historical languages, are being produced all the time, and this is a growing area of interest in DH.</p>
+<h2 id="spacy-docs">spaCy Docs<a class="headerlink" href="#spacy-docs" title="Permanent link">¤</a></h2>
+<p>The Lexos API wraps the <a href="https://spacy.io/" target="_blank">spaCy</a> NLP library for loading language models and tokenising texts. Because spaCy has excellent documentation and fairly wide acceptance in the DH community, it is a good tool to use under the bonnet. spaCy has a growing number of language models in a number of languages, as well as wrappers for loading models from other common NLP libraries such as Stanford Stanza.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+</div>
+<p>The architecture of the Scrubber module is partially built on top of the preprocessing functions in <a href="https://github.com/chartbeat-labs/textacy/" target="_blank">Textacy</a>, which also accesses and extends spaCy.</p>
+<p>In spaCy, texts are parsed into <code>spacy.Doc</code> objects consisting of sequences of tokens.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order to formalise the difference between a text string that has been scrubbed and one that has been tokenised, we refer wherever possible to the string as a "text" and to the tokenised <code>spacy.Doc</code> object as a "document" (or just "doc"). We continue to refer to the individual items as "documents" if we are not concerned with their data type.</p>
+</div>
+<p>Each token is <code>spacy.Token</code> object which stores all the token's attributes.</p>
+<p>The Lexos API wraps this procedure in the <a href="../../api/tokenizer/#lexos.tokenizer.make_doc">lexos.tokenizer.make_doc</a> function:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos</span> <span class="kn">import</span> <span class="n">tokenizer</span>
 
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.tokenizer.make_docs" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">make_docs</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[])</span></code>
-
-
-<a href="#lexos.tokenizer.make_docs" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Return a list of docs from a text or list of texts.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>text</code></td>
-        <td><code>Union[List[str], str]</code></td>
-        <td><p>The text(s) to be parsed.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>model</code></td>
-        <td><code>object</code></td>
-        <td><p>The model to be used.</p></td>
-        <td><code>&#39;xx_sent_ud_sm&#39;</code></td>
-      </tr>
-      <tr>
-        <td><code>disable</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>A list of spaCy pipeline components to disable.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>list</code></td>
-      <td><p>A list of spaCy doc objects.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_docs</span><span class="p">(</span><span class="n">texts</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
-			  <span class="n">model</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span>
-			  <span class="n">disable</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
-	<span class="sd">&quot;&quot;&quot;Return a list of docs from a text or list of texts.</span>
-
-<span class="sd">	Args:</span>
-<span class="sd">		text (Union[List[str], str]): The text(s) to be parsed.</span>
-<span class="sd">		model (object): The model to be used.</span>
-<span class="sd">		disable (List[str]): A list of spaCy pipeline components to disable.</span>
-
-<span class="sd">	Returns:</span>
-<span class="sd">		list: A list of spaCy doc objects.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-	<span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_list</span><span class="p">(</span><span class="n">texts</span><span class="p">),</span> <span class="n">disable</span><span class="o">=</span><span class="n">disable</span><span class="p">))</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 </code></pre></div>
-        </details>
-    </div>
+<p>This returns a <code>spacy.Doc</code> object.</p>
+<p>By default the tokenizer uses spaCy's <a href="https://github.com/explosion/spacy-models/releases/tag/xx_sent_ud_sm-3.2.0">"xx_sent_ud_sm"</a> language model, which has been trained for tokenisation and sentence segmentation on multiple languages. This model performs statistical sentence segmentation and possesses general rules for token segmentation.</p>
+<p>If you were making a document from a text in a language for which a more language-specific model, you would specify the model to be used. For instance, to use spaCy's small English model trained on web texts, you would call</p>
+<div class="highlight"><pre><span></span><code><span class="n">doc</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;en_core_web_sm&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>tokenizer</code> also has a <a href="../../api/tokenizer/#lexos.tokenizer.make_docs">lexos.tokenizer.make_docs</a> function to parse a list of texts into spaCy docs.</p>
+</div>
+<p>A list of individual tokens can be obtained by iterating over the spaCy doc:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Get a list of tokens</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">]</span>
+</code></pre></div>
+<p>Here the <code>text</code> attribute stores the original text form of the token. SpaCy docs are <em>non-destructive</em> because they preserve the original text alongside the list of tokens and their attributes. You can access the original text of the entire doc by calling <code>doc.text</code> (assuming you have assigned the <code>Doc</code> object to the <code>doc</code> variable). Indeed, calling <code>doc.to_json()</code> will return a JSON representation which gives the start and end position of each token in the original text!</p>
+<p>As mentioned above, you can use a Python list comprehension to filter the the contents of the doc using information in the document's attributes. For instance:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Get a list of non-punctuation tokens</span>
+<span class="n">non_punct_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">token</span><span class="o">.</span><span class="n">is_punct</span><span class="p">]</span>
+</code></pre></div>
+<p>The example above leverages the built-in <code>is_punct</code> attribute to indicate whether the token is defined as (or predicted to be) a punctuation mark in the language model. SpaCy docs have a number of built-in attributes, which are described in the <a href="https://spacy.io/api/doc#attributes" target="_blank">spaCy API reference</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is possible to extend spaCy's Doc object with its extension attribute. The Lexos API has a sample <code>is_fruit</code> extension, which is illustrated below. Note that extensions are accessed via the underscore prefix, as shown.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Indicate whether the token is labelled as fruit</span>
+<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">is_fruit</span><span class="p">)</span>
+</code></pre></div>
+<p>The sample extension can be found in <a href="../../api/tokenizer/extensions/#extensions">lexos.tokenizer.extensions</a>.</p>
+</div>
+<h2 id="lexosdocs">LexosDocs<a class="headerlink" href="#lexosdocs" title="Permanent link">¤</a></h2>
+<p>The Lexos API also has a <a href="../../api/tokenizer/lexosdoc/#lexos.tokenizer.lexosdoc.LexosDoc">LexosDoc</a> class, which provides a wrapper for spaCy docs. Its use is illustrated below.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.tokenizer.lexosdoc</span> <span class="kn">import</span> <span class="n">LexosDoc</span>
 
-  </div>
+<span class="n">lexos_doc</span> <span class="o">=</span> <span class="n">LexosDoc</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">lexos_doc</span><span class="o">.</span><span class="n">get_tokens</span><span class="p">()</span>
+</code></pre></div>
+<p>This example just returns <code>[token.text for token in doc]</code>, so it is not strictly necessary. But using the <code>LexosDoc</code> wrapper can be useful for producing clean code. In other cases, it might be useful to manipulate spaCy docs with methods that do not access their built-in or extended attributes or method. For instance, <a href="../../api/tokenizer/lexosdoc/#lexos.tokenizer.lexosdoc.LexosDoc.get_token_attrs">lexos.tokenizer.lexosdoc.LexosDoc.get_token_attrs</a> shows what attributes are available for tokens in the doc and <a href="../../api/tokenizer/lexosdoc/#lexos.tokenizer.lexosdoc.LexosDoc.to_dataframe">lexos.tokenizer.lexosdoc.LexosDoc.to_dataframe</a> exports the tokens and their attributes to a pandas dataframe.</p>
+<h2 id="ngrams">Ngrams<a class="headerlink" href="#ngrams" title="Permanent link">¤</a></h2>
+<p>Both texts and documents can be parsed into sequences of two or more tokens called ngrams. Many spaCy models can identify syntactic units such as noun chunks. These capabilities are not covered here since they are language specific. Instead, the section below describe how to obtain more general ngram sequences.</p>
+<h3 id="generating-word-ngrams">Generating Word Ngrams<a class="headerlink" href="#generating-word-ngrams" title="Permanent link">¤</a></h3>
+<p>The easiest method of obtaining ngrams from a text is to create a spaCy doc and then call Textacy's <code>textacy.extract.basics.ngrams</code> method:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">spacy</span>
+<span class="kn">import</span> <span class="nn">textacy.extract.basics.ngrams</span> <span class="k">as</span> <span class="nn">ng</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">)</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;The end is nigh.&quot;</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">ngrams</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ng</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">min_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+</code></pre></div>
+<p>This will produce <code>[The end, end is, is nigh]</code>. The output is a list of spaCy tokens. (An additional <code>[token.text for token in ngrams]</code> is required to ensure that you have quoted strings: <code>["The end", "end is", "is nigh"]</code>).</p>
+<p>Textacy has a lot of additional options, which are documented in the Textacy API reference under <code><a href="https://textacy.readthedocs.io/en/latest/api_reference/extract.html#textacy.extract.basics.ngrams" target="_blank">textacy.extract.basics.ngrams</a></code>. However, if you do not need these options, you can use Lexos' helper function [lexos.tokenizer.ngrams_from_doc][]:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">spacy</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">)</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;The end is nigh.&quot;</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">ngrams</span> <span class="o">=</span> <span class="n">ngrams_from_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<p>Notice that in both cases, the output will be a list of overlapping ngrams generated by a rolling window across the pre-tokenised document. If you want your document to contain ngrams <em>as</em> tokens, you will need to create a new document using the [lexos.tokenizer.doc_from_ngrams][] function:</p>
+<div class="highlight"><pre><span></span><code><span class="n">doc</span> <span class="o">=</span> <span class="n">doc_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Setting <code>strict=False</code> will preserve all the whitespace in the ngrams; otherwise, your language model may modify the output by doing things like splitting punctuation into separate tokens.</p>
+</div>
+<p>There is also a [lexos.tokenizer.docs_from_ngrams][] function to which you can feed multiple lists of ngrams.</p>
+<p>A possible workflow might call Textacy directly to take advantage of some its filters, when generating ngrams and then calling [lexos.tokenizer.doc_from_ngrams][] to pipe the extracted tokens back into a doc. [textacy.extract.basics.ngrams][] has sister functions that do things like extract noun chunks (if available in the language model), making this a very powerful approach generating ngrams with semantic information.</p>
+<h3 id="generating-character-ngrams">Generating Character Ngrams<a class="headerlink" href="#generating-character-ngrams" title="Permanent link">¤</a></h3>
+<p>Character ngrams at their most basic level split the <em>untokenised</em> string every N characters. So "The end is nigh." would produce something like <code>["Th", "e ", "nd", " i", "s ", "ni", "gh", "."]</code> (if we wanted to preserve the whitespace). Lexos does this with the <a href="">lexos.tokenizer.generate_ngrams</a> function:</p>
+<div class="highlight"><pre><span></span><code><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;The end is nigh.&quot;</span>
+<span class="n">ngrams</span> <span class="o">=</span> <span class="n">generate_character_ngrams</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p>This will produce the output shown above. If we wanted to output <code>["Th", "en", "di", "sn", "ig", "h."]</code>, we would use <code>drop_whitespace=True</code> (which is the default).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code>lexos.tokenizer.generate_character_ngrams</code> is a wrapper for Python's <code>textwrap.wrap</code> method, which can also be called directly.</p>
+</div>
+<p>Once you have produced a list of ngrams, you can create a doc from them using [lexos.tokenizer.ngrams_from_doc][], as shown above.</p>
+<p>Use [lexos.tokenizer.generate_character_ngrams][] (a) when you simply want a list of non-overlapping ngrams, or (b) when you want to produce docs with non-overlapping ngrams as tokens.</p>
+<p>Note that your language model may not be able apply labels effectively to ngram tokens, so working with character ngrams is primarily useful if you are planning to work with the token forms only, or if the ngram size you use maps closely to character lengths of words in the language you are working in.</p>
+<h2 id="summary-of-workflow">Summary of Workflow<a class="headerlink" href="#summary-of-workflow" title="Permanent link">¤</a></h2>
+<p>Tokenisation can be considered the end of the text preparation workflow, although, in its use language models, it already begins to introduce some elements of analysis. Before proceeding to the analysis stage, it is useful to have summary of what a minimal text preparation workflow might look like:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Create the loader and load the data</span>
+<span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">()</span>
+<span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="c1"># Load Scrubber components, make a pipeline, and scrub the texts</span>
+<span class="n">lower_case</span><span class="p">,</span> <span class="n">remove_digits</span> <span class="o">=</span> <span class="n">load_components</span><span class="p">(</span>
+    <span class="p">(</span><span class="s2">&quot;lower_case&quot;</span><span class="p">,</span> <span class="s2">&quot;remove_digits&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">scrub</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+    <span class="n">lower_case</span><span class="p">,</span>
+    <span class="n">pipe</span><span class="p">(</span><span class="n">remove_digits</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">])</span>
+<span class="p">)</span>
+<span class="n">scrubbed_texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">scrub</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">loader</span><span class="o">.</span><span class="n">texts</span><span class="p">]</span>
+
+<span class="c1"># Tokenise the texts</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">make_docs</span><span class="p">(</span><span class="n">scrubbed_texts</span><span class="p">)</span>
+</code></pre></div>
 
               
             </article>
@@ -1014,7 +1213,7 @@
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../scrubbing_texts/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1023,19 +1222,19 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              Index
+              Scrubbing Texts
             </div>
           </div>
         </a>
       
       
-        <a href="../extensions/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../the_document_term_matrix/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Extensions
+              The Document-Term Matrix
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -1105,10 +1304,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.indexes"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.960e086b.min.js"></script>
+      <script src="../../assets/javascripts/bundle.960e086b.min.js"></script>
       
     
   </body>

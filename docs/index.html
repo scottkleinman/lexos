@@ -273,6 +273,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#development-notes" class="md-nav__link">
+    Development Notes
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -303,10 +310,125 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="tutorial/">Tutorial</a>
+          
+            <label for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Tutorial" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          
+            Tutorial
+          
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="tutorial/" class="md-nav__link">
-        Tutorial
+      <a href="tutorial/getting_started/" class="md-nav__link">
+        Getting Started
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tutorial/loading_texts/" class="md-nav__link">
+        Loading Texts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tutorial/scrubbing_texts/" class="md-nav__link">
+        Scrubbing Texts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tutorial/tokenising_texts/" class="md-nav__link">
+        Tokenising Texts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tutorial/the_document_term_matrix/" class="md-nav__link">
+        The Document-Term Matrix
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -370,10 +492,77 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="api/dtm/">DTM</a>
+          
+            <label for="__nav_4_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="DTM" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          
+            DTM
+          
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="api/overview/" class="md-nav__link">
-        Overview
+      <a href="api/dtm/wordcloud/" class="md-nav__link">
+        Wordcloud
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/dtm/bubbleviz/" class="md-nav__link">
+        Bubble Charts
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -478,8 +667,6 @@
         
           
         
-          
-        
       
       
         
@@ -502,20 +689,6 @@
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="api/scrubber/overview/" class="md-nav__link">
-        Overview
-      </a>
-    </li>
-  
-
             
           
             
@@ -659,8 +832,6 @@
         
           
         
-          
-        
       
       
         
@@ -683,20 +854,6 @@
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="api/tokenizer/overview/" class="md-nav__link">
-        Overview
-      </a>
-    </li>
-  
-
             
           
             
@@ -787,6 +944,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#development-notes" class="md-nav__link">
+    Development Notes
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -805,12 +969,20 @@
 
 
 <h1 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">¤</a></h1>
-<p>The Lexos API is a library of methods for programmatically implementating and extending the functionality in the <a href="http://lexos.wheatoncollege.edu/" target="_blank">Lexos</a> web app. Eventually, the web app will be rewritten to use the API directly.</p>
-<p>For the moment, much of the thinking behind the API is explained in the <a href="tutorial/#tutorial">Tutorial</a>.</p>
+<p>The Lexos API is a library of methods for programmatically implementating and extending the functionality found in the <a href="http://lexos.wheatoncollege.edu/" target="_blank">Lexos</a> web app. Eventually, the web app will be rewritten to use the API directly. The goal of this stage of development is to reproduce (and in some cases extend) the functionality of the current web app.</p>
+<p>For the moment, much of the thinking behind the API's architecture is explained in the [Tutorial][tutorial].</p>
 <h2 id="current-status-v001">Current Status (v0.0.1)<a class="headerlink" href="#current-status-v001" title="Permanent link">¤</a></h2>
-<p>I have mostly built out the basic architecture of the API so far. The basic <code>Loader</code> will accept any local file, regardless of format, and it will also download text from URLs. Obviously, there are some security features that need to be added. It would also be nice to load from different file formats (json, docx, zip, etc.), which is not currently supported.</p>
+<p>So far, only the basic architecture of the API has been built. The <code>Loader</code> class will accept any local file, regardless of format, and it will also download text from URLs. Obviously, there are some security features that need to be added. It would also be nice to load from different file formats (json, docx, zip, etc.), which is not currently supported.</p>
 <p>All of the functionality of the Lexos app's <code>scrubber</code> module has been ported over, and the basic <code>tokenizer</code> module works. However, there needs to be some error checking in both modules.</p>
 <p>The <code>cutter</code> module will need some consideration, as it will probably require a combination of features from <code>scrubber</code> and <code>tokenizer</code>, depending on whether the user wants to cut based on some pattern or cut by token ranges.</p>
+<h2 id="development-notes">Development Notes<a class="headerlink" href="#development-notes" title="Permanent link">¤</a></h2>
+<ul>
+<li>Dependency management is handled with <a href="https://python-poetry.org/">Poetry</a>.</li>
+<li>The code is tested with <a href="https://docs.pytest.org/en/7.0.x/">pytest</a> as a pre-commit hook.</li>
+<li>Before commit, I generally run <a href="https://pycqa.github.io/isort/">isort</a> and <a href="https://interrogate.readthedocs.io/en/latest/">interrogate</a> to ensure consistent imports and docstrings, but these are not currently implemented as pre-commit hooks.</li>
+<li>Docstrings are given an fully as possible in Google style, with as much type hinting as possible. Docstrings are used by <a href="https://www.mkdocs.org/">mkdocs</a> to auto-generate the documentation through the magic of <a href="https://mkdocstrings.github.io/">mkdocstrings</a>.</li>
+<li>A number of test scripts have been implemented, and they are used by the continuous integration process. However, the scripts are incomplete and intended primarily for quick testing from the command line. A fuller test suite is intended once the API is more complete.</li>
+</ul>
 
               
             </article>
