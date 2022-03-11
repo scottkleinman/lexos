@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tokenizer" class="md-skip">
+        <a href="#cluster" class="md-skip">
           Skip to content
         </a>
       
@@ -499,12 +499,14 @@
               
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" checked>
       
       
       
@@ -517,8 +519,8 @@
       
         
         
-        <div class="md-nav__link md-nav__link--index ">
-          <a href="../cluster/">Cluster</a>
+        <div class="md-nav__link md-nav__link--index md-nav__link--active">
+          <a href="./">Cluster</a>
           
         </div>
       
@@ -993,14 +995,12 @@
               
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_8" type="checkbox" id="__nav_4_8" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_8" type="checkbox" id="__nav_4_8" >
       
       
       
@@ -1017,8 +1017,8 @@
       
         
         
-        <div class="md-nav__link md-nav__link--index md-nav__link--active">
-          <a href="./">Tokenizer</a>
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../tokenizer/">Tokenizer</a>
           
             <label for="__nav_4_8">
               <span class="md-nav__icon md-icon"></span>
@@ -1043,7 +1043,7 @@
   
   
     <li class="md-nav__item">
-      <a href="extensions/" class="md-nav__link">
+      <a href="../tokenizer/extensions/" class="md-nav__link">
         Extensions
       </a>
     </li>
@@ -1057,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="lexosdoc/" class="md-nav__link">
+      <a href="../tokenizer/lexosdoc/" class="md-nav__link">
         LexosDoc
       </a>
     </li>
@@ -1133,58 +1133,43 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#lexos.tokenizer._get_disabled_components" class="md-nav__link">
-    _get_disabled_components()
+  <a href="#lexos.cluster.dendrogram.Dendrogram" class="md-nav__link">
+    Dendrogram
+  </a>
+  
+    <nav class="md-nav" aria-label="Dendrogram">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lexos.cluster.dendrogram.Dendrogram.__init__" class="md-nav__link">
+    __init__()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.tokenizer._get_excluded_components" class="md-nav__link">
-    _get_excluded_components()
+        
+          <li class="md-nav__item">
+  <a href="#lexos.cluster.dendrogram.Dendrogram.build" class="md-nav__link">
+    build()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.tokenizer.doc_from_ngrams" class="md-nav__link">
-    doc_from_ngrams()
+        
+          <li class="md-nav__item">
+  <a href="#lexos.cluster.dendrogram.Dendrogram.savefig" class="md-nav__link">
+    savefig()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.tokenizer.docs_from_ngrams" class="md-nav__link">
-    docs_from_ngrams()
+        
+          <li class="md-nav__item">
+  <a href="#lexos.cluster.dendrogram.Dendrogram.showfig" class="md-nav__link">
+    showfig()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.tokenizer.generate_character_ngrams" class="md-nav__link">
-    generate_character_ngrams()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.tokenizer.make_doc" class="md-nav__link">
-    make_doc()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.tokenizer.make_docs" class="md-nav__link">
-    make_docs()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.tokenizer.ngrams_from_doc" class="md-nav__link">
-    ngrams_from_doc()
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1200,47 +1185,272 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/scottkleinman/lexos/edit/master/docs/api/tokenizer/index.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/scottkleinman/lexos/edit/master/docs/api/cluster/index.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
 
-<h1 id="tokenizer">Tokenizer<a class="headerlink" href="#tokenizer" title="Permanent link">¤</a></h1>
-<p>The <code>Tokenizer</code> uses spaCy to convert texts to documents using one of the functions below. If no language model is specified, spaCy's multi-lingual <code>xx_sent_ud_sm</code> model is used.</p>
+<h1 id="cluster">Cluster<a class="headerlink" href="#cluster" title="Permanent link">¤</a></h1>
+<p><code>Cluster</code> is a module that performs cluster analysis.</p>
 
 
-  <div class="doc doc-object doc-function">
+  <div class="doc doc-object doc-class">
 
 
 
-<h3 id="lexos.tokenizer._get_disabled_components" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">_get_disabled_components</span><span class="p">(</span><span class="n">disable</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline_components</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<h3 id="lexos.cluster.dendrogram.Dendrogram" class="doc doc-heading">
+        <code>
+lexos.cluster.dendrogram.Dendrogram        </code>
+
+
+
+<a href="#lexos.cluster.dendrogram.Dendrogram" class="headerlink" title="Permanent link">¤</a></h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Dendrogram.</p>
+<p>Typical usage:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.cluster.dendrogram</span> <span class="kn">import</span> <span class="n">Dendrogram</span>
+
+<span class="n">dendrogram</span> <span class="o">=</span> <span class="n">Dendrogram</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="ow">or</span>
+
+<span class="n">dendrogram</span> <span class="o">=</span> <span class="n">Dendrogram</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">dendrogram</span><span class="o">.</span><span class="n">fig</span>
+</code></pre></div>
+
+        <details class="quote">
+          <summary>Source code in <code>lexos\cluster\dendrogram.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Dendrogram</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Dendrogram.</span>
+
+<span class="sd">    Typical usage:</span>
+
+<span class="sd">    ```python</span>
+<span class="sd">    from lexos.cluster.dendrogram import Dendrogram</span>
+
+<span class="sd">    dendrogram = Dendrogram(dtm, show=True)</span>
+
+<span class="sd">    or</span>
+
+<span class="sd">    dendrogram = Dendrogram(dtm, show=True)</span>
+<span class="sd">    dendrogram.fig</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dtm</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">metric</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;euclidean&quot;</span><span class="p">,</span>
+        <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;average&quot;</span><span class="p">,</span>
+        <span class="n">truncate_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">color_threshold</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">get_leaves</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+        <span class="n">count_sort</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">distance_sort</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">show_leaf_counts</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">no_plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">no_labels</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">leaf_rotation</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">90</span><span class="p">,</span>
+        <span class="n">leaf_font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">leaf_label_func</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">show_contracted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">link_color_func</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">above_threshold_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;C0&quot;</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">figsize</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+        <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Initialise the Dendrogram.&quot;&quot;&quot;</span>
+        <span class="c1"># Create an empty plot for matplotlib</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtm</span> <span class="o">=</span> <span class="n">dtm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="o">=</span> <span class="n">metric</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">truncate_mode</span> <span class="o">=</span> <span class="n">truncate_mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_threshold</span> <span class="o">=</span> <span class="n">color_threshold</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_leaves</span> <span class="o">=</span> <span class="n">get_leaves</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">orientation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count_sort</span> <span class="o">=</span> <span class="n">count_sort</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distance_sort</span> <span class="o">=</span> <span class="n">distance_sort</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_leaf_counts</span> <span class="o">=</span> <span class="n">show_leaf_counts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">no_plot</span> <span class="o">=</span> <span class="n">no_plot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">no_labels</span> <span class="o">=</span> <span class="n">no_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leaf_rotation</span> <span class="o">=</span> <span class="n">leaf_rotation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leaf_font_size</span> <span class="o">=</span> <span class="n">leaf_font_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leaf_label_func</span> <span class="o">=</span> <span class="n">leaf_label_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_contracted</span> <span class="o">=</span> <span class="n">show_contracted</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">link_color_func</span> <span class="o">=</span> <span class="n">link_color_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">above_threshold_color</span> <span class="o">=</span> <span class="n">above_threshold_color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="n">figsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span> <span class="o">=</span> <span class="n">show</span>
+
+        <span class="c1"># Get the dtm table</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtm_table</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">get_table</span><span class="p">()</span>
+
+        <span class="c1"># Use default labels from the DTM table</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtm_table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="c1"># Set &quot;terms&quot; as the index and transpose the table</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtm_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtm_table</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;terms&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+        <span class="c1"># Build the dendrogram</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build a dendrogram.&quot;&quot;&quot;</span>
+        <span class="c1"># Create the distance and linkage matrixes for matplotlib</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">pdist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtm_table</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="p">)</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="n">sch</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">)</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">figsize</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+        <span class="n">sch</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span>
+            <span class="n">Z</span><span class="p">,</span>
+            <span class="n">labels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
+            <span class="n">truncate_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">truncate_mode</span><span class="p">,</span>
+            <span class="n">color_threshold</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color_threshold</span><span class="p">,</span>
+            <span class="n">get_leaves</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_leaves</span><span class="p">,</span>
+            <span class="n">orientation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span>
+            <span class="n">count_sort</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">count_sort</span><span class="p">,</span>
+            <span class="n">distance_sort</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">distance_sort</span><span class="p">,</span>
+            <span class="n">show_leaf_counts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">show_leaf_counts</span><span class="p">,</span>
+            <span class="n">no_plot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">no_plot</span><span class="p">,</span>
+            <span class="n">no_labels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">no_labels</span><span class="p">,</span>
+            <span class="n">leaf_rotation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">leaf_rotation</span><span class="p">,</span>
+            <span class="n">leaf_font_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">leaf_font_size</span><span class="p">,</span>
+            <span class="n">leaf_label_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">leaf_label_func</span><span class="p">,</span>
+            <span class="n">show_contracted</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">show_contracted</span><span class="p">,</span>
+            <span class="n">link_color_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">link_color_func</span><span class="p">,</span>
+            <span class="n">ax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span>
+            <span class="n">above_threshold_color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">above_threshold_color</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">fig</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">savefig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Show the figure if it is hidden.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename (str): The name of the file to save.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">showfig</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Show the figure if it is hidden.</span>
+
+<span class="sd">        This is a helper method. You can also reference the figure</span>
+<span class="sd">        using `Dendrogram.fig`. This will generally display in a</span>
+<span class="sd">        Jupyter notebook.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span>
+</code></pre></div>
+        </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h4 id="lexos.cluster.dendrogram.Dendrogram.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtm</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">,</span> <span class="n">truncate_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_leaves</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">count_sort</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">distance_sort</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_leaf_counts</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">no_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">no_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">leaf_rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">leaf_font_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">leaf_label_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show_contracted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">link_color_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">above_threshold_color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-private"><code>private</code></small>
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
   </span>
 
-<a href="#lexos.tokenizer._get_disabled_components" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#lexos.cluster.dendrogram.Dendrogram.__init__" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents first">
+    <div class="doc doc-contents ">
 
-      <p>Get a list of components to disable in the pipeline.</p>
+      <p>Initialise the Dendrogram.</p>
 
         <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_get_disabled_components</span><span class="p">(</span>
-    <span class="n">disable</span><span class="p">:</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">pipeline_components</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Get a list of components to disable in the pipeline.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">disable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">disable</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">custom_disable</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">if</span> <span class="s2">&quot;disable&quot;</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">[</span><span class="s2">&quot;disable&quot;</span><span class="p">]:</span>
-            <span class="n">custom_disable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
-    <span class="n">disable</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">custom_disable</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">disable</span><span class="p">))</span>
+          <summary>Source code in <code>lexos\cluster\dendrogram.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">dtm</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">metric</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;euclidean&quot;</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;average&quot;</span><span class="p">,</span>
+    <span class="n">truncate_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">color_threshold</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">get_leaves</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">orientation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+    <span class="n">count_sort</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">distance_sort</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">show_leaf_counts</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">no_plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">no_labels</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">leaf_rotation</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">90</span><span class="p">,</span>
+    <span class="n">leaf_font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">leaf_label_func</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">show_contracted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">link_color_func</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">above_threshold_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;C0&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+    <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Initialise the Dendrogram.&quot;&quot;&quot;</span>
+    <span class="c1"># Create an empty plot for matplotlib</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">dtm</span> <span class="o">=</span> <span class="n">dtm</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">metric</span> <span class="o">=</span> <span class="n">metric</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">truncate_mode</span> <span class="o">=</span> <span class="n">truncate_mode</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">color_threshold</span> <span class="o">=</span> <span class="n">color_threshold</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">get_leaves</span> <span class="o">=</span> <span class="n">get_leaves</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">orientation</span> <span class="o">=</span> <span class="n">orientation</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">count_sort</span> <span class="o">=</span> <span class="n">count_sort</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">distance_sort</span> <span class="o">=</span> <span class="n">distance_sort</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">show_leaf_counts</span> <span class="o">=</span> <span class="n">show_leaf_counts</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">no_plot</span> <span class="o">=</span> <span class="n">no_plot</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">no_labels</span> <span class="o">=</span> <span class="n">no_labels</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">leaf_rotation</span> <span class="o">=</span> <span class="n">leaf_rotation</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">leaf_font_size</span> <span class="o">=</span> <span class="n">leaf_font_size</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">leaf_label_func</span> <span class="o">=</span> <span class="n">leaf_label_func</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">show_contracted</span> <span class="o">=</span> <span class="n">show_contracted</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">link_color_func</span> <span class="o">=</span> <span class="n">link_color_func</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">above_threshold_color</span> <span class="o">=</span> <span class="n">above_threshold_color</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="n">figsize</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">show</span> <span class="o">=</span> <span class="n">show</span>
+
+    <span class="c1"># Get the dtm table</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">dtm_table</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">get_table</span><span class="p">()</span>
+
+    <span class="c1"># Use default labels from the DTM table</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtm_table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="c1"># Set &quot;terms&quot; as the index and transpose the table</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">dtm_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtm_table</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;terms&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="c1"># Build the dendrogram</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 </code></pre></div>
         </details>
     </div>
@@ -1249,38 +1459,54 @@
 
 
 
-  <div class="doc doc-object doc-function">
+  <div class="doc doc-object doc-method">
 
 
 
-<h3 id="lexos.tokenizer._get_excluded_components" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">_get_excluded_components</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline_components</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<h4 id="lexos.cluster.dendrogram.Dendrogram.build" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">build</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-private"><code>private</code></small>
-  </span>
 
-<a href="#lexos.tokenizer._get_excluded_components" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#lexos.cluster.dendrogram.Dendrogram.build" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents first">
+    <div class="doc doc-contents ">
 
-      <p>Get a list of components to exclude from the pipeline.</p>
+      <p>Build a dendrogram.</p>
 
         <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_get_excluded_components</span><span class="p">(</span>
-    <span class="n">exclude</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">pipeline_components</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Get a list of components to exclude from the pipeline.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">exclude</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">exclude</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">custom_exclude</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">if</span> <span class="s2">&quot;exclude&quot;</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">[</span><span class="s2">&quot;exclude&quot;</span><span class="p">]:</span>
-            <span class="n">custom_exclude</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
-    <span class="n">exclude</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">custom_exclude</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">exclude</span><span class="p">))</span>
+          <summary>Source code in <code>lexos\cluster\dendrogram.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Build a dendrogram.&quot;&quot;&quot;</span>
+    <span class="c1"># Create the distance and linkage matrixes for matplotlib</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">pdist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtm_table</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metric</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">sch</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">figsize</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">sch</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span>
+        <span class="n">Z</span><span class="p">,</span>
+        <span class="n">labels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
+        <span class="n">truncate_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">truncate_mode</span><span class="p">,</span>
+        <span class="n">color_threshold</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color_threshold</span><span class="p">,</span>
+        <span class="n">get_leaves</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_leaves</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">,</span>
+        <span class="n">count_sort</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">count_sort</span><span class="p">,</span>
+        <span class="n">distance_sort</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">distance_sort</span><span class="p">,</span>
+        <span class="n">show_leaf_counts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">show_leaf_counts</span><span class="p">,</span>
+        <span class="n">no_plot</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">no_plot</span><span class="p">,</span>
+        <span class="n">no_labels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">no_labels</span><span class="p">,</span>
+        <span class="n">leaf_rotation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">leaf_rotation</span><span class="p">,</span>
+        <span class="n">leaf_font_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">leaf_font_size</span><span class="p">,</span>
+        <span class="n">leaf_label_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">leaf_label_func</span><span class="p">,</span>
+        <span class="n">show_contracted</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">show_contracted</span><span class="p">,</span>
+        <span class="n">link_color_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">link_color_func</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">above_threshold_color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">above_threshold_color</span>
+    <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">fig</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </code></pre></div>
         </details>
     </div>
@@ -1289,19 +1515,19 @@
 
 
 
-  <div class="doc doc-object doc-function">
+  <div class="doc doc-object doc-method">
 
 
 
-<h3 id="lexos.tokenizer.doc_from_ngrams" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">doc_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<h4 id="lexos.cluster.dendrogram.Dendrogram.savefig" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">savefig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span></code>
 
 
-<a href="#lexos.tokenizer.doc_from_ngrams" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#lexos.cluster.dendrogram.Dendrogram.savefig" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents first">
+    <div class="doc doc-contents ">
 
-      <p>Generate spaCy doc from a list of ngrams.</p>
+      <p>Show the figure if it is hidden.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1315,247 +1541,22 @@
   </thead>
   <tbody>
       <tr>
-        <td><code>ngrams</code></td>
-        <td><code>list</code></td>
-        <td><p>A list of ngrams.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>model</code></td>
-        <td><code>object</code></td>
-        <td><p>The language model to use for tokenisation.</p></td>
-        <td><code>&#39;xx_sent_ud_sm&#39;</code></td>
-      </tr>
-      <tr>
-        <td><code>strict</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to preserve token divisions, include whitespace in the source.</p></td>
-        <td><code>False</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>object</code></td>
-      <td><p>A spaCy doc</p></td>
-    </tr>
-  </tbody>
-</table>      <div class="admonition notes">
-<p class="admonition-title">Notes</p>
-<p>The <code>strict=False</code> setting will allow spaCy's language model to remove whitespace from
-ngrams and split punctuation into separate tokens. <code>strict=True</code> will preserve the
-sequences in the source list.</p>
-</div>
-
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">doc_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Generate spaCy doc from a list of ngrams.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        ngrams (list): A list of ngrams.</span>
-<span class="sd">        model (object): The language model to use for tokenisation.</span>
-<span class="sd">        strict (bool): Whether to preserve token divisions, include whitespace in the source.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        object: A spaCy doc</span>
-
-<span class="sd">    Notes:</span>
-<span class="sd">        The `strict=False` setting will allow spaCy&#39;s language model to remove whitespace from</span>
-<span class="sd">        ngrams and split punctuation into separate tokens. `strict=True` will preserve the</span>
-<span class="sd">        sequences in the source list.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
-        <span class="n">spaces</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">ngrams</span> <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Doc</span><span class="p">(</span>
-            <span class="n">nlp</span><span class="o">.</span><span class="n">vocab</span><span class="p">,</span> <span class="n">words</span><span class="o">=</span><span class="n">ngrams</span><span class="p">,</span> <span class="n">spaces</span><span class="o">=</span><span class="n">spaces</span><span class="p">)</span>
-        <span class="c1"># Run the standard pipeline against the doc</span>
-        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">proc</span> <span class="ow">in</span> <span class="n">nlp</span><span class="o">.</span><span class="n">pipeline</span><span class="p">:</span>
-            <span class="n">doc</span> <span class="o">=</span> <span class="n">proc</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">doc</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ngrams</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.tokenizer.docs_from_ngrams" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">docs_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
-
-
-<a href="#lexos.tokenizer.docs_from_ngrams" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Generate spaCy doc from a list of ngram lists.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>ngrams</code></td>
-        <td><code>List[list]</code></td>
-        <td><p>A list of ngram lists.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>model</code></td>
-        <td><code>object</code></td>
-        <td><p>The language model to use for tokenisation.</p></td>
-        <td><code>&#39;xx_sent_ud_sm&#39;</code></td>
-      </tr>
-      <tr>
-        <td><code>strict</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to preserve token divisions, include whitespace in the source.</p></td>
-        <td><code>False</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>List[object]</code></td>
-      <td><p>A list of spaCy docs</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">docs_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">list</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Generate spaCy doc from a list of ngram lists.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        ngrams (List[list]): A list of ngram lists.</span>
-<span class="sd">        model (object): The language model to use for tokenisation.</span>
-<span class="sd">        strict (bool): Whether to preserve token divisions, include whitespace in the source.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        List[object]: A list of spaCy docs</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">docs</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">ngram_list</span> <span class="ow">in</span> <span class="n">ngrams</span><span class="p">:</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="n">doc_from_ngrams</span><span class="p">(</span><span class="n">ngram_list</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">strict</span><span class="p">)</span>
-        <span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">docs</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.tokenizer.generate_character_ngrams" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">generate_character_ngrams</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
-
-
-<a href="#lexos.tokenizer.generate_character_ngrams" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Generate character n-grams from raw text.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>text</code></td>
+        <td><code>filename</code></td>
         <td><code>str</code></td>
-        <td><p>The source text.</p></td>
+        <td><p>The name of the file to save.</p></td>
         <td><em>required</em></td>
       </tr>
-      <tr>
-        <td><code>size</code></td>
-        <td><code>int</code></td>
-        <td><p>The size of the ngram.</p></td>
-        <td><code>1</code></td>
-      </tr>
-      <tr>
-        <td><code>drop_whitespace</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to preserve whitespace in the ngram list.</p></td>
-        <td><code>True</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>List[str]</code></td>
-      <td><p>A list of ngrams</p></td>
-    </tr>
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">generate_character_ngrams</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                              <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-                              <span class="n">drop_whitespace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Generate character n-grams from raw text.</span>
+          <summary>Source code in <code>lexos\cluster\dendrogram.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">savefig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Show the figure if it is hidden.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        text (str): The source text.</span>
-<span class="sd">        size (int): The size of the ngram.</span>
-<span class="sd">        drop_whitespace (bool): Whether to preserve whitespace in the ngram list.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        List[str]: A list of ngrams</span>
+<span class="sd">        filename (str): The name of the file to save.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">textwrap</span> <span class="kn">import</span> <span class="n">wrap</span>
-    <span class="k">return</span> <span class="n">wrap</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="o">=</span><span class="n">drop_whitespace</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -1564,117 +1565,33 @@ sequences in the source list.</p>
 
 
 
-  <div class="doc doc-object doc-function">
+  <div class="doc doc-object doc-method">
 
 
 
-<h3 id="lexos.tokenizer.make_doc" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[],</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[],</span> <span class="n">pipeline_components</span><span class="o">=</span><span class="p">[])</span></code>
+<h4 id="lexos.cluster.dendrogram.Dendrogram.showfig" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">showfig</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-<a href="#lexos.tokenizer.make_doc" class="headerlink" title="Permanent link">¤</a></h3>
+<a href="#lexos.cluster.dendrogram.Dendrogram.showfig" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents first">
+    <div class="doc doc-contents ">
 
-      <p>Return a doc from a text.</p>
+      <p>Show the figure if it is hidden.</p>
+<p>This is a helper method. You can also reference the figure
+using <code>Dendrogram.fig</code>. This will generally display in a
+Jupyter notebook.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text to be parsed.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>model</code></td>
-        <td><code>object</code></td>
-        <td><p>The model to be used.</p></td>
-        <td><code>&#39;xx_sent_ud_sm&#39;</code></td>
-      </tr>
-      <tr>
-        <td><code>max_length</code></td>
-        <td><code>int</code></td>
-        <td><p>The maximum length of the doc.</p></td>
-        <td><code>2000000</code></td>
-      </tr>
-      <tr>
-        <td><code>disable</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>A list of spaCy pipeline components to disable.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-      <tr>
-        <td><code>exclude</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>A list of spaCy pipeline components to exclude.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-      <tr>
-        <td><code>pipeline_components</code></td>
-        <td><code>List[dict]</code></td>
-        <td><p>A list custom component dicts to add
-to the pipeline. See <a href="https://spacy.io/api/language/#add_pipe">https://spacy.io/api/language/#add_pipe</a> for
-more information.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>object</code></td>
-      <td><p>A spaCy doc object.</p></td>
-    </tr>
-  </tbody>
-</table>
         <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_doc</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-             <span class="n">model</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span>
-             <span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000000</span><span class="p">,</span>
-             <span class="n">disable</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-             <span class="n">exclude</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-             <span class="n">pipeline_components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Return a doc from a text.</span>
+          <summary>Source code in <code>lexos\cluster\dendrogram.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">showfig</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Show the figure if it is hidden.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        text (str): The text to be parsed.</span>
-<span class="sd">        model (object): The model to be used.</span>
-<span class="sd">        max_length (int): The maximum length of the doc.</span>
-<span class="sd">        disable (List[str]): A list of spaCy pipeline components to disable.</span>
-<span class="sd">        exclude (List[str]): A list of spaCy pipeline components to exclude.</span>
-<span class="sd">        pipeline_components (List[dict]): A list custom component dicts to add</span>
-<span class="sd">            to the pipeline. See https://spacy.io/api/language/#add_pipe for</span>
-<span class="sd">            more information.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        object: A spaCy doc object.</span>
+<span class="sd">    This is a helper method. You can also reference the figure</span>
+<span class="sd">    using `Dendrogram.fig`. This will generally display in a</span>
+<span class="sd">    Jupyter notebook.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">disable</span> <span class="o">=</span> <span class="n">_get_disabled_components</span><span class="p">(</span><span class="n">disable</span><span class="p">,</span> <span class="n">pipeline_components</span><span class="p">)</span>
-    <span class="n">exclude</span> <span class="o">=</span> <span class="n">_get_excluded_components</span><span class="p">(</span><span class="n">exclude</span><span class="p">,</span> <span class="n">pipeline_components</span><span class="p">)</span>
-    <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="n">disable</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">)</span>
-    <span class="n">nlp</span><span class="o">.</span><span class="n">max_length</span> <span class="o">=</span> <span class="n">max_length</span>
-    <span class="k">if</span> <span class="n">pipeline_components</span> <span class="ow">and</span> <span class="s2">&quot;custom&quot;</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">[</span><span class="s2">&quot;custom&quot;</span><span class="p">]:</span>
-            <span class="n">nlp</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="o">**</span><span class="n">component</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span>
 </code></pre></div>
         </details>
     </div>
@@ -1683,203 +1600,10 @@ more information.</p></td>
 
 
 
-  <div class="doc doc-object doc-function">
 
-
-
-<h3 id="lexos.tokenizer.make_docs" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">make_docs</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[],</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[],</span> <span class="n">pipeline_components</span><span class="o">=</span><span class="p">[])</span></code>
-
-
-<a href="#lexos.tokenizer.make_docs" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Return a list of docs from a text or list of texts.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>text</code></td>
-        <td><code>Union[List[str], str]</code></td>
-        <td><p>The text(s) to be parsed.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>model</code></td>
-        <td><code>object</code></td>
-        <td><p>The model to be used.</p></td>
-        <td><code>&#39;xx_sent_ud_sm&#39;</code></td>
-      </tr>
-      <tr>
-        <td><code>max_length</code></td>
-        <td><code>int</code></td>
-        <td><p>The maximum length of the doc.</p></td>
-        <td><code>2000000</code></td>
-      </tr>
-      <tr>
-        <td><code>disable</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>A list of spaCy pipeline components to disable.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-      <tr>
-        <td><code>exclude</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>A list of spaCy pipeline components to exclude.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-      <tr>
-        <td><code>pipeline_components</code></td>
-        <td><code>List[dict]</code></td>
-        <td><p>A list custom component dicts to add
-to the pipeline. See <a href="https://spacy.io/api/language/#add_pipe">https://spacy.io/api/language/#add_pipe</a> for
-more information.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>list</code></td>
-      <td><p>A list of spaCy doc objects.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_docs</span><span class="p">(</span><span class="n">texts</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
-              <span class="n">model</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span>
-              <span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000000</span><span class="p">,</span>
-              <span class="n">disable</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-              <span class="n">exclude</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-              <span class="n">pipeline_components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
-
-    <span class="sd">&quot;&quot;&quot;Return a list of docs from a text or list of texts.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        text (Union[List[str], str]): The text(s) to be parsed.</span>
-<span class="sd">        model (object): The model to be used.</span>
-<span class="sd">        max_length (int): The maximum length of the doc.</span>
-<span class="sd">        disable (List[str]): A list of spaCy pipeline components to disable.</span>
-<span class="sd">        exclude (List[str]): A list of spaCy pipeline components to exclude.</span>
-<span class="sd">        pipeline_components (List[dict]): A list custom component dicts to add</span>
-<span class="sd">            to the pipeline. See https://spacy.io/api/language/#add_pipe for</span>
-<span class="sd">            more information.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        list: A list of spaCy doc objects.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">disable</span> <span class="o">=</span> <span class="n">_get_disabled_components</span><span class="p">(</span><span class="n">disable</span><span class="p">,</span> <span class="n">pipeline_components</span><span class="p">)</span>
-    <span class="n">exclude</span> <span class="o">=</span> <span class="n">_get_excluded_components</span><span class="p">(</span><span class="n">exclude</span><span class="p">,</span> <span class="n">pipeline_components</span><span class="p">)</span>
-    <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="n">disable</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">)</span>
-    <span class="n">nlp</span><span class="o">.</span><span class="n">max_length</span> <span class="o">=</span> <span class="n">max_length</span>
-    <span class="k">if</span> <span class="n">pipeline_components</span> <span class="ow">and</span> <span class="s2">&quot;custom&quot;</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">[</span><span class="s2">&quot;custom&quot;</span><span class="p">]:</span>
-            <span class="n">nlp</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="o">**</span><span class="n">component</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_list</span><span class="p">(</span><span class="n">texts</span><span class="p">)))</span>
-</code></pre></div>
-        </details>
-    </div>
 
   </div>
 
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.tokenizer.ngrams_from_doc" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">ngrams_from_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></code>
-
-
-<a href="#lexos.tokenizer.ngrams_from_doc" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Generate a list of ngrams from a spaCy doc.</p>
-<p>A wrapper for <code>textacy.extract.basics.ngrams</code>. With basic functionality.
-Further functionality can be accessed by calling <code>textacy</code> directly.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>ngrams</code></td>
-        <td><code>object</code></td>
-        <td><p>A spaCy doc</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>size</code></td>
-        <td><code>int</code></td>
-        <td><p>The size of the ngrams.</p></td>
-        <td><code>2</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>List[str]</code></td>
-      <td><p>A list of ngrams.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">ngrams_from_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Generate a list of ngrams from a spaCy doc.</span>
-
-<span class="sd">    A wrapper for `textacy.extract.basics.ngrams`. With basic functionality.</span>
-<span class="sd">    Further functionality can be accessed by calling `textacy` directly.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        ngrams (object): A spaCy doc</span>
-<span class="sd">        size (int): The size of the ngrams.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        List[str]: A list of ngrams.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">textacy.extract.basics.ngrams</span> <span class="k">as</span> <span class="nn">textacy_ngrams</span>
-    <span class="n">ngrams</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">textacy_ngrams</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">min_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
-    <span class="c1"># Ensure quoted strings are returned</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">ngrams</span><span class="p">]</span>
-</code></pre></div>
-        </details>
     </div>
 
   </div>
@@ -1901,7 +1625,7 @@ Further functionality can be accessed by calling <code>textacy</code> directly.<
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../scrubber/utils/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1910,19 +1634,19 @@ Further functionality can be accessed by calling <code>textacy</code> directly.<
               <span class="md-footer__direction">
                 Previous
               </span>
-              Utils
+              Index
             </div>
           </div>
         </a>
       
       
-        <a href="extensions/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../corpus/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Extensions
+              Index
             </div>
           </div>
           <div class="md-footer__button md-icon">

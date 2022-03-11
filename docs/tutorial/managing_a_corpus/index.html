@@ -13,14 +13,14 @@
     
     
       
-        <title>Utils - The Lexos API</title>
+        <title>Managing a Corpus - The Lexos API</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.2b4465f4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2b4465f4.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
         
       
     
@@ -34,11 +34,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#utils" class="md-skip">
+        <a href="#overview" class="md-skip">
           Skip to content
         </a>
       
@@ -80,7 +80,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="The Lexos API" class="md-header__button md-logo" aria-label="The Lexos API" data-md-component="logo">
+    <a href="../.." title="The Lexos API" class="md-header__button md-logo" aria-label="The Lexos API" data-md-component="logo">
       
   
   <svg id="lexos-dragon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245.59 217.84"><defs><style>.circle{fill:#e3e3e3;}.base{fill:#fff;}.shadow{fill:#909090;}.lines{fill:none;stroke:#505050;stroke-miterlimit:10;stroke-width:6px;}.iris{fill:#47bcff;}</style></defs><g id="circle"><circle class="circle" cx="114.34" cy="108.92" r="108.92"></circle></g><g id="base"><path class="base" d="M18.22,71.24S25,76.48,54.38,65c-.59-8.7-1.73-31.14-1.73-34.15,6.77,0,26,19.57,36.25,25.95,12,1.09,46.16,2,64.91,4.59,9.58,1,45.8,21,51.72,30.09s10,19,16.18,25.41,17.08,18,20.95,23.6,7.89,18.49,3.11,21.72S231,172.29,231,172.29l1.87-6.92-7.19-.75L215,170s1.6-5.85,1.2-9.6c-4-3-11.92-9.25-14.12-10.62s-6.69,12.09-6.25,14.79c.34,2.11,15,22.4,18,24.68,2-1.88,4.11-6.56,4.11-6.56s1.29,5.68-1.34,9.75c-6,9.33-12.5,10.71-15.92,10.56s-10.63,1-15.11-2.35-25.74-14-40.87-25.28c-11.4-8.49-19.18-15.74-19.18-15.74s-33.95,6.6-40.56,9.07-32.35,11.61-32.35,11.61a74,74,0,0,0-1.78-20.6c.57-1.05-17.28,15.62-17.28,15.62S10,148.77,11.09,107.2C11.7,84.17,18.22,71.24,18.22,71.24Z" transform="translate(-5.97 -0.51)"></path></g><g id="shadow"><path class="shadow" d="M125.92,133.44c0-4.87-46.64-12.73-58.75-15.06-12-2.3-37.58-5.19-48.44-6.37-.35,0,17.14,11.38,25.93,25.37a63.82,63.82,0,0,1,9.69,29.21S84.24,159.82,125.92,133.44Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M217.52,139.28c-.46,2.91,1.44,5.56,3,7.16s5.5,6.43,8.54,4.46c2.28-1.49-.78-4.62-1.77-6.16C225.77,142.41,218.12,135.4,217.52,139.28Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M174.72,142.19c-3.07,2.28-8.46,4.56-9.34,11.55s4,10.86,6.15,14.73a57.17,57.17,0,0,0,6.34,8.49,61.6,61.6,0,0,0,5.13,5.11c3.08,2.73,7.78,6.15,9,6.38a39.8,39.8,0,0,0,12-1.87c-.37,3-.3,4.48-.41,6.61,3,.63,11.42-2.66,10.57-3.45-2.41-2.23-7.33-8.68-8.59-10.5s-8.74-11.48-9.41-14.17c-.54-2.16,3.31-12.84,5.17-14.53S174.72,142.19,174.72,142.19Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M127.26,107.61c-.56,4.3-101.15-6.45-101.15-6.45S42.93,90.52,48.94,81.42a45.67,45.67,0,0,0,7-33.93S127.9,102.73,127.26,107.61Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M154.48,62.57c-1.6-2.2-5.36-5.24-16-19-15.42-19.92-19-28.08-19.85-23.13s2.32,39.7,2.32,39.7A229.63,229.63,0,0,1,154.48,62.57Z" transform="translate(-5.97 -0.51)"></path></g><g id="lines"><path class="lines" d="M150.41,84.12s-11.85,3.42-26-3.19S85.25,55.64,74.77,47.21A228,228,0,0,0,51.53,31.26s-2,2.68,0,8.14,5,22.74,4,27.21c0,0-26.79,5.83-38,6.64" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M231.3,172.77c4.52.91,8.5-5.42,8.5-5.42a39.46,39.46,0,0,0,7.91-9.39c2.73-5-2-12.7-2-12.7s-5.47-9.34-10.48-13.35-12.76-13.31-17.32-20.37S206.54,94,201.07,86.93s-17.77-12.07-23.7-15l-23.24-10a305.76,305.76,0,0,1-20.5-27.34c-8.21-12.53-15-14.13-15-14.13L122,59.19s-.06,1.17-5,.86c-8.93-.57-24.75.42-24.75.42" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M202.44,192.2c2.28-2.51,3.9-7.81,3.9-7.81S197,189.24,191.5,189l-10.94-8.2c-5.92-6.16-8.65-11.17-12.76-17.32s-4.1-13,0-17.54,7.75-5.93,9.57-4.33,18.23,5.69,25.07,8.65l14.12,10.62c0,5.56-3.39,10.71-3.39,10.71s12.49-3.29,12.82-6.5" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M125.92,133.44c-4.63-6.33-34.22-11.65-57-14.61s-44.84-3.48-50.52-5.92" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M224.24,141c2.28,1.59,7.29,8.55,6.38,9.69s-4.41,1.15-6-.44" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M211.55,200.4a11.76,11.76,0,0,1-5.92,3.19c-7.82,1.76-18.23,0-18.23,0L164.73,189s-19.26-12.08-26.09-18.16a121.25,121.25,0,0,0-12.76-10c-9.57,1-45.57,9.05-53.77,11.86S53,180.81,53,180.81s-3.58-3.14,0-9.18-3.71-25.8-9.22-34.25c-6.16-9.43-14.89-16.75-22.37-22.33-4.75-3.54-7.51-4.72-11.41-10.37,0,0,4.41-3.82,8.76-4.67s13.09-1.7,20.6-8.79S48,82.7,48,82.7" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M217.06,182.4s-1.93,5.47-5.12,7.69l-6.84-9s-8.11-12.45-10.36-15.81c-.62-.93,1.57-10.16,5.58-15.35" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M14.35,108.56" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M52.93,159.72s-13.63,4.74-19.34,15.62" transform="translate(-5.97 -0.51)"></path></g><g id="iris" style="opacity: 1;"><path class="iris" d="M172.94,103.12c3.17,2.4,7.91,12.46,7.91,12.46a30.43,30.43,0,0,1-14.18-1.9c-7.72-3.53-9-12-9-12S167,98.79,172.94,103.12Z" transform="translate(-5.97 -0.51)"></path></g><g id="eye" style="opacity: 1;"><path class="lines" d="M170.15,114.64c5.93,1.14,13.65.16,13.65.16a140.92,140.92,0,0,0-9.21-12.8c-4.11-4.79-17.19-3.11-17.19-3.11" transform="translate(-5.97 -0.51)"></path></g><g id="eye-2" style="opacity: 0;"><polyline class="lines" points="176.53 116.69 169.13 99.84 151.42 98.37"></polyline></g></svg>
@@ -99,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Utils
+              Managing a Corpus
             
           </span>
         </div>
@@ -200,7 +200,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="The Lexos API" class="md-nav__button md-logo" aria-label="The Lexos API" data-md-component="logo">
+    <a href="../.." title="The Lexos API" class="md-nav__button md-logo" aria-label="The Lexos API" data-md-component="logo">
       
   
   <svg id="lexos-dragon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245.59 217.84"><defs><style>.circle{fill:#e3e3e3;}.base{fill:#fff;}.shadow{fill:#909090;}.lines{fill:none;stroke:#505050;stroke-miterlimit:10;stroke-width:6px;}.iris{fill:#47bcff;}</style></defs><g id="circle"><circle class="circle" cx="114.34" cy="108.92" r="108.92"></circle></g><g id="base"><path class="base" d="M18.22,71.24S25,76.48,54.38,65c-.59-8.7-1.73-31.14-1.73-34.15,6.77,0,26,19.57,36.25,25.95,12,1.09,46.16,2,64.91,4.59,9.58,1,45.8,21,51.72,30.09s10,19,16.18,25.41,17.08,18,20.95,23.6,7.89,18.49,3.11,21.72S231,172.29,231,172.29l1.87-6.92-7.19-.75L215,170s1.6-5.85,1.2-9.6c-4-3-11.92-9.25-14.12-10.62s-6.69,12.09-6.25,14.79c.34,2.11,15,22.4,18,24.68,2-1.88,4.11-6.56,4.11-6.56s1.29,5.68-1.34,9.75c-6,9.33-12.5,10.71-15.92,10.56s-10.63,1-15.11-2.35-25.74-14-40.87-25.28c-11.4-8.49-19.18-15.74-19.18-15.74s-33.95,6.6-40.56,9.07-32.35,11.61-32.35,11.61a74,74,0,0,0-1.78-20.6c.57-1.05-17.28,15.62-17.28,15.62S10,148.77,11.09,107.2C11.7,84.17,18.22,71.24,18.22,71.24Z" transform="translate(-5.97 -0.51)"></path></g><g id="shadow"><path class="shadow" d="M125.92,133.44c0-4.87-46.64-12.73-58.75-15.06-12-2.3-37.58-5.19-48.44-6.37-.35,0,17.14,11.38,25.93,25.37a63.82,63.82,0,0,1,9.69,29.21S84.24,159.82,125.92,133.44Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M217.52,139.28c-.46,2.91,1.44,5.56,3,7.16s5.5,6.43,8.54,4.46c2.28-1.49-.78-4.62-1.77-6.16C225.77,142.41,218.12,135.4,217.52,139.28Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M174.72,142.19c-3.07,2.28-8.46,4.56-9.34,11.55s4,10.86,6.15,14.73a57.17,57.17,0,0,0,6.34,8.49,61.6,61.6,0,0,0,5.13,5.11c3.08,2.73,7.78,6.15,9,6.38a39.8,39.8,0,0,0,12-1.87c-.37,3-.3,4.48-.41,6.61,3,.63,11.42-2.66,10.57-3.45-2.41-2.23-7.33-8.68-8.59-10.5s-8.74-11.48-9.41-14.17c-.54-2.16,3.31-12.84,5.17-14.53S174.72,142.19,174.72,142.19Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M127.26,107.61c-.56,4.3-101.15-6.45-101.15-6.45S42.93,90.52,48.94,81.42a45.67,45.67,0,0,0,7-33.93S127.9,102.73,127.26,107.61Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M154.48,62.57c-1.6-2.2-5.36-5.24-16-19-15.42-19.92-19-28.08-19.85-23.13s2.32,39.7,2.32,39.7A229.63,229.63,0,0,1,154.48,62.57Z" transform="translate(-5.97 -0.51)"></path></g><g id="lines"><path class="lines" d="M150.41,84.12s-11.85,3.42-26-3.19S85.25,55.64,74.77,47.21A228,228,0,0,0,51.53,31.26s-2,2.68,0,8.14,5,22.74,4,27.21c0,0-26.79,5.83-38,6.64" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M231.3,172.77c4.52.91,8.5-5.42,8.5-5.42a39.46,39.46,0,0,0,7.91-9.39c2.73-5-2-12.7-2-12.7s-5.47-9.34-10.48-13.35-12.76-13.31-17.32-20.37S206.54,94,201.07,86.93s-17.77-12.07-23.7-15l-23.24-10a305.76,305.76,0,0,1-20.5-27.34c-8.21-12.53-15-14.13-15-14.13L122,59.19s-.06,1.17-5,.86c-8.93-.57-24.75.42-24.75.42" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M202.44,192.2c2.28-2.51,3.9-7.81,3.9-7.81S197,189.24,191.5,189l-10.94-8.2c-5.92-6.16-8.65-11.17-12.76-17.32s-4.1-13,0-17.54,7.75-5.93,9.57-4.33,18.23,5.69,25.07,8.65l14.12,10.62c0,5.56-3.39,10.71-3.39,10.71s12.49-3.29,12.82-6.5" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M125.92,133.44c-4.63-6.33-34.22-11.65-57-14.61s-44.84-3.48-50.52-5.92" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M224.24,141c2.28,1.59,7.29,8.55,6.38,9.69s-4.41,1.15-6-.44" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M211.55,200.4a11.76,11.76,0,0,1-5.92,3.19c-7.82,1.76-18.23,0-18.23,0L164.73,189s-19.26-12.08-26.09-18.16a121.25,121.25,0,0,0-12.76-10c-9.57,1-45.57,9.05-53.77,11.86S53,180.81,53,180.81s-3.58-3.14,0-9.18-3.71-25.8-9.22-34.25c-6.16-9.43-14.89-16.75-22.37-22.33-4.75-3.54-7.51-4.72-11.41-10.37,0,0,4.41-3.82,8.76-4.67s13.09-1.7,20.6-8.79S48,82.7,48,82.7" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M217.06,182.4s-1.93,5.47-5.12,7.69l-6.84-9s-8.11-12.45-10.36-15.81c-.62-.93,1.57-10.16,5.58-15.35" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M14.35,108.56" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M52.93,159.72s-13.63,4.74-19.34,15.62" transform="translate(-5.97 -0.51)"></path></g><g id="iris" style="opacity: 1;"><path class="iris" d="M172.94,103.12c3.17,2.4,7.91,12.46,7.91,12.46a30.43,30.43,0,0,1-14.18-1.9c-7.72-3.53-9-12-9-12S167,98.79,172.94,103.12Z" transform="translate(-5.97 -0.51)"></path></g><g id="eye" style="opacity: 1;"><path class="lines" d="M170.15,114.64c5.93,1.14,13.65.16,13.65.16a140.92,140.92,0,0,0-9.21-12.8c-4.11-4.79-17.19-3.11-17.19-3.11" transform="translate(-5.97 -0.51)"></path></g><g id="eye-2" style="opacity: 0;"><polyline class="lines" points="176.53 116.69 169.13 99.84 151.42 98.37"></polyline></g></svg>
@@ -231,7 +231,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         Home
       </a>
     </li>
@@ -246,7 +246,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../installation/" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         Installation
       </a>
     </li>
@@ -259,12 +259,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
       
       
@@ -294,7 +296,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../../tutorial/">Tutorial</a>
+          <a href="../">Tutorial</a>
           
             <label for="__nav_3">
               <span class="md-nav__icon md-icon"></span>
@@ -319,7 +321,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/getting_started/" class="md-nav__link">
+      <a href="../getting_started/" class="md-nav__link">
         Getting Started
       </a>
     </li>
@@ -333,7 +335,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/loading_texts/" class="md-nav__link">
+      <a href="../loading_texts/" class="md-nav__link">
         Loading Texts
       </a>
     </li>
@@ -347,7 +349,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/scrubbing_texts/" class="md-nav__link">
+      <a href="../scrubbing_texts/" class="md-nav__link">
         Scrubbing Texts
       </a>
     </li>
@@ -361,7 +363,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/tokenising_texts/" class="md-nav__link">
+      <a href="../tokenising_texts/" class="md-nav__link">
         Tokenising Texts
       </a>
     </li>
@@ -375,7 +377,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/cutting_docs/" class="md-nav__link">
+      <a href="../cutting_docs/" class="md-nav__link">
         Cutting Documents
       </a>
     </li>
@@ -389,7 +391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/the_document_term_matrix/" class="md-nav__link">
+      <a href="../the_document_term_matrix/" class="md-nav__link">
         The Document-Term Matrix
       </a>
     </li>
@@ -403,7 +405,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/visualisation/" class="md-nav__link">
+      <a href="../visualisation/" class="md-nav__link">
         Visualisation
       </a>
     </li>
@@ -415,11 +417,113 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../../tutorial/managing_a_corpus/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-nav__icon md-icon"></span>
+          
+            <a href="./" class="md-nav__link md-nav__link--active"
+              style="margin: initial; padding: initial; pointer-events: initial">
+          
+            Managing a Corpus
+          </a>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Managing a Corpus
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-corpus" class="md-nav__link">
+    Creating a Corpus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#corpus-records" class="md-nav__link">
+    Corpus Records
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-records-to-a-corpus" class="md-nav__link">
+    Adding Records to a Corpus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-documents-to-a-corpus" class="md-nav__link">
+    Adding Documents to a Corpus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-records-from-the-corpus" class="md-nav__link">
+    Getting Records from the Corpus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viewing-the-records-table" class="md-nav__link">
+    Viewing the Records Table
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-record-properties" class="md-nav__link">
+    Setting Record Properties
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removing-records" class="md-nav__link">
+    Removing Records
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-records" class="md-nav__link">
+    Using Records
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -437,14 +541,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
       
       
@@ -476,7 +578,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../">API</a>
+          <a href="../../api/">API</a>
           
             <label for="__nav_4">
               <span class="md-nav__icon md-icon"></span>
@@ -518,7 +620,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../cluster/">Cluster</a>
+          <a href="../../api/cluster/">Cluster</a>
           
         </div>
       
@@ -563,7 +665,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../corpus/">Corpus</a>
+          <a href="../../api/corpus/">Corpus</a>
           
         </div>
       
@@ -612,7 +714,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../cutter/">Cutter</a>
+          <a href="../../api/cutter/">Cutter</a>
           
             <label for="__nav_4_4">
               <span class="md-nav__icon md-icon"></span>
@@ -637,7 +739,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cutter/filesplit/" class="md-nav__link">
+      <a href="../../api/cutter/filesplit/" class="md-nav__link">
         Filesplit
       </a>
     </li>
@@ -651,7 +753,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cutter/milestones/" class="md-nav__link">
+      <a href="../../api/cutter/milestones/" class="md-nav__link">
         Milestones
       </a>
     </li>
@@ -693,7 +795,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../dtm/">DTM</a>
+          <a href="../../api/dtm/">DTM</a>
           
             <label for="__nav_4_5">
               <span class="md-nav__icon md-icon"></span>
@@ -718,7 +820,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dtm/wordcloud/" class="md-nav__link">
+      <a href="../../api/dtm/wordcloud/" class="md-nav__link">
         Wordcloud
       </a>
     </li>
@@ -732,7 +834,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dtm/bubbleviz/" class="md-nav__link">
+      <a href="../../api/dtm/bubbleviz/" class="md-nav__link">
         Bubble Charts
       </a>
     </li>
@@ -772,7 +874,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../io/">IO</a>
+          <a href="../../api/io/">IO</a>
           
             <label for="__nav_4_6">
               <span class="md-nav__icon md-icon"></span>
@@ -797,7 +899,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../io/basic/" class="md-nav__link">
+      <a href="../../api/io/basic/" class="md-nav__link">
         Basic
       </a>
     </li>
@@ -816,14 +918,12 @@
               
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_7" type="checkbox" id="__nav_4_7" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_7" type="checkbox" id="__nav_4_7" >
       
       
       
@@ -853,7 +953,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../">Scrubber</a>
+          <a href="../../api/scrubber/">Scrubber</a>
           
             <label for="__nav_4_7">
               <span class="md-nav__icon md-icon"></span>
@@ -878,7 +978,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../normalize/" class="md-nav__link">
+      <a href="../../api/scrubber/normalize/" class="md-nav__link">
         Normalize
       </a>
     </li>
@@ -892,7 +992,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pipeline/" class="md-nav__link">
+      <a href="../../api/scrubber/pipeline/" class="md-nav__link">
         Pipeline
       </a>
     </li>
@@ -906,7 +1006,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../registry/" class="md-nav__link">
+      <a href="../../api/scrubber/registry/" class="md-nav__link">
         Registry
       </a>
     </li>
@@ -920,7 +1020,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../remove/" class="md-nav__link">
+      <a href="../../api/scrubber/remove/" class="md-nav__link">
         Remove
       </a>
     </li>
@@ -934,7 +1034,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../replace/" class="md-nav__link">
+      <a href="../../api/scrubber/replace/" class="md-nav__link">
         Replace
       </a>
     </li>
@@ -948,7 +1048,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../resources/" class="md-nav__link">
+      <a href="../../api/scrubber/resources/" class="md-nav__link">
         Resources
       </a>
     </li>
@@ -962,7 +1062,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../scrubber/" class="md-nav__link">
+      <a href="../../api/scrubber/scrubber/" class="md-nav__link">
         Scrubber
       </a>
     </li>
@@ -974,57 +1074,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          <span class="md-nav__icon md-icon"></span>
-          
-            <a href="./" class="md-nav__link md-nav__link--active"
-              style="margin: initial; padding: initial; pointer-events: initial">
-          
-            Utils
-          </a>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../api/scrubber/utils/" class="md-nav__link">
         Utils
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.utils.get_tags" class="md-nav__link">
-    get_tags()
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1064,7 +1118,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../tokenizer/">Tokenizer</a>
+          <a href="../../api/tokenizer/">Tokenizer</a>
           
             <label for="__nav_4_8">
               <span class="md-nav__icon md-icon"></span>
@@ -1089,7 +1143,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tokenizer/extensions/" class="md-nav__link">
+      <a href="../../api/tokenizer/extensions/" class="md-nav__link">
         Extensions
       </a>
     </li>
@@ -1103,7 +1157,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tokenizer/lexosdoc/" class="md-nav__link">
+      <a href="../../api/tokenizer/lexosdoc/" class="md-nav__link">
         LexosDoc
       </a>
     </li>
@@ -1124,7 +1178,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualisation/" class="md-nav__link">
+      <a href="../../api/visualisation/" class="md-nav__link">
         Visualisation
       </a>
     </li>
@@ -1138,7 +1192,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utils/" class="md-nav__link">
+      <a href="../../api/utils/" class="md-nav__link">
         Utils
       </a>
     </li>
@@ -1179,8 +1233,64 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#lexos.scrubber.utils.get_tags" class="md-nav__link">
-    get_tags()
+  <a href="#creating-a-corpus" class="md-nav__link">
+    Creating a Corpus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#corpus-records" class="md-nav__link">
+    Corpus Records
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-records-to-a-corpus" class="md-nav__link">
+    Adding Records to a Corpus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-documents-to-a-corpus" class="md-nav__link">
+    Adding Documents to a Corpus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-records-from-the-corpus" class="md-nav__link">
+    Getting Records from the Corpus
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viewing-the-records-table" class="md-nav__link">
+    Viewing the Records Table
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-record-properties" class="md-nav__link">
+    Setting Record Properties
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removing-records" class="md-nav__link">
+    Removing Records
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-records" class="md-nav__link">
+    Using Records
   </a>
   
 </li>
@@ -1197,117 +1307,186 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/scottkleinman/lexos/edit/master/docs/api/scrubber/utils.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/scottkleinman/lexos/edit/master/docs/tutorial/managing_a_corpus.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
 
-<h1 id="utils">Utils<a class="headerlink" href="#utils" title="Permanent link">¤</a></h1>
-<p>The <code>utils</code> component of <code>Scrubber</code> contains helper functions shared by the other components.</p>
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.scrubber.utils.get_tags" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_tags</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.utils.get_tags" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Get information about the tags in a text.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text to be analyzed.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>dict</code></td>
-      <td><p>A dict with the keys "tags" and "attributes". "Tags is a list of unique tag names
-in the data and "attributes" is a list of dicts containing the attributes and values
-for those tags that have attributes.</p></td>
-    </tr>
-  </tbody>
-</table>      <p>it falls back to BeautifulSoup's parser.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_tags</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get information about the tags in a text.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        text (str): The text to be analyzed.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        dict: A dict with the keys &quot;tags&quot; and &quot;attributes&quot;. &quot;Tags is a list of unique tag names</span>
-<span class="sd">        in the data and &quot;attributes&quot; is a list of dicts containing the attributes and values</span>
-<span class="sd">        for those tags that have attributes.</span>
-
-<span class="sd">    Note: The procedure tries to parse the markup as well-formed XML using ETree; otherwise,</span>
-<span class="sd">    it falls back to BeautifulSoup&#39;s parser.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">json</span>
-    <span class="kn">import</span> <span class="nn">re</span>
-    <span class="kn">from</span> <span class="nn">xml.etree</span> <span class="kn">import</span> <span class="n">ElementTree</span>
-
-    <span class="kn">from</span> <span class="nn">natsort</span> <span class="kn">import</span> <span class="n">humansorted</span>
-
-    <span class="n">tags</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">root</span> <span class="o">=</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;{.+}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
-                <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;{.+}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span> <span class="o">!=</span> <span class="p">{}:</span>
-                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;{.+}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span><span class="p">):</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">})</span>
-        <span class="n">tags</span> <span class="o">=</span> <span class="n">humansorted</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span>
-        <span class="n">attributes</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-    <span class="k">except</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">ParseError</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">bs4</span>
-        <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
-        <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;xml&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">soup</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">bs4</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">ProcessingInstruction</span><span class="p">):</span>
-                <span class="n">e</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
-        <span class="p">[</span><span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">()]</span>
-        <span class="p">[</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">tag</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrs</span><span class="p">})</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">()]</span>
-        <span class="n">tags</span> <span class="o">=</span> <span class="n">humansorted</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span>
-        <span class="n">attributes</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="n">tags</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="n">attributes</span><span class="p">}</span>
+<h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¤</a></h1>
+<p>The <code>Corpus</code> module consists of a <code>Corpus</code> class that helps you manage assets in your workflow and serialise them to disk for later use. It is strictly optional; you may find is sufficient to load your documents into memory with a <code>Loader</code> or to manage your corpus assets independently through a different application.</p>
+<p>It is important to realise that a Lexos <code>Corpus</code> is primarily manager for project assets; it is not used for acquiring those assets and is not used for analysing them, apart from the generation of a few statistics. In general, using a <code>Corpus</code> will require a workflow like the following:</p>
+<ol>
+<li>Use <code>Loader</code> to acquire texts.</li>
+<li>Optionally, use <code>Scrubber</code> to perform any required preprocessing on the texts in <code>Loader.texts</code>.</li>
+<li>Optionally, use <code>Tokenizer</code> to convert the original or scrubbed texts to spaCy <code>Doc</code> objects.</li>
+<li>Add the documents (texts or spaCy <code>Doc</code> objects) to the <code>Corpus</code>.</li>
+</ol>
+<p>If you wished to analyse the documents, you would get them from the <code>Corpus</code> and run them through <code>Tokenizer</code> if you did not do so before adding them.</p>
+<p>From this workflow, you should be able to see that you can skip the <code>Corpus</code> entirely. The <code>Corpus</code> simply allows you to attach metadata to the documents, such as a name, description, or classification label, and to save them to and retrieve them from disk easily. One of the important metadata categories is whether or not a document is active. A <code>Corpus</code> allows you to retrieve subsets of your documents based on this and other metadata categories.</p>
+<h2 id="creating-a-corpus">Creating a Corpus<a class="headerlink" href="#creating-a-corpus" title="Permanent link">¤</a></h2>
+<p>Begin by importing the <a href="../../api/corpus/#lexos.corpus.__init__.Corpus">Lexos <code>Corpus</code> module</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">lexos.corpus</span> <span class="k">as</span> <span class="nn">cp</span>
 </code></pre></div>
-        </details>
-    </div>
+<p>We use the <code>cp</code> alias so that we can use <code>corpus</code> as a variable below:</p>
+<div class="highlight"><pre><span></span><code><span class="n">corpus</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">Corpus</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;My Corpus&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;My test corpus&quot;</span><span class="p">,</span>
+    <span class="n">corpus_dir</span><span class="o">=</span><span class="s2">&quot;corpus&quot;</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>The <code>name</code>, <code>description</code>, and <code>corpus_dir</code> arguments are all optional. <code>corpus_dir</code> is the directory where the corpus will be stored, and the default is "corpus" in the current directory. You can use additional keywords to instantiate the corpus with other metadata such as author or creation date. When you run the code above, the corpus directory will be created if it does not already exist.</p>
+<p>You can view your corpus metadata in a number of ways:</p>
+<p><a href="../../api/corpus/#lexos.corpus.__init__.Corpus.meta_table">lexos.corpus.Corpus.meta_table</a> will return an overview of your corpus as a pandas dataframe. You can also view this information as a dict with <code>corpus.meta</code>. The following individual properties can also be viewed:</p>
+<ul>
+<li><code>ids</code>: A list of document ids in the Corpus.</li>
+<li><code>names</code>: A list of document names in the Corpus.</li>
+<li><code>docs</code>: A dict of document ids and docs in the Corpus if you have opted to cache them to RAM.</li>
+<li><code>num_docs</code>: The number of docs the Corpus.</li>
+<li><code>num_active_docs</code>: The number of active docs the Corpus.</li>
+<li><code>num_tokens</code>: The number of tokens the Corpus.</li>
+<li><code>num_terms</code>: The number of terms the Corpus.</li>
+<li><code>terms</code>: A set of unique terms in the Corpus.</li>
+</ul>
+<p>Call these functions with code like <code>corpus.num_tokens</code>. You can also get a <code>collections.Counter</code> containing the corpus term counts with <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.get_term_counts">lexos.corpus.Corpus.get_term_counts</a> using <code>corpus.get_term_counts()</code>.</p>
+<p>These attributes should all be empty or 0 when the corpus is first created.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <a href="../../api/corpus/#lexos.corpus.__init__.Corpus">lexos.corpus.Corpus</a> class is constructed using <a href="https://pydantic-docs.helpmanual.io/usage/models/" target="_blank">Pydantic's <code>BaseModel</code> class</a>. This means that it has access to any of Pydantic's attributes and methods, such as <code>dict()</code> and <code>json()</code>.</p>
+</div>
+<h2 id="corpus-records">Corpus Records<a class="headerlink" href="#corpus-records" title="Permanent link">¤</a></h2>
+<p>The basic unit of storage in a <code>Corpus</code> is a <code>Record</code> object. This is a Python object that provides access the record's content and its metadata. Constructing a <code>Record</code> is simple. You just have to feed it some <code>content</code> and, in most cases, give it a name:</p>
+<div class="highlight"><pre><span></span><code>record = Record(content=mydoc, name=&quot;greeting&quot;)
+</code></pre></div>
+<p>Behind the scenes, the <code>Record</code> class will give the record a default <code>id</code> of 1 (unless you specify a different integer) and set the <code>is_active</code> property to <code>True</code> (unless you set instantiate the object with it set to <code>False</code>). See <a href="../../api/corpus/#lexos.corpus.__init__.Record">lexos.corpus.Record</a> for other arguments that can be passed to the <code>Record</code> class.</p>
+<p>You can also create a <code>Record</code> from a dict using Pydantic's <code>parse_obj()</code> method:</p>
+<div class="highlight"><pre><span></span><code><span class="n">record</span> <span class="o">=</span> <span class="n">Record</span><span class="o">.</span><span class="n">parse_obj</span><span class="p">({</span><span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">mydoc</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;greeting&quot;</span><span class="p">})</span>
+</code></pre></div>
+<p>See the <a href="https://pydantic-docs.helpmanual.io/usage/models/#helper-functions" target="_blank">Pydantic documentation</a> for helper functions for parsing json or file content into objects.</p>
+<p>Once instantiated, a record provides access to the following information:</p>
+<ul>
+<li><code>preview</code>: A preview of the first 50 characters of the record's text.</li>
+<li><code>terms</code>: A set of unique terms in the record's content.</li>
+<li><code>text</code>: The full text of the record's content.</li>
+<li><code>tokens</code>: A list of tokens in record's content.</li>
+<li><code>num_terms</code>: The number of unique terms in the record's content.</li>
+<li><code>num_tokens</code>: The number of tokens in the record's content.</li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Term counts do not collapse upper- and lower-case words, so, if this is important, you must get the tokens, convert to lower case, and then generate the list of terms yourself. Alternatively, you may use <code>Scrubber</code> to preprocess your data before creating the <code>Record</code> object.</p>
+</div>
+<p><a href="../../api/corpus/#lexos.corpus.__init__.Record.set">lexos.corpus.Record.set</a> allows you to set arbitrary <code>Record</code> attributes (such as author or date), and <a href="../../api/corpus/#lexos.corpus.__init__.Record.save">lexos.corpus.Record.save</a> allows you to save the file to disk.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>When a <code>Record</code> object is saved to disk, it is serialised as a binary pickle file, which is not human readable. To restore it, you use a normal Python method of reading a binary file:</p>
+<div class="highlight"><pre><span></span><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</code></pre></div>
+<p>The pickle format is not considered secure, so never unpickle a file you do not trust.</p>
+</div>
+<p>The <code>Record</code> class accepts content only the form of a pre-tokenised spaCy doc. However, it is possible to store an untokenised text by creating a blank spaCy language model and feeding it the <a href="../../api/corpus/#lexos.corpus.__init__.NullTokenizer">lexos.corpus.NullTokenizer</a> class. This simply returns a spaCy doc with the text as a single token.</p>
+<div class="highlight"><pre><span></span><code><span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">blank</span><span class="p">(</span><span class="s2">&quot;xx&quot;</span><span class="p">)</span>
+<span class="n">nlp</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">NullTokenizer</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span>
+<span class="n">content</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+<span class="n">record</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+</code></pre></div>
+<p>Note that the entire text will be counted as a single token and a single term, so it is preferable to tokenise the text first or to plan to do so later.</p>
+<p>If the content is already a tokenised document, it is necessary to label it as such in the metadata. Here is an example of how you would do it:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Create a spaCy doc</span>
+<span class="kn">import</span> <span class="nn">spacy</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;en_core_web_sm&quot;</span><span class="p">)</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="s2">&quot;Hi there!&quot;</span><span class="p">)</span>
+<span class="n">record</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;greeting&quot;</span><span class="p">,</span> <span class="n">is_parsed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>The <code>is_parsed</code> attribute allows <code>Corpus</code> to know that its dealing with a tokenised document. You can still access the full text by calling <code>record.text</code>, but you can also access individual tokens by calling <code>record.content[0]</code> (to get the first token).</p>
+<p>If you want a dictionary with a record's full metadata, probably the easiest method is <code>metadata = record.dict().remove("content")</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Why serialise records with <code>pickle</code>?</p>
+<p>A Lexos <code>Record</code> is a Python object which contains a spaCy <code>Doc</code> object which contains spaCy <code>Token</code> objects. This complex structure creates a scenario which cannot be handled by other serialisation formats without some serious hacks. There are some concerns about whether serialisation and de-serialisation will be fast enough when working with many records in a corpus (and lesser concern about the security of the format), but for the moment it is the easiest and most straightforward format to work with. This is something to be revisited at a future date.</p>
+</div>
+<h2 id="adding-records-to-a-corpus">Adding Records to a Corpus<a class="headerlink" href="#adding-records-to-a-corpus" title="Permanent link">¤</a></h2>
+<p>Adding records to a corpus is simple with <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.add_record">lexos.corpus.Corpus.add_record</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">record</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;greeting&quot;</span><span class="p">,</span> <span class="n">is_parsed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">corpus</span><span class="o">.</span><span class="n">add_record</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>There is also a <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.add_records">lexos.corpus.Corpus.add_records</a>, which takes a list of records.</p>
+<p>By default, the record's content is not cached it memory; instead, the entire record is serialised to disk. If you want to keep it in memory, you can set <code>cache=True</code> (as above). This will allow you to access the record from <code>corpus.docs</code> without having to fetch the record from disk.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>At present the <code>docs</code> property in the <a href="../../api/corpus/#lexos.corpus.__init__.Corpus">lexos.corpus.Corpus</a> class is the only place where a clear distinction between a "record" and a "document" is made.</p>
+</div>
+<h2 id="adding-documents-to-a-corpus">Adding Documents to a Corpus<a class="headerlink" href="#adding-documents-to-a-corpus" title="Permanent link">¤</a></h2>
+<p>It is not necessary to pre-generate records from documents before adding them to a corpus. You can also use <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.add">lexos.corpus.Corpus.add</a> to add a document directly:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Use a text string</span>
+<span class="n">unparsed_doc</span> <span class="o">=</span> <span class="s2">&quot;Hi there!&quot;</span>
+<span class="n">corpus</span><span class="o">.</span><span class="n">add_record</span><span class="p">(</span><span class="n">unparsed_doc</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;greeting&quot;</span><span class="p">)</span>
 
-  </div>
+<span class="c1"># Create</span>
+<span class="n">parsed_doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="s2">&quot;This is a full sentence.&quot;</span><span class="p">)</span>
+<span class="n">corpus</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">parsed_doc</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sentence&quot;</span><span class="p">,</span> <span class="n">is_parsed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>By default, the <code>is_active</code> attribute is <code>True</code>.</p>
+<p>You can set additional metadata properties by supplying a <code>metadata</code> dict:</p>
+<div class="highlight"><pre><span></span><code><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;John Smith&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;2011&quot;</span><span class="p">}</span>
+<span class="n">corpus</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+    <span class="n">content</span><span class="o">=</span><span class="n">parsed_doc</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sentence&quot;</span><span class="p">,</span>
+    <span class="n">is_parsed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+    <span class="n">cache</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>The corresponding <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.add_docs">lexos.corpus.Corpus.add_docs</a> allows you to insert multiple documents. The format is a little more complicated. It takes a list of dicts with the document as the value of the <code>content</code> property:</p>
+<div class="highlight"><pre><span></span><code><span class="n">docs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">doc1</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Doc 1&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">doc2</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Doc 2&quot;</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">corpus</span><span class="o">.</span><span class="n">add_docs</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>All the arguments accepted by <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.add">lexos.corpus.Corpus.add</a> can be set as keys in the <code>docs</code> dictionary.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Whether you are adding documents or records to a corpus, a check is made to ensure that the records stored have unique <code>id</code>, <code>name</code>, and <code>filename</code> attributes. If you do not specify a <code>name</code> for a document or record, a <a href="https://docs.python.org/3/library/uuid.html" target="_blank">UUID</a> will be used instead and will be used to generate a corresponding filename. The results of this can be unwieldy. In the future some other method of ensuring uniqueness will be explored.</p>
+</div>
+<h2 id="getting-records-from-the-corpus">Getting Records from the Corpus<a class="headerlink" href="#getting-records-from-the-corpus" title="Permanent link">¤</a></h2>
+<p>Individual records can be fetched using <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.get">lexos.corpus.Corpus.get</a> with a record <code>id</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">record</span> <span class="o">=</span> <span class="n">corpus</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">content</span>
+</code></pre></div>
+<p>The second line above extracts the spaCy doc from the records, and it can be treated like any spaCy doc.</p>
+<p>You can also supply a list of ids to <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.get_records">lexos.corpus.Corpus.get_records</a>. If you pass nothing to the method, all the records in the corpus will be retrieved.</p>
+<p>If you do not know the id(s) of the document(s) you want, you can provide a query for <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.get_records">lexos.corpus.Corpus.get_records</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">records</span> <span class="o">=</span> <span class="n">corpus</span><span class="o">.</span><span class="n">get_records</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;id &lt; 10&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div>
+<p>This will yield a generator with each of the records with an <code>id</code> less than 10.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On the back end, <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.get">lexos.corpus.Corpus.get</a> and <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.get_records">lexos.corpus.Corpus.get_records</a> call <code>corpus.meta</code>, which contains a subset of the metadata for each record. A pandas dataframe is constructed from this metadata. The <code>query</code> can therefore be anything acceptable to <code><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.query.html" target="_blank">pandas.DataFrame.query()</a></code>. This allows complex queries to be performed on the corpus.</p>
+</div>
+<p>If you want just the metadata for a record, probably the easiest method is <code>metadata = corpus.get(1).dict().remove("content")</code>.</p>
+<h2 id="viewing-the-records-table">Viewing the Records Table<a class="headerlink" href="#viewing-the-records-table" title="Permanent link">¤</a></h2>
+<p><a href="../../api/corpus/#lexos.corpus.__init__.Corpus.records_table">lexos.corpus.Corpus.records_table</a> generates a pandas dataframe with each record in a separate row. By default the <code>id</code>, <code>name</code>, <code>filename</code>, <code>num_tokens</code>, <code>num_terms</code>, <code>is_active</code>, and <code>is_parsed</code> attributes are displayed columns. You can supply your own list of columns with the <code>columns</code> argument, or you can exclude specific columns with the <code>exclude</code> argument.</p>
+<h2 id="setting-record-properties">Setting Record Properties<a class="headerlink" href="#setting-record-properties" title="Permanent link">¤</a></h2>
+<p>After a corpus is instantiated, you can set the properties of individual records with <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.set">lexos.corpus.Corpus.set</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">corpus</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John Smith&quot;</span><span class="p">})</span>
+</code></pre></div>
+<h2 id="removing-records">Removing Records<a class="headerlink" href="#removing-records" title="Permanent link">¤</a></h2>
+<p><a href="../../api/corpus/#lexos.corpus.__init__.Corpus.remove">lexos.corpus.Corpus.remove</a> and <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.remove_records">lexos.corpus.Corpus.remove_records</a> can be used to remove records from a corpus. The former takes an id number and the latter takes a list of ids.</p>
+<h2 id="using-records">Using Records<a class="headerlink" href="#using-records" title="Permanent link">¤</a></h2>
+<p>Typically, you would retrieve records using <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.get_records">lexos.corpus.Corpus.get_records</a> and then pass their content to another Lexos module. For example, here is how you would create a document-term matrix:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Get the records</span>
+<span class="n">records</span> <span class="o">=</span> <span class="n">corpus</span><span class="o">.</span><span class="n">get_records</span><span class="p">()</span>
+
+<span class="c1"># Extract the documents and labels</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="p">[</span><span class="n">record</span><span class="o">.</span><span class="n">content</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">record</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">]</span>
+
+<span class="c1"># Import the dtm module and generate a document-term matrix</span>
+<span class="kn">from</span> <span class="nn">lexos.dtm</span> <span class="kn">import</span> <span class="n">DTM</span>
+<span class="n">dtm</span> <span class="o">=</span> <span class="n">DTM</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+</code></pre></div>
 
               
             </article>
@@ -1326,7 +1505,7 @@ for those tags that have attributes.</p></td>
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../scrubber/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../visualisation/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1335,13 +1514,13 @@ for those tags that have attributes.</p></td>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Scrubber
+              Visualisation
             </div>
           </div>
         </a>
       
       
-        <a href="../../tokenizer/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../../api/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
@@ -1417,10 +1596,10 @@ for those tags that have attributes.</p></td>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.indexes"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.960e086b.min.js"></script>
+      <script src="../../assets/javascripts/bundle.960e086b.min.js"></script>
       
     
   </body>

@@ -13,14 +13,14 @@
     
     
       
-        <title>Utils - The Lexos API</title>
+        <title>Visualisation - The Lexos API</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.2b4465f4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2b4465f4.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
         
       
     
@@ -34,11 +34,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#utils" class="md-skip">
+        <a href="#word-clouds-and-variants" class="md-skip">
           Skip to content
         </a>
       
@@ -80,7 +80,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="The Lexos API" class="md-header__button md-logo" aria-label="The Lexos API" data-md-component="logo">
+    <a href="../.." title="The Lexos API" class="md-header__button md-logo" aria-label="The Lexos API" data-md-component="logo">
       
   
   <svg id="lexos-dragon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245.59 217.84"><defs><style>.circle{fill:#e3e3e3;}.base{fill:#fff;}.shadow{fill:#909090;}.lines{fill:none;stroke:#505050;stroke-miterlimit:10;stroke-width:6px;}.iris{fill:#47bcff;}</style></defs><g id="circle"><circle class="circle" cx="114.34" cy="108.92" r="108.92"></circle></g><g id="base"><path class="base" d="M18.22,71.24S25,76.48,54.38,65c-.59-8.7-1.73-31.14-1.73-34.15,6.77,0,26,19.57,36.25,25.95,12,1.09,46.16,2,64.91,4.59,9.58,1,45.8,21,51.72,30.09s10,19,16.18,25.41,17.08,18,20.95,23.6,7.89,18.49,3.11,21.72S231,172.29,231,172.29l1.87-6.92-7.19-.75L215,170s1.6-5.85,1.2-9.6c-4-3-11.92-9.25-14.12-10.62s-6.69,12.09-6.25,14.79c.34,2.11,15,22.4,18,24.68,2-1.88,4.11-6.56,4.11-6.56s1.29,5.68-1.34,9.75c-6,9.33-12.5,10.71-15.92,10.56s-10.63,1-15.11-2.35-25.74-14-40.87-25.28c-11.4-8.49-19.18-15.74-19.18-15.74s-33.95,6.6-40.56,9.07-32.35,11.61-32.35,11.61a74,74,0,0,0-1.78-20.6c.57-1.05-17.28,15.62-17.28,15.62S10,148.77,11.09,107.2C11.7,84.17,18.22,71.24,18.22,71.24Z" transform="translate(-5.97 -0.51)"></path></g><g id="shadow"><path class="shadow" d="M125.92,133.44c0-4.87-46.64-12.73-58.75-15.06-12-2.3-37.58-5.19-48.44-6.37-.35,0,17.14,11.38,25.93,25.37a63.82,63.82,0,0,1,9.69,29.21S84.24,159.82,125.92,133.44Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M217.52,139.28c-.46,2.91,1.44,5.56,3,7.16s5.5,6.43,8.54,4.46c2.28-1.49-.78-4.62-1.77-6.16C225.77,142.41,218.12,135.4,217.52,139.28Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M174.72,142.19c-3.07,2.28-8.46,4.56-9.34,11.55s4,10.86,6.15,14.73a57.17,57.17,0,0,0,6.34,8.49,61.6,61.6,0,0,0,5.13,5.11c3.08,2.73,7.78,6.15,9,6.38a39.8,39.8,0,0,0,12-1.87c-.37,3-.3,4.48-.41,6.61,3,.63,11.42-2.66,10.57-3.45-2.41-2.23-7.33-8.68-8.59-10.5s-8.74-11.48-9.41-14.17c-.54-2.16,3.31-12.84,5.17-14.53S174.72,142.19,174.72,142.19Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M127.26,107.61c-.56,4.3-101.15-6.45-101.15-6.45S42.93,90.52,48.94,81.42a45.67,45.67,0,0,0,7-33.93S127.9,102.73,127.26,107.61Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M154.48,62.57c-1.6-2.2-5.36-5.24-16-19-15.42-19.92-19-28.08-19.85-23.13s2.32,39.7,2.32,39.7A229.63,229.63,0,0,1,154.48,62.57Z" transform="translate(-5.97 -0.51)"></path></g><g id="lines"><path class="lines" d="M150.41,84.12s-11.85,3.42-26-3.19S85.25,55.64,74.77,47.21A228,228,0,0,0,51.53,31.26s-2,2.68,0,8.14,5,22.74,4,27.21c0,0-26.79,5.83-38,6.64" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M231.3,172.77c4.52.91,8.5-5.42,8.5-5.42a39.46,39.46,0,0,0,7.91-9.39c2.73-5-2-12.7-2-12.7s-5.47-9.34-10.48-13.35-12.76-13.31-17.32-20.37S206.54,94,201.07,86.93s-17.77-12.07-23.7-15l-23.24-10a305.76,305.76,0,0,1-20.5-27.34c-8.21-12.53-15-14.13-15-14.13L122,59.19s-.06,1.17-5,.86c-8.93-.57-24.75.42-24.75.42" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M202.44,192.2c2.28-2.51,3.9-7.81,3.9-7.81S197,189.24,191.5,189l-10.94-8.2c-5.92-6.16-8.65-11.17-12.76-17.32s-4.1-13,0-17.54,7.75-5.93,9.57-4.33,18.23,5.69,25.07,8.65l14.12,10.62c0,5.56-3.39,10.71-3.39,10.71s12.49-3.29,12.82-6.5" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M125.92,133.44c-4.63-6.33-34.22-11.65-57-14.61s-44.84-3.48-50.52-5.92" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M224.24,141c2.28,1.59,7.29,8.55,6.38,9.69s-4.41,1.15-6-.44" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M211.55,200.4a11.76,11.76,0,0,1-5.92,3.19c-7.82,1.76-18.23,0-18.23,0L164.73,189s-19.26-12.08-26.09-18.16a121.25,121.25,0,0,0-12.76-10c-9.57,1-45.57,9.05-53.77,11.86S53,180.81,53,180.81s-3.58-3.14,0-9.18-3.71-25.8-9.22-34.25c-6.16-9.43-14.89-16.75-22.37-22.33-4.75-3.54-7.51-4.72-11.41-10.37,0,0,4.41-3.82,8.76-4.67s13.09-1.7,20.6-8.79S48,82.7,48,82.7" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M217.06,182.4s-1.93,5.47-5.12,7.69l-6.84-9s-8.11-12.45-10.36-15.81c-.62-.93,1.57-10.16,5.58-15.35" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M14.35,108.56" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M52.93,159.72s-13.63,4.74-19.34,15.62" transform="translate(-5.97 -0.51)"></path></g><g id="iris" style="opacity: 1;"><path class="iris" d="M172.94,103.12c3.17,2.4,7.91,12.46,7.91,12.46a30.43,30.43,0,0,1-14.18-1.9c-7.72-3.53-9-12-9-12S167,98.79,172.94,103.12Z" transform="translate(-5.97 -0.51)"></path></g><g id="eye" style="opacity: 1;"><path class="lines" d="M170.15,114.64c5.93,1.14,13.65.16,13.65.16a140.92,140.92,0,0,0-9.21-12.8c-4.11-4.79-17.19-3.11-17.19-3.11" transform="translate(-5.97 -0.51)"></path></g><g id="eye-2" style="opacity: 0;"><polyline class="lines" points="176.53 116.69 169.13 99.84 151.42 98.37"></polyline></g></svg>
@@ -99,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Utils
+              Visualisation
             
           </span>
         </div>
@@ -200,7 +200,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="The Lexos API" class="md-nav__button md-logo" aria-label="The Lexos API" data-md-component="logo">
+    <a href="../.." title="The Lexos API" class="md-nav__button md-logo" aria-label="The Lexos API" data-md-component="logo">
       
   
   <svg id="lexos-dragon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245.59 217.84"><defs><style>.circle{fill:#e3e3e3;}.base{fill:#fff;}.shadow{fill:#909090;}.lines{fill:none;stroke:#505050;stroke-miterlimit:10;stroke-width:6px;}.iris{fill:#47bcff;}</style></defs><g id="circle"><circle class="circle" cx="114.34" cy="108.92" r="108.92"></circle></g><g id="base"><path class="base" d="M18.22,71.24S25,76.48,54.38,65c-.59-8.7-1.73-31.14-1.73-34.15,6.77,0,26,19.57,36.25,25.95,12,1.09,46.16,2,64.91,4.59,9.58,1,45.8,21,51.72,30.09s10,19,16.18,25.41,17.08,18,20.95,23.6,7.89,18.49,3.11,21.72S231,172.29,231,172.29l1.87-6.92-7.19-.75L215,170s1.6-5.85,1.2-9.6c-4-3-11.92-9.25-14.12-10.62s-6.69,12.09-6.25,14.79c.34,2.11,15,22.4,18,24.68,2-1.88,4.11-6.56,4.11-6.56s1.29,5.68-1.34,9.75c-6,9.33-12.5,10.71-15.92,10.56s-10.63,1-15.11-2.35-25.74-14-40.87-25.28c-11.4-8.49-19.18-15.74-19.18-15.74s-33.95,6.6-40.56,9.07-32.35,11.61-32.35,11.61a74,74,0,0,0-1.78-20.6c.57-1.05-17.28,15.62-17.28,15.62S10,148.77,11.09,107.2C11.7,84.17,18.22,71.24,18.22,71.24Z" transform="translate(-5.97 -0.51)"></path></g><g id="shadow"><path class="shadow" d="M125.92,133.44c0-4.87-46.64-12.73-58.75-15.06-12-2.3-37.58-5.19-48.44-6.37-.35,0,17.14,11.38,25.93,25.37a63.82,63.82,0,0,1,9.69,29.21S84.24,159.82,125.92,133.44Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M217.52,139.28c-.46,2.91,1.44,5.56,3,7.16s5.5,6.43,8.54,4.46c2.28-1.49-.78-4.62-1.77-6.16C225.77,142.41,218.12,135.4,217.52,139.28Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M174.72,142.19c-3.07,2.28-8.46,4.56-9.34,11.55s4,10.86,6.15,14.73a57.17,57.17,0,0,0,6.34,8.49,61.6,61.6,0,0,0,5.13,5.11c3.08,2.73,7.78,6.15,9,6.38a39.8,39.8,0,0,0,12-1.87c-.37,3-.3,4.48-.41,6.61,3,.63,11.42-2.66,10.57-3.45-2.41-2.23-7.33-8.68-8.59-10.5s-8.74-11.48-9.41-14.17c-.54-2.16,3.31-12.84,5.17-14.53S174.72,142.19,174.72,142.19Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M127.26,107.61c-.56,4.3-101.15-6.45-101.15-6.45S42.93,90.52,48.94,81.42a45.67,45.67,0,0,0,7-33.93S127.9,102.73,127.26,107.61Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M154.48,62.57c-1.6-2.2-5.36-5.24-16-19-15.42-19.92-19-28.08-19.85-23.13s2.32,39.7,2.32,39.7A229.63,229.63,0,0,1,154.48,62.57Z" transform="translate(-5.97 -0.51)"></path></g><g id="lines"><path class="lines" d="M150.41,84.12s-11.85,3.42-26-3.19S85.25,55.64,74.77,47.21A228,228,0,0,0,51.53,31.26s-2,2.68,0,8.14,5,22.74,4,27.21c0,0-26.79,5.83-38,6.64" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M231.3,172.77c4.52.91,8.5-5.42,8.5-5.42a39.46,39.46,0,0,0,7.91-9.39c2.73-5-2-12.7-2-12.7s-5.47-9.34-10.48-13.35-12.76-13.31-17.32-20.37S206.54,94,201.07,86.93s-17.77-12.07-23.7-15l-23.24-10a305.76,305.76,0,0,1-20.5-27.34c-8.21-12.53-15-14.13-15-14.13L122,59.19s-.06,1.17-5,.86c-8.93-.57-24.75.42-24.75.42" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M202.44,192.2c2.28-2.51,3.9-7.81,3.9-7.81S197,189.24,191.5,189l-10.94-8.2c-5.92-6.16-8.65-11.17-12.76-17.32s-4.1-13,0-17.54,7.75-5.93,9.57-4.33,18.23,5.69,25.07,8.65l14.12,10.62c0,5.56-3.39,10.71-3.39,10.71s12.49-3.29,12.82-6.5" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M125.92,133.44c-4.63-6.33-34.22-11.65-57-14.61s-44.84-3.48-50.52-5.92" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M224.24,141c2.28,1.59,7.29,8.55,6.38,9.69s-4.41,1.15-6-.44" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M211.55,200.4a11.76,11.76,0,0,1-5.92,3.19c-7.82,1.76-18.23,0-18.23,0L164.73,189s-19.26-12.08-26.09-18.16a121.25,121.25,0,0,0-12.76-10c-9.57,1-45.57,9.05-53.77,11.86S53,180.81,53,180.81s-3.58-3.14,0-9.18-3.71-25.8-9.22-34.25c-6.16-9.43-14.89-16.75-22.37-22.33-4.75-3.54-7.51-4.72-11.41-10.37,0,0,4.41-3.82,8.76-4.67s13.09-1.7,20.6-8.79S48,82.7,48,82.7" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M217.06,182.4s-1.93,5.47-5.12,7.69l-6.84-9s-8.11-12.45-10.36-15.81c-.62-.93,1.57-10.16,5.58-15.35" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M14.35,108.56" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M52.93,159.72s-13.63,4.74-19.34,15.62" transform="translate(-5.97 -0.51)"></path></g><g id="iris" style="opacity: 1;"><path class="iris" d="M172.94,103.12c3.17,2.4,7.91,12.46,7.91,12.46a30.43,30.43,0,0,1-14.18-1.9c-7.72-3.53-9-12-9-12S167,98.79,172.94,103.12Z" transform="translate(-5.97 -0.51)"></path></g><g id="eye" style="opacity: 1;"><path class="lines" d="M170.15,114.64c5.93,1.14,13.65.16,13.65.16a140.92,140.92,0,0,0-9.21-12.8c-4.11-4.79-17.19-3.11-17.19-3.11" transform="translate(-5.97 -0.51)"></path></g><g id="eye-2" style="opacity: 0;"><polyline class="lines" points="176.53 116.69 169.13 99.84 151.42 98.37"></polyline></g></svg>
@@ -231,7 +231,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         Home
       </a>
     </li>
@@ -246,7 +246,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../installation/" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         Installation
       </a>
     </li>
@@ -259,12 +259,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
       
       
@@ -294,7 +296,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../../tutorial/">Tutorial</a>
+          <a href="../">Tutorial</a>
           
             <label for="__nav_3">
               <span class="md-nav__icon md-icon"></span>
@@ -319,7 +321,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/getting_started/" class="md-nav__link">
+      <a href="../getting_started/" class="md-nav__link">
         Getting Started
       </a>
     </li>
@@ -333,7 +335,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/loading_texts/" class="md-nav__link">
+      <a href="../loading_texts/" class="md-nav__link">
         Loading Texts
       </a>
     </li>
@@ -347,7 +349,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/scrubbing_texts/" class="md-nav__link">
+      <a href="../scrubbing_texts/" class="md-nav__link">
         Scrubbing Texts
       </a>
     </li>
@@ -361,7 +363,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/tokenising_texts/" class="md-nav__link">
+      <a href="../tokenising_texts/" class="md-nav__link">
         Tokenising Texts
       </a>
     </li>
@@ -375,7 +377,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/cutting_docs/" class="md-nav__link">
+      <a href="../cutting_docs/" class="md-nav__link">
         Cutting Documents
       </a>
     </li>
@@ -389,7 +391,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/the_document_term_matrix/" class="md-nav__link">
+      <a href="../the_document_term_matrix/" class="md-nav__link">
         The Document-Term Matrix
       </a>
     </li>
@@ -401,11 +403,108 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../../tutorial/visualisation/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-nav__icon md-icon"></span>
+          
+            <a href="./" class="md-nav__link md-nav__link--active"
+              style="margin: initial; padding: initial; pointer-events: initial">
+          
+            Visualisation
+          </a>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Visualisation
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#word-clouds-and-variants" class="md-nav__link">
+    Word Clouds (and Variants)
+  </a>
+  
+    <nav class="md-nav" aria-label="Word Clouds (and Variants)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-word-clouds" class="md-nav__link">
+    Single Word Clouds
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiclouds" class="md-nav__link">
+    Multiclouds
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bubble-charts" class="md-nav__link">
+    Bubble Charts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dendrograms" class="md-nav__link">
+    Dendrograms
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plotly-dendrograms" class="md-nav__link">
+    Plotly Dendrograms
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seaborn-clustermaps" class="md-nav__link">
+    Seaborn Clustermaps
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plotly-clustermaps" class="md-nav__link">
+    Plotly Clustermaps
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -417,7 +516,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/managing_a_corpus/" class="md-nav__link">
+      <a href="../managing_a_corpus/" class="md-nav__link">
         Managing a Corpus
       </a>
     </li>
@@ -437,14 +536,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
       
       
@@ -476,7 +573,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../">API</a>
+          <a href="../../api/">API</a>
           
             <label for="__nav_4">
               <span class="md-nav__icon md-icon"></span>
@@ -518,7 +615,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../cluster/">Cluster</a>
+          <a href="../../api/cluster/">Cluster</a>
           
         </div>
       
@@ -563,7 +660,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../corpus/">Corpus</a>
+          <a href="../../api/corpus/">Corpus</a>
           
         </div>
       
@@ -612,7 +709,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../cutter/">Cutter</a>
+          <a href="../../api/cutter/">Cutter</a>
           
             <label for="__nav_4_4">
               <span class="md-nav__icon md-icon"></span>
@@ -637,7 +734,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cutter/filesplit/" class="md-nav__link">
+      <a href="../../api/cutter/filesplit/" class="md-nav__link">
         Filesplit
       </a>
     </li>
@@ -651,7 +748,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cutter/milestones/" class="md-nav__link">
+      <a href="../../api/cutter/milestones/" class="md-nav__link">
         Milestones
       </a>
     </li>
@@ -693,7 +790,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../dtm/">DTM</a>
+          <a href="../../api/dtm/">DTM</a>
           
             <label for="__nav_4_5">
               <span class="md-nav__icon md-icon"></span>
@@ -718,7 +815,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dtm/wordcloud/" class="md-nav__link">
+      <a href="../../api/dtm/wordcloud/" class="md-nav__link">
         Wordcloud
       </a>
     </li>
@@ -732,7 +829,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dtm/bubbleviz/" class="md-nav__link">
+      <a href="../../api/dtm/bubbleviz/" class="md-nav__link">
         Bubble Charts
       </a>
     </li>
@@ -772,7 +869,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../io/">IO</a>
+          <a href="../../api/io/">IO</a>
           
             <label for="__nav_4_6">
               <span class="md-nav__icon md-icon"></span>
@@ -797,7 +894,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../io/basic/" class="md-nav__link">
+      <a href="../../api/io/basic/" class="md-nav__link">
         Basic
       </a>
     </li>
@@ -816,14 +913,12 @@
               
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_7" type="checkbox" id="__nav_4_7" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_7" type="checkbox" id="__nav_4_7" >
       
       
       
@@ -853,7 +948,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../">Scrubber</a>
+          <a href="../../api/scrubber/">Scrubber</a>
           
             <label for="__nav_4_7">
               <span class="md-nav__icon md-icon"></span>
@@ -878,7 +973,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../normalize/" class="md-nav__link">
+      <a href="../../api/scrubber/normalize/" class="md-nav__link">
         Normalize
       </a>
     </li>
@@ -892,7 +987,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pipeline/" class="md-nav__link">
+      <a href="../../api/scrubber/pipeline/" class="md-nav__link">
         Pipeline
       </a>
     </li>
@@ -906,7 +1001,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../registry/" class="md-nav__link">
+      <a href="../../api/scrubber/registry/" class="md-nav__link">
         Registry
       </a>
     </li>
@@ -920,7 +1015,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../remove/" class="md-nav__link">
+      <a href="../../api/scrubber/remove/" class="md-nav__link">
         Remove
       </a>
     </li>
@@ -934,7 +1029,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../replace/" class="md-nav__link">
+      <a href="../../api/scrubber/replace/" class="md-nav__link">
         Replace
       </a>
     </li>
@@ -948,7 +1043,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../resources/" class="md-nav__link">
+      <a href="../../api/scrubber/resources/" class="md-nav__link">
         Resources
       </a>
     </li>
@@ -962,7 +1057,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../scrubber/" class="md-nav__link">
+      <a href="../../api/scrubber/scrubber/" class="md-nav__link">
         Scrubber
       </a>
     </li>
@@ -974,57 +1069,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          <span class="md-nav__icon md-icon"></span>
-          
-            <a href="./" class="md-nav__link md-nav__link--active"
-              style="margin: initial; padding: initial; pointer-events: initial">
-          
-            Utils
-          </a>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../api/scrubber/utils/" class="md-nav__link">
         Utils
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.utils.get_tags" class="md-nav__link">
-    get_tags()
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1064,7 +1113,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../tokenizer/">Tokenizer</a>
+          <a href="../../api/tokenizer/">Tokenizer</a>
           
             <label for="__nav_4_8">
               <span class="md-nav__icon md-icon"></span>
@@ -1089,7 +1138,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tokenizer/extensions/" class="md-nav__link">
+      <a href="../../api/tokenizer/extensions/" class="md-nav__link">
         Extensions
       </a>
     </li>
@@ -1103,7 +1152,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tokenizer/lexosdoc/" class="md-nav__link">
+      <a href="../../api/tokenizer/lexosdoc/" class="md-nav__link">
         LexosDoc
       </a>
     </li>
@@ -1124,7 +1173,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualisation/" class="md-nav__link">
+      <a href="../../api/visualisation/" class="md-nav__link">
         Visualisation
       </a>
     </li>
@@ -1138,7 +1187,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utils/" class="md-nav__link">
+      <a href="../../api/utils/" class="md-nav__link">
         Utils
       </a>
     </li>
@@ -1169,8 +1218,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -1179,9 +1226,64 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#lexos.scrubber.utils.get_tags" class="md-nav__link">
-    get_tags()
+  <a href="#word-clouds-and-variants" class="md-nav__link">
+    Word Clouds (and Variants)
   </a>
+  
+    <nav class="md-nav" aria-label="Word Clouds (and Variants)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-word-clouds" class="md-nav__link">
+    Single Word Clouds
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiclouds" class="md-nav__link">
+    Multiclouds
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bubble-charts" class="md-nav__link">
+    Bubble Charts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dendrograms" class="md-nav__link">
+    Dendrograms
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plotly-dendrograms" class="md-nav__link">
+    Plotly Dendrograms
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seaborn-clustermaps" class="md-nav__link">
+    Seaborn Clustermaps
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plotly-clustermaps" class="md-nav__link">
+    Plotly Clustermaps
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1197,117 +1299,131 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/scottkleinman/lexos/edit/master/docs/api/scrubber/utils.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/scottkleinman/lexos/edit/master/docs/tutorial/visualisation.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
 
-<h1 id="utils">Utils<a class="headerlink" href="#utils" title="Permanent link">¤</a></h1>
-<p>The <code>utils</code> component of <code>Scrubber</code> contains helper functions shared by the other components.</p>
+  <h1>Visualisation</h1>
 
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.scrubber.utils.get_tags" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_tags</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.utils.get_tags" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Get information about the tags in a text.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text to be analyzed.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>dict</code></td>
-      <td><p>A dict with the keys "tags" and "attributes". "Tags is a list of unique tag names
-in the data and "attributes" is a list of dicts containing the attributes and values
-for those tags that have attributes.</p></td>
-    </tr>
-  </tbody>
-</table>      <p>it falls back to BeautifulSoup's parser.</p>
-
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_tags</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get information about the tags in a text.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        text (str): The text to be analyzed.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        dict: A dict with the keys &quot;tags&quot; and &quot;attributes&quot;. &quot;Tags is a list of unique tag names</span>
-<span class="sd">        in the data and &quot;attributes&quot; is a list of dicts containing the attributes and values</span>
-<span class="sd">        for those tags that have attributes.</span>
-
-<span class="sd">    Note: The procedure tries to parse the markup as well-formed XML using ETree; otherwise,</span>
-<span class="sd">    it falls back to BeautifulSoup&#39;s parser.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">json</span>
-    <span class="kn">import</span> <span class="nn">re</span>
-    <span class="kn">from</span> <span class="nn">xml.etree</span> <span class="kn">import</span> <span class="n">ElementTree</span>
-
-    <span class="kn">from</span> <span class="nn">natsort</span> <span class="kn">import</span> <span class="n">humansorted</span>
-
-    <span class="n">tags</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">root</span> <span class="o">=</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;{.+}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
-                <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;{.+}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span> <span class="o">!=</span> <span class="p">{}:</span>
-                <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;{.+}&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span><span class="p">):</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">})</span>
-        <span class="n">tags</span> <span class="o">=</span> <span class="n">humansorted</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span>
-        <span class="n">attributes</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-    <span class="k">except</span> <span class="n">ElementTree</span><span class="o">.</span><span class="n">ParseError</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">bs4</span>
-        <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
-        <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;xml&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">soup</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">bs4</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">ProcessingInstruction</span><span class="p">):</span>
-                <span class="n">e</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
-        <span class="p">[</span><span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">()]</span>
-        <span class="p">[</span><span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="n">tag</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrs</span><span class="p">})</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">()]</span>
-        <span class="n">tags</span> <span class="o">=</span> <span class="n">humansorted</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span>
-        <span class="n">attributes</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="n">tags</span><span class="p">,</span> <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="n">attributes</span><span class="p">}</span>
+<p>Once you have generated a document-term matrix, it becomes easy to convert it to pandas dataframe and then to use any of the <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html" target="_blank"><code>pandas.DataFrame.plot</code></a> methods, or to export the data for use with other tools. However, the Lexos API has a number of built-in visualisations to make the process easier. These are accessed through the <code>lexos.visualization</code> module. By default, all Lexos visualisations are <em>static</em> plots produced with the Python <code>matplotlib</code> library. However, both static and interactive plots can be produced using third-party libraries like Plotly and Seaborn. These can be imported from their own folders within the visualisation module. For instance, the Plotly dendrogram module can be imported with <code>from lexos.visualization.plotly.cluster import dendrogram</code>.</p>
+<p>Each of the available visualisation types is described below.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Currently, there is some inconsistency with respect to the format of the input data for dendrograms. Wherever possible, the document-term matrix (the output of <code>lexos.dtm.DTM</code>) is used. Generally, the visualisation function will then call <code>dtm.get_table()</code> to retrieve the data as a pandas dataframe. However, in some cases, the visualisation function requires the dataframe table to be format of input document. Eventually, these functions will be made consistent.</p>
+</div>
+<h2 id="word-clouds-and-variants">Word Clouds (and Variants)<a class="headerlink" href="#word-clouds-and-variants" title="Permanent link">¤</a></h2>
+<h3 id="single-word-clouds">Single Word Clouds<a class="headerlink" href="#single-word-clouds" title="Permanent link">¤</a></h3>
+<p>The simplest way to generate a word cloud is to import the <code>wordcloud</code> function from <a href="../../api/visualisation/#lexos.visualization.cloud.wordcloud">lexos.visualization.cloud.wordcloud</a> and pass it a document-term matrix.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.visualization.cloud.wordcloud</span> <span class="kn">import</span> <span class="n">wordcloud</span>
+<span class="n">dtm</span> <span class="o">=</span> <span class="n">DTM</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+<span class="n">wordcloud</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">opts</span><span class="p">,</span> <span class="n">figure_opts</span><span class="p">)</span>
 </code></pre></div>
-        </details>
-    </div>
+<p>Wordclouds are generated by the Python <a href="https://amueller.github.io/word_cloud/">Wordcloud</a> library. Options can be passed to <code>WordCloud</code> using the <code>opts</code> parameter. Figures are generated using Python's <code>matplotlib</code>, and its options can be passed using <code>figure_opts</code>. Both take a dictionary of options, as in the example below:</p>
+<div class="highlight"><pre><span></span><code><span class="n">opts</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;max_words&quot;</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span>
+    <span class="s2">&quot;background_color&quot;</span><span class="p">:</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;contour_width&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;contour_color&quot;</span><span class="p">:</span> <span class="s2">&quot;steelblue&quot;</span>
+<span class="p">}</span>
+<span class="n">figure_opts</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;figsize&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)}</span>
+<span class="n">wordcloud</span> <span class="o">=</span> <span class="n">wordcloud</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span>
+    <span class="n">opts</span><span class="o">=</span> <span class="n">opts</span><span class="p">,</span>
+    <span class="n">figure_opts</span><span class="o">=</span><span class="n">figure_opts</span><span class="p">,</span>
+    <span class="nb">round</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;wordcloud.png&quot;</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>The <code>round</code> parameter (normally between 100 and 300) will add various degrees of rounded corners to the word cloud.</p>
+<p>If a <code>filename</code> is provided, the plot will be saved to the specified file. By default, <code>show=True</code>, and the wordcloud will be plotted to the screen if the environment is appropriate. If <code>show=False</code>, the <code>WordCloud</code> object will be returned. In this instance, you can still save the word cloud by calling <code>wordcloud.to_file(filename)</code>.</p>
+<p>By default, <a href="../../api/visualisation/#lexos.visualization.cloud.wordcloud">lexos.visualization.cloud.wordcloud</a>, creates a word cloud based on the total term counts for all documents. If you wish to use a single or a subset of documents, use the <code>docs</code> parameter.</p>
+<div class="highlight"><pre><span></span><code><span class="n">wordcloud</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">docs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;doc1&quot;</span><span class="p">,</span> <span class="s2">&quot;doc2&quot;</span><span class="p">,</span> <span class="n">etc</span><span class="o">.</span><span class="p">])</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a href="../../api/visualisation/#lexos.visualization.cloud.wordcloud">lexos.visualization.cloud.wordcloud</a> takes a number of other input formats, including raw text, but a <code>lexos.dtm.DTM</code> is by far the easiest method to generate data from pre-tokenised texts.</p>
+</div>
+<h3 id="multiclouds">Multiclouds<a class="headerlink" href="#multiclouds" title="Permanent link">¤</a></h3>
+<p>Multiclouds are grid-organised word clouds of individual documents, which allow you to compare the document clouds side by side. The method of generating multiclouds is similar to word clouds. The basic input is a <code>lexos.dtm.DTM</code> object, where one word cloud will be generated for each document. If a subset of documents is required, the <code>docs</code> parameter shown above should be used. Once the data is prepared, the multiclouds are generated as showb below:
+with a <a href="../../api/visualisation/#lexos.visualization.cloud.wordcloud.multicloud">lexos.visualization.cloud.wordcloud.multicloud</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.visualization.cloud.wordcloud</span> <span class="kn">import</span> <span class="n">multicloud</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">get_table</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="n">multicloud</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Multicloud&quot;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<p>Since multicloud produce multiple subplots, there is a <code>title</code> parameter to give the entire figure a title and a <code>labels</code> parameter, which includes a list labels to be assigned to each subplot. In the example above, we are just taking the labels from the DTM, minus the first "terms" column. The <code>ncols</code> parameter sets the number of subplots per row.</p>
+<p>If a <code>filename</code> is provided, the entire plot will be saved. If <code>show=False</code>, <a href="../../api/visualisation/#lexos.visualization.cloud.wordcloud.multicloud">lexos.visualization.cloud.wordcloud.multicloud</a> returns a list of word clouds. These can be saved individually by calling <code>to_file()</code> on them.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As with word clouds, <a href="../../api/dtm/wordcloud/#lexos.dtm.wordcloud.make_multiclouds">lexos.dtm.wordcloud.make_multiclouds</a> takes a number of different input formats, but pandas dataframes are the easiest to work with.</p>
+</div>
+<h3 id="bubble-charts">Bubble Charts<a class="headerlink" href="#bubble-charts" title="Permanent link">¤</a></h3>
+<p>Bubble charts (known as "bubbleviz" in Lexos) are produced as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.visualization.bubbleviz</span> <span class="kn">import</span> <span class="n">bubbleviz</span>
+<span class="n">bubbleviz</span><span class="p">(</span><span class="n">dtm</span><span class="p">)</span>
+</code></pre></div>
+<p>See <a href="../../api/visualisation/#lexos.visualization.bubbleviz">lexos.visualization.bubbleviz</a> for a description of the various options.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The algorithm to produce bubble charts in pure Python is experimental and not nearly as good as the Javascript implementation used in the Lexos app.</p>
+</div>
+<h3 id="dendrograms">Dendrograms<a class="headerlink" href="#dendrograms" title="Permanent link">¤</a></h3>
+<p>Static dendrograms based on hierarchical agglomerative clustering are produced using the <a href="../../api/cluster/#lexos.cluster.dendrogram.Dendrogram">lexos.cluster.dendrogram.Dendrogram</a> class. It operates directly on the document-term matrix.</p>
+<div class="highlight"><pre><span></span><code><span class="n">dendrogram</span> <span class="o">=</span> <span class="n">Dendrogram</span><span class="p">(</span><span class="n">dtm</span><span class="p">)</span>
+<span class="n">dendrogram</span><span class="o">.</span><span class="n">fig</span>
 
-  </div>
+<span class="ow">or</span>
+
+<span class="n">dendrogram</span> <span class="o">=</span> <span class="n">Dendrogram</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>The dendrogram plot is not shown by default, so you need to use one of the methods above to display it. The class is a wrapper around <code><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.dendrogram.html">scipy.cluster.hierarchy.dendrogram</a></code>, and you can change any of its options by calling them, e.g. <code>dendrogram.orientation = bottom</code>. If you change any of the options, you must then rebuild the dendrogram by calling <code>Dendrogram.build()</code>.</p>
+<p>The distance title, distance metric, and linkage method, of the dendrogram can be set in the same way by passing <code>title</code>, <code>metric</code>, and <code>method</code> when instantiating the class or by setting them afterwards in the same manner as shown above.</p>
+<p>There is also a <code>savefig()</code> method which takes a filename or filepath to save the file. The image format is detected automatically from the extension type.</p>
+<h3 id="plotly-dendrograms">Plotly Dendrograms<a class="headerlink" href="#plotly-dendrograms" title="Permanent link">¤</a></h3>
+<p>To create a dendrogram in plotly, do the following:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.visualization.plotly.cluster.dendrogram</span> <span class="kn">import</span> <span class="n">PlotlyDendrogram</span>
+<span class="n">layout</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="mi">20</span><span class="p">))</span>
+<span class="n">dendrogram</span> <span class="o">=</span> <span class="n">PlotlyDendrogram</span><span class="p">(</span>
+    <span class="n">dtm</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Plotly Dendrogram&quot;</span><span class="p">,</span>
+    <span class="n">x_tickangle</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">layout</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>The <code>plot()</code> function accepts the <code>labels</code>, <code>colorscale</code>, <code>hovertext</code>, and <code>color_threshold</code> parameters in the <code><a href="https://plotly.github.io/plotly.py-docs/generated/plotly.figure_factory.create_dendrogram.html">plotly.figure_factory.create_dendrogram</a></code> function. However, it requires strings, rather than functions, for the names of distance metric and linkage method, as shown above. Use the <code>x_tickangle</code> parameter to change the rotation of the leaf labels.</p>
+<p>A dictionary of <a href="https://plotly.com/python/configuration-options/">Plotly configuration options</a> can be passed to the <code>config</code> parameter. Likewise, <a href="https://plotly.com/python/reference/layout/">Plotly layout options</a> can be passed using the <code>layout</code> parameter, as shown in the example above.</p>
+<p>Once the dendrogram object has been instantiated, it can be displayed with the <code>Dendrogram.showfig()</code> method it can also be converted to HTML with <code>Dendrogram.to_html()</code>. By default, this will return an HTML div element, but the <code>output_type</code> can also be set to "file" and a <code>filename</code> supplied to save the HTML string as a file.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you create a dendrogram with something like <code>dendrogram = Dendrogram(dtm, show=False)</code> and then call <code>dendrogram.fig</code>, you will get a plot, but it will not have any configurations you have specified applied to it. This includes the default configurations such as removing the Plotly logo from the menubar. This is due to a flaw in Plotly's API. Accessing the dendrogram figure with <code>dendrogram.showfig()</code> avoids this problem.</p>
+</div>
+<h3 id="seaborn-clustermaps">Seaborn Clustermaps<a class="headerlink" href="#seaborn-clustermaps" title="Permanent link">¤</a></h3>
+<p>A clustermap is a dendrogram attached to a heatmap, showing the relative similarity of documents using a colour scale. Lexos can generate static clustermap images using the Python Seaborn library.</p>
+<p>To generate a clustermap, use the following code:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.visualization.seaborn.cluster.clustermap</span> <span class="kn">import</span> <span class="n">ClusterMap</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">ClusterMap</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Clustermap&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><a href="../../api/visualisation/#lexos.visualization.seaborn.cluster.clustermap.ClusterMap">lexos.visualization.seaborn.cluster.clustermap.ClusterMap</a> accepts any <a href="https://seaborn.pydata.org/generated/seaborn.clustermap.html"><code>Seaborn.clustermap</code> parameter.</a></p>
+<p>The distance title, distance metric, and linkage method, of the dendrogram can be set in the same way by passing <code>title</code>, <code>metric</code>, and <code>method</code> when instantiating the class or by setting them afterwards calling <code>ClusterMap.build()</code>.</p>
+<p>The clustermap plot is not shown by default. To display the plot, generate it with <code>show=True</code> or refernce it with <code>ClusterMap.fig</code>. If you change any of the options, you must then rebuild the dendrogram by calling <code>ClusterMap.build()</code>.</p>
+<p>There is also a <code>savefig()</code> method which takes a filename or filepath to save the file. The image format is detected automatically from the extension type.</p>
+<h3 id="plotly-clustermaps">Plotly Clustermaps<a class="headerlink" href="#plotly-clustermaps" title="Permanent link">¤</a></h3>
+<p>Plotly clustermaps are somewhat experimental and may not render plots that are as informative as Seaborn clustermaps. One advantage they have is that, instead of providing labels for each document at the bottom of the graph, they provide the document labels on the x and y axes, as well as the z (distance) score in the hovertext. This allows you to mouse over individual sections of the heatmap to see which documents are represented by that particular section.</p>
+<p>Plotly clustermaps are constructed in the same manner to Plotly dendrograms:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.visualization.seaborn.cluster.clustermap</span> <span class="kn">import</span> <span class="n">PlotlyClustermap</span>
+<span class="n">clustermap</span> <span class="o">=</span> <span class="n">PlotlyClustermap</span><span class="p">(</span><span class="n">dtm</span><span class="p">)</span>
+<span class="n">clustermap</span><span class="o">.</span><span class="n">showfig</span><span class="p">()</span>
+</code></pre></div>
+<p>All the options for Plotly dendrograms are available with the following differences:</p>
+<ul>
+<li>Figure size is determined by configuring the <code>width</code> and <code>height</code> parameters.</li>
+<li><code>colorscale</code> is the name of a <a href="https://plotly.com/python/builtin-colorscales/" target="_blank">built-in Plotly colorscale</a>. This is applied to the heatmap and converted internally to a list of colorus to apply to the dendrograms.</li>
+<li>Two additional parameters, <code>hide_upper</code> and <code>hide_side</code> allow you to hide the individual dendrograms.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Once the clustermap plot has been generated, it is inadvisable to use the modebar zoom and pan buttons because this tends to separate the heatmap from the dendrogram leaves. It may even be advisable to remove these buttons from the modebar by default.</p>
+</div>
 
               
             </article>
@@ -1326,7 +1442,7 @@ for those tags that have attributes.</p></td>
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../scrubber/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../the_document_term_matrix/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1335,19 +1451,19 @@ for those tags that have attributes.</p></td>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Scrubber
+              The Document-Term Matrix
             </div>
           </div>
         </a>
       
       
-        <a href="../../tokenizer/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../managing_a_corpus/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Index
+              Managing a Corpus
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -1417,10 +1533,10 @@ for those tags that have attributes.</p></td>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.indexes"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.960e086b.min.js"></script>
+      <script src="../../assets/javascripts/bundle.960e086b.min.js"></script>
       
     
   </body>
