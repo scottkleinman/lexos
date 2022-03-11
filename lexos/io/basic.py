@@ -29,6 +29,8 @@ class Loader():
     def __init__(self):
         """__init__ method."""
         self.source = None
+        self.names = []
+        self.locations = []
         self.texts = []
         self.errors = []
         self.decode = True
@@ -78,13 +80,19 @@ class Loader():
             if self._validate_source(item):
                 if utils.is_url(item):
                     self.texts.append(self._download_text(item))
+                    self.names.append(Path(item).stem)
+                    self.locations.append(item)
                 elif utils.ensure_path(item).is_file():
                     with open(utils.ensure_path(item), "rb") as f:
                         self.texts.append(self._decode(f.read()))
+                    self.names.append(Path(item).stem)
+                    self.locations.append(item)
                 elif utils.ensure_path(item).is_dir():
                     for filepath in utils.ensure_path(item).rglob("*"):
                         with open(filepath, "rb") as f:
                             self.texts.append(self._decode(f.read()))
+                        self.names.append(Path(filepath).stem)
+                        self.locations.append(filepath)
                 # Failsafe
                 else:
                     raise LexosException(f'{LANG["bad_source"]}: {item}')
