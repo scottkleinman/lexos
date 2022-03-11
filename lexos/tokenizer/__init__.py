@@ -10,37 +10,98 @@ from . import extensions, lexosdoc
 
 default_model = spacy.load("xx_sent_ud_sm")
 
+
+def _get_excluded_components(
+    exclude: List[str] = None,
+    pipeline_components: dict = None
+    ) -> List[str]:
+    """Get a list of components to exclude from the pipeline."""
+    if exclude is None:
+        exclude = []
+    custom_exclude = []
+    if "exclude" in pipeline_components:
+        for component in pipeline_components["exclude"]:
+            custom_exclude.append(component)
+    exclude.extend(custom_exclude)
+    return list(set(exclude))
+
+
+def _get_disabled_components(
+    disable:List[str] = None,
+    pipeline_components: dict = None
+    ) -> List[str]:
+    """Get a list of components to disable in the pipeline."""
+    if disable is None:
+        disable = []
+    custom_disable = []
+    if "disable" in pipeline_components:
+        for component in pipeline_components["disable"]:
+            custom_disable.append(component)
+    disable.extend(custom_disable)
+    return list(set(disable))
+
+
 def make_doc(text: str,
-			  model: object = "xx_sent_ud_sm",
-			  disable: List[str] = []) -> object:
+             model: object = "xx_sent_ud_sm",
+             max_length: int = 2000000,
+             disable: List[str] = [],
+             exclude: List[str] = [],
+             pipeline_components: List[dict] = []) -> object:
     """Return a doc from a text.
 
-	Args:
-		text (str): The text to be parsed.
-		model (object): The model to be used.
-		disable (List[str]): A list of spaCy pipeline components to disable.
+    Args:
+        text (str): The text to be parsed.
+        model (object): The model to be used.
+        max_length (int): The maximum length of the doc.
+        disable (List[str]): A list of spaCy pipeline components to disable.
+        exclude (List[str]): A list of spaCy pipeline components to exclude.
+        pipeline_components (List[dict]): A list custom component dicts to add
+            to the pipeline. See https://spacy.io/api/language/#add_pipe for
+            more information.
 
-	Returns:
-		object: A spaCy doc object.
-	"""
-    nlp = spacy.load(model)
-    return nlp(text, disable=disable)
+    Returns:
+        object: A spaCy doc object.
+    """
+    disable = _get_disabled_components(disable, pipeline_components)
+    exclude = _get_excluded_components(exclude, pipeline_components)
+    nlp = spacy.load(model, disable=disable, exclude=exclude)
+    nlp.max_length = max_length
+    if pipeline_components and "custom" in pipeline_components:
+        for component in pipeline_components["custom"]:
+            nlp.add_pipe(**component)
+    return nlp(text)
+
 
 def make_docs(texts: Union[List[str], str],
-			  model: object = "xx_sent_ud_sm",
-			  disable: List[str] = []) -> List:
-	"""Return a list of docs from a text or list of texts.
+              model: object = "xx_sent_ud_sm",
+              max_length: int = 2000000,
+              disable: List[str] = [],
+              exclude: List[str] = [],
+              pipeline_components: List[dict] = []) -> List:
 
-	Args:
-		text (Union[List[str], str]): The text(s) to be parsed.
-		model (object): The model to be used.
-		disable (List[str]): A list of spaCy pipeline components to disable.
+    """Return a list of docs from a text or list of texts.
 
-	Returns:
-		list: A list of spaCy doc objects.
-	"""
-	nlp = spacy.load(model)
-	return list(nlp.pipe(utils.ensure_list(texts), disable=disable))
+    Args:
+        text (Union[List[str], str]): The text(s) to be parsed.
+        model (object): The model to be used.
+        max_length (int): The maximum length of the doc.
+        disable (List[str]): A list of spaCy pipeline components to disable.
+        exclude (List[str]): A list of spaCy pipeline components to exclude.
+        pipeline_components (List[dict]): A list custom component dicts to add
+            to the pipeline. See https://spacy.io/api/language/#add_pipe for
+            more information.
+
+    Returns:
+        list: A list of spaCy doc objects.
+    """
+    disable = _get_disabled_components(disable, pipeline_components)
+    exclude = _get_excluded_components(exclude, pipeline_components)
+    nlp = spacy.load(model, disable=disable, exclude=exclude)
+    nlp.max_length = max_length
+    if pipeline_components and "custom" in pipeline_components:
+        for component in pipeline_components["custom"]:
+            nlp.add_pipe(**component)
+    return list(nlp.pipe(utils.ensure_list(texts)))
 
 
 def doc_from_ngrams(ngrams: list, model="xx_sent_ud_sm", strict=False) -> object:
@@ -74,26 +135,26 @@ def doc_from_ngrams(ngrams: list, model="xx_sent_ud_sm", strict=False) -> object
 
 
 def docs_from_ngrams(ngrams: List[list], model="xx_sent_ud_sm", strict=False) -> List[object]:
-	"""Generate spaCy doc from a list of ngram lists.
+    """Generate spaCy doc from a list of ngram lists.
 
-	Args:
-		ngrams (List[list]): A list of ngram lists.
-		model (object): The language model to use for tokenisation.
-		strict (bool): Whether to preserve token divisions, include whitespace in the source.
+    Args:
+        ngrams (List[list]): A list of ngram lists.
+        model (object): The language model to use for tokenisation.
+        strict (bool): Whether to preserve token divisions, include whitespace in the source.
 
-	Returns:
-		List[object]: A list of spaCy docs
-	"""
-	docs = []
-	for ngram_list in ngrams:
-		doc = doc_from_ngrams(ngram_list, model, strict)
-		docs.append(doc)
-	return docs
+    Returns:
+        List[object]: A list of spaCy docs
+    """
+    docs = []
+    for ngram_list in ngrams:
+        doc = doc_from_ngrams(ngram_list, model, strict)
+        docs.append(doc)
+    return docs
 
 
 def generate_character_ngrams(text: str,
-							  size: int = 1,
-							  drop_whitespace: bool = True) -> List[str]:
+                              size: int = 1,
+                              drop_whitespace: bool = True) -> List[str]:
     """Generate character n-grams from raw text.
 
     Args:
@@ -108,20 +169,20 @@ def generate_character_ngrams(text: str,
     return wrap(text, size, drop_whitespace=drop_whitespace)
 
 
-def ngrams_from_doc(doc: object, size:int = 2) -> List[str]:
-	"""Generate a list of ngrams from a spaCy doc.
+def ngrams_from_doc(doc: object, size: int = 2) -> List[str]:
+    """Generate a list of ngrams from a spaCy doc.
 
-	A wrapper for `textacy.extract.basics.ngrams`. With basic functionality.
-	Further functionality can be accessed by calling `textacy` directly.
+    A wrapper for `textacy.extract.basics.ngrams`. With basic functionality.
+    Further functionality can be accessed by calling `textacy` directly.
 
-	Args:
-		ngrams (object): A spaCy doc
-		size (int): The size of the ngrams.
+    Args:
+        ngrams (object): A spaCy doc
+        size (int): The size of the ngrams.
 
-	Returns:
-		List[str]: A list of ngrams.
-	"""
-	import textacy.extract.basics.ngrams as textacy_ngrams
-	ngrams = list(textacy_ngrams(doc, size, min_freq=1))
-	# Ensure quoted strings are returned
-	return [token.text for token in ngrams]
+    Returns:
+        List[str]: A list of ngrams.
+    """
+    import textacy.extract.basics.ngrams as textacy_ngrams
+    ngrams = list(textacy_ngrams(doc, size, min_freq=1))
+    # Ensure quoted strings are returned
+    return [token.text for token in ngrams]
