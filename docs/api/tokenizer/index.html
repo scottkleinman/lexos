@@ -1569,7 +1569,7 @@ sequences in the source list.</p>
 
 
 <h3 id="lexos.tokenizer.make_doc" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[],</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[],</span> <span class="n">pipeline_components</span><span class="o">=</span><span class="p">[])</span></code>
+<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[],</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[],</span> <span class="n">add_stopwords</span><span class="o">=</span><span class="p">[],</span> <span class="n">remove_stopwords</span><span class="o">=</span><span class="p">[],</span> <span class="n">pipeline_components</span><span class="o">=</span><span class="p">[])</span></code>
 
 
 <a href="#lexos.tokenizer.make_doc" class="headerlink" title="Permanent link">¤</a></h3>
@@ -1620,6 +1620,19 @@ sequences in the source list.</p>
         <td><code>[]</code></td>
       </tr>
       <tr>
+        <td><code>add_stopwords</code></td>
+        <td><code>List[str]</code></td>
+        <td><p>A list of stop words to add to the model.</p></td>
+        <td><code>[]</code></td>
+      </tr>
+      <tr>
+        <td><code>remove_stopwords</code></td>
+        <td><code>Union[List[str], str]</code></td>
+        <td><p>A list of stop words to remove
+from the model. If "all" is specified, all stop words will be removed.</p></td>
+        <td><code>[]</code></td>
+      </tr>
+      <tr>
         <td><code>pipeline_components</code></td>
         <td><code>List[dict]</code></td>
         <td><p>A list custom component dicts to add
@@ -1651,6 +1664,8 @@ more information.</p></td>
              <span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000000</span><span class="p">,</span>
              <span class="n">disable</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
              <span class="n">exclude</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+             <span class="n">add_stopwords</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+             <span class="n">remove_stopwords</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
              <span class="n">pipeline_components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Return a doc from a text.</span>
 
@@ -1660,6 +1675,9 @@ more information.</p></td>
 <span class="sd">        max_length (int): The maximum length of the doc.</span>
 <span class="sd">        disable (List[str]): A list of spaCy pipeline components to disable.</span>
 <span class="sd">        exclude (List[str]): A list of spaCy pipeline components to exclude.</span>
+<span class="sd">        add_stopwords (List[str]): A list of stop words to add to the model.</span>
+<span class="sd">        remove_stopwords (Union[List[str], str]): A list of stop words to remove</span>
+<span class="sd">            from the model. If &quot;all&quot; is specified, all stop words will be removed.</span>
 <span class="sd">        pipeline_components (List[dict]): A list custom component dicts to add</span>
 <span class="sd">            to the pipeline. See https://spacy.io/api/language/#add_pipe for</span>
 <span class="sd">            more information.</span>
@@ -1671,6 +1689,13 @@ more information.</p></td>
     <span class="n">exclude</span> <span class="o">=</span> <span class="n">_get_excluded_components</span><span class="p">(</span><span class="n">exclude</span><span class="p">,</span> <span class="n">pipeline_components</span><span class="p">)</span>
     <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="n">disable</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">)</span>
     <span class="n">nlp</span><span class="o">.</span><span class="n">max_length</span> <span class="o">=</span> <span class="n">max_length</span>
+    <span class="k">if</span> <span class="n">add_stopwords</span><span class="p">:</span>
+        <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">add_stopwords</span><span class="p">)</span> <span class="c1"># A set, e.g. {&quot;and&quot;, &quot;the&quot;}</span>
+    <span class="k">if</span> <span class="n">remove_stopwords</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">remove_stopwords</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="p">{}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">remove_stopwords</span><span class="p">)</span> <span class="c1"># A set, e.g. {&quot;and&quot;, &quot;the&quot;}</span>
     <span class="k">if</span> <span class="n">pipeline_components</span> <span class="ow">and</span> <span class="s2">&quot;custom&quot;</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">[</span><span class="s2">&quot;custom&quot;</span><span class="p">]:</span>
             <span class="n">nlp</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="o">**</span><span class="n">component</span><span class="p">)</span>
@@ -1688,7 +1713,7 @@ more information.</p></td>
 
 
 <h3 id="lexos.tokenizer.make_docs" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">make_docs</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[],</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[],</span> <span class="n">pipeline_components</span><span class="o">=</span><span class="p">[])</span></code>
+<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">make_docs</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[],</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[],</span> <span class="n">add_stopwords</span><span class="o">=</span><span class="p">[],</span> <span class="n">remove_stopwords</span><span class="o">=</span><span class="p">[],</span> <span class="n">pipeline_components</span><span class="o">=</span><span class="p">[])</span></code>
 
 
 <a href="#lexos.tokenizer.make_docs" class="headerlink" title="Permanent link">¤</a></h3>
@@ -1739,6 +1764,19 @@ more information.</p></td>
         <td><code>[]</code></td>
       </tr>
       <tr>
+        <td><code>add_stopwords</code></td>
+        <td><code>List[str]</code></td>
+        <td><p>A list of stop words to add to the model.</p></td>
+        <td><code>[]</code></td>
+      </tr>
+      <tr>
+        <td><code>remove_stopwords</code></td>
+        <td><code>Union[List[str], str]</code></td>
+        <td><p>A list of stop words to remove
+from the model. If "all" is specified, all stop words will be removed.</p></td>
+        <td><code>[]</code></td>
+      </tr>
+      <tr>
         <td><code>pipeline_components</code></td>
         <td><code>List[dict]</code></td>
         <td><p>A list custom component dicts to add
@@ -1770,6 +1808,8 @@ more information.</p></td>
               <span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000000</span><span class="p">,</span>
               <span class="n">disable</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
               <span class="n">exclude</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+              <span class="n">add_stopwords</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+              <span class="n">remove_stopwords</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
               <span class="n">pipeline_components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;Return a list of docs from a text or list of texts.</span>
@@ -1780,6 +1820,9 @@ more information.</p></td>
 <span class="sd">        max_length (int): The maximum length of the doc.</span>
 <span class="sd">        disable (List[str]): A list of spaCy pipeline components to disable.</span>
 <span class="sd">        exclude (List[str]): A list of spaCy pipeline components to exclude.</span>
+<span class="sd">        add_stopwords (List[str]): A list of stop words to add to the model.</span>
+<span class="sd">        remove_stopwords (Union[List[str], str]): A list of stop words to remove</span>
+<span class="sd">            from the model. If &quot;all&quot; is specified, all stop words will be removed.</span>
 <span class="sd">        pipeline_components (List[dict]): A list custom component dicts to add</span>
 <span class="sd">            to the pipeline. See https://spacy.io/api/language/#add_pipe for</span>
 <span class="sd">            more information.</span>
@@ -1791,6 +1834,13 @@ more information.</p></td>
     <span class="n">exclude</span> <span class="o">=</span> <span class="n">_get_excluded_components</span><span class="p">(</span><span class="n">exclude</span><span class="p">,</span> <span class="n">pipeline_components</span><span class="p">)</span>
     <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="n">disable</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">)</span>
     <span class="n">nlp</span><span class="o">.</span><span class="n">max_length</span> <span class="o">=</span> <span class="n">max_length</span>
+    <span class="k">if</span> <span class="n">add_stopwords</span><span class="p">:</span>
+        <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">add_stopwords</span><span class="p">)</span> <span class="c1"># A set, e.g. {&quot;and&quot;, &quot;the&quot;}</span>
+    <span class="k">if</span> <span class="n">remove_stopwords</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">remove_stopwords</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="p">{}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">remove_stopwords</span><span class="p">)</span> <span class="c1"># A set, e.g. {&quot;and&quot;, &quot;the&quot;}</span>
     <span class="k">if</span> <span class="n">pipeline_components</span> <span class="ow">and</span> <span class="s2">&quot;custom&quot;</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">[</span><span class="s2">&quot;custom&quot;</span><span class="p">]:</span>
             <span class="n">nlp</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="o">**</span><span class="n">component</span><span class="p">)</span>

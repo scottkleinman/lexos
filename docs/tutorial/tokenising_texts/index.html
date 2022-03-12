@@ -426,6 +426,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#handling-stop-words" class="md-nav__link">
+    Handling Stop Words
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1267,6 +1274,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#handling-stop-words" class="md-nav__link">
+    Handling Stop Words
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1403,6 +1417,19 @@
 <p>The <code>pipeline_components</code> dict also contains <code>disable</code> and <code>exclude</code> keywords. The values are lists of components which will be merged with any components supplied in the <code>disable</code> or <code>exclude</code> paramaters of <a href="../../api/tokenizer/#lexos.tokenizer.make_doc">lexos.tokenizer.make_doc</a> and <a href="../../api/tokenizer/#lexos.tokenizer.make_docs">lexos.tokenizer.make_docs</a>.</p>
 </div>
 <p>The ability to add custom pipeline components is valuable for certain language- or application-specific scenarios. However, it also opens Lexos up to the wealth of third-part pipeline components available through the <a href="https://spacy.io/universe/category/pipeline" target="_blank">spaCy Universe</a>.</p>
+<h3 id="handling-stop-words">Handling Stop Words<a class="headerlink" href="#handling-stop-words" title="Permanent link">¤</a></h3>
+<p>Every token in a spaCy doc has an <code>is_stop</code> attribute. Most language models will have a list of default stop words, and this list is used to set the <code>is_stop</code> attribute <code>True</code> for every token when the document is parsed. It is possible to add stop words to the default list by passing a list to <a href="../../api/tokenizer/#lexos.tokenizer.make_doc">lexos.tokenizer.make_doc</a> or <a href="../../api/tokenizer/#lexos.tokenizer.make_docs">lexos.tokenizer.make_docs</a> with the <code>add_stopwords</code> argument:</p>
+<div class="highlight"><pre><span></span><code><span class="n">doc</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;en_core_web_sm&quot;</span><span class="p">,</span>
+    <span class="n">add_stopwords</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span> <span class="s2">&quot;maybe&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>The <code>remove_stopwords</code> argument removes stop words from the default list. If <code>remove_stopwords="all"</code>, all stop words are removed.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><code>add_stopwords</code> and <code>remove_stopwords</code> do not remove stop word tokens from the doc; rather, they modify the stop word list used to set the <code>is_stop</code> attribute of individual tokens. To get a list of tokens without stop words, you must do something like <code>[token for token in doc if not token.is_stop]</code>.</p>
+</div>
 <h2 id="lexosdocs">LexosDocs<a class="headerlink" href="#lexosdocs" title="Permanent link">¤</a></h2>
 <p>The Lexos API also has a <a href="../../api/tokenizer/lexosdoc/#lexos.tokenizer.lexosdoc.LexosDoc">LexosDoc</a> class, which provides a wrapper for spaCy docs. Its use is illustrated below.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.tokenizer.lexosdoc</span> <span class="kn">import</span> <span class="n">LexosDoc</span>
