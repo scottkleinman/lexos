@@ -13,7 +13,7 @@
     
     
       
-        <title>The Document-Term Matrix - The Lexos API</title>
+        <title>Training a Language Model - The Lexos API</title>
       
     
     
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#about-the-document-term-matrix" class="md-skip">
+        <a href="#the-languagemodel-class-and-the-training-workflow" class="md-skip">
           Skip to content
         </a>
       
@@ -99,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              The Document-Term Matrix
+              Training a Language Model
             
           </span>
         </div>
@@ -391,136 +391,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          <span class="md-nav__icon md-icon"></span>
-          
-            <a href="./" class="md-nav__link md-nav__link--active"
-              style="margin: initial; padding: initial; pointer-events: initial">
-          
-            The Document-Term Matrix
-          </a>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../the_document_term_matrix/" class="md-nav__link">
         The Document-Term Matrix
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#about-the-document-term-matrix" class="md-nav__link">
-    About the Document-Term Matrix
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-term-counts-and-frequencies" class="md-nav__link">
-    Getting Term Counts and Frequencies
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#the-dtm-class" class="md-nav__link">
-    The DTM Class
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-a-term-counts-table" class="md-nav__link">
-    Getting a Term Counts Table
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-most-frequent-terms" class="md-nav__link">
-    Getting Most Frequent Terms
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-statistics-from-the-dtm" class="md-nav__link">
-    Getting Statistics from the DTM
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-relative-frequencies" class="md-nav__link">
-    Getting Relative Frequencies
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-lists-of-terms-and-term-counts" class="md-nav__link">
-    Getting Lists of Terms and Term Counts
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#visualising-the-dtm" class="md-nav__link">
-    Visualising the DTM
-  </a>
-  
-    <nav class="md-nav" aria-label="Visualising the DTM">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#single-word-clouds" class="md-nav__link">
-    Single Word Clouds
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#multiclouds" class="md-nav__link">
-    Multiclouds
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#bubble-charts" class="md-nav__link">
-    Bubble Charts
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -558,11 +433,143 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../training_a_language_model/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-nav__icon md-icon"></span>
+          
+            <a href="./" class="md-nav__link md-nav__link--active"
+              style="margin: initial; padding: initial; pointer-events: initial">
+          
+            Training a Language Model
+          </a>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Training a Language Model
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-languagemodel-class-and-the-training-workflow" class="md-nav__link">
+    The LanguageModel Class and the Training Workflow
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#before-getting-started" class="md-nav__link">
+    Before Getting Started
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instantiating-a-languagemodel-object" class="md-nav__link">
+    Instantiating a LanguageModel Object
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#working-with-the-configuration" class="md-nav__link">
+    Working with the Configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#copying-assets" class="md-nav__link">
+    Copying Assets
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#converting-assets-to-spacy-format" class="md-nav__link">
+    Converting Assets to spaCy Format
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-configuration-and-data" class="md-nav__link">
+    Debugging Configuration and Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selecting-pipeline-components" class="md-nav__link">
+    Selecting Pipeline Components
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-a-model" class="md-nav__link">
+    Training a Model
+  </a>
+  
+    <nav class="md-nav" aria-label="Training a Model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#balancing-efficiency-and-accuracy" class="md-nav__link">
+    Balancing Efficiency and Accuracy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-with-a-gpu-and-transformer-models" class="md-nav__link">
+    Training with a GPU and Transformer Models
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluating-a-model" class="md-nav__link">
+    Evaluating a Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#packaging-the-model" class="md-nav__link">
+    Packaging the Model
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1317,92 +1324,99 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#about-the-document-term-matrix" class="md-nav__link">
-    About the Document-Term Matrix
+  <a href="#the-languagemodel-class-and-the-training-workflow" class="md-nav__link">
+    The LanguageModel Class and the Training Workflow
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#getting-term-counts-and-frequencies" class="md-nav__link">
-    Getting Term Counts and Frequencies
+  <a href="#before-getting-started" class="md-nav__link">
+    Before Getting Started
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-dtm-class" class="md-nav__link">
-    The DTM Class
+  <a href="#instantiating-a-languagemodel-object" class="md-nav__link">
+    Instantiating a LanguageModel Object
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#getting-a-term-counts-table" class="md-nav__link">
-    Getting a Term Counts Table
+  <a href="#working-with-the-configuration" class="md-nav__link">
+    Working with the Configuration
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#getting-most-frequent-terms" class="md-nav__link">
-    Getting Most Frequent Terms
+  <a href="#copying-assets" class="md-nav__link">
+    Copying Assets
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#getting-statistics-from-the-dtm" class="md-nav__link">
-    Getting Statistics from the DTM
+  <a href="#converting-assets-to-spacy-format" class="md-nav__link">
+    Converting Assets to spaCy Format
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#getting-relative-frequencies" class="md-nav__link">
-    Getting Relative Frequencies
+  <a href="#debugging-configuration-and-data" class="md-nav__link">
+    Debugging Configuration and Data
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#getting-lists-of-terms-and-term-counts" class="md-nav__link">
-    Getting Lists of Terms and Term Counts
+  <a href="#selecting-pipeline-components" class="md-nav__link">
+    Selecting Pipeline Components
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#visualising-the-dtm" class="md-nav__link">
-    Visualising the DTM
+  <a href="#training-a-model" class="md-nav__link">
+    Training a Model
   </a>
   
-    <nav class="md-nav" aria-label="Visualising the DTM">
+    <nav class="md-nav" aria-label="Training a Model">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#single-word-clouds" class="md-nav__link">
-    Single Word Clouds
+  <a href="#balancing-efficiency-and-accuracy" class="md-nav__link">
+    Balancing Efficiency and Accuracy
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#multiclouds" class="md-nav__link">
-    Multiclouds
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#bubble-charts" class="md-nav__link">
-    Bubble Charts
+  <a href="#training-with-a-gpu-and-transformer-models" class="md-nav__link">
+    Training with a GPU and Transformer Models
   </a>
   
 </li>
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluating-a-model" class="md-nav__link">
+    Evaluating a Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#packaging-the-model" class="md-nav__link">
+    Packaging the Model
+  </a>
   
 </li>
       
@@ -1418,183 +1432,147 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/scottkleinman/lexos/edit/master/docs/tutorial/the_document_term_matrix.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/scottkleinman/lexos/edit/master/docs/tutorial/training_a_language_model.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
 
-  <h1>The Document-Term Matrix</h1>
+  <h1>Training a Language Model</h1>
 
-<h2 id="about-the-document-term-matrix">About the Document-Term Matrix<a class="headerlink" href="#about-the-document-term-matrix" title="Permanent link">¤</a></h2>
-<p>A document-term matrix (DTM) is the standard interface for analysis and information of document data. It consists in its raw form of a list of token counts per document in the corpus. Each unique token form is called a term. Thus it is really a list of term counts per document, arranged as matrix.</p>
-<p>In the Lexos App, sklearn's <a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html" target="_blank"><code>CountVectorizer</code></a> is used to produce the DTM. In the Lexos API, Textacy's <code><a href="https://textacy.readthedocs.io/en/latest/api_reference/representations.html#textacy.representations.vectorizers.Vectorizer" target="_blank">Vectorizer</a></code> is used. Here is a vanilla implication to get a DTM containing the raw term counts for each document.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">textacy.representations.vectorizers</span> <span class="kn">import</span> <span class="n">Vectorizer</span>
-
-<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">Vectorizer</span><span class="p">(</span>
-    <span class="n">tf_type</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
-    <span class="n">idf_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">norm</span><span class="o">=</span><span class="kc">None</span>
-<span class="p">)</span>
-
-<span class="n">tokenised_docs</span> <span class="o">=</span> <span class="p">(</span><span class="n">LexosDoc</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span><span class="o">.</span><span class="n">get_tokens</span><span class="p">()</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">)</span>
-<span class="n">doc_term_matrix</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tokenised_docs</span><span class="p">)</span>
-</code></pre></div>
-<p>The main advantage of this procedures is that sklearn's <a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html" target="_blank"><code>CountVectorizer</code></a> employs a regular expression pattern to tokenise the text and has very limited functionality to implement the kind of language-specific knowledge available in a document tokenised with a language model.</p>
-<h2 id="getting-term-counts-and-frequencies">Getting Term Counts and Frequencies<a class="headerlink" href="#getting-term-counts-and-frequencies" title="Permanent link">¤</a></h2>
-<p>The Lexos API provides an easy method of using the <code>Vectorizer</code> to retrieve term counts or frequencies from a single document and returning the results in a pandas dataframe.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.dtm</span> <span class="kn">import</span> <span class="n">get_doc_term_counts</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">get_doc_term_counts</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</code></pre></div>
-<p>Setting <code>normalize=True</code> will return relative frequencies instead of raw counts. <a href="../../api/dtm/#lexos.dtm.get_doc_term_counts">lexos.dtm.get_doc_term_counts</a> has various parameters for limiting and filtering the output based on token labels or regex patterns.</p>
-<h2 id="the-dtm-class">The <code>DTM</code> Class<a class="headerlink" href="#the-dtm-class" title="Permanent link">¤</a></h2>
-<p>Lexos also wraps Textacy's <code>Vectorizer</code> in the <a href="../../api/dtm/#lexos.dtm.DTM">lexos.dtm.DTM</a> class with greater functionality. You can import it with</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.dtm</span> <span class="kn">import</span> <span class="n">DTM</span>
-</code></pre></div>
-<p>Most work will leverage the <a href="../../api/dtm/#lexos.dtm.DTM">lexos.dtm.DTM</a> class to builds a document-term matrix and provide methods for manipulating the information held therein. The standard method of creating a DTM object is as follows:</p>
-<div class="highlight"><pre><span></span><code><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Pride_and_Prejudice&quot;</span><span class="p">,</span> <span class="s2">&quot;Sense_and_Sensibility&quot;</span><span class="p">]</span>
-<span class="n">dtm</span> <span class="o">=</span> <span class="n">DTM</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-</code></pre></div>
-<p>The labels are human-readable names for the documents which would otherwise be referenced by numeric indices.</p>
-<p>Instantiating a <a href="../../api/dtm/#lexos.dtm.DTM">lexos.dtm.DTM</a> object creates a vectorizer. By default, this is a Textacy <code>Vectorizer</code> object with parameters set to produce raw counts. The vectorizer settings can be viewed by calling <code>lexos.dtm.vectorizer_settings</code> and they can be adjusted by calling <a href="../../api/dtm/#lexos.dtm.DTM.set_vectorizer">lexos.dtm.DTM.set_vectorizer</a>. The vectorizer is an object, so you can also inspect individual vectorizer settings with calls like <code>lexos.dtm.vectorizer.idf_type</code>.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>After changing the settings of an object, you must call <a href="../../api/dtm/#lexos.dtm.DTM.build">lexos.dtm.DTM.build</a> to rebuild the document-term matrix.</p>
-</div>
-<h2 id="getting-a-term-counts-table">Getting a Term Counts Table<a class="headerlink" href="#getting-a-term-counts-table" title="Permanent link">¤</a></h2>
-<p>The <a href="../../api/dtm/#lexos.dtm.DTM">lexos.dtm.DTM</a> class method for getting a table of raw term counts is <a href="../../api/dtm/#lexos.dtm.DTM.get_table">lexos.dtm.DTM.get_table</a>. You can also call <code>lexos.dtm.table</code>, which will return a table based on state after the last time <a href="../../api/dtm/#lexos.dtm.DTM.build">lexos.dtm.DTM.build</a> was called. The options are as follows:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Get a table of counts with documents as columns and terms as rows</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">get_table</span><span class="p">()</span>
-
-<span class="c1"># Get a table of counts with terms as columns and documents as rows</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="n">transpose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</code></pre></div>
-<p>The second option is equivalent to calling <code>dtm.get_table().T</code>, using pandas notation. The <a href="../../api/dtm/#lexos.dtm.DTM.get_table">lexos.dtm.DTM.get_table</a> output is generally intended to allow you to use the pandas API once you have the data in the form of a pandas dataframe.</p>
-<p>If you change vectorizer settings, remember to rebuild the DTM. For instance, you want to use the Lexos app's implementation of TF-IDF, you would use the following (I think):</p>
-<div class="highlight"><pre><span></span><code><span class="n">dtm</span><span class="o">.</span><span class="n">set_vectorizer</span><span class="p">(</span><span class="n">tf_type</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">idf_type</span><span class="o">=</span><span class="s2">&quot;smooth&quot;</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s2">&quot;l2&quot;</span><span class="p">)</span>
-<span class="n">dtm</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">get_table</span><span class="p">()</span>
-</code></pre></div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>Currently, <a href="../../api/dtm/#lexos.dtm.DTM.build">lexos.dtm.DTM.build</a> resets <code>dtm.table=None</code>, so you will need to call <a href="../../api/dtm/#lexos.dtm.DTM.get_table">lexos.dtm.DTM.get_table</a> to use the new vectorizer. This is intended to reduce overhead if an app only needs to interact directly with the vectorizer. Perhaps down the line, it might be advisable to give <a href="../../api/dtm/#lexos.dtm.DTM.build">lexos.dtm.DTM.build</a> a boolean parameter to allow the user to decide whether the table gets regenerated automatically.</p>
-</div>
+<p>The Lexos <a href="../tokenising_texts">tokenizer</a> module now uses language models for a richer and more flexible way of accessing the linguistic features of texts. Token segmentation and feature assignment is performed under the hood by the <a href="https://spacy.io/" target="_blank">spaCy</a>, and, for some users, spaCy's pre-built language models may be sufficient. For others, model trained on their data may be necessary, especially if they are working with a language for which no pre-built model exists. The spaCy library provides a rich environment for training language models, and the Lexos API provides a thing wrapper around its functionality for greater ease of use and integration into applications.</p>
+<p>Language models in spaCy are built on pipelines of configurable components that handle tagging different types of linguistic features. The most basic is the "tagger", which labels parts of speech, but other pipeline components handle morphological analysis, lemmatisation, and named entity recognition. Components are registered in a configuration (config) file which exposes the dizzying array of options available in a machine learning workflow and serves as the "single source of truth" for how the model was trained. The Lexos API maintains and provides access to the config file whilst allowing the user to train a language model with minimal need to edit it. Language models can be instantiated with configuration "recipes" that provide recommended configuration values for various use cases.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The Lexos culling function is now handled by the <code>min_df</code> parameter and extended by the <code>max_df</code> parameter in the vectorizer. The Lexos most frequent words function is handled by <code>max_n_terms</code>. But see the section below.</p>
+<p>In spaCy, the term "pipeline" refers to a configuration of components, rules or algorithms for assigning feature labels to texts, whereas the term "model" refers to the statistical weights (vectors) these algorithms produce that are used to make predictions about labels. Since trained pipelines generate statistical models, there is inevitably some overlap in the terminology.</p>
 </div>
-<h2 id="getting-most-frequent-terms">Getting Most Frequent Terms<a class="headerlink" href="#getting-most-frequent-terms" title="Permanent link">¤</a></h2>
-<p>In addition to <code>max_n_terms</code>, it is possible to use pandas to sort and slice the <code>DTM.table</code> after it has been built in order to get the most frequent terms. The <a href="../../api/dtm/#lexos.dtm.DTM.most_frequent">lexos.dtm.DTM.most_frequent</a> method is a helper function for this purpose:</p>
-<div class="highlight"><pre><span></span><code><span class="n">most_frequent</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">most_frequent</span><span class="p">(</span><span class="n">max_n_terms</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
-</code></pre></div>
-<p>It is possible to take slices (start counting from a particular index) in the <code>DTM.table</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="n">most_frequent</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">most_frequent</span><span class="p">(</span><span class="n">max_n_terms</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
-</code></pre></div>
-<p>This will return terms 25 to 50.</p>
-<p>There is also an equivalent function <a href="../../api/dtm/#lexos.dtm.DTM.least_frequent">lexos.dtm.DTM.least_frequent</a> to get the least frequent terms in the table.</p>
+<h2 id="the-languagemodel-class-and-the-training-workflow">The <code>LanguageModel</code> Class and the Training Workflow<a class="headerlink" href="#the-languagemodel-class-and-the-training-workflow" title="Permanent link">¤</a></h2>
+<p>Most of the work can be performed using the <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> class, which can be instantiated with <code>model = LanguageModel()</code>. This will create a new language model folder with various subfolders and a configuration file. In most cases, the user will want to pass certain information on instantiation, such as the desired path to the model folder. This procedure will be illustrated below.</p>
+<p>Once a <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> object is instantiated, the next step is to copy assets into the model's <code>assets</code> folder with . The assets are normally three files, one for training, one for development, and one for testing. These three files are then converted to binary spaCy format, stored in the <code>corpus</code> folder, with <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel.convert_assets">LanguageModel.convert_assets</a>.</p>
+<p>Once the assets are in spaCy format, the training and development files are used to train the model with <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel.train">LanguageModel.train</a>. The trained model is stored in the <code>training</code> folder. Once complete, the model can be evaluated with <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel.evaluate">LanguageModel.evaluate</a>. This provides various statistical measures of the model's accuracy by testing its predictions against the labels in the testing file. Results are saved in the <code>metrics</code> folder.</p>
+<p>If the user deems the model to be sufficiently accurate, they can then package it with <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel.package">LanguageModel.package</a>. This saves the model, its configuration file, and all its pipeline components in the <code>packages</code> folder. The path to the new model can now be passed to the <code>Tokenizer</code>, and the new model will be loaded for parsing texts into spaCy docs.</p>
+<p>A more in depth, step-by-step explanation of the procedure is described below.</p>
+<h2 id="before-getting-started">Before Getting Started<a class="headerlink" href="#before-getting-started" title="Permanent link">¤</a></h2>
+<p>Training a model requires you to have a set of training data, which is a series of sentences (or sentence-like units) with pre-assigned labels. Producing training data can be a time-consuming process. If the language you are working in is close to that of a pre-built model, it is probably easiest to use <code>Tokenizer</code> to generate labels on some sample texts from your data and then correct the labels as appropriate. For most purposes, it will be easiest to work in the <a href="https://universaldependencies.org/format.html" target="_blank">CONLL-U format</a> because of its convenient columnar format and because spaCy has a built-in converter for CONLL-U. This tutorial does not cover data preparation for training features, such as named entities, which are not included in CONLL-U. That said, the conversion process converts the CONLL-U text to a set of spaCy docs, so, if the desired labels are available in a spaCy doc, it is possible to proceed. More information on this is given below.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p><a href="../../api/dtm/#lexos.dtm.DTM.most_frequent">lexos.dtm.DTM.most_frequent</a> and <a href="../../api/dtm/#lexos.dtm.DTM.least_frequent">lexos.dtm.DTM.least_frequent</a> should not be used
-if <code>min_df</code> or <code>max_df</code> are set in the vectorizer, as this will cause the document-term matrix to be reduced twice.</p>
+<p>There are some special considerations when working in a Jupyter notebook if you are importing the Lexos API from a local folder, as opposed to your Python environment. In this case, you must first set your system environment to the <code>lexos</code> folder as shown <a href="../../installation#running-the-development-library-locally">here</a> and then make sure to reference paths in your model relative to the <code>lexos</code> folder (when in doubt, use absolute paths). Another gotcha is that the spaCy functions sometimes assume that you are working on the command line and can provide output that does not make sense if you are working in, say, a Jupyter notebook. In most cases, this will take the form of references to command-line flags, but other idiosyncratic behaviours may occur. For instance, when evaluating a model, if there is a single error, the spaCy function calls <code>sys.exit()</code> causing <code>SystemExit: 1</code> error code with no indication to the user that the script did not exit in the middle of execution! However, such glitches are rare.</p>
 </div>
-<h2 id="getting-statistics-from-the-dtm">Getting Statistics from the DTM<a class="headerlink" href="#getting-statistics-from-the-dtm" title="Permanent link">¤</a></h2>
-<p>Pandas has methods for calculating the sum, mean, and median of rows in the table. However, to save users from Googling, the DTM class has the <a href="../../api/dtm/#lexos.dtm.DTM.get_stats_table">lexos.dtm.DTM.get_stats_table</a> method that calculates these statistics and adds them to the columns in the default DTM table.</p>
-<div class="highlight"><pre><span></span><code><span class="n">stats_table</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">get_stats_table</span><span class="p">([</span><span class="s2">&quot;sum&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">])</span>
+<h2 id="instantiating-a-languagemodel-object">Instantiating a <code>LanguageModel</code> Object<a class="headerlink" href="#instantiating-a-languagemodel-object" title="Permanent link">¤</a></h2>
+<p>By default, calling <code>model = LanguageModel()</code> will generate a folder called <code>language_model</code> in the current directory. However, it is possible to add arguments to override the default settings. Here is an example:</p>
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">LanguageModel</span><span class="p">(</span>
+    <span class="n">project_dir</span><span class="o">=</span><span class="s2">&quot;update_en_core_web_sm&quot;</span><span class="p">,</span>
+    <span class="n">recipe</span><span class="o">=</span><span class="s2">&quot;project/recipes/update_en_core_web_sm.cfg&quot;</span><span class="p">,</span>
+    <span class="n">force</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
 </code></pre></div>
-<p>Once the new dataframe is generated, it is easy to extract the data to a list with standard pandas syntax like <code>stats_table["sum"].values.tolist()</code>.</p>
-<h2 id="getting-relative-frequencies">Getting Relative Frequencies<a class="headerlink" href="#getting-relative-frequencies" title="Permanent link">¤</a></h2>
-<p><a href="../../api/dtm/#lexos.dtm.DTM.get_freq_table">lexos.dtm.DTM.get_freq_table</a> converts the raw counts in the default DTM table to relative frequencies. Since the resulting values are typically floats, there is an option to set the number of digits used for rounding.</p>
-<div class="highlight"><pre><span></span><code><span class="n">frequency_table</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">get_freq_table</span><span class="p">(</span><span class="n">rounding</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">as_percent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</code></pre></div>
-<p>The setting <code>as_percent=True</code> multiples the frequencies by 100. The default is <code>False</code>.</p>
-<h2 id="getting-lists-of-terms-and-term-counts">Getting Lists of Terms and Term Counts<a class="headerlink" href="#getting-lists-of-terms-and-term-counts" title="Permanent link">¤</a></h2>
-<p>By default, most of the <a href="../../api/dtm/#lexos.dtm.DTM">lexos.dtm.DTM</a> methods return a pandas dataframe. Two methods provide output in the form of lists. <a href="../../api/dtm/#lexos.dtm.DTM.get_terms">lexos.dtm.DTM.get_terms</a> provides a simple, alphabetised list of terms in the document-term matrix. <a href="../../api/dtm/#lexos.dtm.DTM.get_term_counts">lexos.dtm.DTM.get_term_counts</a> returns a list of tuples with terms as the first element and sums (the total number of occurrences of the term in all documents) as the second element. This method has parameters for sorting by column and direction. By default, terms are sorted by <code>natsort.ns.LOCALE</code> (i.e. the computer's locale is used for the sorting algorithm). This can be configured using the options in the <a href="https://natsort.readthedocs.io/en/master/api.html#natsort.ns" target="_blank">Python natsort reference</a>.</p>
-<h2 id="visualising-the-dtm">Visualising the DTM<a class="headerlink" href="#visualising-the-dtm" title="Permanent link">¤</a></h2>
-<p>Once a document-term matrix table has been generated as a pandas dataframe, it becomes possible to use any of the <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html" target="_blank"><code>pandas.DataFrame.plot</code></a> methods, or to export the data for use with other tools. However, the Lexos API has two built-in visualisations: word clouds and bubble charts. Word clouds can be generated for the entire DTM or for individual documents. Multiple word clouds arrange for comparison are referred to as multiclouds.</p>
+<p>This will create the "update_en_core_web_sm" folder. Instead of auto-generating a default config file, it will copy the "recipe" config file for updating spaCy's "en_core_web_sm" model. Setting <code>force=True</code> will cause Lexos to overwrite and pre-existing configuration if the model folder was created previously. See the API documentation for the full set of arguments that can be passed to the <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> class. We will demonstrate some of them below.</p>
+<div class="admonition note">
+<p class="admonition-title">A note on model folder paths</p>
+<p>When a <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> object is instantiated, most of the folders necessary for managing the workflow are created. By default, each as subfolder containing the name of the model's language (the default is multinlingual "xx"). Most of the model's methods will then assume that files are written to this language-specific subfolder. This organisational structure is largely based on the spaCy <a href="https://github.com/explosion/projects/tree/v3/pipelines/tagger_parser_ud" target="_blank">tagger_parser_ud project</a>, and it remains to be seen if it should be a best practice for a more generic application. spaCy projects also store configuration files in a <code>configs</code> folder, which has not been deemed necessary for the <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> class. As an instance should only have one configuration at a time, the <code>LanguageModel</code>'s config file is stored in its folder root. These decisions are subject to re-evaluation.</p>
+</div>
+<h2 id="working-with-the-configuration">Working with the Configuration<a class="headerlink" href="#working-with-the-configuration" title="Permanent link">¤</a></h2>
+<p>Once the <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> object is instantiated, the model folder will contain a configuration file with default configuration values or values you have assigned using argument passed during instantiation. Although the configuration file is the "single source of truth" for the model, the <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> object maintains a copy as a class attribute. Internally, this copy is parsed as a modified Python dict, which can be accessed by calling <code>model.config</code>. To see a string representation, call <code>model.config.to_str()</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>A primitive function exists for generating word clouds in Plotly as proof of concept. However, this function is not documented because Plotly (and other interactive graphing libraries) are really not good for word clouds. It is better to output the DTM as json and parse it in d3.s for a pretty, interactive visualisation.</p>
+<p>The "modified Python dict" is actually a Thinc <code>Config</code> object (Thinc is the machine-learning library used internally by spaCy), so any of the the <code>Config</code> object's methods as described in the <a href="https://thinc.ai/docs/api-config" target="_blank">Thinc documentation</a> can be used.</p>
 </div>
-<h3 id="single-word-clouds">Single Word Clouds<a class="headerlink" href="#single-word-clouds" title="Permanent link">¤</a></h3>
-<p>It is easiest to make a word cloud from <a href="../../api/dtm/#lexos.dtm.DTM.get_stats_table">lexos.dtm.DTM.get_stats_table</a>. Start by getting a table with the sums (total term count per document).</p>
-<div class="highlight"><pre><span></span><code><span class="n">data</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">get_stats_table</span><span class="p">(</span><span class="s2">&quot;sum&quot;</span><span class="p">)</span>
-</code></pre></div>
-<p>Next rename the columns to the header labels expected by <a href="../../api/dtm/wordcloud/#lexos.dtm.wordcloud.make_wordcloud">lexos.dtm.wordcloud.make_wordcloud</a>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;terms&quot;</span><span class="p">:</span> <span class="s2">&quot;term&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">:</span> <span class="s2">&quot;count&quot;</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</code></pre></div>
-<p>Wordclouds are generated by the Python <a href="https://amueller.github.io/word_cloud/">Wordcloud</a> library. It has various option which can be defined in a dictionary and passed to <a href="../../api/dtm/wordcloud/#lexos.dtm.wordcloud.make_wordcloud">lexos.dtm.wordcloud.make_wordcloud</a>. Figures are generated using Python's <code>matplotlib</code>, and its options can also be passed to <a href="../../api/dtm/wordcloud/#lexos.dtm.wordcloud.make_wordcloud">lexos.dtm.wordcloud.make_wordcloud</a>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">wordcloud_opts</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;max_words&quot;</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span>
-    <span class="s2">&quot;background_color&quot;</span><span class="p">:</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;contour_width&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="s2">&quot;contour_color&quot;</span><span class="p">:</span> <span class="s2">&quot;steelblue&quot;</span>
-<span class="p">}</span>
-<span class="n">matplotlib_opts</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;figsize&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)}</span>
-<span class="n">wordcloud</span> <span class="o">=</span> <span class="n">make_wordcloud</span><span class="p">(</span>
-    <span class="n">data</span><span class="p">,</span> <span class="n">wordcloud_</span><span class="p">,</span>
-    <span class="n">figure_opts</span><span class="o">=</span><span class="n">matplotlib_opts</span>
-    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="nb">round</span><span class="o">=</span><span class="mi">150</span>
+<p>If you wish to change a value in your configuration you can simply modify the dictionary. For instance, if you wanted to change the language to English, you would use: <code>model.config["nlp"]["lang"] = "en"</code>. This only modifies the <code>config</code> attribute. To ensure that your changes are made in the config <em>file</em>, you must then call <code>model.save_config()</code>.</p>
+<p>You can also replace the current config file and (<code>config</code> attribute) by calling <code>model.load_config()</code> with a path to the desired config file. This is the equivalent of instantiating the <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> object with a <code>recipe</code> path and <code>force=True</code>.</p>
+<h2 id="copying-assets">Copying Assets<a class="headerlink" href="#copying-assets" title="Permanent link">¤</a></h2>
+<p>Copying assets involves copying your training and testing data from another location into the models <code>assets</code> folder. This is done with the following code:</p>
+<div class="highlight"><pre><span></span><code><span class="n">project</span><span class="o">.</span><span class="n">copy_assets</span><span class="p">(</span>
+    <span class="n">training_file</span><span class="o">=</span><span class="s2">&quot;path/to/train.conllu&quot;</span><span class="p">,</span>
+    <span class="n">dev_file</span><span class="o">=</span><span class="s2">&quot;path/to/dev.conllu&quot;</span><span class="p">,</span>
+    <span class="n">test_file</span><span class="o">=</span><span class="s2">&quot;path/to/test.conllu&quot;</span>
 <span class="p">)</span>
 </code></pre></div>
-<p>The <code>round</code> parameter (normally between 100 and 300) will add various degrees of rounded corners to the word cloud.</p>
-<p>By default, <code>show=True</code>, and the wordcloud will be plotted to the screen if the environment is appropriate. If <code>show=False</code>, the <code>WordCloud</code> object will be returned, and it can be saved or further manipulated. For instance, the word cloud above could be saved by calling <code>wordcloud.to_file(filename)</code>.</p>
-<p>There are various ways to plot a word cloud of a single document. For instance, you could make a copy of the DTM <code>table</code> with only the counts for the desired document.</p>
-<div class="highlight"><pre><span></span><code><span class="n">doc1</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">table</span><span class="p">[[</span><span class="s2">&quot;terms&quot;</span><span class="p">,</span> <span class="s2">&quot;doc1&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">doc1</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;terms&quot;</span><span class="p">:</span> <span class="s2">&quot;term&quot;</span><span class="p">,</span> <span class="s2">&quot;doc1&quot;</span><span class="p">:</span> <span class="s2">&quot;count&quot;</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<p>In addition to local filepaths, <code>copy_assets()</code> also accepts urls.</p>
+<p>Asset files are not used directly when training a model; they are primarily for archival purposes. This is especially useful if you have downloaded them since you do not have to download them again if you need to re-instantiate the model object.</p>
+<p>Asset files are assumed to be in CONLL-U format, which will be converted to spaCy binary format by <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel.convert_assets">LanguageModel.convert_assets</a> (see below). If your training and testing files are not in CONLL-U format, you may still manually copy them into the <code>assets</code> folder for archival purposes, and you do not need to call <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel.copy_assets">LanguageModel.copy_assets</a>.</p>
+<h2 id="converting-assets-to-spacy-format">Converting Assets to spaCy Format<a class="headerlink" href="#converting-assets-to-spacy-format" title="Permanent link">¤</a></h2>
+<p>The <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel.convert_assets">LanguageModel.convert_assets</a> method assumes that you have CONLL-U formatted files in the model's <code>assets</code> folder and automatically converts them to spaCy binary formatted files in the model's <code>corpus</code> folder. If your assets are not in CONLL-U format, you can skip this step, but you are responsible for converting them to spaCy binary format and depositing them in the <code>corpus</code> folder by some other means. Information on how to do that can be found in the <a href="https://spacy.io/usage/training#training-data" target="_blank">spaCy documentation</a>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The model's <code>training_file</code>, <code>dev_file</code>, and <code>test_file</code> attributes are used to locate files for conversion in the <code>assets</code> folder. If the files do not have the same names, an error will occur. You can see (or set) these attribute values with <code>model.training_file</code>, <code>model.dev_file</code>, and <code>model.test_file</code>. If you have not set them when you instantiated the <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> object.</p>
+</div>
+<h2 id="debugging-configuration-and-data">Debugging Configuration and Data<a class="headerlink" href="#debugging-configuration-and-data" title="Permanent link">¤</a></h2>
+<p>Before training your model, or if you encounter a problem, it is a good idea to try debugging with <code>debug_config(path/to/config/file)</code> or <code>debug_data(path/to/config/file)</code>. This will generate reports identifying potential problems.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><a href="../../api/language_model/#lexos.language_model.__init__.debug_config">debug_config()</a> and <a href="../../api/language_model/#lexos.language_model.__init__.debug_data">debug_data()</a> are not part of the <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> class, so do not call them without the dot notation. This means that you can debug a config file without an instantiated <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> object.</p>
+</div>
+<h2 id="selecting-pipeline-components">Selecting Pipeline Components<a class="headerlink" href="#selecting-pipeline-components" title="Permanent link">¤</a></h2>
+<p>Before training your model, you must also ensure that you have specified which pipeline components you wish to train. By default, the <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> object configures just the "tagger", which labels parts of speech. Other common pipeline components are "tok2vec", "attribute_ruler", "lemmatizer", "parser", "ner". For an overview of pipeline components, see the <a href="https://spacy.io/usage/processing-pipelines" target="_blank">spaCy documentation</a>.</p>
+<p>You can set pipeline components when instantiating a <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> object with the <code>components</code> argument, which takes a list of components. You can also set them afterwards by modifying <code>model.config["nlp"]["pipeline"]</code>, or even by editing the config file itself.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Setting pipeline components opens a bewildering away of possibilities for configuring the components, and it is very likely to generate invalid config files. It is highly recommended that you use <a href="../../api/language_model/#lexos.language_model.__init__.debug_config">debug_config()</a> if this happens but even more highly recommended that you rely on trusted recipes, especially if you are developing an interface for user-defined configuration. This will minimise the chance that you will encounter errors during training.</p>
+</div>
+<p>Most components are independent of each other, but some share a "token-to-vector" component like "tok2vec". It is possible to speed up training by setting some components to be "frozen" and by indicated which components will be used for annotation. The following example assumes a model with the pipeline components "tagger", "attribute_ruler", "lemmatizer", "parser", and "ner". However, it skips training "attribute_ruler", "lemmatizer", "parser", and "ner". If the source of the components is a pre-existing model, the pre-existing state is simply passed to the new model. However, in the new model, only the "tagger", "attribute_rule", and "lemmatizer" components will have annotations.</p>
+<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;training&quot;</span><span class="p">][</span><span class="s2">&quot;frozen_components&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;attribute_ruler&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lemmatizer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;parser&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ner&quot;</span>
+<span class="p">]</span>
+<span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;training&quot;</span><span class="p">][</span><span class="s2">&quot;annotating_components&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;tagger&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;attribute_ruler&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;lemmatizer&quot;</span>
+<span class="p">]</span>
+<span class="n">model</span><span class="o">.</span><span class="n">save_config</span><span class="p">()</span>
 </code></pre></div>
-<p>You can now submit the data to <a href="../../api/dtm/wordcloud/#lexos.dtm.wordcloud.make_wordcloud">lexos.dtm.wordcloud.make_wordcloud</a> as above.</p>
-<p>For a subset of documents, you might do the following:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Copy the table with only the desired document columns</span>
-<span class="n">some_docs</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">table</span><span class="p">[[</span><span class="s2">&quot;terms&quot;</span><span class="p">,</span> <span class="s2">&quot;doc1&quot;</span><span class="p">,</span> <span class="s2">&quot;doc2&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-<span class="c1"># Create a new column with the total for each row</span>
-<span class="n">some_docs</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">some_docs</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># Make a copy with only the terms and counts</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">some_docs</span><span class="o">.</span><span class="n">table</span><span class="p">[[</span><span class="s2">&quot;terms&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<p>Again, it is safest to use a trusted recipe to ensure that all components are properly configured.</p>
+<h2 id="training-a-model">Training a Model<a class="headerlink" href="#training-a-model" title="Permanent link">¤</a></h2>
+<p>If everything looks good, you are ready to train your model. To do this, simply call <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel.train">LanguageModel.train</a>. Although it is possible to pass arguments to override the settings in the config file, in most cases you will not want to do so.</p>
+<p>Once training begins, its progress will be logged to the screen, and you can watch it train. Be aware that training can take a very (and unpredictably) long time for large data sets. Be patient!</p>
+<h3 id="balancing-efficiency-and-accuracy">Balancing Efficiency and Accuracy<a class="headerlink" href="#balancing-efficiency-and-accuracy" title="Permanent link">¤</a></h3>
+<p>By default, models are generated with efficiency in mind, but you can change this by setting <code>optimize="accuracy"</code> when instantiating your model. This will cause the <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> object to generate a different config file, one that may produce more accurate models, but with potentially longer training times and bigger output model sizes. Internally, these config files are generated by an evolving set of <a href="https://github.com/explosion/spaCy/blob/master/spacy/cli/templates/quickstart_training_recommendations.yml" target="_blank">language-specific recommendations</a> maintained by spaCy. You can, of course, override these recommendations or use a recipe config file to bypass them entirely. If you are using a language for which spaCy has a pre-built model, it can be useful to generate a config file with the default recommendations and then modify it for your own purposes as necessary.</p>
+<h3 id="training-with-a-gpu-and-transformer-models">Training with a GPU and Transformer Models<a class="headerlink" href="#training-with-a-gpu-and-transformer-models" title="Permanent link">¤</a></h3>
+<p>Using a GPU to train your model can be 2-3 times faster than using your computer's CPU. You can substitute a GPU for your computer's CPU simply by instantiating your <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> object with <code>gpu</code> set to your GPU's id. However, this may not be worth it given that setting up a GPU can be very fiddly. Where it truly becomes necessary is if you want to take advantage of pre-built transformer models such as BERT or GPT-2. For an introduction to the use of transformer models, see <a href="https://spacy.io/usage/embeddings-transformers" target="_blank">spaCy's documentation</a> and the <a href="https://github.com/explosion/spacy-transformers" target="_blank">spacy-transformers</a> plugin.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Setting up a GPU and transformer models is not for the faint of heart. Most likely, this will be done by application developers on the back end so that individual users do not have to do so on their own machines.</p>
+</div>
+<h2 id="evaluating-a-model">Evaluating a Model<a class="headerlink" href="#evaluating-a-model" title="Permanent link">¤</a></h2>
+<p>Once a model has completed training, the output is stored in the <code>training</code> folder. You can then evaluate it by calling <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel.evaluate">LanguageModel.evaluate</a> with the path to the trained model folder and the path to your test file in the <code>corpus</code> folder.</p>
+<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;training/en/model-best&quot;</span><span class="p">,</span>
+    <span class="n">testfile</span><span class="o">=</span><span class="s2">&quot;corpus/en/test.spacy&quot;</span>
+<span class="p">)</span>
 </code></pre></div>
+<p>You will receive a report showing how accurately the model predicted the labels in your test data. A copy of the report in json format is saved to the <code>metrics</code> folder.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><a href="../../api/dtm/wordcloud/#lexos.dtm.wordcloud.make_wordcloud">lexos.dtm.wordcloud.make_wordcloud</a> takes a number of other input formats, including raw text, but a <code>lexos.dtm.DTM.table</code> is by far the easiest method to generate data from pre-tokenised texts.</p>
+<p>If you run into a problem, you can also debug your model by calling <code>debug_model("path/to/config/file")</code>.</p>
 </div>
-<h3 id="multiclouds">Multiclouds<a class="headerlink" href="#multiclouds" title="Permanent link">¤</a></h3>
-<p>Multiclouds are grid-organised word clouds of individual documents, which allow you to compare the document clouds side by side. The method of generating multiclouds is similar to word clouds. The basic input is a <code>lexos.dtm.DTM.table</code>, where one word cloud will be generated for each document. If a subset of documents is required, a similar method to that shows above can be used to limit the documents in the table. Once the data is prepared, the multiclouds are generated with a <a href="../../api/dtm/wordcloud/#lexos.dtm.wordcloud.make_multiclouds">lexos.dtm.wordcloud.make_multiclouds</a>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">multiclouds</span> <span class="o">=</span> <span class="n">make_multiclouds</span><span class="p">(</span>
-    <span class="n">data</span><span class="p">,</span>
-    <span class="n">wordcloud_opts</span><span class="p">,</span>
-    <span class="n">matplotlib_opts</span><span class="p">,</span>
-    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Title&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
-    <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span>
-    <span class="nb">round</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+<p>If you are unhappy with the level of accuracy, you can try tweaking your configuration or, with a greater likelihood of success, adding more training data. Re-train the model and test again.</p>
+<h2 id="packaging-the-model">Packaging the Model<a class="headerlink" href="#packaging-the-model" title="Permanent link">¤</a></h2>
+<p>To make the model useable, it must first be packaged. Once packaged, the model can be used for parsing texts using either the Lexos API or using spaCy directly:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Using the Lexos API</span>
+<span class="kn">from</span> <span class="nn">lexos</span> <span class="kn">import</span> <span class="n">tokenizer</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;path/to/model&quot;</span><span class="p">)</span>
+
+<span class="c1"># Using spaCy</span>
+<span class="kn">import</span> <span class="nn">spacy</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;path/to/model&quot;</span><span class="p">)</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+<p>The path to the model package should point to the directory containing the packages <code>config.cfg</code> file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>So far, I have only tried loading model packages using the path the package folder. It should also be possible to use the package name, but this needs further testing.</p>
+</div>
+<p>To package a model, call <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel.package">LanguageModel.package</a>, providing the input folder for the model in the <code>training</code> folder and the path to the output folder. You can also provide a <code>name</code> and <code>version</code> for the model if you did not instantiation the <a href="../../api/language_model/#lexos.language_model.__init__.LanguageModel">LanguageModel</a> object with <code>package_name</code> and <code>package_version</code> values. Setting <code>force=True</code> will overwrite any previous package in the output directory.</p>
+<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">package</span><span class="p">(</span>
+    <span class="n">input_dir</span><span class="o">=</span><span class="s2">&quot;path/to/model-best&quot;</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;path/to/output/directory&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;en_test_sm&quot;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+    <span class="n">force</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 </code></pre></div>
-<p>Since multicloud produce multiple subplots, there is a <code>title</code> parameter to give the entire figure a title and a <code>labels</code> parameter, which includes a list labels to be assigned to each subplot. The <code>ncols</code> parameter sets the number of subplots per row.</p>
-<p>If <code>show=False</code>, <a href="../../api/dtm/wordcloud/#lexos.dtm.wordcloud.make_multiclouds">lexos.dtm.wordcloud.make_multiclouds</a> returns a list of word clouds. These can be saved individually by calling <code>to_file()</code> on them, as shown above. There is not currently a method of saving the entire plot.</p>
-<p>As with word clouds, <a href="../../api/dtm/wordcloud/#lexos.dtm.wordcloud.make_multiclouds">lexos.dtm.wordcloud.make_multiclouds</a> takes a number of different input formats, but pandas dataframes are the easiest to work with.</p>
-<h3 id="bubble-charts">Bubble Charts<a class="headerlink" href="#bubble-charts" title="Permanent link">¤</a></h3>
-<p>Bubble charts ("bubbleviz" in the Lexos app) are produce by the following imports:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.dtm.bubbleviz</span> <span class="kn">import</span> <span class="n">BubbleChart</span><span class="p">,</span> <span class="n">make_bubble_chart</span>
-</code></pre></div>
-<p>To generate the visualisation:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Get a table with the sums of each row</span>
-<span class="n">sums</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">get_stats_table</span><span class="p">(</span><span class="s2">&quot;sum&quot;</span><span class="p">)</span>
-<span class="n">terms</span> <span class="o">=</span> <span class="n">sums</span><span class="p">[</span><span class="s2">&quot;term&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-<span class="n">area</span> <span class="o">=</span> <span class="n">sums</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#5A69AF&quot;</span><span class="p">,</span> <span class="s2">&quot;#579E65&quot;</span><span class="p">,</span> <span class="s2">&quot;#F9C784&quot;</span><span class="p">,</span> <span class="s2">&quot;#FC944A&quot;</span><span class="p">,</span> <span class="s2">&quot;#F24C00&quot;</span><span class="p">,</span> <span class="s2">&quot;#00B825&quot;</span><span class="p">]</span>
-<span class="n">make_bubble_chart</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span>
-                  <span class="n">area</span><span class="p">,</span>
-                  <span class="n">limit</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                  <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Title&quot;</span><span class="p">,</span>
-                  <span class="n">bubble_spacing</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-                  <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span>
-                  <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
-                  <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                  <span class="n">filename</span>
-<span class="p">)</span>
-</code></pre></div>
-<p><a href="../../api/dtm/bubbleviz/#lexos.dtm.bubbleviz.make_bubble_chart">lexos.dtm.bubbleviz.make_bubble_chart</a> has a slightly simpler interface than the other visualisations. It takes a list of terms and a list of counts or frequencies (easily obtainable from a dataframe as shown), as well as other parameters that affect the appearance of the image. If a <code>filename</code> is provided, the image will be saved automatically.</p>
+<p>It is a good idea to store packages in folder called <code>packages</code> inside the model folder, although they can be stored in a separate location for distribution.</p>
 
               
             </article>
@@ -1613,7 +1591,7 @@ if <code>min_df</code> or <code>max_df</code> are set in the vectorizer, as this
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../cutting_docs/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../managing_a_corpus/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1622,19 +1600,19 @@ if <code>min_df</code> or <code>max_df</code> are set in the vectorizer, as this
               <span class="md-footer__direction">
                 Previous
               </span>
-              Cutting Documents
+              Managing a Corpus
             </div>
           </div>
         </a>
       
       
-        <a href="../visualisation/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../../api/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Visualisation
+              Index
             </div>
           </div>
           <div class="md-footer__button md-icon">

@@ -291,6 +291,8 @@
         
           
         
+          
+        
       
       
         
@@ -544,6 +546,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training_a_language_model/" class="md-nav__link">
+        Training a Language Model
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -568,6 +584,8 @@
         
           
             
+          
+        
           
         
           
@@ -947,6 +965,51 @@
             
           
         
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../api/language_model/">Language_Model</a>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Language_Model" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_7">
+          <span class="md-nav__icon md-icon"></span>
+          
+            Language_Model
+          
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_8" type="checkbox" id="__nav_4_8" >
+      
+      
+      
+        
+          
+            
+          
+        
           
         
           
@@ -970,14 +1033,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../api/scrubber/">Scrubber</a>
           
-            <label for="__nav_4_7">
+            <label for="__nav_4_8">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="Scrubber" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_7">
+        <label class="md-nav__title" for="__nav_4_8">
           <span class="md-nav__icon md-icon"></span>
           
             Scrubber
@@ -1115,7 +1178,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_8" type="checkbox" id="__nav_4_8" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_9" type="checkbox" id="__nav_4_9" >
       
       
       
@@ -1135,14 +1198,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../api/tokenizer/">Tokenizer</a>
           
-            <label for="__nav_4_8">
+            <label for="__nav_4_9">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="Tokenizer" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_8">
+        <label class="md-nav__title" for="__nav_4_9">
           <span class="md-nav__icon md-icon"></span>
           
             Tokenizer
@@ -1367,8 +1430,8 @@
 <p>The Lexos API wraps the <a href="https://spacy.io/" target="_blank">spaCy</a> NLP library for loading language models and tokenising texts. Because spaCy has excellent documentation and fairly wide acceptance in the DH community, it is a good tool to use under the bonnet. spaCy has a growing number of language models in a number of languages, as well as wrappers for loading models from other common NLP libraries such as Stanford Stanza.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>The architecture of the Scrubber module is partially built on top of the preprocessing functions in <a href="https://github.com/chartbeat-labs/textacy/" target="_blank">Textacy</a>, which also accesses and extends spaCy.</p>
+</div>
 <p>In spaCy, texts are parsed into <code>spacy.Doc</code> objects consisting of sequences of tokens.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1428,7 +1491,7 @@
 <p>The <code>remove_stopwords</code> argument removes stop words from the default list. If <code>remove_stopwords="all"</code>, all stop words are removed.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p><code>add_stopwords</code> and <code>remove_stopwords</code> do not remove stop word tokens from the doc; rather, they modify the stop word list used to set the <code>is_stop</code> attribute of individual tokens. To get a list of tokens without stop words, you must do something like <code>[token for token in doc if not token.is_stop]</code>.</p>
+<p><code>add_stopwords</code> and <code>remove_stopwords</code> do not remove stop word tokens from the doc; rather, they modify the stop word list used to set the <code>is_stop</code> attribute of individual tokens. To get a list of tokens without stop words, you must do something like <code>[token for token in doc if not token.is_stop]</code>. If you a are producing a corpus of documents in which the documents will be processed by different models, it is most efficient to process the documents in batches, one batch for each model.</p>
 </div>
 <h2 id="lexosdocs">LexosDocs<a class="headerlink" href="#lexosdocs" title="Permanent link">¤</a></h2>
 <p>The Lexos API also has a <a href="../../api/tokenizer/lexosdoc/#lexos.tokenizer.lexosdoc.LexosDoc">LexosDoc</a> class, which provides a wrapper for spaCy docs. Its use is illustrated below.</p>
