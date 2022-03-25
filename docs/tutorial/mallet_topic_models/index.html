@@ -1540,8 +1540,16 @@
     <span class="p">}</span>
     <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;articlebody&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;publication&quot;</span><span class="p">,</span> <span class="s2">&quot;author&quot;</span><span class="p">,</span> <span class="s2">&quot;pubdate&quot;</span><span class="p">,</span> <span class="s2">&quot;docUrl&quot;</span><span class="p">,</span> <span class="s2">&quot;wordcount&quot;</span><span class="p">])</span>
-<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">metadata_file</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">na_rep</span><span class="o">=</span><span class="s2">&quot;NA&quot;</span><span class="p">,</span> <span class="n">quoting</span><span class="o">=</span><span class="n">csv</span><span class="o">.</span><span class="n">QUOTE_ALL</span><span class="p">)</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;articlebody&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;publication&quot;</span><span class="p">,</span> <span class="s2">&quot;author&quot;</span><span class="p">,</span> <span class="s2">&quot;pubdate&quot;</span><span class="p">,</span> <span class="s2">&quot;docUrl&quot;</span><span class="p">,</span> <span class="s2">&quot;wordcount&quot;</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+    <span class="n">metadata_file</span><span class="p">,</span>
+    <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span>
+    <span class="n">na_rep</span><span class="o">=</span><span class="s2">&quot;NA&quot;</span><span class="p">,</span>
+    <span class="n">quoting</span><span class="o">=</span><span class="n">csv</span><span class="o">.</span><span class="n">QUOTE_ALL</span>
+<span class="p">)</span>
 </code></pre></div>
 <p>If you were doing it for real, you would create a headerless CSV file where each column would contain the information "id", "articlebody", "title", "publication", "author", "pubdate", "docUrl", and "wordcount" (in that order). Some customisation of the metadata fields is possible (see the <a href="https://github.com/agoldst/dfr-browser#adapting-this-project-to-other-kinds-of-documents-or-models" target="_blank">dfr-browser documentation</a>, but this is not covered in this tutorial).</p>
 <h2 id="scrub-the-data">Scrub the Data<a class="headerlink" href="#scrub-the-data" title="Permanent link">¤</a></h2>
@@ -1573,7 +1581,10 @@
 <p>We are now ready to create the topic model. We start by creating a <code>Mallet</code> object, pointing it to a directory where we would like the model to be saved, and supplying the path to our MALLET installation.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.topic_model.mallet</span> <span class="kn">import</span> <span class="n">Mallet</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">Mallet</span><span class="p">(</span><span class="n">model_dir</span><span class="o">=</span><span class="s2">&quot;../topic_model&quot;</span><span class="p">,</span> <span class="n">mallet_path</span><span class="o">=</span><span class="s2">&quot;C:/mallet/mallet-2.0.8/bin&quot;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Mallet</span><span class="p">(</span>
+    <span class="n">model_dir</span><span class="o">=</span><span class="s2">&quot;../topic_model&quot;</span><span class="p">,</span>
+    <span class="n">mallet_path</span><span class="o">=</span><span class="s2">&quot;C:/mallet/mallet-2.0.8/bin&quot;</span>
+<span class="p">)</span>
 </code></pre></div>
 <h3 id="import-the-data">Import the Data<a class="headerlink" href="#import-the-data" title="Permanent link">¤</a></h3>
 <p>We use our <code>Mallet</code> object to import our tokenised docs. In the example below, we will import only tokens labelled as nouns. The default behaviour is to skip stop words and punctuation.</p>
