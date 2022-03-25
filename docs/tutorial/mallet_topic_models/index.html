@@ -13,14 +13,14 @@
     
     
       
-        <title>Normalize - The Lexos API</title>
+        <title>Topic Modelling with MALLET - The Lexos API</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.2b4465f4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2b4465f4.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
         
       
     
@@ -34,11 +34,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#normalize" class="md-skip">
+        <a href="#mallet-topic-models-in-lexos" class="md-skip">
           Skip to content
         </a>
       
@@ -80,7 +80,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="The Lexos API" class="md-header__button md-logo" aria-label="The Lexos API" data-md-component="logo">
+    <a href="../.." title="The Lexos API" class="md-header__button md-logo" aria-label="The Lexos API" data-md-component="logo">
       
   
   <svg id="lexos-dragon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245.59 217.84"><defs><style>.circle{fill:#e3e3e3;}.base{fill:#fff;}.shadow{fill:#909090;}.lines{fill:none;stroke:#505050;stroke-miterlimit:10;stroke-width:6px;}.iris{fill:#47bcff;}</style></defs><g id="circle"><circle class="circle" cx="114.34" cy="108.92" r="108.92"></circle></g><g id="base"><path class="base" d="M18.22,71.24S25,76.48,54.38,65c-.59-8.7-1.73-31.14-1.73-34.15,6.77,0,26,19.57,36.25,25.95,12,1.09,46.16,2,64.91,4.59,9.58,1,45.8,21,51.72,30.09s10,19,16.18,25.41,17.08,18,20.95,23.6,7.89,18.49,3.11,21.72S231,172.29,231,172.29l1.87-6.92-7.19-.75L215,170s1.6-5.85,1.2-9.6c-4-3-11.92-9.25-14.12-10.62s-6.69,12.09-6.25,14.79c.34,2.11,15,22.4,18,24.68,2-1.88,4.11-6.56,4.11-6.56s1.29,5.68-1.34,9.75c-6,9.33-12.5,10.71-15.92,10.56s-10.63,1-15.11-2.35-25.74-14-40.87-25.28c-11.4-8.49-19.18-15.74-19.18-15.74s-33.95,6.6-40.56,9.07-32.35,11.61-32.35,11.61a74,74,0,0,0-1.78-20.6c.57-1.05-17.28,15.62-17.28,15.62S10,148.77,11.09,107.2C11.7,84.17,18.22,71.24,18.22,71.24Z" transform="translate(-5.97 -0.51)"></path></g><g id="shadow"><path class="shadow" d="M125.92,133.44c0-4.87-46.64-12.73-58.75-15.06-12-2.3-37.58-5.19-48.44-6.37-.35,0,17.14,11.38,25.93,25.37a63.82,63.82,0,0,1,9.69,29.21S84.24,159.82,125.92,133.44Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M217.52,139.28c-.46,2.91,1.44,5.56,3,7.16s5.5,6.43,8.54,4.46c2.28-1.49-.78-4.62-1.77-6.16C225.77,142.41,218.12,135.4,217.52,139.28Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M174.72,142.19c-3.07,2.28-8.46,4.56-9.34,11.55s4,10.86,6.15,14.73a57.17,57.17,0,0,0,6.34,8.49,61.6,61.6,0,0,0,5.13,5.11c3.08,2.73,7.78,6.15,9,6.38a39.8,39.8,0,0,0,12-1.87c-.37,3-.3,4.48-.41,6.61,3,.63,11.42-2.66,10.57-3.45-2.41-2.23-7.33-8.68-8.59-10.5s-8.74-11.48-9.41-14.17c-.54-2.16,3.31-12.84,5.17-14.53S174.72,142.19,174.72,142.19Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M127.26,107.61c-.56,4.3-101.15-6.45-101.15-6.45S42.93,90.52,48.94,81.42a45.67,45.67,0,0,0,7-33.93S127.9,102.73,127.26,107.61Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M154.48,62.57c-1.6-2.2-5.36-5.24-16-19-15.42-19.92-19-28.08-19.85-23.13s2.32,39.7,2.32,39.7A229.63,229.63,0,0,1,154.48,62.57Z" transform="translate(-5.97 -0.51)"></path></g><g id="lines"><path class="lines" d="M150.41,84.12s-11.85,3.42-26-3.19S85.25,55.64,74.77,47.21A228,228,0,0,0,51.53,31.26s-2,2.68,0,8.14,5,22.74,4,27.21c0,0-26.79,5.83-38,6.64" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M231.3,172.77c4.52.91,8.5-5.42,8.5-5.42a39.46,39.46,0,0,0,7.91-9.39c2.73-5-2-12.7-2-12.7s-5.47-9.34-10.48-13.35-12.76-13.31-17.32-20.37S206.54,94,201.07,86.93s-17.77-12.07-23.7-15l-23.24-10a305.76,305.76,0,0,1-20.5-27.34c-8.21-12.53-15-14.13-15-14.13L122,59.19s-.06,1.17-5,.86c-8.93-.57-24.75.42-24.75.42" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M202.44,192.2c2.28-2.51,3.9-7.81,3.9-7.81S197,189.24,191.5,189l-10.94-8.2c-5.92-6.16-8.65-11.17-12.76-17.32s-4.1-13,0-17.54,7.75-5.93,9.57-4.33,18.23,5.69,25.07,8.65l14.12,10.62c0,5.56-3.39,10.71-3.39,10.71s12.49-3.29,12.82-6.5" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M125.92,133.44c-4.63-6.33-34.22-11.65-57-14.61s-44.84-3.48-50.52-5.92" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M224.24,141c2.28,1.59,7.29,8.55,6.38,9.69s-4.41,1.15-6-.44" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M211.55,200.4a11.76,11.76,0,0,1-5.92,3.19c-7.82,1.76-18.23,0-18.23,0L164.73,189s-19.26-12.08-26.09-18.16a121.25,121.25,0,0,0-12.76-10c-9.57,1-45.57,9.05-53.77,11.86S53,180.81,53,180.81s-3.58-3.14,0-9.18-3.71-25.8-9.22-34.25c-6.16-9.43-14.89-16.75-22.37-22.33-4.75-3.54-7.51-4.72-11.41-10.37,0,0,4.41-3.82,8.76-4.67s13.09-1.7,20.6-8.79S48,82.7,48,82.7" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M217.06,182.4s-1.93,5.47-5.12,7.69l-6.84-9s-8.11-12.45-10.36-15.81c-.62-.93,1.57-10.16,5.58-15.35" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M14.35,108.56" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M52.93,159.72s-13.63,4.74-19.34,15.62" transform="translate(-5.97 -0.51)"></path></g><g id="iris" style="opacity: 1;"><path class="iris" d="M172.94,103.12c3.17,2.4,7.91,12.46,7.91,12.46a30.43,30.43,0,0,1-14.18-1.9c-7.72-3.53-9-12-9-12S167,98.79,172.94,103.12Z" transform="translate(-5.97 -0.51)"></path></g><g id="eye" style="opacity: 1;"><path class="lines" d="M170.15,114.64c5.93,1.14,13.65.16,13.65.16a140.92,140.92,0,0,0-9.21-12.8c-4.11-4.79-17.19-3.11-17.19-3.11" transform="translate(-5.97 -0.51)"></path></g><g id="eye-2" style="opacity: 0;"><polyline class="lines" points="176.53 116.69 169.13 99.84 151.42 98.37"></polyline></g></svg>
@@ -99,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Normalize
+              Topic Modelling with MALLET
             
           </span>
         </div>
@@ -200,7 +200,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="The Lexos API" class="md-nav__button md-logo" aria-label="The Lexos API" data-md-component="logo">
+    <a href="../.." title="The Lexos API" class="md-nav__button md-logo" aria-label="The Lexos API" data-md-component="logo">
       
   
   <svg id="lexos-dragon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245.59 217.84"><defs><style>.circle{fill:#e3e3e3;}.base{fill:#fff;}.shadow{fill:#909090;}.lines{fill:none;stroke:#505050;stroke-miterlimit:10;stroke-width:6px;}.iris{fill:#47bcff;}</style></defs><g id="circle"><circle class="circle" cx="114.34" cy="108.92" r="108.92"></circle></g><g id="base"><path class="base" d="M18.22,71.24S25,76.48,54.38,65c-.59-8.7-1.73-31.14-1.73-34.15,6.77,0,26,19.57,36.25,25.95,12,1.09,46.16,2,64.91,4.59,9.58,1,45.8,21,51.72,30.09s10,19,16.18,25.41,17.08,18,20.95,23.6,7.89,18.49,3.11,21.72S231,172.29,231,172.29l1.87-6.92-7.19-.75L215,170s1.6-5.85,1.2-9.6c-4-3-11.92-9.25-14.12-10.62s-6.69,12.09-6.25,14.79c.34,2.11,15,22.4,18,24.68,2-1.88,4.11-6.56,4.11-6.56s1.29,5.68-1.34,9.75c-6,9.33-12.5,10.71-15.92,10.56s-10.63,1-15.11-2.35-25.74-14-40.87-25.28c-11.4-8.49-19.18-15.74-19.18-15.74s-33.95,6.6-40.56,9.07-32.35,11.61-32.35,11.61a74,74,0,0,0-1.78-20.6c.57-1.05-17.28,15.62-17.28,15.62S10,148.77,11.09,107.2C11.7,84.17,18.22,71.24,18.22,71.24Z" transform="translate(-5.97 -0.51)"></path></g><g id="shadow"><path class="shadow" d="M125.92,133.44c0-4.87-46.64-12.73-58.75-15.06-12-2.3-37.58-5.19-48.44-6.37-.35,0,17.14,11.38,25.93,25.37a63.82,63.82,0,0,1,9.69,29.21S84.24,159.82,125.92,133.44Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M217.52,139.28c-.46,2.91,1.44,5.56,3,7.16s5.5,6.43,8.54,4.46c2.28-1.49-.78-4.62-1.77-6.16C225.77,142.41,218.12,135.4,217.52,139.28Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M174.72,142.19c-3.07,2.28-8.46,4.56-9.34,11.55s4,10.86,6.15,14.73a57.17,57.17,0,0,0,6.34,8.49,61.6,61.6,0,0,0,5.13,5.11c3.08,2.73,7.78,6.15,9,6.38a39.8,39.8,0,0,0,12-1.87c-.37,3-.3,4.48-.41,6.61,3,.63,11.42-2.66,10.57-3.45-2.41-2.23-7.33-8.68-8.59-10.5s-8.74-11.48-9.41-14.17c-.54-2.16,3.31-12.84,5.17-14.53S174.72,142.19,174.72,142.19Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M127.26,107.61c-.56,4.3-101.15-6.45-101.15-6.45S42.93,90.52,48.94,81.42a45.67,45.67,0,0,0,7-33.93S127.9,102.73,127.26,107.61Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M154.48,62.57c-1.6-2.2-5.36-5.24-16-19-15.42-19.92-19-28.08-19.85-23.13s2.32,39.7,2.32,39.7A229.63,229.63,0,0,1,154.48,62.57Z" transform="translate(-5.97 -0.51)"></path></g><g id="lines"><path class="lines" d="M150.41,84.12s-11.85,3.42-26-3.19S85.25,55.64,74.77,47.21A228,228,0,0,0,51.53,31.26s-2,2.68,0,8.14,5,22.74,4,27.21c0,0-26.79,5.83-38,6.64" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M231.3,172.77c4.52.91,8.5-5.42,8.5-5.42a39.46,39.46,0,0,0,7.91-9.39c2.73-5-2-12.7-2-12.7s-5.47-9.34-10.48-13.35-12.76-13.31-17.32-20.37S206.54,94,201.07,86.93s-17.77-12.07-23.7-15l-23.24-10a305.76,305.76,0,0,1-20.5-27.34c-8.21-12.53-15-14.13-15-14.13L122,59.19s-.06,1.17-5,.86c-8.93-.57-24.75.42-24.75.42" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M202.44,192.2c2.28-2.51,3.9-7.81,3.9-7.81S197,189.24,191.5,189l-10.94-8.2c-5.92-6.16-8.65-11.17-12.76-17.32s-4.1-13,0-17.54,7.75-5.93,9.57-4.33,18.23,5.69,25.07,8.65l14.12,10.62c0,5.56-3.39,10.71-3.39,10.71s12.49-3.29,12.82-6.5" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M125.92,133.44c-4.63-6.33-34.22-11.65-57-14.61s-44.84-3.48-50.52-5.92" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M224.24,141c2.28,1.59,7.29,8.55,6.38,9.69s-4.41,1.15-6-.44" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M211.55,200.4a11.76,11.76,0,0,1-5.92,3.19c-7.82,1.76-18.23,0-18.23,0L164.73,189s-19.26-12.08-26.09-18.16a121.25,121.25,0,0,0-12.76-10c-9.57,1-45.57,9.05-53.77,11.86S53,180.81,53,180.81s-3.58-3.14,0-9.18-3.71-25.8-9.22-34.25c-6.16-9.43-14.89-16.75-22.37-22.33-4.75-3.54-7.51-4.72-11.41-10.37,0,0,4.41-3.82,8.76-4.67s13.09-1.7,20.6-8.79S48,82.7,48,82.7" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M217.06,182.4s-1.93,5.47-5.12,7.69l-6.84-9s-8.11-12.45-10.36-15.81c-.62-.93,1.57-10.16,5.58-15.35" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M14.35,108.56" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M52.93,159.72s-13.63,4.74-19.34,15.62" transform="translate(-5.97 -0.51)"></path></g><g id="iris" style="opacity: 1;"><path class="iris" d="M172.94,103.12c3.17,2.4,7.91,12.46,7.91,12.46a30.43,30.43,0,0,1-14.18-1.9c-7.72-3.53-9-12-9-12S167,98.79,172.94,103.12Z" transform="translate(-5.97 -0.51)"></path></g><g id="eye" style="opacity: 1;"><path class="lines" d="M170.15,114.64c5.93,1.14,13.65.16,13.65.16a140.92,140.92,0,0,0-9.21-12.8c-4.11-4.79-17.19-3.11-17.19-3.11" transform="translate(-5.97 -0.51)"></path></g><g id="eye-2" style="opacity: 0;"><polyline class="lines" points="176.53 116.69 169.13 99.84 151.42 98.37"></polyline></g></svg>
@@ -231,7 +231,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         Home
       </a>
     </li>
@@ -246,7 +246,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../installation/" class="md-nav__link">
+      <a href="../../installation/" class="md-nav__link">
         Installation
       </a>
     </li>
@@ -259,12 +259,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
       
       
@@ -298,7 +300,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../../tutorial/">Tutorial</a>
+          <a href="../">Tutorial</a>
           
             <label for="__nav_3">
               <span class="md-nav__icon md-icon"></span>
@@ -323,7 +325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/getting_started/" class="md-nav__link">
+      <a href="../getting_started/" class="md-nav__link">
         Getting Started
       </a>
     </li>
@@ -337,7 +339,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/loading_texts/" class="md-nav__link">
+      <a href="../loading_texts/" class="md-nav__link">
         Loading Texts
       </a>
     </li>
@@ -351,7 +353,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/scrubbing_texts/" class="md-nav__link">
+      <a href="../scrubbing_texts/" class="md-nav__link">
         Scrubbing Texts
       </a>
     </li>
@@ -365,7 +367,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/tokenising_texts/" class="md-nav__link">
+      <a href="../tokenising_texts/" class="md-nav__link">
         Tokenising Texts
       </a>
     </li>
@@ -379,7 +381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/cutting_docs/" class="md-nav__link">
+      <a href="../cutting_docs/" class="md-nav__link">
         Cutting Documents
       </a>
     </li>
@@ -393,7 +395,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/the_document_term_matrix/" class="md-nav__link">
+      <a href="../the_document_term_matrix/" class="md-nav__link">
         The Document-Term Matrix
       </a>
     </li>
@@ -407,7 +409,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/visualisation/" class="md-nav__link">
+      <a href="../visualisation/" class="md-nav__link">
         Visualisation
       </a>
     </li>
@@ -421,7 +423,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/managing_a_corpus/" class="md-nav__link">
+      <a href="../managing_a_corpus/" class="md-nav__link">
         Managing a Corpus
       </a>
     </li>
@@ -435,7 +437,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/training_a_language_model/" class="md-nav__link">
+      <a href="../training_a_language_model/" class="md-nav__link">
         Training a Language Model
       </a>
     </li>
@@ -447,11 +449,139 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../../tutorial/mallet_topic_models/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-nav__icon md-icon"></span>
+          
+            <a href="./" class="md-nav__link md-nav__link--active"
+              style="margin: initial; padding: initial; pointer-events: initial">
+          
+            Topic Modelling with MALLET
+          </a>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Topic Modelling with MALLET
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before-getting-started" class="md-nav__link">
+    Before Getting Started
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#import-some-data" class="md-nav__link">
+    Import Some Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-metadata" class="md-nav__link">
+    Create Metadata
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scrub-the-data" class="md-nav__link">
+    Scrub the Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tokenise-the-data" class="md-nav__link">
+    Tokenise the Data
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#topic-modelling" class="md-nav__link">
+    Topic Modelling
+  </a>
+  
+    <nav class="md-nav" aria-label="Topic Modelling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#import-the-data" class="md-nav__link">
+    Import the Data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#train-the-model" class="md-nav__link">
+    Train the Model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-the-topic-scale-file" class="md-nav__link">
+    Create the Topic Scale File
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dfr-browser" class="md-nav__link">
+    Dfr-Browser
+  </a>
+  
+    <nav class="md-nav" aria-label="Dfr-Browser">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#open-the-dfr-browser" class="md-nav__link">
+    Open the Dfr-Browser
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -469,14 +599,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
       
       
@@ -512,7 +640,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../">API</a>
+          <a href="../../api/">API</a>
           
             <label for="__nav_4">
               <span class="md-nav__icon md-icon"></span>
@@ -554,7 +682,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../cluster/">Cluster</a>
+          <a href="../../api/cluster/">Cluster</a>
           
         </div>
       
@@ -599,7 +727,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../corpus/">Corpus</a>
+          <a href="../../api/corpus/">Corpus</a>
           
         </div>
       
@@ -648,7 +776,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../cutter/">Cutter</a>
+          <a href="../../api/cutter/">Cutter</a>
           
             <label for="__nav_4_4">
               <span class="md-nav__icon md-icon"></span>
@@ -673,7 +801,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cutter/filesplit/" class="md-nav__link">
+      <a href="../../api/cutter/filesplit/" class="md-nav__link">
         Filesplit
       </a>
     </li>
@@ -687,7 +815,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cutter/milestones/" class="md-nav__link">
+      <a href="../../api/cutter/milestones/" class="md-nav__link">
         Milestones
       </a>
     </li>
@@ -729,7 +857,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../dtm/">DTM</a>
+          <a href="../../api/dtm/">DTM</a>
           
             <label for="__nav_4_5">
               <span class="md-nav__icon md-icon"></span>
@@ -754,7 +882,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dtm/wordcloud/" class="md-nav__link">
+      <a href="../../api/dtm/wordcloud/" class="md-nav__link">
         Wordcloud
       </a>
     </li>
@@ -768,7 +896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dtm/bubbleviz/" class="md-nav__link">
+      <a href="../../api/dtm/bubbleviz/" class="md-nav__link">
         Bubble Charts
       </a>
     </li>
@@ -808,7 +936,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../io/">IO</a>
+          <a href="../../api/io/">IO</a>
           
             <label for="__nav_4_6">
               <span class="md-nav__icon md-icon"></span>
@@ -833,7 +961,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../io/basic/" class="md-nav__link">
+      <a href="../../api/io/basic/" class="md-nav__link">
         Basic
       </a>
     </li>
@@ -871,7 +999,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../language_model/">Language_Model</a>
+          <a href="../../api/language_model/">Language_Model</a>
           
         </div>
       
@@ -897,14 +1025,12 @@
               
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_8" type="checkbox" id="__nav_4_8" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_8" type="checkbox" id="__nav_4_8" >
       
       
       
@@ -934,7 +1060,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../">Scrubber</a>
+          <a href="../../api/scrubber/">Scrubber</a>
           
             <label for="__nav_4_8">
               <span class="md-nav__icon md-icon"></span>
@@ -957,99 +1083,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          <span class="md-nav__icon md-icon"></span>
-          
-            <a href="./" class="md-nav__link md-nav__link--active"
-              style="margin: initial; padding: initial; pointer-events: initial">
-          
-            Normalize
-          </a>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../api/scrubber/normalize/" class="md-nav__link">
         Normalize
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.normalize.bullet_points" class="md-nav__link">
-    bullet_points()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.normalize.hyphenated_words" class="md-nav__link">
-    hyphenated_words()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.normalize.lower_case" class="md-nav__link">
-    lower_case()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.normalize.quotation_marks" class="md-nav__link">
-    quotation_marks()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.normalize.repeating_chars" class="md-nav__link">
-    repeating_chars()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.normalize.unicode" class="md-nav__link">
-    unicode()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.normalize.whitespace" class="md-nav__link">
-    whitespace()
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1061,7 +1099,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pipeline/" class="md-nav__link">
+      <a href="../../api/scrubber/pipeline/" class="md-nav__link">
         Pipeline
       </a>
     </li>
@@ -1075,7 +1113,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../registry/" class="md-nav__link">
+      <a href="../../api/scrubber/registry/" class="md-nav__link">
         Registry
       </a>
     </li>
@@ -1089,7 +1127,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../remove/" class="md-nav__link">
+      <a href="../../api/scrubber/remove/" class="md-nav__link">
         Remove
       </a>
     </li>
@@ -1103,7 +1141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../replace/" class="md-nav__link">
+      <a href="../../api/scrubber/replace/" class="md-nav__link">
         Replace
       </a>
     </li>
@@ -1117,7 +1155,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../resources/" class="md-nav__link">
+      <a href="../../api/scrubber/resources/" class="md-nav__link">
         Resources
       </a>
     </li>
@@ -1131,7 +1169,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../scrubber/" class="md-nav__link">
+      <a href="../../api/scrubber/scrubber/" class="md-nav__link">
         Scrubber
       </a>
     </li>
@@ -1145,7 +1183,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../utils/" class="md-nav__link">
+      <a href="../../api/scrubber/utils/" class="md-nav__link">
         Utils
       </a>
     </li>
@@ -1183,7 +1221,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../topic_model/">Topic_Model</a>
+          <a href="../../api/topic_model/">Topic_Model</a>
           
         </div>
       
@@ -1232,7 +1270,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../tokenizer/">Tokenizer</a>
+          <a href="../../api/tokenizer/">Tokenizer</a>
           
             <label for="__nav_4_10">
               <span class="md-nav__icon md-icon"></span>
@@ -1257,7 +1295,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tokenizer/extensions/" class="md-nav__link">
+      <a href="../../api/tokenizer/extensions/" class="md-nav__link">
         Extensions
       </a>
     </li>
@@ -1271,7 +1309,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tokenizer/lexosdoc/" class="md-nav__link">
+      <a href="../../api/tokenizer/lexosdoc/" class="md-nav__link">
         LexosDoc
       </a>
     </li>
@@ -1292,7 +1330,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualisation/" class="md-nav__link">
+      <a href="../../api/visualisation/" class="md-nav__link">
         Visualisation
       </a>
     </li>
@@ -1306,7 +1344,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utils/" class="md-nav__link">
+      <a href="../../api/utils/" class="md-nav__link">
         Utils
       </a>
     </li>
@@ -1347,51 +1385,91 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#lexos.scrubber.normalize.bullet_points" class="md-nav__link">
-    bullet_points()
+  <a href="#before-getting-started" class="md-nav__link">
+    Before Getting Started
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#lexos.scrubber.normalize.hyphenated_words" class="md-nav__link">
-    hyphenated_words()
+  <a href="#import-some-data" class="md-nav__link">
+    Import Some Data
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#lexos.scrubber.normalize.lower_case" class="md-nav__link">
-    lower_case()
+  <a href="#create-metadata" class="md-nav__link">
+    Create Metadata
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#lexos.scrubber.normalize.quotation_marks" class="md-nav__link">
-    quotation_marks()
+  <a href="#scrub-the-data" class="md-nav__link">
+    Scrub the Data
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#lexos.scrubber.normalize.repeating_chars" class="md-nav__link">
-    repeating_chars()
+  <a href="#tokenise-the-data" class="md-nav__link">
+    Tokenise the Data
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#lexos.scrubber.normalize.unicode" class="md-nav__link">
-    unicode()
+  <a href="#topic-modelling" class="md-nav__link">
+    Topic Modelling
   </a>
+  
+    <nav class="md-nav" aria-label="Topic Modelling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#import-the-data" class="md-nav__link">
+    Import the Data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#train-the-model" class="md-nav__link">
+    Train the Model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-the-topic-scale-file" class="md-nav__link">
+    Create the Topic Scale File
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#lexos.scrubber.normalize.whitespace" class="md-nav__link">
-    whitespace()
+  <a href="#dfr-browser" class="md-nav__link">
+    Dfr-Browser
   </a>
+  
+    <nav class="md-nav" aria-label="Dfr-Browser">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#open-the-dfr-browser" class="md-nav__link">
+    Open the Dfr-Browser
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1407,553 +1485,132 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/scottkleinman/lexos/edit/master/docs/api/scrubber/normalize.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/scottkleinman/lexos/edit/master/docs/tutorial/mallet_topic_models.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
 
-<h1 id="normalize">Normalize<a class="headerlink" href="#normalize" title="Permanent link">¤</a></h1>
-<p>The <code>normalize</code> component of <code>Scrubber</code> contains functions to perform a variety of text manipulations. The functions are frequently applied at the beginning of a scrubbing pipeline.</p>
+<h1 id="mallet-topic-models-in-lexos">MALLET Topic Models in Lexos<a class="headerlink" href="#mallet-topic-models-in-lexos" title="Permanent link">¤</a></h1>
+<p>Topic modelling is a widely-used method of exploring the semantic and discursive concepts, or "topics", within collections of texts. Wikipedia defines a topic model as follows:</p>
+<blockquote>
+<p>In machine learning and natural language processing, a topic model is a type of statistical model for discovering the abstract "topics" that occur in a collection of documents. Topic modeling is a frequently used text-mining tool for discovery of hidden semantic structures in a text body. Intuitively, given that a document is about a particular topic, one would expect particular words to appear in the document more or less frequently: "dog" and "bone" will appear more often in documents about dogs, "cat" and "meow" will appear in documents about cats, and "the" and "is" will appear approximately equally in both. A document typically concerns multiple topics in different proportions; thus, in a document that is 10% about cats and 90% about dogs, there would probably be about 9 times more dog words than cat words. The "topics" produced by topic modeling techniques are clusters of similar words. A topic model captures this intuition in a mathematical framework, which allows examining a set of documents and discovering, based on the statistics of the words in each, what the topics might be and what each document's balance of topics is.</p>
+</blockquote>
+<p><a href="https://mimno.github.io/Mallet/" target="_blank">MALLET</a> is the most widely used topic modelling tool in the Digital Humanities, both because it is very performant and because its implementation of the Latent Dirichlet Allocation (LDA) algorithm tends to produce quality topics. MALLET is a command-line tool written in Java. It is independent of Lexos and must be installed separately. User-friendly instructions for installing and using MALLET can be found in the <em>Programming Historian</em> tutorial <a href="https://programminghistorian.org/en/lessons/topic-modeling-and-mallet">Getting Started with Topic Modeling and MALLET</a>.</p>
+<p>One of the difficulties of using MALLET is that its output is relatively difficult to manipulate into data structures useful for visualisation. This tutorial is a proof of concept for how we might use Lexos to generate a MALLET topic model and then use the model to create a visualisation with Andrew Goldstone's <a href="http://agoldst.github.io/dfr-browser/" target="_blank">dfr-browser</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Much of the legwork for this procedure was done for the <a href="https://we1s.ucsb.edu/" target="_blank">WhatEvery1Says Project</a>, which established the basic workflow.</p>
+</div>
+<h2 id="before-getting-started">Before Getting Started<a class="headerlink" href="#before-getting-started" title="Permanent link">¤</a></h2>
+<p>Before you get started, make sure that you have a working installation of MALLET by following the instructions in the <em>Programming Historian</em> tutorial <a href="https://programminghistorian.org/en/lessons/topic-modeling-and-mallet">Getting Started with Topic Modeling and MALLET</a>. Make sure that you know the path to the MALLET binary file.</p>
+<p>Next, make a new folder for your topic model. In this tutorial, we will locate our new folder at <code>../topic_model</code>, which indicates that the folder is at the same level as the Lexos API's <code>lexos</code> folder.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>There are some special considerations when working in a Jupyter notebook if you are importing the Lexos API from a local folder, as opposed to your Python environment. In this case, you must first set your system environment to the <code>lexos</code> folder as shown <a href="../../installation#running-the-development-library-locally">here</a> and then make sure to reference paths in your model relative to the <code>lexos</code> folder (when in doubt, use absolute paths).</p>
+</div>
+<h2 id="import-some-data">Import Some Data<a class="headerlink" href="#import-some-data" title="Permanent link">¤</a></h2>
+<p>For this tutorial, we'll use the MALLET English-language sample data. This a very small dataset and should run very quickly. It should have been downloaded when you installed MALLET.</p>
+<p>Change the <code>data_path</code> to wherever your data is located. The code below simply reads a folder of text files and adds each text to a list.</p>
+<div class="highlight"><pre><span></span><code><span class="n">data_path</span> <span class="o">=</span> <span class="s2">&quot;C:/mallet/mallet-2.0.8/sample-data/web/en&quot;</span>
 
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.scrubber.normalize.bullet_points" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">normalize</span><span class="o">.</span><span class="n">bullet_points</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.normalize.bullet_points" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Normalize bullet points.</p>
-<p>Normalises all "fancy" bullet point symbols in <code>text</code> to just the basic
-ASCII "-", provided they are the first non-whitespace characters on a new
-line (like a list of items). Duplicates Textacy's <code>utils.normalize_bullets</code>.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text to normalize.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The normalized text.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\normalize.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">bullet_points</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Normalize bullet points.</span>
-
-<span class="sd">    Normalises all &quot;fancy&quot; bullet point symbols in `text` to just the basic</span>
-<span class="sd">    ASCII &quot;-&quot;, provided they are the first non-whitespace characters on a new</span>
-<span class="sd">    line (like a list of items). Duplicates Textacy&#39;s `utils.normalize_bullets`.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        text (str): The text to normalize.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        The normalized text.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_BULLET_POINTS</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\1-&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">data_path</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data_path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
 </code></pre></div>
-        </details>
-    </div>
+<h2 id="create-metadata">Create Metadata<a class="headerlink" href="#create-metadata" title="Permanent link">¤</a></h2>
+<p>Although not required for topic modelling, metadata is needed to generate a dfr-browser. Since the MALLET sample data does not come with metadata, we will just generate some fake metadata and save it to a CSV file.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-  </div>
+<span class="n">metadata_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;../topic_model/meta.csv&quot;</span>
 
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;articlebody&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">,</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">files</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+        <span class="s2">&quot;publication&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">files</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">_pub&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">files</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">_author&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pubdate&quot;</span><span class="p">:</span> <span class="s2">&quot;unknown&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;docUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;http://www.google.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;wordcount&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.scrubber.normalize.hyphenated_words" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">normalize</span><span class="o">.</span><span class="n">hyphenated_words</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.normalize.hyphenated_words" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Normalize hyphenated words.</p>
-<p>Normalize words in <code>text</code> that have been split across lines by a hyphen
-for visual consistency (aka hyphenated) by joining the pieces back together,
-sans hyphen and whitespace. Duplicates Textacy's <code>utils.normalize_hyphens</code>.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text to normalize.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The normalized text.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\normalize.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">hyphenated_words</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Normalize hyphenated words.</span>
-
-<span class="sd">    Normalize words in `text` that have been split across lines by a hyphen</span>
-<span class="sd">    for visual consistency (aka hyphenated) by joining the pieces back together,</span>
-<span class="sd">    sans hyphen and whitespace. Duplicates Textacy&#39;s `utils.normalize_hyphens`.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        text (str): The text to normalize.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        The normalized text.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_HYPHENATED_WORD</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\1\2&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;articlebody&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="s2">&quot;publication&quot;</span><span class="p">,</span> <span class="s2">&quot;author&quot;</span><span class="p">,</span> <span class="s2">&quot;pubdate&quot;</span><span class="p">,</span> <span class="s2">&quot;docUrl&quot;</span><span class="p">,</span> <span class="s2">&quot;wordcount&quot;</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">metadata_file</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">na_rep</span><span class="o">=</span><span class="s2">&quot;NA&quot;</span><span class="p">,</span> <span class="n">quoting</span><span class="o">=</span><span class="n">csv</span><span class="o">.</span><span class="n">QUOTE_ALL</span><span class="p">)</span>
 </code></pre></div>
-        </details>
-    </div>
+<p>If you were doing it for real, you would create a headerless CSV file where each column would contain the information "id", "articlebody", "title", "publication", "author", "pubdate", "docUrl", and "wordcount" (in that order). Some customisation of the metadata fields is possible (see the <a href="https://github.com/agoldst/dfr-browser#adapting-this-project-to-other-kinds-of-documents-or-models" target="_blank">dfr-browser documentation</a>, but this is not covered in this tutorial).</p>
+<h2 id="scrub-the-data">Scrub the Data<a class="headerlink" href="#scrub-the-data" title="Permanent link">¤</a></h2>
+<p>Now we will use Lexos to scrub the data. We import the Scrubber components, make a pipeline, and run the pipeline on each text. The components here are just random samples of the possible options.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.scrubber.pipeline</span> <span class="kn">import</span> <span class="n">make_pipeline</span><span class="p">,</span> <span class="n">pipe</span>
+<span class="kn">from</span> <span class="nn">lexos.scrubber.registry</span> <span class="kn">import</span> <span class="n">scrubber_components</span><span class="p">,</span> <span class="n">load_components</span>
 
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.scrubber.normalize.lower_case" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">normalize</span><span class="o">.</span><span class="n">lower_case</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.normalize.lower_case" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Convert <code>text</code> to lower case.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text to convert to lower case.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The converted text.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\normalize.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">lower_case</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Convert `text` to lower case.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        text (str): The text to convert to lower case.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        The converted text.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="n">emails</span><span class="p">,</span> <span class="n">new_lines</span><span class="p">,</span> <span class="n">pattern</span> <span class="o">=</span> <span class="n">load_components</span><span class="p">((</span><span class="s2">&quot;emails&quot;</span><span class="p">,</span> <span class="s2">&quot;new_lines&quot;</span><span class="p">,</span> <span class="s2">&quot;pattern&quot;</span><span class="p">))</span>
+<span class="n">scrub</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
+    <span class="n">emails</span><span class="p">,</span>
+    <span class="n">new_lines</span><span class="p">,</span>
+    <span class="n">pipe</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\&#39;</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">scrub</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
 </code></pre></div>
-        </details>
-    </div>
+<h2 id="tokenise-the-data">Tokenise the Data<a class="headerlink" href="#tokenise-the-data" title="Permanent link">¤</a></h2>
+<p>We will import the Lexos tokenizer and create a list of spaCy docs. In the example below, we use spaCy's "en_core_web_sm" language model, and we'll add "gorillas" as an arbitrary extra stop word.</p>
+<p>Keep in mind that each token in the doc is annotated with its part of speech, whether or not it is a stop word, and whether or not it is a punctuation mark (to name a few examples). We will use these properties below.</p>
+<p>Note that because tokenisation also involves adding these annotations, it may take a long time for large datasets.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos</span> <span class="kn">import</span> <span class="n">tokenizer</span>
 
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.scrubber.normalize.quotation_marks" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">normalize</span><span class="o">.</span><span class="n">quotation_marks</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.normalize.quotation_marks" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Normalize quotation marks.</p>
-<p>Normalize all "fancy" single- and double-quotation marks in <code>text</code>
-to just the basic ASCII equivalents. Note that this will also normalize fancy
-apostrophes, which are typically represented as single quotation marks.
-Duplicates Textacy's <code>utils.normalize_quotation_marks</code>.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text to normalize.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The normalized text.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\normalize.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">quotation_marks</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Normalize quotation marks.</span>
-
-<span class="sd">    Normalize all &quot;fancy&quot; single- and double-quotation marks in `text`</span>
-<span class="sd">    to just the basic ASCII equivalents. Note that this will also normalize fancy</span>
-<span class="sd">    apostrophes, which are typically represented as single quotation marks.</span>
-<span class="sd">    Duplicates Textacy&#39;s `utils.normalize_quotation_marks`.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        text (str): The text to normalize.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        The normalized text.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">resources</span><span class="o">.</span><span class="n">QUOTE_TRANSLATION_TABLE</span><span class="p">)</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">make_docs</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;en_core_web_sm&quot;</span><span class="p">,</span>
+    <span class="n">add_stopwords</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;gorillas&quot;</span><span class="p">]</span>
+<span class="p">)</span>
 </code></pre></div>
-        </details>
-    </div>
+<h2 id="topic-modelling">Topic Modelling<a class="headerlink" href="#topic-modelling" title="Permanent link">¤</a></h2>
+<p>We are now ready to create the topic model. We start by creating a <code>Mallet</code> object, pointing it to a directory where we would like the model to be saved, and supplying the path to our MALLET installation.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.topic_model.mallet</span> <span class="kn">import</span> <span class="n">Mallet</span>
 
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.scrubber.normalize.repeating_chars" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">normalize</span><span class="o">.</span><span class="n">repeating_chars</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">chars</span><span class="p">,</span> <span class="n">maxn</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.normalize.repeating_chars" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Normalize repeating characters in <code>text</code>.</p>
-<p>Truncating their number of consecutive repetitions to <code>maxn</code>.
-Duplicates Textacy's <code>utils.normalize_repeating_chars</code>.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text to normalize.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>chars</code></td>
-        <td><code>str</code></td>
-        <td><p>One or more characters whose consecutive repetitions are to be
-normalized, e.g. "." or "?!".</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>maxn</code></td>
-        <td><code>int</code></td>
-        <td><p>Maximum number of consecutive repetitions of <code>chars</code> to which
-longer repetitions will be truncated.</p></td>
-        <td><code>1</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>str</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\normalize.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">repeating_chars</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">chars</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">maxn</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Normalize repeating characters in `text`.</span>
-
-<span class="sd">    Truncating their number of consecutive repetitions to `maxn`.</span>
-<span class="sd">    Duplicates Textacy&#39;s `utils.normalize_repeating_chars`.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        text (str): The text to normalize.</span>
-<span class="sd">        chars: One or more characters whose consecutive repetitions are to be</span>
-<span class="sd">            normalized, e.g. &quot;.&quot; or &quot;?!&quot;.</span>
-<span class="sd">        maxn: Maximum number of consecutive repetitions of `chars` to which</span>
-<span class="sd">            longer repetitions will be truncated.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        str</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(</span><span class="si">{}</span><span class="s2">){{</span><span class="si">{}</span><span class="s2">,}}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">chars</span><span class="p">),</span> <span class="n">maxn</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">chars</span> <span class="o">*</span> <span class="n">maxn</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Mallet</span><span class="p">(</span><span class="n">model_dir</span><span class="o">=</span><span class="s2">&quot;../topic_model&quot;</span><span class="p">,</span> <span class="n">mallet_path</span><span class="o">=</span><span class="s2">&quot;C:/mallet/mallet-2.0.8/bin&quot;</span><span class="p">)</span>
 </code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.scrubber.normalize.unicode" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">normalize</span><span class="o">.</span><span class="n">unicode</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="s1">&#39;NFC&#39;</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.normalize.unicode" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Normalize unicode characters in <code>text</code> into canonical forms.</p>
-<p>Duplicates Textacy's <code>utils.normalize_unicode</code>.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text to normalize.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>form</code></td>
-        <td><code>Literal[&#39;NFC&#39;, &#39;NFD&#39;, &#39;NFKC&#39;, &#39;NFKD&#39;]</code></td>
-        <td><p>Form of normalization applied to unicode characters.
-For example, an "e" with accute accent "´" can be written as "e´"
-(canonical decomposition, "NFD") or "é" (canonical composition, "NFC").
-Unicode can be normalized to NFC form without any change in meaning,
-so it's usually a safe bet. If "NFKC", additional normalizations are applied
-that can change characters' meanings, e.g. ellipsis characters are replaced
-with three periods.</p></td>
-        <td><code>&#39;NFC&#39;</code></td>
-      </tr>
-  </tbody>
-</table>      <p>See Also:
-    <a href="https://docs.python.org/3/library/unicodedata.html#unicodedata.normalize">https://docs.python.org/3/library/unicodedata.html#unicodedata.normalize</a></p>
-
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\normalize.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">unicode</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">form</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;NFC&quot;</span><span class="p">,</span> <span class="s2">&quot;NFD&quot;</span><span class="p">,</span> <span class="s2">&quot;NFKC&quot;</span><span class="p">,</span> <span class="s2">&quot;NFKD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;NFC&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Normalize unicode characters in `text` into canonical forms.</span>
-
-<span class="sd">    Duplicates Textacy&#39;s `utils.normalize_unicode`.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        text (str): The text to normalize.</span>
-<span class="sd">        form: Form of normalization applied to unicode characters.</span>
-<span class="sd">            For example, an &quot;e&quot; with accute accent &quot;´&quot; can be written as &quot;e´&quot;</span>
-<span class="sd">            (canonical decomposition, &quot;NFD&quot;) or &quot;é&quot; (canonical composition, &quot;NFC&quot;).</span>
-<span class="sd">            Unicode can be normalized to NFC form without any change in meaning,</span>
-<span class="sd">            so it&#39;s usually a safe bet. If &quot;NFKC&quot;, additional normalizations are applied</span>
-<span class="sd">            that can change characters&#39; meanings, e.g. ellipsis characters are replaced</span>
-<span class="sd">            with three periods.</span>
-
-<span class="sd">    See Also:</span>
-<span class="sd">        https://docs.python.org/3/library/unicodedata.html#unicodedata.normalize</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+<h3 id="import-the-data">Import the Data<a class="headerlink" href="#import-the-data" title="Permanent link">¤</a></h3>
+<p>We use our <code>Mallet</code> object to import our tokenised docs. In the example below, we will import only tokens labelled as nouns. The default behaviour is to skip stop words and punctuation.</p>
+<p>This process creates two files in the model directory. The first is called <code>data.txt</code>. This file contains all our doc tokens with one doc per line. Each doc is a bag of words (meaning token order is lost). The second file is called <code>import.mallet</code>. This contains the information in <code>data.txt</code>, imported into a binary format. It will also have the method's default settings overridden by any MALLET parameters supplied. However, we'll stick with the defaults below.</p>
+<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">allowed</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;NOUN&quot;</span><span class="p">])</span>
 </code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.scrubber.normalize.whitespace" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">normalize</span><span class="o">.</span><span class="n">whitespace</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.normalize.whitespace" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
-      <p>Normalize whitespace.</p>
-<p>Replace all contiguous zero-width spaces with an empty string,
-line-breaking spaces with a single newline, and non-breaking spaces
-with a single space, then strip any leading/trailing whitespace.</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text to normalize.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The normalized text.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\normalize.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">whitespace</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Normalize whitespace.</span>
-
-<span class="sd">    Replace all contiguous zero-width spaces with an empty string,</span>
-<span class="sd">    line-breaking spaces with a single newline, and non-breaking spaces</span>
-<span class="sd">    with a single space, then strip any leading/trailing whitespace.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        text (str): The text to normalize.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        The normalized text.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_ZWSP</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_LINEBREAK</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\n&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_NONBREAKING_SPACE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can override the default settings by creating a dict of keyword-value pairs based on MALLET settings and then passing the dict to the <code>import_data()</code> function. For instance, say you wanted to use an external stop word file:</p>
+<div class="highlight"><pre><span></span><code><span class="n">opts</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;remove-stopwords&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;stoplist-file&quot;</span><span class="p">:</span> <span class="s2">&quot;stoplist.txt&quot;</span><span class="p">}</span>
+<span class="n">model</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="o">**</span><span class="n">opts</span><span class="p">)</span>
 </code></pre></div>
-        </details>
-    </div>
+<p>This feature is currently not fully developed, but it should work for some basic procedures.</p>
+</div>
+<h3 id="train-the-model">Train the Model<a class="headerlink" href="#train-the-model" title="Permanent link">¤</a></h3>
+<p>If we've followed the procedure above, we can simply call <code>model.train()</code>. If for some reason, we need to re-instantiate the <code>Mallet</code> object, we can do so and skip the import step above. In this case, we would call <code>model.train(mallet_file="import.mallet")</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</code></pre></div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The progress of the modelling task is monitored by continuous output to the console. If you are running the process in a Jupyter notebook, you may wish to put <code>%%capture</code> at the beginning of the cell so that the progress output is not printed to the cell's output, which may overwhelm the memory buffer. Eventually, we will create a progress bar option to avoid this issue.</p>
+</div>
+<p>Once the model is complete (which may take a long time if you have a lot of data but should take seconds for the MALLET sample data), it is worth inspecting the model. Navigate to your models <code>keys.txt</code> file and open it. If some topics have no keywords, that is a sign that something has gone wrong with your model. If everything looks good, you're ready for the next step.</p>
+<h3 id="create-the-topic-scale-file">Create the Topic Scale File<a class="headerlink" href="#create-the-topic-scale-file" title="Permanent link">¤</a></h3>
+<p>dfr-browser requires an additional CSV file containing topic scaling data. To produce this, we just need to call <code>model.scale()</code></p>
+<div class="highlight"><pre><span></span><code><span class="n">model</span><span class="o">.</span><span class="n">scale</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="dfr-browser">Dfr-Browser<a class="headerlink" href="#dfr-browser" title="Permanent link">¤</a></h2>
+<p>We can now generate a dfr-browser from our topic model. We import the <code>DfrBrowser</code> class and create a <code>DfrBrowser</code> object. This will create a <code>dfr_browser</code> directory in your model's folder where all the necessary files are housed. Make sure that your <code>meta.csv</code> file is in the root of your topic model folder.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.topic_model.dfr_browser</span> <span class="kn">import</span> <span class="n">DfrBrowser</span>
 
-  </div>
+<span class="n">browser</span> <span class="o">=</span> <span class="n">DfrBrowser</span><span class="p">(</span><span class="n">model_dir</span><span class="o">=</span><span class="s2">&quot;../topic_model&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="open-the-dfr-browser">Open the Dfr-Browser<a class="headerlink" href="#open-the-dfr-browser" title="Permanent link">¤</a></h3>
+<p>When the process is complete, you will need to start a local server. Open a command prompt and <code>cd</code> to your model's <code>dfr_browser</code> folder. Then type <code>python -m http.server 8080</code>. If you are already running a local server on port 8080, you can change it to something else. Then point your browser to <a href="http://localhost:8080/">http://localhost:8080/</a>, and the dfr-browser should load.</p>
+<p>Note that some features of dfr-browser may not work if you do not have appropriate metadata.</p>
+<p>When you are finished, remember to go back to the command prompt and type <code>Ctr+C</code> to shutdown the server.</p>
 
               
             </article>
@@ -1972,7 +1629,7 @@ with a single space, then strip any leading/trailing whitespace.</p>
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../training_a_language_model/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1981,19 +1638,19 @@ with a single space, then strip any leading/trailing whitespace.</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Index
+              Training a Language Model
             </div>
           </div>
         </a>
       
       
-        <a href="../pipeline/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../../api/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Pipeline
+              Index
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -2063,10 +1720,10 @@ with a single space, then strip any leading/trailing whitespace.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.indexes"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.960e086b.min.js"></script>
+      <script src="../../assets/javascripts/bundle.960e086b.min.js"></script>
       
     
   </body>
