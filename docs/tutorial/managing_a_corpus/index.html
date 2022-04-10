@@ -1439,8 +1439,8 @@
 
 
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¤</a></h1>
-<p>The <code>Corpus</code> module consists of a <code>Corpus</code> class that helps you manage assets in your workflow and serialise them to disk for later use. It is strictly optional; you may find is sufficient to load your documents into memory with a <code>Loader</code> or to manage your corpus assets independently through a different application.</p>
-<p>It is important to realise that a Lexos <code>Corpus</code> is primarily manager for project assets; it is not used for acquiring those assets and is not used for analysing them, apart from the generation of a few statistics. In general, using a <code>Corpus</code> will require a workflow like the following:</p>
+<p>The <code>Corpus</code> module consists of a <code>Corpus</code> class that helps you manage assets in your workflow and serialise them to disk for later use. It is strictly optional; you may find it sufficient to load your documents into memory with a <code>Loader</code> or to manage your corpus assets independently through a different application.</p>
+<p>It is important to realise that a Lexos <code>Corpus</code> is primarily a manager for project assets; it is not used for acquiring those assets and is not used for analysing them, apart from the generation of a few statistics. In general, using a <code>Corpus</code> will require a workflow like the following:</p>
 <ol>
 <li>Use <code>Loader</code> to acquire texts.</li>
 <li>Optionally, use <code>Scrubber</code> to perform any required preprocessing on the texts in <code>Loader.texts</code>.</li>
@@ -1467,10 +1467,10 @@
 <li><code>ids</code>: A list of document ids in the Corpus.</li>
 <li><code>names</code>: A list of document names in the Corpus.</li>
 <li><code>docs</code>: A dict of document ids and docs in the Corpus if you have opted to cache them to RAM.</li>
-<li><code>num_docs</code>: The number of docs the Corpus.</li>
-<li><code>num_active_docs</code>: The number of active docs the Corpus.</li>
-<li><code>num_tokens</code>: The number of tokens the Corpus.</li>
-<li><code>num_terms</code>: The number of terms the Corpus.</li>
+<li><code>num_docs</code>: The number of docs in the Corpus.</li>
+<li><code>num_active_docs</code>: The number of active docs in the Corpus.</li>
+<li><code>num_tokens</code>: The number of tokens in the Corpus.</li>
+<li><code>num_terms</code>: The number of terms in the Corpus.</li>
 <li><code>terms</code>: A set of unique terms in the Corpus.</li>
 </ul>
 <p>Call these functions with code like <code>corpus.num_tokens</code>. You can also get a <code>collections.Counter</code> containing the corpus term counts with <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.get_term_counts">lexos.corpus.Corpus.get_term_counts</a> using <code>corpus.get_term_counts()</code>.</p>
@@ -1480,7 +1480,7 @@
 <p>The <a href="../../api/corpus/#lexos.corpus.__init__.Corpus">lexos.corpus.Corpus</a> class is constructed using <a href="https://pydantic-docs.helpmanual.io/usage/models/" target="_blank">Pydantic's <code>BaseModel</code> class</a>. This means that it has access to any of Pydantic's attributes and methods, such as <code>dict()</code> and <code>json()</code>.</p>
 </div>
 <h2 id="corpus-records">Corpus Records<a class="headerlink" href="#corpus-records" title="Permanent link">¤</a></h2>
-<p>The basic unit of storage in a <code>Corpus</code> is a <code>Record</code> object. This is a Python object that provides access the record's content and its metadata. Constructing a <code>Record</code> is simple. You just have to feed it some <code>content</code> and, in most cases, give it a name:</p>
+<p>The basic unit of storage in a <code>Corpus</code> is a <code>Record</code> object. This is a Python object that provides access to the record's content and its metadata. Constructing a <code>Record</code> is simple. You just have to feed it some <code>content</code> and, in most cases, give it a name:</p>
 <div class="highlight"><pre><span></span><code>record = Record(content=mydoc, name=&quot;greeting&quot;)
 </code></pre></div>
 <p>Behind the scenes, the <code>Record</code> class will give the record a default <code>id</code> of 1 (unless you specify a different integer) and set the <code>is_active</code> property to <code>True</code> (unless you set instantiate the object with it set to <code>False</code>). See <a href="../../api/corpus/#lexos.corpus.__init__.Record">lexos.corpus.Record</a> for other arguments that can be passed to the <code>Record</code> class.</p>
@@ -1493,7 +1493,7 @@
 <li><code>preview</code>: A preview of the first 50 characters of the record's text.</li>
 <li><code>terms</code>: A set of unique terms in the record's content.</li>
 <li><code>text</code>: The full text of the record's content.</li>
-<li><code>tokens</code>: A list of tokens in record's content.</li>
+<li><code>tokens</code>: A list of tokens in the record's content.</li>
 <li><code>num_terms</code>: The number of unique terms in the record's content.</li>
 <li><code>num_tokens</code>: The number of tokens in the record's content.</li>
 </ul>
@@ -1510,7 +1510,7 @@
 </code></pre></div>
 <p>The pickle format is not considered secure, so never unpickle a file you do not trust.</p>
 </div>
-<p>The <code>Record</code> class accepts content only the form of a pre-tokenised spaCy doc. However, it is possible to store an untokenised text by creating a blank spaCy language model and feeding it the <a href="../../api/corpus/#lexos.corpus.__init__.NullTokenizer">lexos.corpus.NullTokenizer</a> class. This simply returns a spaCy doc with the text as a single token.</p>
+<p>The <code>Record</code> class accepts content only in the form of a pre-tokenised spaCy doc. However, it is possible to store an untokenised text by creating a blank spaCy language model and feeding it the <a href="../../api/corpus/#lexos.corpus.__init__.NullTokenizer">lexos.corpus.NullTokenizer</a> class. This simply returns a spaCy doc with the text as a single token.</p>
 <div class="highlight"><pre><span></span><code><span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">blank</span><span class="p">(</span><span class="s2">&quot;xx&quot;</span><span class="p">)</span>
 <span class="n">nlp</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">NullTokenizer</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span>
 <span class="n">content</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
@@ -1524,11 +1524,11 @@
 <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="s2">&quot;Hi there!&quot;</span><span class="p">)</span>
 <span class="n">record</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;greeting&quot;</span><span class="p">,</span> <span class="n">is_parsed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<p>The <code>is_parsed</code> attribute allows <code>Corpus</code> to know that its dealing with a tokenised document. You can still access the full text by calling <code>record.text</code>, but you can also access individual tokens by calling <code>record.content[0]</code> (to get the first token).</p>
+<p>The <code>is_parsed</code> attribute allows <code>Corpus</code> to know that it is dealing with a tokenised document. You can still access the full text by calling <code>record.text</code>, but you can also access individual tokens by calling <code>record.content[0]</code> (to get the first token).</p>
 <p>If you want a dictionary with a record's full metadata, probably the easiest method is <code>metadata = record.dict().remove("content")</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Why serialise records with <code>pickle</code>?</p>
-<p>A Lexos <code>Record</code> is a Python object which contains a spaCy <code>Doc</code> object which contains spaCy <code>Token</code> objects. This complex structure creates a scenario which cannot be handled by other serialisation formats without some serious hacks. There are some concerns about whether serialisation and de-serialisation will be fast enough when working with many records in a corpus (and lesser concern about the security of the format), but for the moment it is the easiest and most straightforward format to work with. This is something to be revisited at a future date.</p>
+<p>A Lexos <code>Record</code> is a Python object which contains a spaCy <code>Doc</code> object which contains spaCy <code>Token</code> objects. This complex structure creates a scenario which cannot be handled by other serialisation formats without some serious hacks. There are some concerns about whether serialisation and de-serialisation will be fast enough when working with many records in a corpus (and lesser concerns about the security of the format), but for the moment it is the easiest and most straightforward format to work with. This is something to be revisited at a future date.</p>
 </div>
 <h2 id="adding-records-to-a-corpus">Adding Records to a Corpus<a class="headerlink" href="#adding-records-to-a-corpus" title="Permanent link">¤</a></h2>
 <p>Adding records to a corpus is simple with <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.add_record">lexos.corpus.Corpus.add_record</a>:</p>
@@ -1536,7 +1536,7 @@
 <span class="n">corpus</span><span class="o">.</span><span class="n">add_record</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 <p>There is also a <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.add_records">lexos.corpus.Corpus.add_records</a>, which takes a list of records.</p>
-<p>By default, the record's content is not cached it memory; instead, the entire record is serialised to disk. If you want to keep it in memory, you can set <code>cache=True</code> (as above). This will allow you to access the record from <code>corpus.docs</code> without having to fetch the record from disk.</p>
+<p>By default, the record's content is not cached in memory; instead, the entire record is serialised to disk. If you want to keep it in memory, you can set <code>cache=True</code> (as above). This will allow you to access the record from <code>corpus.docs</code> without having to fetch the record from disk.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>At present the <code>docs</code> property in the <a href="../../api/corpus/#lexos.corpus.__init__.Corpus">lexos.corpus.Corpus</a> class is the only place where a clear distinction between a "record" and a "document" is made.</p>
@@ -1572,7 +1572,7 @@
 <p>All the arguments accepted by <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.add">lexos.corpus.Corpus.add</a> can be set as keys in the <code>docs</code> dictionary.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Whether you are adding documents or records to a corpus, a check is made to ensure that the records stored have unique <code>id</code>, <code>name</code>, and <code>filename</code> attributes. If you do not specify a <code>name</code> for a document or record, a <a href="https://docs.python.org/3/library/uuid.html" target="_blank">UUID</a> will be used instead and will be used to generate a corresponding filename. The results of this can be unwieldy. In the future some other method of ensuring uniqueness will be explored.</p>
+<p>Whether you are adding documents or records to a corpus, a check is made to ensure that the records stored have unique <code>id</code>, <code>name</code>, and <code>filename</code> attributes. If you do not specify a <code>name</code> for a document or record, a <a href="https://docs.python.org/3/library/uuid.html" target="_blank">UUID</a> will be used instead and will be used to generate a corresponding filename. The results of this can be unwieldy. In the future, some other method of ensuring uniqueness will be explored.</p>
 </div>
 <h2 id="getting-records-from-the-corpus">Getting Records from the Corpus<a class="headerlink" href="#getting-records-from-the-corpus" title="Permanent link">¤</a></h2>
 <p>Individual records can be fetched using <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.get">lexos.corpus.Corpus.get</a> with a record <code>id</code>:</p>
@@ -1593,7 +1593,7 @@
 </div>
 <p>If you want just the metadata for a record, probably the easiest method is <code>metadata = corpus.get(1).dict().remove("content")</code>.</p>
 <h2 id="viewing-the-records-table">Viewing the Records Table<a class="headerlink" href="#viewing-the-records-table" title="Permanent link">¤</a></h2>
-<p><a href="../../api/corpus/#lexos.corpus.__init__.Corpus.records_table">lexos.corpus.Corpus.records_table</a> generates a pandas dataframe with each record in a separate row. By default the <code>id</code>, <code>name</code>, <code>filename</code>, <code>num_tokens</code>, <code>num_terms</code>, <code>is_active</code>, and <code>is_parsed</code> attributes are displayed columns. You can supply your own list of columns with the <code>columns</code> argument, or you can exclude specific columns with the <code>exclude</code> argument.</p>
+<p><a href="../../api/corpus/#lexos.corpus.__init__.Corpus.records_table">lexos.corpus.Corpus.records_table</a> generates a pandas dataframe with each record in a separate row. By default, the <code>id</code>, <code>name</code>, <code>filename</code>, <code>num_tokens</code>, <code>num_terms</code>, <code>is_active</code>, and <code>is_parsed</code> attributes are displayed columns. You can supply your own list of columns with the <code>columns</code> argument, or you can exclude specific columns with the <code>exclude</code> argument.</p>
 <h2 id="setting-record-properties">Setting Record Properties<a class="headerlink" href="#setting-record-properties" title="Permanent link">¤</a></h2>
 <p>After a corpus is instantiated, you can set the properties of individual records with <a href="../../api/corpus/#lexos.corpus.__init__.Corpus.set">lexos.corpus.Corpus.set</a>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">corpus</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;John Smith&quot;</span><span class="p">})</span>
