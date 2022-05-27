@@ -1417,7 +1417,7 @@
 <span class="n">machete</span> <span class="o">=</span> <span class="n">Machete</span><span class="p">()</span>
 
 <span class="c1"># Split the texts into 5 segments</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">machete</span><span class="p">()</span><span class="o">.</span><span class="n">splitn</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span> <span class="s2">&quot;custom_punctuation_tokenizer&quot;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">machete</span><span class="o">.</span><span class="n">splitn</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">=</span><span class="s2">&quot;custom_punctuation_tokenizer&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <p><a href="../../api/cutter/#lexos.cutter.__init__.Machete.split">lexos.cutter.Machete.split</a> and <a href="../../api/cutter/#lexos.cutter.__init__.Machete.split">lexos.cutter.Machete.splitn</a> return a list of lists, where each item in the sublist corresponds to a text. By default, each text contains a list of strings in which the string corresponds to a segment. It is possible to return the segments as lists of tokens by setting the <code>as_string</code> parameter to <code>False</code>.</p>
