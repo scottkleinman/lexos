@@ -50,7 +50,3 @@ if "NOTEBOOK_INITIATED_FLAG" not in globals():
 If you are starting your notebook from another directory, you can modify `LEXOS_PATH` to point to the `lexos` subfolder.
 
 You should now be able to import the `lexos` API module from your local directory.
-
-## Deployment Test
-
-This is a temporary test. Please ignore this section.
