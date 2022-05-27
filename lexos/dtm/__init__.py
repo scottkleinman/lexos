@@ -14,7 +14,7 @@ SORTING_ALGORITHM = natsort_keygen(alg=ns.LOCALE)
 
 class DTM():
     """Class for a document-term matrix."""
-    def __init__(self, docs = List[object], labels = List[str]):
+    def __init__(self, docs = List[Union[list, object]], labels = List[str]):
         """Initialise the DTM."""
         self.docs = docs
         self.table = None
@@ -25,7 +25,10 @@ class DTM():
 
     def build(self):
         """Build a new DTM matrix based on the current vectorizer."""
-        doc_tokens = [[token.text for token in doc] for doc in self.docs]
+        if isinstance(self.docs, list):
+            doc_tokens = self.docs
+        else:
+            doc_tokens = [[token.text for token in doc] for doc in self.docs]
         self.matrix = self.vectorizer.fit_transform(doc_tokens)
         # Require explicit calling of get_table after each build to ensure table is up to date.
         # Ensures that the two processes can be kept separate if desired.
