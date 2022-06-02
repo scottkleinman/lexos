@@ -46,25 +46,26 @@ def ensure_path(path: Any) -> Any:
     else:
         return path
 
-    
+
 def extract_from_word97_2003(file: str) -> str:
-    """Convert a Word .doc file
-    
+    """Extract text from a Word .doc file.
+
     Args:
         file (str): The path to the .doc file.
-        
+
     Returns:
         text (str): The extracted text.
-        
+
     Notes:
         This function only works in a Windows environment.
         If you are using another operating system, it is
-        recommended that you first convert your files to 
+        recommended that you first convert your files to
         plain text using textract: https://textract.readthedocs.io/en/stable/installation.html.
     """
     try:
         import win32com.client
         import os
+
         word = win32com.client.Dispatch("Word.Application")
         word.visible = False
         wb = word.Documents.Open(os.path.abspath(file))
@@ -80,7 +81,7 @@ def extract_from_word97_2003(file: str) -> str:
         )
         raise ModuleNotFoundError(error_msg)
 
-        
+
 def is_doc(filepath: str) -> bool:
     """Check if a file is a .doc."""
     return filepath.endswith(".doc")
