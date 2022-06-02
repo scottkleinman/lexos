@@ -17,6 +17,7 @@ from lexos.exceptions import LexosException
 
 AnyVal = TypeVar("AnyVal")
 
+
 def ensure_list(item: Any) -> List:
     """Ensure string is converted to a Path.
 
@@ -30,6 +31,7 @@ def ensure_list(item: Any) -> List:
         item = [item]
     return item
 
+
 def ensure_path(path: Any) -> Any:
     """Ensure string is converted to a Path.
 
@@ -40,19 +42,39 @@ def ensure_path(path: Any) -> Any:
         Path or original argument.
     """
     if isinstance(path, str):
-        return Path(path.replace('\\', '/'))
+        return Path(path.replace("\\", "/"))
     else:
         return path
 
+
+def is_doc(filepath: str) -> bool:
+    """Check if a file is a .doc."""
+    return filepath.endswith(".doc")
+
+
+def is_docx(filepath: str) -> bool:
+    """Check if a file is a docx."""
+    return filepath.endswith(".docx")
+
+
+def is_pdf(filepath: str) -> bool:
+    """Check if a file is a pdf."""
+    return filepath.endswith(".pdf")
+
+
 def is_url(s: str) -> bool:
     """Check if string is a URL."""
-    return bool(re.match(
-        r"(https?|ftp)://" # protocol
-        r"(\w+(\-\w+)*\.)?" # host (optional)
-        r"((\w+(\-\w+)*)\.(\w+))" # domain
-        r"(\.\w+)*" # top-level domain (optional, can have > 1)
-        r"([\w\-\._\~/]*)*(?<!\.)" # path, params, anchors, etc. (optional)
-    , s))
+    return bool(
+        re.match(
+            r"(https?|ftp)://"  # protocol
+            r"(\w+(\-\w+)*\.)?"  # host (optional)
+            r"((\w+(\-\w+)*)\.(\w+))"  # domain
+            r"(\.\w+)*"  # top-level domain (optional, can have > 1)
+            r"([\w\-\._\~/]*)*(?<!\.)",  # path, params, anchors, etc. (optional)
+            s,
+        )
+    )
+
 
 def to_collection(
     val: Union[AnyVal, Collection[AnyVal]],
@@ -84,6 +106,7 @@ def to_collection(
             f"values must be {val_type} or a collection thereof, not {type(val)}"
         )
 
+
 def unzip_archive(archive_path: str, extract_dir: str):
     """Extract a zip archive.
 
@@ -94,7 +117,7 @@ def unzip_archive(archive_path: str, extract_dir: str):
         archive_path (str): The path to the archive file to be unzipped.
         extract_dir (str): The path to folder where the archive will be extracted.
     """
-    zf = zipfile.ZipFile(archive_path, 'r')
+    zf = zipfile.ZipFile(archive_path, "r")
     progress = Progress()
     with progress:
         for file in progress.track(zf.infolist(), description="Processing..."):
@@ -113,17 +136,15 @@ def zip_folder(source_dir: Path, archive_file: Path):
     """
     progress = Progress()
     with zipfile.ZipFile(
-            archive_file,
-            mode="w",
-            compression=zipfile.ZIP_DEFLATED,
-            compresslevel=7
-        ) as zip:
+        archive_file, mode="w", compression=zipfile.ZIP_DEFLATED, compresslevel=7
+    ) as zip:
         files = list(source_dir.rglob("*"))
         with progress:
             for file in progress.track(files, description="Processing..."):
                 relative_path = file.relative_to(source_dir)
                 zip.write(file, arcname=relative_path)
                 sleep(0.1)
+
 
 def get_encoding(input_string: bytes) -> str:
     """Use chardet to return the encoding type of a string.
@@ -134,10 +155,10 @@ def get_encoding(input_string: bytes) -> str:
     Returns:
         The string's encoding type.
     """
-    encoding_detect = chardet.detect(input_string[
-                                     :constants.MIN_ENCODING_DETECT])
-    encoding_type = encoding_detect['encoding']
+    encoding_detect = chardet.detect(input_string[: constants.MIN_ENCODING_DETECT])
+    encoding_type = encoding_detect["encoding"]
     return encoding_type
+
 
 def normalize(raw_bytes: Union[bytes, str]) -> str:
     """Normalise a string to LexosFile format.
@@ -150,6 +171,7 @@ def normalize(raw_bytes: Union[bytes, str]) -> str:
     """
     s = _decode_bytes(raw_bytes)
     return s
+
 
 def normalize_strings(strings: List[Union[bytes, str]]) -> str:
     """Normalise a list of strings to LexosFile format.
@@ -165,8 +187,10 @@ def normalize_strings(strings: List[Union[bytes, str]]) -> str:
         normalized_strings.append(normalize(s))
     return normalized_strings
 
-def normalize_files(filepaths: List[Union[Path, str]],
-                    destination_dir: Union[Path, str] = '.') -> str:
+
+def normalize_files(
+    filepaths: List[Union[Path, str]], destination_dir: Union[Path, str] = "."
+) -> str:
     """Normalise a list of files to LexosFile format and save the files.
 
     Args:
@@ -176,13 +200,15 @@ def normalize_files(filepaths: List[Union[Path, str]],
     """
     for filepath in filepaths:
         filepath = ensure_path(filepath)
-        with open(filepath, 'rb') as f:
+        with open(filepath, "rb") as f:
             doc = f.read()
-        with open(destination_dir / filepath.name, 'wb') as f:
+        with open(destination_dir / filepath.name, "wb") as f:
             f.write(normalize(doc))
 
-def normalize_file(filepath: Union[Path, str],
-                    destination_dir: Union[Path, str] = '.') -> str:
+
+def normalize_file(
+    filepath: Union[Path, str], destination_dir: Union[Path, str] = "."
+) -> str:
     """Normalise a file to LexosFile format and save the file.
 
     Args:
@@ -191,9 +217,9 @@ def normalize_file(filepath: Union[Path, str],
             will be saved.
     """
     filepath = ensure_path(filepath)
-    with open(filepath, 'rb') as f:
+    with open(filepath, "rb") as f:
         doc = f.read()
-    with open(destination_dir / filepath.name, 'wb') as f:
+    with open(destination_dir / filepath.name, "wb") as f:
         f.write(normalize(doc))
 
 
@@ -207,13 +233,12 @@ def _try_decode_bytes_(raw_bytes: bytes) -> str:
         A decoded string.
     """
     # Detect the encoding with only the first couple of bytes
-    encoding_detect = chardet.detect(
-        raw_bytes[:constants.MIN_ENCODING_DETECT])
+    encoding_detect = chardet.detect(raw_bytes[: constants.MIN_ENCODING_DETECT])
     # Get the encoding
-    encoding_type = encoding_detect['encoding']
+    encoding_type = encoding_detect["encoding"]
     if encoding_type is None:
         encoding_detect = chardet.detect(raw_bytes)
-        encoding_type = encoding_detect['encoding']
+        encoding_type = encoding_detect["encoding"]
 
     try:
         # Try to decode the string using the original encoding
@@ -222,7 +247,9 @@ def _try_decode_bytes_(raw_bytes: bytes) -> str:
     except (UnicodeDecodeError, TypeError):
         # Try UnicodeDammit if chardet didn't work
         if encoding_type == "ascii":
-            dammit = UnicodeDammit(raw_bytes, ["iso-8859-1", "iso-8859-15", "windows-1252"])
+            dammit = UnicodeDammit(
+                raw_bytes, ["iso-8859-1", "iso-8859-15", "windows-1252"]
+            )
         else:
             dammit = UnicodeDammit(raw_bytes)
         decoded_string = dammit.unicode_markup
@@ -244,9 +271,11 @@ def _decode_bytes(raw_bytes: Union[bytes, str]) -> str:
             decoded_str = _try_decode_bytes_(raw_bytes)
 
         except (UnicodeDecodeError, TypeError):
-            raise LexosException('Chardet failed to detect encoding of your '
-                                 'file. Please make sure your file is in '
-                                 'utf-8 encoding.')
+            raise LexosException(
+                "Chardet failed to detect encoding of your "
+                "file. Please make sure your file is in "
+                "utf-8 encoding."
+            )
     else:
         decoded_str = raw_bytes
 

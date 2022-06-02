@@ -20,12 +20,14 @@ LANG = {
     "no_source": "No source provided. Please provide a source.",
 }
 
-class Loader():
+
+class Loader:
     """Loader class.
 
     Handles the queue for assets to be pipelined from their sources to
     text processing tools.
     """
+
     def __init__(self):
         """__init__ method."""
         self.source = None
@@ -56,9 +58,9 @@ class Loader():
         else:
             return True
 
-    def load(self,
-             source: Union[List[Union[Path, str]], Path, str],
-             decode: bool = True) -> List[str]:
+    def load(
+        self, source: Union[List[Union[Path, str]], Path, str], decode: bool = True
+    ) -> List[str]:
         """Load the source into a list of bytes and strings.
 
         Args:
