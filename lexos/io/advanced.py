@@ -1,8 +1,9 @@
-"""basic.py.
+"""advanced.py.
 
 This file contains the main logic for the Loader class. It is fairly
 basic, but it will load a filepath, directory or URL (or list of those)
 into a list of texts which can then be accessed by text processing tools.
+Unlike the basic version, it accepts .pdf, .docx, and .doc files.
 
 The Loader class does not yet filter for file format.
 """
@@ -40,25 +41,6 @@ class Loader:
         self.errors = []
         self.decode = True
 
-    def _convert_doc_format(file: str) -> str:
-        """Extract text from a .doc file.
-
-        Args:
-            file (str): The file to convert
-        """
-        import tempfile
-
-        import docx
-
-        # Read the .doc file
-        doc = docx.Document(file)
-        # Save it to a temporary directory and extract the text from there
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            temp_filepath = f"{tmp_dir}/temp_file.docx"
-            doc.save(temp_filepath)
-            text = docx2txt.process(temp_filepath)
-        return text
-
     def _decode(self, text: Union[bytes, str]) -> str:
         """Decode a text.
 
@@ -81,21 +63,16 @@ class Loader:
         """
         import tempfile
 
-        import docx
-
         try:
             r = requests.get(url)
             r.raise_for_status()
             doc = io.BytesIO(r.content)
             with tempfile.TemporaryDirectory() as tmp_dir:
                 temp_docpath = f"{tmp_dir}/temp_file.doc"
-                temp_filepath = f"{tmp_dir}/temp_file.docx"
                 with open(temp_docpath, "wb") as f:
                     f.write(doc)
-                doc = docx.Document(temp_docpath)
-                doc.save(temp_filepath)
-                text = docx2txt.process(temp_filepath)
-            return self._decode(docx2txt.process(docx))
+                text = utils.extract_from_word97_2003(temp_docpath)
+            return self._decode(text)
         except requests.exceptions.HTTPError as e:
             raise LexosException(e.response.text)
 
@@ -156,7 +133,7 @@ class Loader:
             file (str): The file to download.
         """
         if utils.is_doc(file):
-            text = self._convert_doc_format(file)
+            text = utils.extract_from_word97_2003(file)
             self.texts.append(self._decode(text))
         elif utils.is_docx(file):
             self.texts.append(self._decode(docx2txt.process(file)))
