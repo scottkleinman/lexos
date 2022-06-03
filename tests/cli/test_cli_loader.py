@@ -5,7 +5,7 @@ Test the Loader API for the Lexos project from the CLI.
 Usage:
 
 ```
-poetry run python test_cli_loader.py "test_data/Austen_Pride.txt" "test_data/Austen_Sense.txt"
+poetry run python test_cli_loader.py "test_data/txt/Austen_Pride.txt" "test_data/txt/Austen_Sense.txt"
 ```
 """
 from typing import List
@@ -17,10 +17,11 @@ from lexos.io import basic
 LANG = {
     "loading": "Loading...",
     "done": "Done.",
-    "help": "A list of paths or urls to files to be loaded."
+    "help": "A list of paths or urls to files to be loaded.",
 }
 
 app = typer.Typer()
+
 
 @app.command("load")
 def cli_load(data: List[str] = typer.Argument(..., help=LANG["help"])):
@@ -39,6 +40,7 @@ def cli_load(data: List[str] = typer.Argument(..., help=LANG["help"])):
         typer.echo(f"Text {i} preview:")
         typer.echo(text[0:50])
         typer.echo("\n")
+
 
 if __name__ == "__main__":
     app()

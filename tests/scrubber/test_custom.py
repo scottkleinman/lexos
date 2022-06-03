@@ -19,6 +19,7 @@ def title_case(text: str) -> str:
     """
     return text.title()
 
+
 scrubber_components.register("title_case", func=title_case)
 
 # Load a component from the registry
@@ -33,7 +34,7 @@ print()
 # Now let's try a pipeline on a real text
 
 # Load a text
-data = "tests/test_data/Austen_Pride.txt"
+data = "tests/test_data/txt/Austen_Pride.txt"
 loader = Loader()
 loader.load(data)
 text = loader.texts[0]

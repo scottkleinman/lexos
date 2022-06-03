@@ -17,10 +17,11 @@ components = (
     "new_lines",
     "pattern",
     "punctuation",
-    "tabs"
+    "tabs",
 )
 brackets, digits, tags, new_lines, pattern, punctuation, tabs = load_components(
-    components)
+    components
+)
 
 # Test out the components
 text = "This is a test. Testing 123"
@@ -31,7 +32,7 @@ print()
 # Now let's try a pipeline on a real text
 
 # Load a text
-data = "tests/test_data/Austen_Pride.txt"
+data = "tests/test_data/txt/Austen_Pride.txt"
 loader = Loader()
 loader.load(data)
 text = loader.texts[0]
@@ -45,7 +46,7 @@ scrub = make_pipeline(
     new_lines,
     pipe(pattern, pattern="est"),
     punctuation,
-    tabs
+    tabs,
 )
 
 # Scrub the text using the pipeline

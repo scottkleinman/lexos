@@ -6,10 +6,7 @@ from lexos.io.basic import Loader
 from lexos.tokenizer import make_doc, make_docs
 
 # Load some texts
-data = [
-    "tests/test_data/Austen_Pride.txt",
-    "tests/test_data/Austen_Sense.txt"
-]
+data = ["tests/test_data/txt/Austen_Pride.txt", "tests/test_data/txt/Austen_Sense.txt"]
 loader = Loader()
 loader.load(data)
 

@@ -8,14 +8,14 @@ from lexos.scrubber.registry import scrubber_components
 from lexos.scrubber.scrubber import Scrubber
 
 # Load a text
-data = "tests/test_data/Austen_Pride.txt"
+data = "tests/test_data/txt/Austen_Pride.txt"
 loader = Loader()
 loader.load(data)
 text = loader.texts[0]
 
 lower_case = scrubber_components.get("lower_case")
 scrub = make_pipeline(lower_case)
-pipeline = (lower_case)
+pipeline = lower_case
 
 s = Scrubber()
 s.add_pipeline(pipeline)

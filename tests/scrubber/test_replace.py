@@ -21,11 +21,22 @@ components = (
     "special_characters",
     "tag_map",
     "urls",
-    "user_handles"
+    "user_handles",
 )
 
-re_digits, emails, emojis, hashtags, re_pattern, phone_numbers, re_punctuation, special_characters, tag_map, urls, user_handles = load_components(
-    components)
+(
+    re_digits,
+    emails,
+    emojis,
+    hashtags,
+    re_pattern,
+    phone_numbers,
+    re_punctuation,
+    special_characters,
+    tag_map,
+    urls,
+    user_handles,
+) = load_components(components)
 
 # Test out the components
 text = "<p>This is a test. Testing $123.</p>"
@@ -36,7 +47,7 @@ print()
 # Now let's try a pipeline on a real text
 
 # Load a text
-data = "tests/test_data/Austen_Pride.txt"
+data = "tests/test_data/txt/Austen_Pride.txt"
 loader = Loader()
 loader.load(data)
 text = loader.texts[0]
@@ -51,16 +62,9 @@ scrub = make_pipeline(
     phone_numbers,
     re_punctuation,
     pipe(special_characters, is_html=True),
-    pipe(tag_map,
-         map={
-             "p": {
-                 "action": "remove_tag",
-                 "attribute": ""
-             }
-         }
-         ),
+    pipe(tag_map, map={"p": {"action": "remove_tag", "attribute": ""}}),
     urls,
-    user_handles
+    user_handles,
 )
 
 # Scrub the text using the pipeline

@@ -14,10 +14,7 @@ Notes:
 """
 from lexos.io import basic
 
-data = [
-    "tests/test_data/Austen_Pride.txt",
-    "tests/test_data/Austen_Sense.txt"
-]
+data = ["tests/test_data/txt/Austen_Pride.txt", "tests/test_data/txt/Austen_Sense.txt"]
 
 loader = basic.Loader()
 loader.load(data)

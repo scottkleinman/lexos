@@ -7,7 +7,7 @@ from lexos.scrubber.pipeline import make_pipeline, pipe
 from lexos.scrubber.registry import load_components, scrubber_components
 
 # Load a component from the registry
-lower_case = scrubber_components.get('lower_case')
+lower_case = scrubber_components.get("lower_case")
 
 # Or, if you want to do several at once...
 components = (
@@ -16,10 +16,16 @@ components = (
     "quotation_marks",
     "repeating_chars",
     "unicode",
-    "whitespace"
+    "whitespace",
 )
-bullet_points, hyphenated_words, quotation_marks, repeating_chars, unicode, whitespace = load_components(
-    components)
+(
+    bullet_points,
+    hyphenated_words,
+    quotation_marks,
+    repeating_chars,
+    unicode,
+    whitespace,
+) = load_components(components)
 
 # Test out the components
 text = "This is a test. Testing 123"
@@ -30,7 +36,7 @@ print()
 # Now let's try a pipeline on a real text
 
 # Load a text
-data = "tests/test_data/Austen_Pride.txt"
+data = "tests/test_data/txt/Austen_Pride.txt"
 loader = Loader()
 loader.load(data)
 text = loader.texts[0]
@@ -44,7 +50,7 @@ scrub = make_pipeline(
     bullet_points,
     lower_case,
     pipe(repeating_chars, chars="??"),
-    lower_case
+    lower_case,
 )
 
 # Scrub the text using the pipeline
