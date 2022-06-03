@@ -3,7 +3,7 @@
 This file contains the main logic for the Loader class. It is fairly
 basic, but it will load a filepath, directory or URL (or list of those)
 into a list of texts which can then be accessed by text processing tools.
-Unlike the basic version, it accepts .pdf, .docx, and .doc files.
+Unlike the basic version, it accepts .pdf and .docx.
 
 The Loader class does not yet filter for file format.
 """
@@ -51,30 +51,6 @@ class Loader:
             str: The decoded text.
         """
         return utils._decode_bytes(text)
-
-    def _download_doc(self, url: str) -> str:
-        """Download a .doc file from a url.
-
-        Args:
-            url (str): The url to download.
-
-        Returns:
-            str: The text downloaded from the url.
-        """
-        import tempfile
-
-        try:
-            r = requests.get(url)
-            r.raise_for_status()
-            doc = io.BytesIO(r.content)
-            with tempfile.TemporaryDirectory() as tmp_dir:
-                temp_docpath = f"{tmp_dir}/temp_file.doc"
-                with open(temp_docpath, "wb") as f:
-                    f.write(doc)
-                text = utils.extract_from_word97_2003(temp_docpath)
-            return self._decode(text)
-        except requests.exceptions.HTTPError as e:
-            raise LexosException(e.response.text)
 
     def _download_docx(self, url: str) -> str:
         """Download a docx from a url.
@@ -132,10 +108,7 @@ class Loader:
         Args:
             file (str): The file to download.
         """
-        if utils.is_doc(file):
-            text = utils.extract_from_word97_2003(file)
-            self.texts.append(self._decode(text))
-        elif utils.is_docx(file):
+        if utils.is_docx(file):
             self.texts.append(self._decode(docx2txt.process(file)))
         elif utils.is_pdf(file):
             self.texts.append(self._decode(extract_text(file)))
@@ -151,9 +124,7 @@ class Loader:
         Args:
             url (str): The url to download.
         """
-        if utils.is_doc(url):
-            self.texts.append(self._download_doc(url))
-        elif utils.is_docx(url):
+        if utils.is_docx(url):
             self.texts.append(self._download_docx(url))
         elif utils.is_pdf(url):
             self.texts.append(self._download_pdf(url))
