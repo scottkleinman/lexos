@@ -28,7 +28,7 @@ class RemoteData:
 
     def __init__(
         self,
-        source: Union[List[str], str] = "tests/test_data",
+        source: Union[List[str], str] = "tests/test_data/txt",
         user: str = "scottkleinman",
         repo: str = "lexos",
         branch: str = "main",
