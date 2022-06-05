@@ -6,6 +6,8 @@ into a list of texts which can then be accessed by text processing tools.
 Unlike the basic version, it accepts .pdf and .docx.
 
 The Loader class does not yet filter for file format.
+
+# Note: This module is deprecated. Use the smart module instead.
 """
 
 import io

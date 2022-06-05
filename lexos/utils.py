@@ -9,6 +9,7 @@ from time import sleep
 from typing import Any, Collection, List, Tuple, Type, TypeVar, Union
 
 import chardet
+import requests
 from bs4 import UnicodeDammit
 from rich.progress import Progress
 
@@ -47,9 +48,54 @@ def ensure_path(path: Any) -> Any:
         return path
 
 
+def get_github_raw_paths(
+    path: str, user: str = None, repo: str = None, branch: str = None
+) -> list:
+    """Get raw paths to files in a GitHub directory.
+
+    Args:
+        path(str): The path to the directory.
+        user(str): The user name of the GitHub repository.
+        repo(str): The repository name of the GitHub repository.
+        branch(str): The branch of the GitHub repository.
+
+    Returns:
+        A list of raw download paths.
+    """
+    if not user or not repo or not branch:
+        try:
+            prefix, suffix = path.split("tree")
+            prefix = prefix.split("/")
+            prefix = [x for x in prefix if x != ""]
+            user = prefix[-2]
+            repo = prefix[-1]
+            suffix = suffix.split("/")
+            suffix = [x for x in suffix if x != ""]
+            branch = suffix[0]
+        except ValueError:
+            sample = (
+                "https://github.com/{user}/{repository}/tree/{branch}/{path_from_root}"
+            )
+            raise ValueError(f"Invalid GitHub path. Use the format {sample}.")
+    relpath = path.split(f"tree/{branch}/")[1]
+    api_path = f"https://api.github.com/repos/{user}/{repo}/contents/{relpath}"
+    r = requests.get(api_path)
+    return [path["download_url"] for path in r.json()]
+
+
+def is_dir(filepath: str) -> bool:
+    """Check if a path corresponds to a directory."""
+    return Path(filepath).is_dir()
+
+
 def is_docx(filepath: str) -> bool:
     """Check if a file is a docx."""
     return filepath.endswith(".docx")
+
+
+def is_file(filepath: str) -> bool:
+    """Check if a path corresponds to a file."""
+    return Path(filepath).is_file()
 
 
 def is_pdf(filepath: str) -> bool:
