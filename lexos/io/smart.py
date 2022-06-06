@@ -75,7 +75,6 @@ class Loader:
         ext = Path(path).suffix
         path = str(path)
         if ext == ".zip":
-            print("Handling zip...")
             self._handle_zip(path)
         else:
             if ext in [".docx", ".pdf", ".zip"]:
