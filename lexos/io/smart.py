@@ -55,7 +55,7 @@ class Loader:
         """
         return utils._decode_bytes(text)
 
-    def _add_text(self, path: str, text: str) -> None:
+    def _add_text(self, path: str, text: Union[bytes, str]) -> None:
         """Decode and add a text.
 
         Args:
@@ -66,13 +66,14 @@ class Loader:
         self.names.append(Path(path).stem)
         self.locations.append(path)
 
-    def _handle_source(self, path: str) -> None:
+    def _handle_source(self, path: Union[Path, str]) -> None:
         """Add a text based on source type.
 
         Args:
             path (str): The path to the text file.
         """
         ext = Path(path).suffix
+        path = str(path)
         if ext == ".zip":
             print("Handling zip...")
             self._handle_zip(path)
@@ -122,7 +123,7 @@ class Loader:
 
     def load(
         self, source: Union[List[Union[Path, str]], Path, str], decode: bool = True
-    ) -> List[str]:
+    ) -> None:
         """Load the source into a list of bytes and strings.
 
         Args:
@@ -142,7 +143,7 @@ class Loader:
 
         for path in self.source:
             if self._validate_source(path):
-                if "github.com" in path:
+                if "github.com" in str(path):
                     filepaths = utils.get_github_raw_paths(path)
                     for filepath in filepaths:
                         self._handle_source(filepath)

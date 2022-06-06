@@ -6,14 +6,14 @@ import re
 import zipfile
 from pathlib import Path
 from time import sleep
-from typing import Any, Collection, List, Tuple, Type, TypeVar, Union
+from typing import Any, Collection, List, Optional, Tuple, Type, TypeVar, Union
 
 import chardet
 import requests
 from bs4 import UnicodeDammit
 from rich.progress import Progress
 
-from lexos import constants
+import lexos.constants as constants
 from lexos.exceptions import LexosException
 
 AnyVal = TypeVar("AnyVal")
@@ -49,7 +49,10 @@ def ensure_path(path: Any) -> Any:
 
 
 def get_github_raw_paths(
-    path: str, user: str = None, repo: str = None, branch: str = None
+    path: Union[Path, str],
+    user: Optional[str] = None,
+    repo: Optional[str] = None,
+    branch: Optional[str] = None,
 ) -> list:
     """Get raw paths to files in a GitHub directory.
 
@@ -62,6 +65,7 @@ def get_github_raw_paths(
     Returns:
         A list of raw download paths.
     """
+    path = str(path)
     if not user or not repo or not branch:
         try:
             prefix, suffix = path.split("tree")
@@ -83,28 +87,29 @@ def get_github_raw_paths(
     return [path["download_url"] for path in r.json()]
 
 
-def is_dir(filepath: str) -> bool:
+def is_dir(filepath: Union[Path, str]) -> bool:
     """Check if a path corresponds to a directory."""
-    return Path(filepath).is_dir()
+    return ensure_path(filepath).is_dir()
 
 
-def is_docx(filepath: str) -> bool:
+def is_docx(filepath: Union[Path, str]) -> bool:
     """Check if a file is a docx."""
-    return filepath.endswith(".docx")
+    return str(filepath).endswith(".docx")
 
 
-def is_file(filepath: str) -> bool:
+def is_file(filepath: Union[Path, str]) -> bool:
     """Check if a path corresponds to a file."""
-    return Path(filepath).is_file()
+    return ensure_path(filepath).is_file()
 
 
-def is_pdf(filepath: str) -> bool:
+def is_pdf(filepath: Union[Path, str]) -> bool:
     """Check if a file is a pdf."""
-    return filepath.endswith(".pdf")
+    return str(filepath).endswith(".pdf")
 
 
-def is_url(s: str) -> bool:
+def is_url(s: Union[Path, str]) -> bool:
     """Check if string is a URL."""
+    s = str(s)
     return bool(
         re.match(
             r"(https?|ftp)://"  # protocol
@@ -134,7 +139,7 @@ def to_collection(
         TypeError
     """
     if val is None:
-        return None
+        return []
     if isinstance(val, val_type):
         return col_type([val])
     elif isinstance(val, (tuple, list, set, frozenset)):
@@ -205,7 +210,7 @@ def normalize(raw_bytes: Union[bytes, str]) -> str:
     """Normalise a string to LexosFile format.
 
     Args:
-        raw_bytes (str): The input string.
+        raw_bytes (bytes): The input bytestring.
 
     Returns:
         Normalised version of the input string.
@@ -214,11 +219,11 @@ def normalize(raw_bytes: Union[bytes, str]) -> str:
     return s
 
 
-def normalize_strings(strings: List[Union[bytes, str]]) -> str:
+def normalize_strings(strings: List[str]) -> List[str]:
     """Normalise a list of strings to LexosFile format.
 
     Args:
-        strings (list): The list of input strings.
+        strings (List[Union[bytes, str]]): The list of input strings.
 
     Returns:
         A list of normalised versions of the input strings.
@@ -231,36 +236,38 @@ def normalize_strings(strings: List[Union[bytes, str]]) -> str:
 
 def normalize_files(
     filepaths: List[Union[Path, str]], destination_dir: Union[Path, str] = "."
-) -> str:
+) -> None:
     """Normalise a list of files to LexosFile format and save the files.
 
     Args:
-        filepaths (list): The list of paths to input files.
-        destination_dir (path, str): The path to the directory where the files
+        filepaths (List[Union[Path, str]]): The list of paths to input files.
+        destination_dir (Union[Path, str]): The path to the directory where the files.
             will be saved.
     """
     for filepath in filepaths:
         filepath = ensure_path(filepath)
         with open(filepath, "rb") as f:
             doc = f.read()
-        with open(destination_dir / filepath.name, "wb") as f:
+        with open(destination_dir / filepath.name, "w") as f:
             f.write(normalize(doc))
 
 
 def normalize_file(
     filepath: Union[Path, str], destination_dir: Union[Path, str] = "."
-) -> str:
+) -> None:
     """Normalise a file to LexosFile format and save the file.
 
     Args:
-        filepath (Path, str): The path to the input file.
-        destination_dir (path, str): The path to the directory where the files
+        filepath (Union[Path, str]): The path to the input file.
+        destination_dir (Union[Path, str]): The path to the directory where the files.
             will be saved.
     """
-    filepath = ensure_path(filepath)
+    # filepath = ensure_path(filepath)
+    filepath = Path(filepath)
+    destination_dir = ensure_path(destination_dir)
     with open(filepath, "rb") as f:
         doc = f.read()
-    with open(destination_dir / filepath.name, "wb") as f:
+    with open(destination_dir / Path(filepath.name), "w") as f:
         f.write(normalize(doc))
 
 

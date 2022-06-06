@@ -104,11 +104,11 @@ class Loader:
         except requests.exceptions.HTTPError as e:
             raise LexosException(e.response.text)
 
-    def _handle_file(self, file: str) -> None:
+    def _handle_file(self, file: Union[Path, str]) -> None:
         """Handle file.
 
         Args:
-            file (str): The file to download.
+            file (Union[Path, str]): The file to download.
         """
         if utils.is_docx(file):
             self.texts.append(self._decode(docx2txt.process(file)))
@@ -120,12 +120,13 @@ class Loader:
         self.names.append(Path(file).stem)
         self.locations.append(file)
 
-    def _handle_url(self, url: str) -> None:
+    def _handle_url(self, url: Union[Path, str]) -> None:
         """Handle url.
 
         Args:
-            url (str): The url to download.
+            url (Union[Path, str]): The url to download.
         """
+        url = str(url)
         if utils.is_docx(url):
             self.texts.append(self._download_docx(url))
         elif utils.is_pdf(url):
@@ -152,7 +153,7 @@ class Loader:
 
     def load(
         self, source: Union[List[Union[Path, str]], Path, str], decode: bool = True
-    ) -> List[str]:
+    ) -> None:
         """Load the source into a list of bytes and strings.
 
         Args:

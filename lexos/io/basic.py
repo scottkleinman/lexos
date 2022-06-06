@@ -38,11 +38,26 @@ class Loader:
         self.decode = True
 
     def _decode(self, text: Union[bytes, str]) -> str:
-        """Decode a text."""
+        """Decode a text.
+
+        Args:
+            text (Union[bytes, str]): A text to decode.
+
+        Returns:
+            str: The decoded text.
+        """
         return utils._decode_bytes(text)
 
-    def _download_text(self, url: str) -> str:
-        """Download a text from a url."""
+    def _download_text(self, url: Union[Path, str]) -> str:
+        """Download a text from a url.
+
+        Args:
+            url (Union[Path, str]): A url to download.
+
+        Returns:
+            str: The downloaded text.
+        """
+        url = str(url)
         try:
             r = requests.get(url)
             r.raise_for_status()
@@ -51,7 +66,14 @@ class Loader:
             raise LexosException(e.response.text)
 
     def _validate_source(self, source: Any) -> bool:
-        """Validate a source."""
+        """Validate a source.
+
+        Args:
+            source (Any): A source.
+
+        Returns:
+            bool: Whether the source is valid.
+        """
         if not isinstance(source, str) and not isinstance(source, Path):
             self.errors.append(source)
             return False
@@ -60,7 +82,7 @@ class Loader:
 
     def load(
         self, source: Union[List[Union[Path, str]], Path, str], decode: bool = True
-    ) -> List[str]:
+    ) -> None:
         """Load the source into a list of bytes and strings.
 
         Args:
