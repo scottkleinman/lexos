@@ -10,7 +10,7 @@ To Do:
 """
 
 from pathlib import Path
-from typing import BinaryIO, TextIO, Union
+from typing import List, Optional, Union
 
 import pandas as pd
 from smart_open import open
@@ -22,25 +22,27 @@ from lexos.exceptions import LexosException
 class DatasetLoader:
     """Load a csv, json, jsonl, or lineated text file."""
 
-    def __init__(self, path: Union[BinaryIO, str, TextIO] = None, **kwargs):
+    def __init__(self, path: Optional[Union[list, Path, str]] = None, **kwargs):
         """Instantiate loader class.
 
         Args:
-            path (Union[BinaryIO, str, TextIO]): Path, url, or file-like object.
+            path (Optional[Union[list, Path, str]]): Path or url to the file.
             **kwargs: Additional arguments to pass pandas.read_csv or pandas.read_json.
+
+
+        Can take a str, path
         """
-        self.path = path
+        self.path = []
         self.texts = []
         self.names = []
         self.locations = []
         self.df = None
-        if "text_column" not in kwargs:
-            kwargs["text_column"] = 1
-        if "text_key" not in kwargs:
-            kwargs["text_key"] = "text"
-        self.text_column = kwargs["text_column"]
-        self.text_key = kwargs["text_key"]
-        self.load(path, **kwargs)
+        if path:
+            if isinstance(path, list):
+                self.path = path
+            else:
+                self.path = [str(path)]
+            self.load(str(path), **kwargs)
 
     def _decode(self, text: Union[bytes, str]) -> str:
         """Decode a text.
@@ -53,68 +55,125 @@ class DatasetLoader:
         """
         return utils._decode_bytes(text)
 
-    def load(self, path: str, **kwargs) -> None:
+    def load(self, path: Union[list, Path, str], **kwargs) -> None:
         """Load a dataset file.
 
         Args:
-            path (str): The path to the file to load.
+            path (Union[list, Path, str]): The path to the file to load.
             **kwargs: Additional arguments to pass pandas.read_csv or pandas.read_json.
         """
-        if not "text_column" not in kwargs:
-            kwargs["text_column"] = self.text_column
-        if "text_key" not in kwargs:
-            kwargs["text_key"] = self.text_key
         if not isinstance(path, list):
-            path = [path]
+            path = [str(path)]
         for p in path:
             if p.endswith(".csv") or p.endswith(".tsv"):
                 self.load_csv(p, **kwargs)
-            if p.endswith(".json") or p.endswith(".jsonl"):
+            elif p.endswith(".json") or p.endswith(".jsonl"):
                 self.load_json(p, **kwargs)
+            else:
+                self.load_lineated_text(p)
 
     def load_csv(
-        self, path: str, text_column: int = 1, name_column: int = None, **kwargs
-    ) -> None:
+        self,
+        path: str,
+        columns: Optional[List[str]] = None,
+        title_column: Optional[str] = None,
+        text_column: Optional[str] = None,
+        **kwargs,
+    ):
         """Load a csv file.
 
         Args:
             path (str): The path to the file to load.
-            text_column (int): 1-indexed reference the column number containing the text.
-            name_column (int): 1-indexed reference the column number containing the name of the text.
+            columns (Optional[List[str]]): Names of all the columns to load in the csv file.
+            title_column (Optional[str]): The name of the column containing the title of the text.
+            text_column (Optional[str]): The name the column containing the text.
             **kwargs: Additional arguments to pass to pandas.read_csv.
         """
+        if text_column and not title_column:
+            raise ValueError(
+                "You must supply both a `title_column` and a `text_column`."
+            )
+        if title_column and not text_column:
+            raise ValueError(
+                "You must supply both a `title_column` and a `text_column`."
+            )
         try:
-            self.df = pd.read_csv(path, **kwargs)
-            texts = self.df[text_column - 1].values.tolist()
+            # No headers: include a list of all columns, including "title" and "text"
+            if columns:
+                if "title" not in columns:
+                    raise ValueError("One column must be named `title`.")
+                if "text" not in columns:
+                    raise ValueError("One column must be named `text`.")
+                self.df = pd.read_csv(path, names=columns, **kwargs)
+                title_column = "title"
+                text_column = "text"
+            # Headers contain "title" and "text"
+            elif not title_column and not text_column:
+                self.df = pd.read_csv(path, **kwargs)
+                title_column = "title"
+                text_column = "text"
+            # User must specify which header is the title column and which is the text column
+            elif text_column and title_column:
+                df = pd.read_csv(path, **kwargs)
+                self.df = df.rename(
+                    columns={title_column: "title", text_column: "text"}
+                )
+            else:
+                raise BaseException(f"Invalid keyword arguments.")
+            texts = self.df["text"].values.tolist()
             len_texts = len(texts)
             [self.texts.append(self._decode(text)) for text in texts]
-            if name_column:
-                self.names += self.df[name_column - 1].values.tolist()
+            if title_column:
+                self.names += self.df["title"].values.tolist()
             else:
                 self.names += [Path(path).stem] * len_texts
             self.locations += [path] * len_texts
-
         except BaseException as e:
             raise BaseException(f"Could not parse {path}: {e}")
 
     def load_json(
-        self, path: str, text_key: str = "text", name_key: str = "title", **kwargs
-    ) -> None:
+        self,
+        path: str,
+        title_key: str,
+        text_key: str,
+        **kwargs,
+    ):
         """Load a json file.
 
         Args:
             path (str): The path to the file to load.
-            text_key (str): Name of the json property containing the text.
-            name_key (str): Name of the json property containing the name of the text.
+            title_key (str): The name of the field containing the title of the text.
+            text_key (str): The name the field containing the text.
             **kwargs: Additional arguments to pass to pandas.read_json.
         """
         try:
-            self.df = pd.read_json(path, **kwargs)
+            # JSON object must contain "title" and "text"
+            if not title_key and not text_key:
+                self.df = pd.read_json(path, **kwargs)
+                columns = self.df.columns.tolist()
+                if "title" not in columns:
+                    raise ValueError(
+                        "One field must be named `title` or you must convert an existing column with the `title_key` parameter."
+                    )
+                if "text" not in columns:
+                    raise ValueError(
+                        "One field must be named `text` or you must convert an existing column with the `title_key` parameter."
+                    )
+            # User must specify which field is the title field and which is the text field
+            elif text_key and title_key:
+                df = pd.read_json(path, **kwargs)
+                self.df = df.rename(columns={title_key: "title", text_key: "text"})
+            elif text_key and not title_key:
+                raise ValueError("You must supply both a `title_key`.")
+            elif title_key and not text_key:
+                raise ValueError("You must supply both a `text_key`.")
+            else:
+                raise BaseException(f"Invalid keyword arguments.")
+            texts = self.df["text"].values.tolist()
             len_texts = len(texts)
-            texts = self.df[text_key].values.tolist()
             [self.texts.append(self._decode(text)) for text in texts]
-            if name_key:
-                self.names += self.df[name_key].values.tolist()
+            if title_key:
+                self.names += self.df["title"].values.tolist()
             else:
                 self.names += [Path(path).stem] * len_texts
             self.locations += [path] * len_texts
