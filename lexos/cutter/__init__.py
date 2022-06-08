@@ -139,7 +139,12 @@ class Ginsu:
                     doc_segments.append(doc[index : index + (d + 1 if i < r else d)])
             # Append the doc segments to the list for all docs
             segments.append(doc_segments)
-        return segments
+        # Convert the list of list segements to a list of spaCy doc segments
+        segmented_docs = [
+            [segment.as_doc() for segment in segmented_doc]
+            for segmented_doc in segments
+        ]
+        return segmented_docs
 
     def split_on_milestones(
         self, doc: object, milestone: Union[dict, str], preserve_milestone: bool = True
