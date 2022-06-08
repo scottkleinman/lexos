@@ -11,6 +11,7 @@ data = "../test_data/txt/Austen_Pride.txt"
 dendrogram_file = "Austen_Pride_dendrogram.png"
 
 # Lexos imports
+print("Loading Lexos tools...")
 from lexos import tokenizer
 from lexos.cluster.dendrogram import Dendrogram
 from lexos.cutter import Ginsu, Machete
@@ -20,6 +21,7 @@ from lexos.scrubber.pipeline import make_pipeline, pipe
 from lexos.scrubber.registry import load_components, scrubber_components
 
 # Create the loader and load the data
+print("Loading data...")
 loader = Loader()
 loader.load(data)
 text = loader.texts[0]
@@ -28,6 +30,7 @@ text = loader.texts[0]
 # You _could_ do some scrubbing, but it's not necessary
 
 # Load a component from the registry
+# print("Scrubbing data...")
 # lower_case = scrubber_components.get("lower_case")
 # remove_digits = scrubber_components.get("digits")
 
@@ -42,13 +45,16 @@ text = loader.texts[0]
 #################
 
 # Cutting the data into 10 segments
+print("Cutting data into 10 segements...")
 cutter = Machete()
 segments = cutter.splitn(text, n=10, as_string=True)
 
 # Turn the scrubbed texts into a spaCy docs
+print("Making spaCy docs...")
 docs = tokenizer.make_docs(segments)
 
 # Convert to the docs to lower case token lists with filtering
+print("Converting to lowercase, removing punctuation, digits, and whitespace...")
 filtered_segments = []
 for doc in docs:
     filtered_segments.append(
@@ -60,12 +66,17 @@ for doc in docs:
     )
 
 # Make a DTM
+print("Making DTM...")
 labels = [f"Austen{i+1}" for i, _ in enumerate(filtered_segments)]
 dtm = DTM(filtered_segments, labels)
 
 # Make a dendrogram from the DTM
+print("Clustering...")
 dendrogram = Dendrogram(dtm, show=False)
 
 # Save the dendrogram
-dendrogram.savefig(dendrogram_file)
+print("Saving dendrogram...")
+# dendrogram.savefig(dendrogram_file)
 print(f"Saved {dendrogram_file}.")
+
+print("Done!")
