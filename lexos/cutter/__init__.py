@@ -2,6 +2,7 @@
 
 import re
 from typing import Callable, List, Union
+
 from lexos.cutter import registry
 
 
@@ -500,13 +501,12 @@ class Machete:
                     last_seg = segments.pop(-1)
                     # Combine the last two segments into a single list
                     segments[-1] = segments[-1] + last_seg
-            all_segments.append(segments)
+            if as_string:
+                all_segments.append(["".join(segment) for segment in segments])
+            else:
+                all_segments.append(segments)
 
-        # Return the segments as strings or lists
-        if as_string:
-            return [["".join(segment) for segment in text] for text in all_segments]
-        else:
-            return all_segments
+        return all_segments
 
     def splitn(
         self,
@@ -567,16 +567,12 @@ class Machete:
                 for i in range(n):
                     index = (d + 1) * (i if i < r else r) + d * (0 if i < r else i - r)
                     segment_list.append(tokens[index : index + (d + 1 if i < r else d)])
-            # Append the text segments to the list for all texts
-            # all_segments.append(segment_list)
-            all_segments = segment_list
+            if as_string:
+                all_segments.append(["".join(segment) for segment in segment_list])
+            else:
+                all_segments.append(segment_list)
 
-        # Return the segments as strings or lists
-        if as_string:
-            return ["".join(segment) for segment in all_segments]
-            # return [["".join(segment) for segment in text] for text in all_segments]
-        else:
-            return all_segments
+        return all_segments
 
     def _chunk_tokens(self, tokens: list, n: int = 1000) -> Callable:
         """Yield successive n-sized chunks from a list by a fixed number of tokens.
