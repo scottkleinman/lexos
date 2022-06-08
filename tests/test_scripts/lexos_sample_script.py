@@ -76,7 +76,7 @@ dendrogram = Dendrogram(dtm, show=False)
 
 # Save the dendrogram
 print("Saving dendrogram...")
-# dendrogram.savefig(dendrogram_file)
+dendrogram.savefig(dendrogram_file)
 print(f"Saved {dendrogram_file}.")
 
 print("Done!")
