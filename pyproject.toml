@@ -5,7 +5,7 @@ description = ""
 authors = ["Scott Kleinman <scott.kleinman@csun.edu>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.8,<3.11"
 requests = "^2.27.1"
 chardet = "^4.0.0"
 beautifulsoup4 = "^4.10.0"
@@ -19,6 +19,10 @@ wordcloud = "^1.8.1"
 docx2txt = "^0.8"
 pdfminer = "^20191125"
 python-docx = "^0.8.11"
+scipy = "^1.8.1"
+natsort = "^8.1.0"
+"pdfminer.six" = "^20220524"
+textacy = "^0.12.0"
 
 [tool.poetry.dependencies.xx_sent_ud_sm]
 url = "https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.2.0/xx_sent_ud_sm-3.2.0.tar.gz"
