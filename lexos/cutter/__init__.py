@@ -2,9 +2,10 @@
 
 import re
 from typing import Callable, List, Union
+from lexos.cutter import registry
 
 
-class Ginsu():
+class Ginsu:
     """Codename Ginsu.
 
     https://www.youtube.com/watch?v=Sv_uL1Ar0oM.
@@ -20,7 +21,13 @@ class Ginsu():
         """Initialize the class."""
         self.config = config
 
-    def split_doc(self, doc: object, n: int = 1000, merge_threshold: float = 0.5, overlap: int = None) -> list:
+    def split_doc(
+        self,
+        doc: object,
+        n: int = 1000,
+        merge_threshold: float = 0.5,
+        overlap: int = None,
+    ) -> list:
         """Split a spaCy doc into chunks by a fixed number of tokens.
 
         Args:
@@ -33,6 +40,7 @@ class Ginsu():
             list: A list of spaCy docs.
         """
         from spacy.tokens import Doc
+
         if overlap:
             segments = self.split_overlap(doc, n, merge_threshold, overlap)
         else:
@@ -45,7 +53,9 @@ class Ginsu():
                 segments[-1] = Doc.from_docs([segments[-1], last_seg])
         return segments
 
-    def split(self, docs, n=1000, merge_threshold: float = 0.5, overlap: int = None) -> list:
+    def split(
+        self, docs, n=1000, merge_threshold: float = 0.5, overlap: int = None
+    ) -> list:
         """Split spaCy docs into chunks by a fixed number of tokens.
 
         Args:
@@ -58,14 +68,16 @@ class Ginsu():
             list: A list of lists spaCy docs (segments) for each input doc.
         """
         from spacy.tokens import Doc
+
         if not isinstance(docs, list):
             docs = [docs]
         all_segments = []
         for doc in docs:
             # Get segments with overlap
             if overlap:
-                all_segments.append(self._split_overlap(
-                    doc, n, merge_threshold, overlap))
+                all_segments.append(
+                    self._split_overlap(doc, n, merge_threshold, overlap)
+                )
             # Get segments without overlap
             else:
                 segments = list(self._chunk_doc(doc, n))
@@ -77,11 +89,14 @@ class Ginsu():
                 all_segments.append(segments)
         return all_segments
 
-    def splitn(self, docs: Union[list, object],
-               n: int = 2,
-               merge_threshold: float = 0.5,
-               overlap: int = None,
-               force_initial_overlap: bool = False) -> list:
+    def splitn(
+        self,
+        docs: Union[list, object],
+        n: int = 2,
+        merge_threshold: float = 0.5,
+        overlap: int = None,
+        force_initial_overlap: bool = False,
+    ) -> list:
         """Get a specific number of sequential segments from a spaCy doc or docs.
 
         Args:
@@ -107,28 +122,27 @@ class Ginsu():
             d, r = divmod(len(doc), n)
             # Split with overlap
             if overlap:
-                doc_segments = self._split_overlap(doc,
-                                                   d,
-                                                   merge_threshold=merge_threshold,
-                                                   overlap=overlap,
-                                                   num_segments=n,
-                                                   force_initial_overlap=force_initial_overlap)
+                doc_segments = self._split_overlap(
+                    doc,
+                    d,
+                    merge_threshold=merge_threshold,
+                    overlap=overlap,
+                    num_segments=n,
+                    force_initial_overlap=force_initial_overlap,
+                )
             # Split without overlap
             else:
                 doc_segments = []
                 for i in range(n):
-                    index = (d + 1) * (i if i < r else r) + \
-                        d * (0 if i < r else i - r)
-                    doc_segments.append(
-                        doc[index:index + (d + 1 if i < r else d)])
+                    index = (d + 1) * (i if i < r else r) + d * (0 if i < r else i - r)
+                    doc_segments.append(doc[index : index + (d + 1 if i < r else d)])
             # Append the doc segments to the list for all docs
             segments.append(doc_segments)
         return segments
 
-    def split_on_milestones(self,
-                            doc: object,
-                            milestone: Union[dict, str],
-                            preserve_milestone: bool = True):
+    def split_on_milestones(
+        self, doc: object, milestone: Union[dict, str], preserve_milestone: bool = True
+    ):
         """Split document on a milestone.
 
         Args:
@@ -138,13 +152,14 @@ class Ginsu():
                 beginning of every segment. Otherwise, it will be deleted.
         """
         segments = []
-        indices = [i for i, x in enumerate(
-            doc) if self._matches_milestone(x, milestone)]
+        indices = [
+            i for i, x in enumerate(doc) if self._matches_milestone(x, milestone)
+        ]
         for start, end in zip([0, *indices], [*indices, len(doc)]):
             if preserve_milestone:
                 segments.append(doc[start:end])
             else:
-                segments.append(doc[start+1:end])
+                segments.append(doc[start + 1 : end])
         return segments
 
     def _chunk_doc(self, doc: list, n: int = 1000) -> Callable:
@@ -158,9 +173,11 @@ class Ginsu():
             list: A list of spaCy docs.
         """
         for i in range(0, len(doc), n):
-            yield doc[i:i + n].as_doc()
+            yield doc[i : i + n].as_doc()
 
-    def _get_milestone_result(self, attr: str, token: object, value: Union[str, tuple]) -> bool:
+    def _get_milestone_result(
+        self, attr: str, token: object, value: Union[str, tuple]
+    ) -> bool:
         """Test a token for a match.
 
         If value is a tuple, it must have the form `(pattern, operator)`,
@@ -217,7 +234,9 @@ class Ginsu():
                 else:
                     return False
 
-    def _matches_milestone(self, token: object, milestone: Union[dict, list, str]) -> bool:
+    def _matches_milestone(
+        self, token: object, milestone: Union[dict, list, str]
+    ) -> bool:
         """Test a token for a match.
 
         Args:
@@ -304,13 +323,15 @@ class Ginsu():
         # Return the result
         return is_match
 
-    def _split_overlap(self,
-                       doc: object,
-                       segment_size: int,
-                       merge_threshold: float = None,
-                       overlap: int = None,
-                       num_segments: int = 1,
-                       force_initial_overlap: bool = False) -> List[list]:
+    def _split_overlap(
+        self,
+        doc: object,
+        segment_size: int,
+        merge_threshold: float = None,
+        overlap: int = None,
+        num_segments: int = 1,
+        force_initial_overlap: bool = False,
+    ) -> List[list]:
         """Split a doc into segments.
 
         Calculates the number of segments with the overlap value;
@@ -354,30 +375,31 @@ class Ginsu():
                 """
                 # Define the current segment size
                 if is_last_seg:
-                    spans = doc[seg_start_distance * index:]
+                    spans = doc[seg_start_distance * index :]
                 else:
-                    spans = doc[seg_start_distance * index:
-                                seg_start_distance * index + segment_size
-                                ]
+                    spans = doc[
+                        seg_start_distance * index : seg_start_distance * index
+                        + segment_size
+                    ]
                 return spans.as_doc()
 
         # Return the list of segments, evaluating for last segment
-        segments = [get_single_seg(
-                    index=index,
-                    is_last_seg=True if index == num_segments - 1 else False
-                    ) for index in range(num_segments - 1)
-                    ]
+        segments = [
+            get_single_seg(
+                index=index, is_last_seg=True if index == num_segments - 1 else False
+            )
+            for index in range(num_segments - 1)
+        ]
         if force_initial_overlap:
-            segments[0] = doc[0:segment_size + overlap]
+            segments[0] = doc[0 : segment_size + overlap]
         return segments
 
 
-class Machete():
+class Machete:
     """Codename Machete."""
 
     def __init__(self, tokenizer: str = "whitespace"):
         """Initialize the class."""
-        from lexos.cutter import registry
         self.tokenizer = tokenizer
 
     def tokenize(self, text: str, tokenizer: str = None) -> list:
@@ -397,10 +419,19 @@ class Machete():
             try:
                 tokenizer = registry.load(tokenizer)
             except ValueError:
-                raise ValueError("The specified tokenizer could not be found in the tokenizer registry.""")
+                raise ValueError(
+                    "The specified tokenizer could not be found in the tokenizer registry."
+                    ""
+                )
         return tokenizer(text)
 
-    def split_list(self, token_list: list, n: int = 1000, merge_threshold: float = 0.5, overlap: int = None) -> list:
+    def split_list(
+        self,
+        token_list: list,
+        n: int = 1000,
+        merge_threshold: float = 0.5,
+        overlap: int = None,
+    ) -> list:
         """Split a list into chunks by a fixed number of tokens.
 
         Args:
@@ -421,16 +452,18 @@ class Machete():
             if len(segments[-1]) < n * merge_threshold:
                 last_seg = segments.pop(-1)
                 # Combine the last two segments into a single list
-                segments[-1] =[segments[-1] + last_seg]
+                segments[-1] = [segments[-1] + last_seg]
         return segments
 
-    def split(self,
-              texts: Union[List[str], str],
-              n=1000,
-              merge_threshold: float = 0.5,
-              overlap: int = None,
-              tokenizer: str = None,
-              as_string: bool = True) -> list:
+    def split(
+        self,
+        texts: Union[List[str], str],
+        n=1000,
+        merge_threshold: float = 0.5,
+        overlap: int = None,
+        tokenizer: str = None,
+        as_string: bool = True,
+    ) -> list:
         """Split texts into chunks by a fixed number of tokens.
 
         Args:
@@ -456,8 +489,9 @@ class Machete():
 
             # Get segments with overlap
             if overlap:
-                all_segments.append(self._split_overlap(
-                    tokens, n, merge_threshold, overlap))
+                all_segments.append(
+                    self._split_overlap(tokens, n, merge_threshold, overlap)
+                )
             # Get segments without overlap
             else:
                 segments = list(self._chunk_tokens(tokens, n))
@@ -465,7 +499,7 @@ class Machete():
                 if len(segments[-1]) < n * merge_threshold:
                     last_seg = segments.pop(-1)
                     # Combine the last two segments into a single list
-                    segments[-1] = segments[-1] +  last_seg
+                    segments[-1] = segments[-1] + last_seg
             all_segments.append(segments)
 
         # Return the segments as strings or lists
@@ -474,13 +508,16 @@ class Machete():
         else:
             return all_segments
 
-    def splitn(self, texts: Union[List[str], str],
-               n: int = 2,
-               merge_threshold: float = 0.5,
-               overlap: int = None,
-               force_initial_overlap: bool = False,
-               tokenizer: str = None,
-               as_string: bool = True) -> list:
+    def splitn(
+        self,
+        texts: Union[List[str], str],
+        n: int = 2,
+        merge_threshold: float = 0.5,
+        overlap: int = None,
+        force_initial_overlap: bool = False,
+        tokenizer: str = None,
+        as_string: bool = True,
+    ) -> list:
         """Get a specific number of sequential segments from a spaCy doc or docs.
 
         Args:
@@ -516,27 +553,28 @@ class Machete():
 
             # Split with overlap
             if overlap:
-                segment_list = self._split_overlap(tokens,
-                                                   d,
-                                                   merge_threshold=merge_threshold,
-                                                   overlap=overlap,
-                                                   num_segments=n,
-                                                   force_initial_overlap=force_initial_overlap)
+                segment_list = self._split_overlap(
+                    tokens,
+                    d,
+                    merge_threshold=merge_threshold,
+                    overlap=overlap,
+                    num_segments=n,
+                    force_initial_overlap=force_initial_overlap,
+                )
             # Split without overlap
             else:
                 segment_list = []
                 for i in range(n):
-                    index = (d + 1) * (i if i < r else r) + \
-                        d * (0 if i < r else i - r)
-                    segment_list.append(
-                        tokens[index:index + (d + 1 if i < r else d)])
-
+                    index = (d + 1) * (i if i < r else r) + d * (0 if i < r else i - r)
+                    segment_list.append(tokens[index : index + (d + 1 if i < r else d)])
             # Append the text segments to the list for all texts
-            all_segments.append(segment_list)
+            # all_segments.append(segment_list)
+            all_segments = segment_list
 
         # Return the segments as strings or lists
         if as_string:
-            return [["".join(segment) for segment in text] for text in all_segments]
+            return ["".join(segment) for segment in all_segments]
+            # return [["".join(segment) for segment in text] for text in all_segments]
         else:
             return all_segments
 
@@ -551,15 +589,17 @@ class Machete():
             list: A list of token lists (segments).
         """
         for i in range(0, len(tokens), n):
-            yield tokens[i:i + n]
+            yield tokens[i : i + n]
 
-    def _split_overlap(self,
-                       tokens: list,
-                       segment_size: int,
-                       merge_threshold: float = None,
-                       overlap: int = None,
-                       num_segments: int = 1,
-                       force_initial_overlap: bool = False) -> List[list]:
+    def _split_overlap(
+        self,
+        tokens: list,
+        segment_size: int,
+        merge_threshold: float = None,
+        overlap: int = None,
+        num_segments: int = 1,
+        force_initial_overlap: bool = False,
+    ) -> List[list]:
         """Split a list of tokens into segments.
 
         Calculates the number of segments with the overlap value;
@@ -603,20 +643,22 @@ class Machete():
                 """
                 # Define the current segment size
                 if is_last_seg:
-                    spans = tokens[seg_start_distance * index:]
+                    spans = tokens[seg_start_distance * index :]
                 else:
-                    spans = tokens[seg_start_distance * index:
-                                seg_start_distance * index + segment_size
-                                ]
+                    spans = tokens[
+                        seg_start_distance * index : seg_start_distance * index
+                        + segment_size
+                    ]
                 return spans.as_doc()
 
         # Return the list of segments, evaluating for last segment
-        segments = [get_single_seg(
-                    index=index,
-                    is_last_seg=True if index == num_segments - 1 else False
-                    ) for index in range(num_segments - 1)
-                    ]
+        segments = [
+            get_single_seg(
+                index=index, is_last_seg=True if index == num_segments - 1 else False
+            )
+            for index in range(num_segments - 1)
+        ]
         if force_initial_overlap:
-            segments[0] = tokens[0:segment_size + overlap]
+            segments[0] = tokens[0 : segment_size + overlap]
 
         return segments
