@@ -62,7 +62,10 @@ class Loader:
             path (str): The path to the text file.
             text (str): The text string.
         """
-        self.texts.append(self._decode(text))
+        if self.decode:
+            self.texts.append(self._decode(text))
+        else:
+            self.texts.append(text)
         self.names.append(Path(path).stem)
         self.locations.append(path)
 
