@@ -145,7 +145,7 @@ def digits(
                             r")[\u0027|\u002C|\u002E|\u00B7|"
                             r"\u02D9|\u066B|\u066C|\u2396]["
                             + re.escape(unicode_digits) + r"]+)", re.UNICODE)
-    return str(re.sub(pattern, r" ", text))
+    return str(re.sub(pattern, r"", text))
 
 
 def tags(text: str, sep: str = " ", remove_whitespace: bool = True) -> str:
