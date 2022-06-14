@@ -21,6 +21,9 @@ scrubber_components.register("brackets", func=remove.brackets)
 scrubber_components.register("digits", func=remove.digits)
 scrubber_components.register("new_lines", func=remove.new_lines)
 scrubber_components.register("pattern", func=remove.pattern)
+scrubber_components.register(
+    "project_gutenberg_headers", func=remove.project_gutenberg_headers
+)
 scrubber_components.register("punctuation", func=remove.punctuation)
 scrubber_components.register("tabs", func=remove.tabs)
 scrubber_components.register("tags", func=remove.tags)
@@ -39,6 +42,7 @@ scrubber_components.register("tag_map", func=replace.tag_map)
 scrubber_components.register("urls", func=replace.urls)
 scrubber_components.register("user_handles", func=replace.user_handles)
 
+
 def load_component(s: str):
     """Load a single component from a string.
 
@@ -46,6 +50,7 @@ def load_component(s: str):
         s: The name of the function.
     """
     return scrubber_components.get(s)
+
 
 def load_components(t: tuple):
     """Load components from a tuple.

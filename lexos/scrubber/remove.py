@@ -1,6 +1,7 @@
 """remove.py."""
 from __future__ import annotations
 
+import os
 import re
 import sys
 import unicodedata
@@ -10,11 +11,7 @@ from .. import utils
 from . import resources
 
 
-def accents(text: str,
-            *,
-            fast: bool = False,
-            accents: Union[str, tuple] = None
-            ) -> str:
+def accents(text: str, *, fast: bool = False, accents: Union[str, tuple] = None) -> str:
     """
     Remove accents from any accented unicode characters in `text`, either
     by replacing them with ASCII equivalents or removing them entirely.
@@ -102,11 +99,7 @@ def brackets(
     return text
 
 
-def digits(
-    text: str,
-    *,
-    only: Optional[str | Collection[str]] = None
-) -> str:
+def digits(text: str, *, only: Optional[str | Collection[str]] = None) -> str:
     """Remove digits.
 
     Remove digits from `text` by replacing all instances of digits
@@ -138,14 +131,77 @@ def digits(
         # 2) ***.***
         unicode_digits = ""
         for i in range(sys.maxunicode):
-            if unicodedata.category(chr(i)).startswith('N'):
+            if unicodedata.category(chr(i)).startswith("N"):
                 unicode_digits = unicode_digits + chr(i)
-        pattern = re.compile(r"([+-]?[" + re.escape(unicode_digits) + r"])|((?<="
-                            + re.escape(unicode_digits) +
-                            r")[\u0027|\u002C|\u002E|\u00B7|"
-                            r"\u02D9|\u066B|\u066C|\u2396]["
-                            + re.escape(unicode_digits) + r"]+)", re.UNICODE)
+        pattern = re.compile(
+            r"([+-]?["
+            + re.escape(unicode_digits)
+            + r"])|((?<="
+            + re.escape(unicode_digits)
+            + r")[\u0027|\u002C|\u002E|\u00B7|"
+            r"\u02D9|\u066B|\u066C|\u2396][" + re.escape(unicode_digits) + r"]+)",
+            re.UNICODE,
+        )
     return str(re.sub(pattern, r"", text))
+
+
+def project_gutenberg_headers(text: str) -> str:
+    """Remove Project Gutenberg headers and foots.
+
+    Note: this function is a port of the C++ utility by Johannes Krugel.
+    The original version of the code can be found at
+    http://www14.in.tum.de/spp1307/src/strip_headers.cpp
+
+    Args:
+        text (str): The text from which headers and footers will be removed.
+
+    Returns:
+        str
+    """
+    lines = text.splitlines()
+    sep = str(os.linesep)
+
+    out = []
+    i = 0
+    footer_found = False
+    ignore_section = False
+
+    for line in lines:
+        reset = False
+
+        if i <= 600:
+            # Check if the header ends here
+            if any(line.startswith(token) for token in resources.TEXT_START_MARKERS):
+                reset = True
+
+            # If it's the end of the header, delete the output produced so far.
+            # May be done several times, if multiple lines occur indicating the
+            # end of the header
+            if reset:
+                out = []
+                continue
+
+        if i >= 100:
+            # Check if the footer begins here
+            if any(line.startswith(token) for token in resources.TEXT_END_MARKERS):
+                footer_found = True
+
+            # If it's the beginning of the footer, stop output
+            if footer_found:
+                break
+
+        if any(line.startswith(token) for token in resources.LEGALESE_START_MARKERS):
+            ignore_section = True
+            continue
+        elif any(line.startswith(token) for token in resources.LEGALESE_END_MARKERS):
+            ignore_section = False
+            continue
+
+        if not ignore_section:
+            out.append(line.rstrip(sep))
+            i += 1
+
+    return sep.join(out).strip()
 
 
 def tags(text: str, sep: str = " ", remove_whitespace: bool = True) -> str:
@@ -191,11 +247,7 @@ def new_lines(text: str) -> str:
     return resources.RE_LINEBREAK.sub("", text).strip()
 
 
-def pattern(
-    text: str,
-    *,
-    pattern: Union[str, Collection[str]]
-) -> str:
+def pattern(text: str, *, pattern: Union[str, Collection[str]]) -> str:
     """Remove strings from `text` using a regex pattern.
 
     Args:
@@ -248,9 +300,12 @@ def punctuation(
         # the punctuation with whitespace, so we have to build a new one.
         translation_table = dict.fromkeys(
             (
-                i for i in range(sys.maxunicode)
+                i
+                for i in range(sys.maxunicode)
                 if unicodedata.category(chr(i)).startswith("P")
-                and chr(i) not in exclude), ""
+                and chr(i) not in exclude
+            ),
+            "",
         )
         return text.translate(translation_table)
 
