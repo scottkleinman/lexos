@@ -139,4 +139,4 @@ plugins:
           # selection:
           #   new_path_syntax: yes
       # watch:
-      # - ../api_lexos
+      #   - ../lexos
