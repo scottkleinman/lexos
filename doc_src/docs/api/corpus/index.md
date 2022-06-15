@@ -2,17 +2,17 @@
 
 The `Corpus` module consists of a `Corpus` class that helps you manage assets in your workflow and serialise them to disk for later use. It is strictly optional; you may find is sufficient to load your documents into memory with a `Loader` or to manage your corpus assets independently through a different application.
 
-### ::: lexos.corpus.__init__.Corpus
+### ::: lexos.corpus.Corpus
     rendering:
       show_root_heading: true
       heading_level: 3
 
-### ::: lexos.corpus.__init__.NullTokenizer
+### ::: lexos.corpus.NullTokenizer
     rendering:
       show_root_heading: true
       heading_level: 3
 
-### ::: lexos.corpus.__init__.Record
+### ::: lexos.corpus.Record
     rendering:
       show_root_heading: true
       heading_level: 3

@@ -2,27 +2,27 @@
 
 The `language_model` module is used to train, evaluate, and package language models. It consists of a `LanguageModel` class, a `Timer` class, and three debugging functions.
 
-### ::: lexos.language_model.__init__.LanguageModel
+### ::: lexos.language_model.LanguageModel
     rendering:
       show_root_heading: true
       heading_level: 3
 
-### ::: lexos.language_model.__init__.Timer
+### ::: lexos.language_model.Timer
     rendering:
       show_root_heading: true
       heading_level: 3
 
-### ::: lexos.language_model.__init__.debug_config
+### ::: lexos.language_model.debug_config
     rendering:
       show_root_heading: true
       heading_level: 3
 
-### ::: lexos.language_model.__init__.debug_data
+### ::: lexos.language_model.debug_data
     rendering:
       show_root_heading: true
       heading_level: 3
 
-### ::: lexos.language_model.__init__.debug_model
+### ::: lexos.language_model.debug_model
     rendering:
       show_root_heading: true
       heading_level: 3

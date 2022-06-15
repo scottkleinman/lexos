@@ -137,7 +137,7 @@ from lexos.visualization.seaborn.cluster.clustermap import ClusterMap
 cm = ClusterMap(dtm, title="My Clustermap")
 ```
 
-[lexos.visualization.seaborn.cluster.clustermap.ClusterMap][] accepts any <a href="https://seaborn.pydata.org/generated/seaborn.clustermap.html"><code>Seaborn.clustermap</code> parameter.</a>
+[lexos.visualization.seaborn.cluster.clustermap.ClusterMap]() accepts any <a href="https://seaborn.pydata.org/generated/seaborn.clustermap.html"><code>Seaborn.clustermap</code> parameter.</a>
 
 The distance title, distance metric, and linkage method, of the dendrogram can be set in the same way by passing `title`, `metric`, and `method` when instantiating the class or by setting them afterwards calling `ClusterMap.build()`.
 

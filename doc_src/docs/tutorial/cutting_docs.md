@@ -18,14 +18,14 @@ The `Ginsu` class is used for splitting spaCy documents (pre-tokenised texts).
 - Merge the last segment into the preceding if its length falls under a customisable threshold.
 - Split on milestone tokens.
 
-[lexos.cutter.Ginsu.split][lexos.cutter.__init__.Ginsu.split], [lexos.cutter.__init__.Ginsu.splitn][], and [lexos.cutter.Ginsu.split_on_milestones][lexos.cutter.__init__.Ginsu.split_on_milestones] return a list of lists, where each item in the sublist is a spaCy document.
+[lexos.cutter.Ginsu.split][lexos.cutter.Ginsu.split], [lexos.cutter.Ginsu.splitn][], and [lexos.cutter.Ginsu.split_on_milestones][lexos.cutter.Ginsu.split_on_milestones] return a list of lists, where each item in the sublist is a spaCy document.
 
-In [lexos.cutter.Ginsu.split_on_milestones][lexos.cutter.__init__.Ginsu.split_on_milestones], the user can choose whether or not to preserve the milestone token at the beginning of each segment. A milestone must be a token, and it can be as simple as a string matching the token text. However, there is also an elaborate query language for more fine-grained matching.
+In [lexos.cutter.Ginsu.split_on_milestones][lexos.cutter.Ginsu.split_on_milestones], the user can choose whether or not to preserve the milestone token at the beginning of each segment. A milestone must be a token, and it can be as simple as a string matching the token text. However, there is also an elaborate query language for more fine-grained matching.
 
-There is also a [lexos.cutter.milestones.Milestones][] class, which can be used to set milestones in advance. This method adds the custom extension `token._.is_milestone` (by default `False`) to each token in the document and uses the same query language to allow the user to match tokens where the value should be `True`. If documents are pre-processed in this way, the [lexos.cutter.Ginsu.split_on_milestones][lexos.cutter.__init__.Ginsu.split_on_milestones] method can leverage that information.
+There is also a [lexos.cutter.milestones.Milestones][] class, which can be used to set milestones in advance. This method adds the custom extension `token._.is_milestone` (by default `False`) to each token in the document and uses the same query language to allow the user to match tokens where the value should be `True`. If documents are pre-processed in this way, the [lexos.cutter.Ginsu.split_on_milestones][lexos.cutter.Ginsu.split_on_milestones] method can leverage that information.
 
 !!! note
-    At present, [lexos.cutter.Ginsu.split_on_milestones][lexos.cutter.__init__.Ginsu.split_on_milestones] cannot set `token._.is_milestone` on the fly. Although segments created from the milestones are saved, if the user chooses to preserve the milestone token at the beginning of each segment, it will not have `._.is_milestone` attribute.
+    At present, [lexos.cutter.Ginsu.split_on_milestones][lexos.cutter.Ginsu.split_on_milestones] cannot set `token._.is_milestone` on the fly. Although segments created from the milestones are saved, if the user chooses to preserve the milestone token at the beginning of each segment, it will not have `._.is_milestone` attribute.
 
 ### Machete
 
@@ -33,7 +33,7 @@ There is also a [lexos.cutter.milestones.Milestones][] class, which can be used 
 
 `Machete` works in a manner similar to `Ginsu` and has all the same functionality, except for cutting on milestones (see below). However, before splitting the text it applies a makeshift tokenizer function, and the class then splits the text based on the resulting list of tokens.
 
-The Lexos API has three tokenizer functions in the `cutter` function registry: "whitespace" (the default), "character", and "linebreaks". A `Machete` object can be initialised with one of the tokenizers or the tokenizer can be passed to the [lexos.cutter.Machete.split][lexos.cutter.__init__.Machete.split] or [lexos.cutter.Machete.splitn][lexos.cutter.__init__.Machete.splitn] functions with the `tokenizer` parameter.
+The Lexos API has three tokenizer functions in the `cutter` function registry: "whitespace" (the default), "character", and "linebreaks". A `Machete` object can be initialised with one of the tokenizers or the tokenizer can be passed to the [lexos.cutter.Machete.split][lexos.cutter.Machete.split] or [lexos.cutter.Machete.splitn][lexos.cutter.Machete.splitn] functions with the `tokenizer` parameter.
 
 !!! information "What if I don't like the tokenizer?"
     You can supply a custom function after first adding it to the registry. Here is an example:
@@ -54,10 +54,10 @@ The Lexos API has three tokenizer functions in the `cutter` function registry: "
     result = machete.splitn(texts, n=5, tokenizer="custom_punctuation_tokenizer")
     ```
 
-[lexos.cutter.Machete.split][lexos.cutter.__init__.Machete.split] and [lexos.cutter.Machete.splitn][lexos.cutter.__init__.Machete.split] return a list of lists, where each item in the sublist corresponds to a text. By default, each text contains a list of strings in which the string corresponds to a segment. It is possible to return the segments as lists of tokens by setting the `as_string` parameter to `False`.
+[lexos.cutter.Machete.split][lexos.cutter.Machete.split] and [lexos.cutter.Machete.splitn][lexos.cutter.Machete.split] return a list of lists, where each item in the sublist corresponds to a text. By default, each text contains a list of strings in which the string corresponds to a segment. It is possible to return the segments as lists of tokens by setting the `as_string` parameter to `False`.
 
 !!! note
-    [lexos.cutter.Machete][lexos.cutter.__init__.Machete] has no method of splitting texts on milestones. This is because the desired effect can be achieved by writing a custom function with a regex pattern containing the milestone. Such a function would probably lack the fine-grained possibilities of the query language implemented in [lexos.cutter.Ginsu][lexos.cutter.__init__.Ginsu], but this functionality is probably only suitable for accessing token attributes supplied by a language model.
+    [lexos.cutter.Machete][lexos.cutter.Machete] has no method of splitting texts on milestones. This is because the desired effect can be achieved by writing a custom function with a regex pattern containing the milestone. Such a function would probably lack the fine-grained possibilities of the query language implemented in [lexos.cutter.Ginsu][lexos.cutter.Ginsu], but this functionality is probably only suitable for accessing token attributes supplied by a language model.
 
 ### Filesplit (codename `Chainsaw`)
 
