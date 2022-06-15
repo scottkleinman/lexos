@@ -14,10 +14,10 @@ import numpy as np
 
 class BubbleChart:
     """Bubble chart."""
-    def __init__(self,
-                 area: list,
-                 bubble_spacing: Union[float, int] = 0,
-                 limit: int = 100):
+
+    def __init__(
+        self, area: list, bubble_spacing: Union[float, int] = 0, limit: int = 100
+    ):
         """Setup for bubble collapse.
 
         Args:
@@ -45,22 +45,20 @@ class BubbleChart:
         length = np.ceil(np.sqrt(len(self.bubbles)))
         grid = np.arange(length) * self.maxstep
         gx, gy = np.meshgrid(grid, grid)
-        self.bubbles[:, 0] = gx.flatten()[:len(self.bubbles)]
-        self.bubbles[:, 1] = gy.flatten()[:len(self.bubbles)]
+        self.bubbles[:, 0] = gx.flatten()[: len(self.bubbles)]
+        self.bubbles[:, 1] = gy.flatten()[: len(self.bubbles)]
 
         self.com = self.center_of_mass()
 
-    def center_of_mass(self):
+    def center_of_mass(self) -> int:
         """Centre of mass.
 
         Returns:
             int: The centre of mass.
         """
-        return np.average(
-            self.bubbles[:, :2], axis=0, weights=self.bubbles[:, 3]
-        )
+        return np.average(self.bubbles[:, :2], axis=0, weights=self.bubbles[:, 3])
 
-    def center_distance(self, bubble, bubbles) -> np.ndarray:
+    def center_distance(self, bubble: np.ndarray, bubbles: np.ndarray) -> np.ndarray:
         """Centre distance.
 
         Args:
@@ -70,10 +68,9 @@ class BubbleChart:
         Returns:
             np.ndarray: The centre distance.
         """
-        return np.hypot(bubble[0] - bubbles[:, 0],
-                        bubble[1] - bubbles[:, 1])
+        return np.hypot(bubble[0] - bubbles[:, 0], bubble[1] - bubbles[:, 1])
 
-    def outline_distance(self, bubble, bubbles):
+    def outline_distance(self, bubble: np.ndarray, bubbles: np.ndarray) -> int:
         """Outline distance.
 
         Args:
@@ -84,10 +81,9 @@ class BubbleChart:
             int: The outline distance.
         """
         center_distance = self.center_distance(bubble, bubbles)
-        return center_distance - bubble[2] - \
-            bubbles[:, 2] - self.bubble_spacing
+        return center_distance - bubble[2] - bubbles[:, 2] - self.bubble_spacing
 
-    def check_collisions(self, bubble, bubbles):
+    def check_collisions(self, bubble: np.ndarray, bubbles: np.ndarray) -> int:
         """Check collisions.
 
         Args:
@@ -100,7 +96,7 @@ class BubbleChart:
         distance = self.outline_distance(bubble, bubbles)
         return len(distance[distance < 0])
 
-    def collides_with(self, bubble: np.ndarray, bubbles: np.ndarray):
+    def collides_with(self, bubble: np.ndarray, bubbles: np.ndarray) -> int:
         """Collide.
 
         Args:
@@ -150,14 +146,10 @@ class BubbleChart:
                         # Calculate orthogonal vector
                         orth = np.array([dir_vec[1], -dir_vec[0]])
                         # test which direction to go
-                        new_point1 = (self.bubbles[i, :2] + orth *
-                                      self.step_dist)
-                        new_point2 = (self.bubbles[i, :2] - orth *
-                                      self.step_dist)
-                        dist1 = self.center_distance(
-                            self.com, np.array([new_point1]))
-                        dist2 = self.center_distance(
-                            self.com, np.array([new_point2]))
+                        new_point1 = self.bubbles[i, :2] + orth * self.step_dist
+                        new_point2 = self.bubbles[i, :2] - orth * self.step_dist
+                        dist1 = self.center_distance(self.com, np.array([new_point1]))
+                        dist2 = self.center_distance(self.com, np.array([new_point2]))
                         new_point = new_point1 if dist1 < dist2 else new_point2
                         new_bubble = np.append(new_point, self.bubbles[i, 2:4])
                         if not self.check_collisions(new_bubble, rest_bub):
@@ -177,32 +169,40 @@ class BubbleChart:
         """
         color_num = 0
         for i in range(len(self.bubbles)):
-            if color_num == len(colors)-1:
+            if color_num == len(colors) - 1:
                 color_num = 0
             else:
                 color_num += 1
             circ = plt.Circle(
-                self.bubbles[i, :2], self.bubbles[i, 2], color=colors[color_num])
+                self.bubbles[i, :2], self.bubbles[i, 2], color=colors[color_num]
+            )
             ax.add_patch(circ)
-            ax.text(*self.bubbles[i, :2], labels[i],
-                    horizontalalignment='center', verticalalignment='center')
+            ax.text(
+                *self.bubbles[i, :2],
+                labels[i],
+                horizontalalignment="center",
+                verticalalignment="center"
+            )
 
-def make_bubble_chart(terms: List[str],
-                      area: List[Union[float, int]],
-                      limit: int = 100,
-                      title: str = None,
-                      bubble_spacing: Union[float, int] = 0.1,
-                      colors: List[str] = [
-                          "#5A69AF",
-                          "#579E65",
-                          "#F9C784",
-                          "#FC944A",
-                          "#F24C00",
-                          "#00B825"
-                    ],
-                      figsize: tuple = (15,15),
-                      show: bool = True,
-                      filename: str = None):
+
+def make_bubble_chart(
+    terms: List[str],
+    area: List[Union[float, int]],
+    limit: int = 100,
+    title: str = None,
+    bubble_spacing: Union[float, int] = 0.1,
+    colors: List[str] = [
+        "#5A69AF",
+        "#579E65",
+        "#F9C784",
+        "#FC944A",
+        "#F24C00",
+        "#00B825",
+    ],
+    figsize: tuple = (15, 15),
+    show: bool = True,
+    filename: str = None,
+):
     """Make bubble chart.
 
     Args:

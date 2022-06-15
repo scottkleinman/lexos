@@ -1,5 +1,5 @@
 """wordcloud.py."""
-from typing import List, Union
+from typing import Iterator, List, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -7,7 +7,7 @@ import pandas as pd
 from wordcloud import WordCloud
 
 
-def get_rows(lst, n):
+def get_rows(lst, n) -> Iterator[int]:
     """Yield successive n-sized rows from a list of documents.
 
     Args:
@@ -15,27 +15,28 @@ def get_rows(lst, n):
         n (int): The number of columns in the row.
 
     Yields:
-        list: A generator with the documents separated into rows.
+        A generator with the documents separated into rows.
     """
     for i in range(0, len(lst), n):
-        yield lst[i:i + n]
+        yield lst[i : i + n]
 
 
-def wordcloud(dtm: Union[dict, list, object, pd.DataFrame, str, tuple],
-                   docs: List[str] = None,
-                   opts: dict = None,
-                   show: bool = True,
-                   figure_opts: dict = None,
-                   round: int = None,
-                   filename: str = None,
-                  ):
+def wordcloud(
+    dtm: Union[dict, list, object, pd.DataFrame, str, tuple],
+    docs: List[str] = None,
+    opts: dict = None,
+    show: bool = True,
+    figure_opts: dict = None,
+    round: int = None,
+    filename: str = None,
+) -> object:
     """Make a word cloud.
 
     Accepts data from a string, list of lists or tuples, a dict with
     terms as keys and counts/frequencies as values, or a dataframe.
 
     Args:
-        data (Union[dict, list, object, pd.DataFrame, str, tuple]): The data.
+        dtm (Union[dict, list, object, pd.DataFrame, str, tuple]): The data.
             Accepts a text string, a list of lists or tuples, a dataframe,
             or a dict with the terms as keys and the counts/frequencies as
             values, or a dataframe with "term" and "count" or "frequency" columns.
@@ -61,7 +62,7 @@ def wordcloud(dtm: Union[dict, list, object, pd.DataFrame, str, tuple],
             "background_color": "white",
             "max_words": 2000,
             "contour_width": 0,
-            "contour_color": "steelblue"
+            "contour_color": "steelblue",
         }
     if figure_opts is None:
         figure_opts = {}
@@ -117,17 +118,18 @@ def wordcloud(dtm: Union[dict, list, object, pd.DataFrame, str, tuple],
         return wc
 
 
-def multicloud(dtm: List[Union[dict, pd.DataFrame, object, str, tuple]],
-                   docs: List[str] = None,
-                   opts: dict = None,
-                   ncols: int = 3,
-                   title: str = None,
-                   labels: List[str] = None,
-                   show: bool = True,
-                   figure_opts: dict = None,
-                   round: int = None,
-                   filename: str = None
-                  ):
+def multicloud(
+    dtm: List[Union[dict, pd.DataFrame, object, str, tuple]],
+    docs: List[str] = None,
+    opts: dict = None,
+    ncols: int = 3,
+    title: str = None,
+    labels: List[str] = None,
+    show: bool = True,
+    figure_opts: dict = None,
+    round: int = None,
+    filename: str = None,
+) -> object:
     """Make multiclouds.
 
     Accepts data from a string, list of lists or tuples, a dict with
@@ -165,7 +167,7 @@ def multicloud(dtm: List[Union[dict, pd.DataFrame, object, str, tuple]],
             "background_color": "white",
             "max_words": 2000,
             "contour_width": 0,
-            "contour_color": "steelblue"
+            "contour_color": "steelblue",
         }
     if figure_opts is None:
         figure_opts = {}

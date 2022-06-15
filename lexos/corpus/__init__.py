@@ -60,19 +60,27 @@ class Record(BaseModel):
 
     def __repr__(self):
         """Return a string representation of the record."""
-        fields = {field: getattr(self, field) for field in self.__fields_set__ if field != "content"}
+        fields = {
+            field: getattr(self, field)
+            for field in self.__fields_set__
+            if field != "content"
+        }
         properties = {k: getattr(self, k) for k in self.get_properties()}
         fields = {**fields, **properties}
         fields["terms"] = "Counter()"
         fields["text"] = self.preview
         fields["tokens"] = f'[{", ".join([t.text for t in self.content[0:5]])}...]'
-        field_list = [f"{k}={v}" for k, v in fields.items()] + [f"content={self.preview}"]
+        field_list = [f"{k}={v}" for k, v in fields.items()] + [
+            f"content={self.preview}"
+        ]
         return f"Record({', '.join(sorted(field_list))})"
 
     @classmethod
     def get_properties(cls):
         """Return a list of the properties of the Record class."""
-        return [prop for prop in cls.__dict__ if isinstance(cls.__dict__[prop], property)]
+        return [
+            prop for prop in cls.__dict__ if isinstance(cls.__dict__[prop], property)
+        ]
 
     @property
     def preview(self):
@@ -150,14 +158,16 @@ class Corpus(BaseModel):
         rep = f"Corpus({', '.join(sorted(field_list))})"
         return rep
 
-    def add(self,
-                content: Union[object, str],
-                name: str = None,
-                is_parsed: bool = False,
-                is_active: bool = True,
-                model: str = None,
-                metadata: dict = None,
-                cache: bool = False):
+    def add(
+        self,
+        content: Union[object, str],
+        name: str = None,
+        is_parsed: bool = False,
+        is_active: bool = True,
+        model: str = None,
+        metadata: dict = None,
+        cache: bool = False,
+    ):
         """Add a document the Corpus.
 
         Args:
@@ -184,7 +194,7 @@ class Corpus(BaseModel):
             id=self._get_new_id(),
             is_active=is_active,
             is_parsed=is_parsed,
-            model=model
+            model=model,
         )
         # Add arbitrary metadata properties
         if metadata:
@@ -193,13 +203,15 @@ class Corpus(BaseModel):
         # Add the record to the Corpus
         self._add_to_corpus(record, cache=cache)
 
-    def add_docs(self,
-                 docs: List[dict],
-                 name: str = None,
-                 is_parsed: bool = False,
-                 is_active: bool = True,
-                 model: str = None,
-                 cache: bool = False):
+    def add_docs(
+        self,
+        docs: List[dict],
+        name: str = None,
+        is_parsed: bool = False,
+        is_active: bool = True,
+        model: str = None,
+        cache: bool = False,
+    ):
         """Add multiple docs to the corpus.
 
         Args:
@@ -235,7 +247,7 @@ class Corpus(BaseModel):
                 is_active=is_active,
                 model=model,
                 metadata=doc,
-                cache=cache
+                cache=cache,
             )
 
     def add_record(self, record: object, cache: bool = False):
@@ -304,7 +316,7 @@ class Corpus(BaseModel):
         """
         return sum([self.get(id).terms for id in self.ids], Counter())
 
-    def meta_table(self, drop: List[str] = ["docs", "meta", "terms"]):
+    def meta_table(self, drop: List[str] = ["docs", "meta", "terms"]) -> pd.DataFrame:
         """Display Corpus metadata, one attribute per row, in a dataframe.
 
         Args:
@@ -318,17 +330,19 @@ class Corpus(BaseModel):
         df.sort_index(axis=0, inplace=True)
         return df
 
-    def records_table(self,
-                     columns: List[str] = [
-                         "id",
-                         "name",
-                         "filename",
-                         "num_tokens",
-                         "num_terms",
-                         "is_active",
-                         "is_parsed"
-                     ],
-                     exclude: List[str] = None) -> pd.DataFrame:
+    def records_table(
+        self,
+        columns: List[str] = [
+            "id",
+            "name",
+            "filename",
+            "num_tokens",
+            "num_terms",
+            "is_active",
+            "is_parsed",
+        ],
+        exclude: List[str] = None,
+    ) -> pd.DataFrame:
         """Display each document, one per row, in a dataframe.
 
         Args:
@@ -381,7 +395,7 @@ class Corpus(BaseModel):
 
         Args:
             id (int): A document id.
-            props (dict): The dict containing any other properties to set.
+            **props (dict): The dict containing any other properties to set.
         """
         record = self.get(id)
         old_filename = record.filename
@@ -399,11 +413,13 @@ class Corpus(BaseModel):
                 "num_terms": record.num_terms(),
                 "num_tokens": record.num_tokens(),
                 "is_active": record.is_active,
-                "is_parsed": record.is_parsed
+                "is_parsed": record.is_parsed,
             }
-            self.meta = [{**d,**update} for d in self.meta]
+            self.meta = [{**d, **update} for d in self.meta]
         else:
-            raise ValueError(f"A file with the name `{record.filename}` already exists.")
+            raise ValueError(
+                f"A file with the name `{record.filename}` already exists."
+            )
 
     def _add_to_corpus(self, record: object, cache: bool = False):
         """Add a record to the Corpus.
@@ -468,8 +484,9 @@ class Corpus(BaseModel):
             assert filepath not in os.listdir(docs_dir)
             return filepath
         except AssertionError:
-            raise AssertionError("Could not make a unique filepath. Try changing the record name.")
-
+            raise AssertionError(
+                "Could not make a unique filepath. Try changing the record name."
+            )
 
     def _from_disk(self, filename) -> object:
         """Deserialise a record file from disk.

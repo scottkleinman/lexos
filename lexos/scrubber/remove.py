@@ -12,8 +12,7 @@ from . import resources
 
 
 def accents(text: str, *, fast: bool = False, accents: Union[str, tuple] = None) -> str:
-    """
-    Remove accents from any accented unicode characters in `text`, either
+    """Remove accents from any accented unicode characters in `text`, either
     by replacing them with ASCII equivalents or removing them entirely.
 
     Args:
@@ -146,17 +145,18 @@ def digits(text: str, *, only: Optional[str | Collection[str]] = None) -> str:
 
 
 def project_gutenberg_headers(text: str) -> str:
-    """Remove Project Gutenberg headers and foots.
-
-    Note: this function is a port of the C++ utility by Johannes Krugel.
-    The original version of the code can be found at
-    http://www14.in.tum.de/spp1307/src/strip_headers.cpp
+    """Remove Project Gutenberg headers and footers.
 
     Args:
         text (str): The text from which headers and footers will be removed.
 
     Returns:
         str
+
+    Notes:
+        This function is reproduced from Gutenberg package's `strip_headers()`
+        function (https://github.com/c-w/gutenberg), itself a port ofthe C++ utility
+        by Johannes Krugel.
     """
     lines = text.splitlines()
     sep = str(os.linesep)

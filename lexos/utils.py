@@ -127,8 +127,7 @@ def to_collection(
     val_type: Union[Type[Any], Tuple[Type[Any], ...]],
     col_type: Type[Any],
 ) -> Collection[AnyVal]:
-    """
-    Validate and cast a value or values to a collection.
+    """Validate and cast a value or values to a collection.
     Args:
         val (object): Value or values to validate and cast.
         val_type (type): Type of each value in collection, e.g. ``int`` or ``(str, bytes)``.

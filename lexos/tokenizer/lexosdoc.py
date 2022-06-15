@@ -8,7 +8,7 @@ import pandas as pd
 from . import extensions
 
 
-class LexosDoc():
+class LexosDoc:
     """A wrapper class for a spaCy doc which allows for extra methods.
 
     A convenience that allows you to use Doc extensions without the
@@ -19,32 +19,35 @@ class LexosDoc():
     If certain functions get used commonly, they can be turned into Doc
     extensions.
     """
+
     def __init__(self, doc: object):
         """Initialize a LexosDoc object."""
         self.doc = doc
 
-    def get_term_counts(self,
-                        limit: int = None,
-                        start: Any = 0,
-                        end: Any = None,
-                        filters: List[Union[Dict[str, str], str]] = None,
-                        regex: bool = False,
-                        normalize: bool = False,
-                        normalize_with_filters: bool = False,
-                        as_df = False) -> Union[List, pd.DataFrame]:
+    def get_term_counts(
+        self,
+        limit: int = None,
+        start: Any = 0,
+        end: Any = None,
+        filters: List[Union[Dict[str, str], str]] = None,
+        regex: bool = False,
+        normalize: bool = False,
+        normalize_with_filters: bool = False,
+        as_df=False,
+    ) -> Union[List, pd.DataFrame]:
         """Get a list of word counts for each token in the doc.
 
         Args:
-            self: A spaCy doc.
-            limit: The maximum number of tokens to count.
-            start: The index of the first token to count.
-            end: The index of the last token to count after limit is applied.
-            filters: A list of Doc attributes to ignore.
+            self (object): A spaCy doc.
+            limit (int): The maximum number of tokens to count.
+            start (Any): The index of the first token to count.
+            end (Any): The index of the last token to count after limit is applied.
+            filters (List[Union[Dict[str, str], str]]): A list of Doc attributes to ignore.
             regex (bool): Whether to match the dictionary value using regex.
             normalize (bool): Whether to return raw counts or relative frequencies.
             normalize_with_filters (bool): Whether to normalize based on the number
                 of tokens after filters are applied.
-            as_df: Whether to return a pandas dataframe.
+            as_df (bool): Whether to return a pandas dataframe.
 
         Returns:
             Union[List, pd.DataFrame]: A list of word count tuples for
@@ -73,7 +76,7 @@ class LexosDoc():
         else:
             num_tokens = len(self.doc)
         if normalize:
-            term_counts = [(x[0], x[1]/num_tokens) for x in term_counts]
+            term_counts = [(x[0], x[1] / num_tokens) for x in term_counts]
             columns[1] = "frequency"
         if as_df:
             return pd.DataFrame(term_counts, columns=columns)
@@ -96,12 +99,14 @@ class LexosDoc():
         """
         sample = self.doc[0]
         attrs = sorted([x for x in dir(sample) if not x.startswith("__") and x != "_"])
-        exts = sorted([f"_{x}" for x in dir(sample._) if x not in ["get", "has", "set"]])
+        exts = sorted(
+            [f"_{x}" for x in dir(sample._) if x not in ["get", "has", "set"]]
+        )
         return {"spacy_attributes": attrs, "extensions": exts}
 
-    def to_dataframe(self,
-                     cols: List[str] = ["text"],
-                     show_ranges: bool = True) -> pd.DataFrame:
+    def to_dataframe(
+        self, cols: List[str] = ["text"], show_ranges: bool = True
+    ) -> pd.DataFrame:
         """Get a pandas dataframe of the doc attributes.
 
         Args:
@@ -146,7 +151,9 @@ class LexosDoc():
         else:
             return True
 
-    def _dict_filter(self, token: object, filters: List[Dict[str, str]], regex: bool = False) -> bool:
+    def _dict_filter(
+        self, token: object, filters: List[Dict[str, str]], regex: bool = False
+    ) -> bool:
         """Filter a token based on a list of dictionary filters.
 
         Args:
@@ -160,7 +167,10 @@ class LexosDoc():
         """
         if filters and filters != {}:
             for filter, value in filters.items():
-                if regex and re.search(re.compile(value), getattr(token, filter)) is not None:
+                if (
+                    regex
+                    and re.search(re.compile(value), getattr(token, filter)) is not None
+                ):
                     return False
                 elif getattr(token, filter) == value:
                     return False

@@ -55,12 +55,16 @@ class Ginsu:
         return segments
 
     def split(
-        self, docs, n=1000, merge_threshold: float = 0.5, overlap: int = None
+        self,
+        docs: Union[object, List[object]],
+        n: int = 1000,
+        merge_threshold: float = 0.5,
+        overlap: int = None,
     ) -> list:
         """Split spaCy docs into chunks by a fixed number of tokens.
 
         Args:
-            doc (object): A spaCy doc or list of spaCy docs.
+            docs (Union[object, List[object]]): A spaCy doc or list of spaCy docs.
             n (int): The number of tokens to split on.
             merge_threshold (float): The threshold to merge the last segment.
             overlap (int): The number of tokens to overlap.
@@ -92,7 +96,7 @@ class Ginsu:
 
     def splitn(
         self,
-        docs: Union[list, object],
+        docs: Union[object, List[object]],
         n: int = 2,
         merge_threshold: float = 0.5,
         overlap: int = None,
@@ -101,7 +105,7 @@ class Ginsu:
         """Get a specific number of sequential segments from a spaCy doc or docs.
 
         Args:
-            docs(Union[list, object]): A spaCy doc or list of spaCy docs.
+            docs (Union[object, List[object]]): A spaCy doc or list of spaCy docs.
             n (int): The number of segments to create. Calculated automatically.
             merge_threshold (float): ...
             merge_threshold (float): The threshold to merge the last segment.

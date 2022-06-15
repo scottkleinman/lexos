@@ -11,6 +11,7 @@ import sklearn.preprocessing
 # Set fallback for MDS scaling
 try:
     from sklearn.manifold import MDS, TSNE
+
     sklearn_present = True
 except ImportError:
     sklearn_present = False
@@ -26,13 +27,17 @@ def __num_dist_rows__(array, ndigits: int = 2):
 
 class ValidationError(ValueError):
     """Handle validation errors."""
+
     pass
 
-def _input_check(topic_term_dists: pd.DataFrame,
-                 doc_topic_dists: pd.DataFrame,
-                 doc_lengths: list,
-                 vocab: list,
-                 term_frequency: int) -> list:
+
+def _input_check(
+    topic_term_dists: pd.DataFrame,
+    doc_topic_dists: pd.DataFrame,
+    doc_lengths: list,
+    vocab: list,
+    term_frequency: int,
+) -> list:
     """Check input for scale_model.
 
     Args:
@@ -48,27 +53,36 @@ def _input_check(topic_term_dists: pd.DataFrame,
     ttds = topic_term_dists.shape
     dtds = doc_topic_dists.shape
     errors = []
+
     def err(msg):
         """Append error message."""
         errors.append(msg)
 
     if dtds[1] != ttds[0]:
-        err('Number of rows of topic_term_dists does not match number of columns of doc_topic_dists; both should be equal to the number of topics in the model.')
+        err(
+            "Number of rows of topic_term_dists does not match number of columns of doc_topic_dists; both should be equal to the number of topics in the model."
+        )
 
     if len(doc_lengths) != dtds[0]:
-        err('Length of doc_lengths not equal to the number of rows in doc_topic_dists; both should be equal to the number of documents in the data.')
+        err(
+            "Length of doc_lengths not equal to the number of rows in doc_topic_dists; both should be equal to the number of documents in the data."
+        )
 
     W = len(vocab)
     if ttds[1] != W:
-        err('Number of terms in vocabulary does not match the number of columns of topic_term_dists (where each row of topic_term_dists is a probability distribution of terms for a given topic).')
+        err(
+            "Number of terms in vocabulary does not match the number of columns of topic_term_dists (where each row of topic_term_dists is a probability distribution of terms for a given topic)."
+        )
     if len(term_frequency) != W:
-        err('Length of term_frequency not equal to the number of terms in the vocabulary (len of vocab).')
+        err(
+            "Length of term_frequency not equal to the number of terms in the vocabulary (len of vocab)."
+        )
 
     if __num_dist_rows__(topic_term_dists) != ttds[0]:
-        err('Not all rows (distributions) in topic_term_dists sum to 1.')
+        err("Not all rows (distributions) in topic_term_dists sum to 1.")
 
     if __num_dist_rows__(doc_topic_dists) != dtds[0]:
-        err('Not all rows (distributions) in doc_topic_dists sum to 1.')
+        err("Not all rows (distributions) in doc_topic_dists sum to 1.")
 
     if len(errors) > 0:
         return errors
@@ -78,7 +92,7 @@ def _input_validate(*args) -> None:
     """Check input for scale_model."""
     res = _input_check(*args)
     if res:
-        raise ValidationError('\n' + '\n'.join([' * ' + s for s in res]))
+        raise ValidationError("\n" + "\n".join([" * " + s for s in res]))
 
 
 def _jensen_shannon(_P: np.array, _Q: np.array) -> float:
@@ -115,7 +129,7 @@ def _pcoa(pair_dists: np.array, n_components: int = 2) -> np.array:
     # perform SVD on double centred distance matrix
     n = pair_dists.shape[0]
     H = np.eye(n) - np.ones((n, n)) / n
-    B = - H.dot(pair_dists ** 2).dot(H) / 2
+    B = -H.dot(pair_dists ** 2).dot(H) / 2
     eigvals, eigvecs = np.linalg.eig(B)
 
     # Take first n_components of eigenvalues and eigenvectors
@@ -145,7 +159,7 @@ def js_PCoA(distributions: np.array) -> np.array:
         distributions: (array-like, shape (`n_dists`, `k`)): Matrix of distributions probabilities.
 
     Returns:
-        pcoa (array, shape (`n_dists`, 2))
+        pcoa (np.array): (array, shape (`n_dists`, 2))
 
     """
     dist_matrix = squareform(pdist(distributions, metric=_jensen_shannon))
@@ -157,17 +171,16 @@ def js_MMDS(distributions: np.array, **kwargs) -> np.array:
 
     Works via Jensen-Shannon Divergence & Metric Multidimensional Scaling
 
-    Parameters
     Args:
-        distributions: (array-like, shape (`n_dists`, `k`)): Matrix of distributions probabilities.
-        **kwargs: Keyword argument to be passed to `sklearn.manifold.MDS()`
+        distributions (np.array): Matrix of distributions probabilities (array-like, shape (`n_dists`, `k`)).
+        **kwargs (dict): Keyword argument to be passed to `sklearn.manifold.MDS()`
 
     Returns:
-        mmds (array, shape (`n_dists`, 2))
+        mmds (np.array): (array, shape (`n_dists`, 2))
 
     """
     dist_matrix = squareform(pdist(distributions, metric=_jensen_shannon))
-    model = MDS(n_components=2, random_state=0, dissimilarity='precomputed', **kwargs)
+    model = MDS(n_components=2, random_state=0, dissimilarity="precomputed", **kwargs)
     return model.fit_transform(dist_matrix)
 
 
@@ -177,14 +190,14 @@ def js_TSNE(distributions, **kwargs) -> np.array:
     Works via Jensen-Shannon Divergence & t-distributed Stochastic Neighbor Embedding
 
     Args:
-        distributions: (array-like, shape (`n_dists`, `k`)): Matrix of distributions probabilities.
-        **kwargs: Keyword argument to be passed to `sklearn.manifold.MDS()`
+        distributions (np.array): Matrix of distributions probabilities  (array-like, shape (`n_dists`, `k`)).
+        **kwargs (dict): Keyword argument to be passed to `sklearn.manifold.MDS()`
 
     Returns:
-        tsne (array, shape (`n_dists`, 2))
+        tsne (np.array): (array, shape (`n_dists`, 2))
     """
     dist_matrix = squareform(pdist(distributions, metric=_jensen_shannon))
-    model = TSNE(n_components=2, random_state=0, metric='precomputed', **kwargs)
+    model = TSNE(n_components=2, random_state=0, metric="precomputed", **kwargs)
     return model.fit_transform(dist_matrix)
 
 
@@ -227,7 +240,9 @@ def _series_with_name(data, name) -> pd.Series:
         return pd.Series(data, name=name)
 
 
-def _topic_coordinates(mds: np.array, topic_term_dists: np.array, topic_proportion: np.array) -> pd.DataFrame:
+def _topic_coordinates(
+    mds: np.array, topic_term_dists: np.array, topic_proportion: np.array
+) -> pd.DataFrame:
     """Get coordinates for topics.
 
     Args:
@@ -241,19 +256,28 @@ def _topic_coordinates(mds: np.array, topic_term_dists: np.array, topic_proporti
     K = topic_term_dists.shape[0]
     mds_res = mds(topic_term_dists)
     assert mds_res.shape == (K, 2)
-    mds_df = pd.DataFrame({'x': mds_res[:, 0], 'y': mds_res[:, 1], 'topics': range(1, K + 1), \
-                            'cluster': 1, 'Freq': topic_proportion * 100})
+    mds_df = pd.DataFrame(
+        {
+            "x": mds_res[:, 0],
+            "y": mds_res[:, 1],
+            "topics": range(1, K + 1),
+            "cluster": 1,
+            "Freq": topic_proportion * 100,
+        }
+    )
     # note: cluster (should?) be deprecated soon. See: https://github.com/cpsievert/LDAvis/issues/26
     return mds_df
 
 
-def get_topic_coordinates(topic_term_dists: np.array,
-                          doc_topic_dists: np.array,
-                          doc_lengths: list,
-                          vocab: list,
-                          term_frequency: list,
-                          mds: Callable = js_PCoA,
-                          sort_topics: bool = True) -> pd.DataFrame:
+def get_topic_coordinates(
+    topic_term_dists: np.array,
+    doc_topic_dists: np.array,
+    doc_lengths: list,
+    vocab: list,
+    term_frequency: list,
+    mds: Callable = js_PCoA,
+    sort_topics: bool = True,
+) -> pd.DataFrame:
     """Transform the topic model distributions and related corpus.
 
     Creates the data structures needed for topic bubbles.
@@ -282,31 +306,33 @@ def get_topic_coordinates(topic_term_dists: np.array,
     # parse mds
     if isinstance(mds, basestring):
         mds = mds.lower()
-        if mds == 'pcoa':
+        if mds == "pcoa":
             mds = js_PCoA
-        elif mds in ('mmds', 'tsne'):
+        elif mds in ("mmds", "tsne"):
             if sklearn_present:
-                mds_opts = {'mmds': js_MMDS, 'tsne': js_TSNE}
+                mds_opts = {"mmds": js_MMDS, "tsne": js_TSNE}
                 mds = mds_opts[mds]
             else:
-                logging.warning('sklearn not present, switch to PCoA')
+                logging.warning("sklearn not present, switch to PCoA")
                 mds = js_PCoA
         else:
-            logging.warning('Unknown mds `%s`, switch to PCoA' % mds)
+            logging.warning("Unknown mds `%s`, switch to PCoA" % mds)
             mds = js_PCoA
 
-    topic_term_dists = _df_with_names(topic_term_dists, 'topic', 'term')
-    doc_topic_dists = _df_with_names(doc_topic_dists, 'doc', 'topic')
-    term_frequency = _series_with_name(term_frequency, 'term_frequency')
-    doc_lengths = _series_with_name(doc_lengths, 'doc_length')
-    vocab = _series_with_name(vocab, 'vocab')
-    _input_validate(topic_term_dists, doc_topic_dists, doc_lengths, vocab, term_frequency)
+    topic_term_dists = _df_with_names(topic_term_dists, "topic", "term")
+    doc_topic_dists = _df_with_names(doc_topic_dists, "doc", "topic")
+    term_frequency = _series_with_name(term_frequency, "term_frequency")
+    doc_lengths = _series_with_name(doc_lengths, "doc_length")
+    vocab = _series_with_name(vocab, "vocab")
+    _input_validate(
+        topic_term_dists, doc_topic_dists, doc_lengths, vocab, term_frequency
+    )
 
     topic_freq = (doc_topic_dists.T * doc_lengths).T.sum()
     if sort_topics:
         topic_proportion = (topic_freq / topic_freq.sum()).sort_values(ascending=False)
     else:
-        topic_proportion = (topic_freq / topic_freq.sum())
+        topic_proportion = topic_freq / topic_freq.sum()
 
     topic_order = topic_proportion.index
     topic_term_dists = topic_term_dists.iloc[topic_order]
@@ -316,17 +342,17 @@ def get_topic_coordinates(topic_term_dists: np.array,
     return scaled_coordinates
 
 
-def extract_params(statefile: str):
+def extract_params(statefile: str) -> tuple:
     """Extract the alpha and beta values from the statefile.
 
     Args:
         statefile (str): Path to statefile produced by MALLET.
 
     Returns:
-        tuple: alpha (list), beta
+        tuple: A tuple of (alpha (list), beta)
     """
-    with gzip.open(statefile, 'r') as state:
-        params = [x.decode('utf8').strip() for x in state.readlines()[1:3]]
+    with gzip.open(statefile, "r") as state:
+        params = [x.decode("utf8").strip() for x in state.readlines()[1:3]]
     return (list(params[0].split(":")[1].split(" ")), float(params[1].split(":")[1]))
 
 
@@ -341,18 +367,16 @@ def state_to_df(statefile: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: The topic assignment for each token in each document of the model.
     """
-    return pd.read_csv(statefile,
-                        compression='gzip',
-                        sep=' ',
-                        skiprows=[1, 2]
-                        )
+    return pd.read_csv(statefile, compression="gzip", sep=" ", skiprows=[1, 2])
 
 
-def pivot_and_smooth(df: pd.DataFrame,
-                     smooth_value: float,
-                     rows_variable: str,
-                     cols_variable: str,
-                     values_variable: str) -> pd.DataFrame:
+def pivot_and_smooth(
+    df: pd.DataFrame,
+    smooth_value: float,
+    rows_variable: str,
+    cols_variable: str,
+    values_variable: str,
+) -> pd.DataFrame:
     """Turn the pandas dataframe into a data matrix.
 
     Args:
@@ -365,10 +389,12 @@ def pivot_and_smooth(df: pd.DataFrame,
     Returns:
         pd.DataFrame: A pandas matrix that has been normalized on the rows.
     """
-    matrix = df.pivot(index=rows_variable, columns=cols_variable, values=values_variable).fillna(value=0)
+    matrix = df.pivot(
+        index=rows_variable, columns=cols_variable, values=values_variable
+    ).fillna(value=0)
     matrix = matrix.values + smooth_value
 
-    normed = sklearn.preprocessing.normalize(matrix, norm='l1', axis=1)
+    normed = sklearn.preprocessing.normalize(matrix, norm="l1", axis=1)
 
     return pd.DataFrame(normed)
 
@@ -387,22 +413,27 @@ def convert_mallet_data(state_file: str) -> dict:
     beta = params[1]
     df = state_to_df(state_file)
     # Ensure that NaN is a string
-    df['type'] = df.type.astype(str)
+    df["type"] = df.type.astype(str)
     # Get document lengths from statefile
-    docs = df.groupby('#doc')['type'].count().reset_index(name='doc_length')
+    docs = df.groupby("#doc")["type"].count().reset_index(name="doc_length")
     # Get vocab and term frequencies from statefile
-    vocab = df['type'].value_counts().reset_index()
-    vocab.columns = ['type', 'term_freq']
-    vocab = vocab.sort_values(by='type', ascending=True)
-    phi_df = df.groupby(['topic', 'type'])['type'].count().reset_index(name='token_count')
-    phi_df = phi_df.sort_values(by='type', ascending=True)
-    phi = pivot_and_smooth(phi_df, beta, 'topic', 'type', 'token_count')
-    theta_df = df.groupby(['#doc', 'topic'])['topic'].count().reset_index(name='topic_count')
-    theta = pivot_and_smooth(theta_df, alpha, '#doc', 'topic', 'topic_count')
-    data = {'topic_term_dists': phi,
-            'doc_topic_dists': theta,
-            'doc_lengths': list(docs['doc_length']),
-            'vocab': list(vocab['type']),
-            'term_frequency': list(vocab['term_freq'])
-        }
+    vocab = df["type"].value_counts().reset_index()
+    vocab.columns = ["type", "term_freq"]
+    vocab = vocab.sort_values(by="type", ascending=True)
+    phi_df = (
+        df.groupby(["topic", "type"])["type"].count().reset_index(name="token_count")
+    )
+    phi_df = phi_df.sort_values(by="type", ascending=True)
+    phi = pivot_and_smooth(phi_df, beta, "topic", "type", "token_count")
+    theta_df = (
+        df.groupby(["#doc", "topic"])["topic"].count().reset_index(name="topic_count")
+    )
+    theta = pivot_and_smooth(theta_df, alpha, "#doc", "topic", "topic_count")
+    data = {
+        "topic_term_dists": phi,
+        "doc_topic_dists": theta,
+        "doc_lengths": list(docs["doc_length"]),
+        "vocab": list(vocab["type"]),
+        "term_frequency": list(vocab["term_freq"]),
+    }
     return data

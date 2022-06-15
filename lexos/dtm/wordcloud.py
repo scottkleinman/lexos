@@ -1,5 +1,5 @@
 """wordcloud.py."""
-from typing import List, Union
+from typing import Iterable, List, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -7,7 +7,7 @@ import pandas as pd
 from wordcloud import WordCloud
 
 
-def get_rows(lst, n):
+def get_rows(lst, n) -> Iterable[int]:
     """Yield successive n-sized rows from a list of documents.
 
     Args:
@@ -18,15 +18,16 @@ def get_rows(lst, n):
         list: A generator with the documents separated into rows.
     """
     for i in range(0, len(lst), n):
-        yield lst[i:i + n]
+        yield lst[i : i + n]
 
 
-def make_wordcloud(data: Union[dict, list, object, str, tuple],
-                   opts: dict = None,
-                   show: bool = True,
-                   figure_opts: dict = None,
-                   round: int = None
-                  ):
+def make_wordcloud(
+    data: Union[dict, list, object, str, tuple],
+    opts: dict = None,
+    show: bool = True,
+    figure_opts: dict = None,
+    round: int = None,
+) -> object:
     """Make a word cloud.
 
     Accepts data from a string, list of lists or tuples, a dict with
@@ -78,15 +79,16 @@ def make_wordcloud(data: Union[dict, list, object, str, tuple],
         return wordcloud
 
 
-def make_multiclouds(docs: List[Union[dict, object, str, tuple]],
-                   opts: dict = None,
-                   ncols: int = 3,
-                   title: str = None,
-                   labels: List[str] = None,
-                   show: bool = True,
-                   figure_opts: dict = None,
-                   round: int = None
-                  ):
+def make_multiclouds(
+    docs: List[Union[dict, object, str, tuple]],
+    opts: dict = None,
+    ncols: int = 3,
+    title: str = None,
+    labels: List[str] = None,
+    show: bool = True,
+    figure_opts: dict = None,
+    round: int = None,
+) -> object:
     """Make multiclouds.
 
     Accepts data from a string, list of lists or tuples, a dict with
@@ -167,7 +169,7 @@ def make_multiclouds(docs: List[Union[dict, object, str, tuple]],
             ax = fig.add_subplot(spec[row, col])
             # Generate the subplot's word cloud.
             if isinstance(data, str):
-                    wordcloud = WordCloud(**opts).generate_from_text(data)
+                wordcloud = WordCloud(**opts).generate_from_text(data)
             else:
                 wordcloud = WordCloud(**opts).generate_from_frequencies(data)
             # If `show=True`, show the word cloud.

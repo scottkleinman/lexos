@@ -83,11 +83,7 @@ def hashtags(text: str, repl: str = "_HASHTAG_") -> str:
     return resources.RE_HASHTAG.sub(repl, text)
 
 
-def pattern(
-    text: str,
-    *,
-    pattern: Union[dict, Collection[dict]]
-) -> str:
+def pattern(text: str, *, pattern: Union[dict, Collection[dict]]) -> str:
     """Replace strings from `text` using a regex pattern.
 
     Args:
@@ -119,8 +115,9 @@ def phone_numbers(text: str, repl: str = "_PHONE_") -> str:
     return resources.RE_PHONE_NUMBER.sub(repl, text)
 
 
-def process_tag_replace_options(orig_text: str, tag: str, action: str,
-                                attribute: str) -> str:
+def process_tag_replace_options(
+    orig_text: str, tag: str, action: str, attribute: str
+) -> str:
     """Replace html-style tags in text files according to user options.
 
     Args:
@@ -129,22 +126,23 @@ def process_tag_replace_options(orig_text: str, tag: str, action: str,
         action: A string specifying the action to be performed on the tag.
         attribute: Replacement value for tag when "replace_with_attribute" is specified.
 
-        Action options are:
-        - "remove_tag": Remove the tag
-        - "remove_element": Remove the element and contents
-        - "replace_element": Replace the tag with the specified attribute
-
     Returns:
         str: The text after the specified tag is processed.
 
-    Note: The replacement of a tag with the value of an attribute may not be supported. This needs a second look.
+    Notes:
+      - Action options are:
+        - "remove_tag": Remove the tag
+        - "remove_element": Remove the element and contents
+        - "replace_element": Replace the tag with the specified attribute
+      - The replacement of a tag with the value of an attribute may not be supported. This needs a second look.
     """
     if action == "remove_tag":
         # searching for variants this specific tag:  <tag> ...
         pattern = re.compile(
-            r'<(?:' + tag + r'(?=\s)(?!(?:[^>"\']|"[^"]*"|\'[^\']*\')*?(?<=\s)'
-                            r'\s*=)(?!\s*/?>)\s+(?:".*?"|\'.*?\'|[^>]*?)+|/?'
-            + tag + r'\s*/?)>', re.MULTILINE | re.DOTALL | re.UNICODE)
+            r"<(?:" + tag + r'(?=\s)(?!(?:[^>"\']|"[^"]*"|\'[^\']*\')*?(?<=\s)'
+            r'\s*=)(?!\s*/?>)\s+(?:".*?"|\'.*?\'|[^>]*?)+|/?' + tag + r"\s*/?)>",
+            re.MULTILINE | re.DOTALL | re.UNICODE,
+        )
 
         # substitute all matching patterns with one space
         processed_text = re.sub(pattern, " ", orig_text)
@@ -154,15 +152,17 @@ def process_tag_replace_options(orig_text: str, tag: str, action: str,
         # as applied across newlines, (re.MULTILINE), on re.UNICODE,
         # and .* includes newlines (re.DOTALL)
         pattern = re.compile(
-            r"<\s*" + re.escape(tag) + r"( .+?>|>).+?</\s*" + re.escape(tag) +
-            ">", re.MULTILINE | re.DOTALL | re.UNICODE)
+            r"<\s*" + re.escape(tag) + r"( .+?>|>).+?</\s*" + re.escape(tag) + ">",
+            re.MULTILINE | re.DOTALL | re.UNICODE,
+        )
 
         processed_text = re.sub(pattern, " ", orig_text)
 
     elif action == "replace_element":
         pattern = re.compile(
-            r"<\s*" + re.escape(tag) + r".*?>.+?</\s*" + re.escape(tag) +
-            ".*?>", re.MULTILINE | re.DOTALL | re.UNICODE)
+            r"<\s*" + re.escape(tag) + r".*?>.+?</\s*" + re.escape(tag) + ".*?>",
+            re.MULTILINE | re.DOTALL | re.UNICODE,
+        )
 
         processed_text = re.sub(pattern, attribute, orig_text)
 
@@ -206,9 +206,12 @@ def punctuation(
             exclude = utils.ensure_list(exclude)
             translation_table = dict.fromkeys(
                 (
-                    i for i in range(sys.maxunicode)
+                    i
+                    for i in range(sys.maxunicode)
                     if unicodedata.category(chr(i)).startswith("P")
-                    and chr(i) not in exclude), " "
+                    and chr(i) not in exclude
+                ),
+                " ",
             )
         else:
             translation_table = resources.PUNCT_TRANSLATION_TABLE
@@ -216,10 +219,7 @@ def punctuation(
 
 
 def special_characters(
-    text: str,
-    *,
-    is_html: bool = False,
-    ruleset: dict = None,
+    text: str, *, is_html: bool = False, ruleset: dict = None,
 ) -> str:
     """Replace strings from `text` using a regex pattern.
 
@@ -239,15 +239,18 @@ def special_characters(
             text = re.sub(match, v, text)
     return text
 
+
 from typing import Dict
 
 
-def tag_map(text: str,
+def tag_map(
+    text: str,
     # xmlhandlingoptions: List[dict],
     map: Dict[str],
     remove_comments: bool = True,
     remove_doctype: bool = True,
-    remove_whitespace: bool = False) -> str:
+    remove_whitespace: bool = False,
+) -> str:
     """Handle tags that are found in the text.
 
     Args:
@@ -260,7 +263,9 @@ def tag_map(text: str,
         str: The text after tags have been replaced.
     """
     if remove_whitespace:
-        text = re.sub(r"[\n\s\t\v ]+", " ", text, re.UNICODE)  # Remove extra white space
+        text = re.sub(
+            r"[\n\s\t\v ]+", " ", text, re.UNICODE
+        )  # Remove extra white space
     if remove_doctype:
         doctype = re.compile(r"<!DOCTYPE.*?>", re.DOTALL)
         text = re.sub(doctype, "", text)  # Remove DOCTYPE declarations

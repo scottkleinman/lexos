@@ -1,6 +1,7 @@
 """utils.py."""
 
-def get_tags(text):
+
+def get_tags(text: str) -> dict:
     """Get information about the tags in a text.
 
     Args:
@@ -11,8 +12,8 @@ def get_tags(text):
         in the data and "attributes" is a list of dicts containing the attributes and values
         for those tags that have attributes.
 
-    Note: The procedure tries to parse the markup as well-formed XML using ETree; otherwise,
-    it falls back to BeautifulSoup's parser.
+    Note:
+        The procedure tries to parse the markup as well-formed XML using ETree; otherwise, it falls back to BeautifulSoup's parser.
     """
     import json
     import re
@@ -35,6 +36,7 @@ def get_tags(text):
     except ElementTree.ParseError:
         import bs4
         from bs4 import BeautifulSoup
+
         soup = BeautifulSoup(text, "xml")
         for e in soup:
             if isinstance(e, bs4.element.ProcessingInstruction):

@@ -10,36 +10,38 @@ from matplotlib import figure
 
 sns.set_theme()
 
-class ClusterMap():
+
+class ClusterMap:
     """ClusterMap."""
 
-    def __init__(self,
-                dtm: Any,
-                z_score: int = 1,
-                labels: List[str] = None,
-                pivot_kws: Dict[str, str] = None,
-                method: str = "average",
-                metric: str = "euclidean",
-                standard_scale: int = None,
-                figsize: tuple = (8, 8),
-                cbar_kws: dict = None,
-                row_cluster: bool = True,
-                col_cluster: bool = True,
-                row_linkage: bool = None,
-                col_linkage: bool = None,
-                row_colors: Union[list, pd.DataFrame, pd.Series] = None,
-                col_colors: Union[list, pd.DataFrame, pd.Series] = None,
-                mask: Union[np.ndarray, pd.DataFrame] = None,
-                dendrogram_ratio: Union[float, Tuple[float]] = (.1, .2),
-                colors_ratio:float = 0.03,
-                cbar_pos: Tuple[str] = (.02, .32, .03, .2),
-                tree_kws: dict = None,
-                center: int = 0,
-                cmap: str = "vlag",
-                linewidths: float = .75,
-                show: bool = False,
-                title: str = None
-                ) -> figure.Figure:
+    def __init__(
+        self,
+        dtm: Any,
+        z_score: int = 1,
+        labels: List[str] = None,
+        pivot_kws: Dict[str, str] = None,
+        method: str = "average",
+        metric: str = "euclidean",
+        standard_scale: int = None,
+        figsize: tuple = (8, 8),
+        cbar_kws: dict = None,
+        row_cluster: bool = True,
+        col_cluster: bool = True,
+        row_linkage: bool = None,
+        col_linkage: bool = None,
+        row_colors: Union[list, pd.DataFrame, pd.Series] = None,
+        col_colors: Union[list, pd.DataFrame, pd.Series] = None,
+        mask: Union[np.ndarray, pd.DataFrame] = None,
+        dendrogram_ratio: Union[float, Tuple[float]] = (0.1, 0.2),
+        colors_ratio: float = 0.03,
+        cbar_pos: Tuple[str] = (0.02, 0.32, 0.03, 0.2),
+        tree_kws: dict = None,
+        center: int = 0,
+        cmap: str = "vlag",
+        linewidths: float = 0.75,
+        show: bool = False,
+        title: str = None,
+    ) -> figure.Figure:
         """Initialize the ClusterMap object.
 
         Args:
@@ -73,30 +75,30 @@ class ClusterMap():
             matplotlib.figure.Figure: The figure.
         """
         self.dtm = dtm
-        self.z_score=z_score
+        self.z_score = z_score
         self.labels = labels
         self.figsize = figsize
         self.show = show
         self.method = method
         self.metric = metric
-        self.standard_scale=standard_scale
+        self.standard_scale = standard_scale
         self.title = title
         self.row_colors = row_colors
         self.col_colors = col_colors
-        self.pivot_kws=pivot_kws
-        self.cbar_kws=cbar_kws
-        self.row_cluster=row_cluster
-        self.col_cluster=col_cluster
-        self.row_linkage=row_linkage
-        self.col_linkage=col_linkage
-        self.mask=mask
-        self.dendrogram_ratio=dendrogram_ratio
-        self.colors_ratio=colors_ratio
-        self.cbar_pos=cbar_pos
-        self.tree_kws=tree_kws
-        self.center=center
-        self.cmap=cmap
-        self.linewidths=linewidths
+        self.pivot_kws = pivot_kws
+        self.cbar_kws = cbar_kws
+        self.row_cluster = row_cluster
+        self.col_cluster = col_cluster
+        self.row_linkage = row_linkage
+        self.col_linkage = col_linkage
+        self.mask = mask
+        self.dendrogram_ratio = dendrogram_ratio
+        self.colors_ratio = colors_ratio
+        self.cbar_pos = cbar_pos
+        self.tree_kws = tree_kws
+        self.center = center
+        self.cmap = cmap
+        self.linewidths = linewidths
         self.df = dtm.get_table()
         self.build()
 
@@ -109,13 +111,15 @@ class ClusterMap():
 
         # Convert palette to vectors drawn on the side of the matrix
         if self.row_colors is None or self.col_colors is None:
-            column_pal = sns.husl_palette(8, s=.45)
+            column_pal = sns.husl_palette(8, s=0.45)
             column_lut = dict(zip(map(str, self.df), column_pal))
-            column_colors = pd.Series(self.labels, index=self.df.columns[1:]).map(column_lut)
+            column_colors = pd.Series(self.labels, index=self.df.columns[1:]).map(
+                column_lut
+            )
             if self.row_colors is None:
-                self.row_colors=column_colors
+                self.row_colors = column_colors
             if self.col_colors is None:
-                self.col_colors=column_colors
+                self.col_colors = column_colors
 
         # Perform the cluster
         g = sns.clustermap(
@@ -140,7 +144,7 @@ class ClusterMap():
             dendrogram_ratio=self.dendrogram_ratio,
             colors_ratio=self.colors_ratio,
             cbar_pos=self.cbar_pos,
-            tree_kws=self.tree_kws
+            tree_kws=self.tree_kws,
         )
 
         # Remove the dendrogram on the left
@@ -148,7 +152,7 @@ class ClusterMap():
 
         # Add the title
         if self.title:
-           g.fig.suptitle(self.title, y=1.05)
+            g.fig.suptitle(self.title, y=1.05)
 
         # Save the fig variable
         self.fig = g.fig
