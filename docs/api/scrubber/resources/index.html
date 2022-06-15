@@ -9,7 +9,7 @@
       
       
       <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.0">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.5">
     
     
       
@@ -17,7 +17,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.fd896c8a.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4a0965b7.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
@@ -1420,34 +1420,59 @@
 <p>The <code>resources</code> component of <code>Scrubber</code> contains a set of functions for replacing strings and patterns in text.</p>
 
 
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h3 id="lexos.scrubber.resources.HTMLTextExtractor" class="doc doc-heading">
-        <code>
-lexos.scrubber.resources.HTMLTextExtractor            (<span title="html.parser.HTMLParser">HTMLParser</span>)
-        </code>
-
+        <code>lexos.scrubber.resources.HTMLTextExtractor</code>
 
 
 <a href="#lexos.scrubber.resources.HTMLTextExtractor" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+      <p class="doc doc-class-bases">
+        Bases: <code><span title="html.parser">html</span>.<span title="html.parser.parser">parser</span>.<span title="html.parser.HTMLParser">HTMLParser</span></code></p>
+
+  
       <p>Simple subclass of :class:<code>html.parser.HTMLParser</code>.</p>
 <p>Collects data elements (non-tag, -comment, -pi, etc. elements)
 fed to the parser, then make them available as stripped, concatenated
 text via <code>HTMLTextExtractor.get_text()</code>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Users probably shouldn't deal with this class directly;
+
+<details class="note">
+  <summary>Note</summary>
+  <p>Users probably shouldn't deal with this class directly;
 instead, use <code>:func:</code>remove.remove_html_tags()`.</p>
-</div>
+</details>
 
         <details class="quote">
           <summary>Source code in <code>lexos\scrubber\resources.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">HTMLTextExtractor</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">HTMLParser</span><span class="p">):</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">HTMLTextExtractor</span><span class="p">(</span><span class="n">html</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">HTMLParser</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Simple subclass of :class:`html.parser.HTMLParser`.</span>
 
 <span class="sd">    Collects data elements (non-tag, -comment, -pi, etc. elements)</span>
@@ -1471,10 +1496,10 @@ instead, use <code>:func:</code>remove.remove_html_tags()`.</p>
     <span class="k">def</span> <span class="nf">get_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Return the collected text.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1486,167 +1511,176 @@ instead, use <code>:func:</code>remove.remove_html_tags()`.</p>
 
 
 
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h4 id="lexos.scrubber.resources.HTMLTextExtractor.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
 
 <a href="#lexos.scrubber.resources.HTMLTextExtractor.__init__" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Initialize the parser.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\resources.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\resources.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Initialize the parser.&quot;&quot;&quot;</span>
     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h4 id="lexos.scrubber.resources.HTMLTextExtractor.get_text" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">get_text</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span></code>
 
 <a href="#lexos.scrubber.resources.HTMLTextExtractor.get_text" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Return the collected text.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\resources.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\resources.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Return the collected text.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h4 id="lexos.scrubber.resources.HTMLTextExtractor.handle_data" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">handle_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">handle_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
 <a href="#lexos.scrubber.resources.HTMLTextExtractor.handle_data" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Handle data elements.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\resources.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">handle_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\resources.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">handle_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Handle data elements.&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
 
   </div>
 
-
-
-
-
   </div>
 
-    </div>
+</div>
 
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.resources._get_punct_translation_table" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">resources</span><span class="o">.</span><span class="n">_get_punct_translation_table</span><span class="p">()</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-private"><code>private</code></small>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-cached"><code>cached</code></small>
   </span>
 
 <a href="#lexos.scrubber.resources._get_punct_translation_table" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Get the punctuation translation table.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\resources.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\resources.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@functools</span><span class="o">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">_get_punct_translation_table</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Get the punctuation translation table.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span>
         <span class="p">(</span>
-            <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">maxunicode</span><span class="p">)</span>
+            <span class="n">i</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">maxunicode</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">)</span>
         <span class="p">),</span>
-        <span class="s2">&quot; &quot;</span>
+        <span class="s2">&quot; &quot;</span><span class="p">,</span>
     <span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.resources.__getattr__" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">resources</span><span class="o">.</span><span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
 
-
 <a href="#lexos.scrubber.resources.__getattr__" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Call an attribute lookup from a table.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\resources.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\resources.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Call an attribute lookup from a table.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;PUNCT_TRANSLATION_TABLE&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_get_punct_translation_table</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;module </span><span class="si">{</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> has no attribute </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
-<h3 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">¤</a></h3>
+</div><h3 id="constants">Constants<a class="headerlink" href="#constants" title="Permanent link">¤</a></h3>
 <p>There are also a number of constants:</p>
 <ul>
 <li><code>QUOTE_TRANSLATION_TABLE</code></li>
@@ -1676,7 +1710,7 @@ instead, use <code>:func:</code>remove.remove_html_tags()`.</p>
           </div>
         </div>
         
-          <a href="#" class="md-top md-top--hidden md-icon" data-md-component="top">
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
             Back to top
           </a>
@@ -1779,10 +1813,10 @@ instead, use <code>:func:</code>remove.remove_html_tags()`.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.0f659f14.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.431f3d41.min.js"></script>
       
     
   </body>

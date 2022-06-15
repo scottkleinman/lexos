@@ -9,7 +9,7 @@
       
       
       <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.0">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.5">
     
     
       
@@ -17,7 +17,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.fd896c8a.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4a0965b7.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
@@ -1383,17 +1383,17 @@
 <li>Merge the last segment into the preceding if its length falls under a customisable threshold.</li>
 <li>Split on milestone tokens.</li>
 </ul>
-<p><a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.__init__.Ginsu.split">lexos.cutter.Ginsu.split</a>, <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.__init__.Ginsu.splitn">lexos.cutter.<strong>init</strong>.Ginsu.splitn</a>, and <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.__init__.Ginsu.split_on_milestones">lexos.cutter.Ginsu.split_on_milestones</a> return a list of lists, where each item in the sublist is a spaCy document.</p>
-<p>In <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.__init__.Ginsu.split_on_milestones">lexos.cutter.Ginsu.split_on_milestones</a>, the user can choose whether or not to preserve the milestone token at the beginning of each segment. A milestone must be a token, and it can be as simple as a string matching the token text. However, there is also an elaborate query language for more fine-grained matching.</p>
-<p>There is also a <a class="autorefs autorefs-internal" href="../../api/cutter/milestones/#lexos.cutter.milestones.Milestones">lexos.cutter.milestones.Milestones</a> class, which can be used to set milestones in advance. This method adds the custom extension <code>token._.is_milestone</code> (by default <code>False</code>) to each token in the document and uses the same query language to allow the user to match tokens where the value should be <code>True</code>. If documents are pre-processed in this way, the <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.__init__.Ginsu.split_on_milestones">lexos.cutter.Ginsu.split_on_milestones</a> method can leverage that information.</p>
+<p><a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.split">lexos.cutter.Ginsu.split</a>, <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.splitn">lexos.cutter.Ginsu.splitn</a>, and <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.split_on_milestones">lexos.cutter.Ginsu.split_on_milestones</a> return a list of lists, where each item in the sublist is a spaCy document.</p>
+<p>In <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.split_on_milestones">lexos.cutter.Ginsu.split_on_milestones</a>, the user can choose whether or not to preserve the milestone token at the beginning of each segment. A milestone must be a token, and it can be as simple as a string matching the token text. However, there is also an elaborate query language for more fine-grained matching.</p>
+<p>There is also a <a class="autorefs autorefs-internal" href="../../api/cutter/milestones/#lexos.cutter.milestones.Milestones">lexos.cutter.milestones.Milestones</a> class, which can be used to set milestones in advance. This method adds the custom extension <code>token._.is_milestone</code> (by default <code>False</code>) to each token in the document and uses the same query language to allow the user to match tokens where the value should be <code>True</code>. If documents are pre-processed in this way, the <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.split_on_milestones">lexos.cutter.Ginsu.split_on_milestones</a> method can leverage that information.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>At present, <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.__init__.Ginsu.split_on_milestones">lexos.cutter.Ginsu.split_on_milestones</a> cannot set <code>token._.is_milestone</code> on the fly. Although segments created from the milestones are saved, if the user chooses to preserve the milestone token at the beginning of each segment, it will not have <code>._.is_milestone</code> attribute.</p>
+<p>At present, <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.split_on_milestones">lexos.cutter.Ginsu.split_on_milestones</a> cannot set <code>token._.is_milestone</code> on the fly. Although segments created from the milestones are saved, if the user chooses to preserve the milestone token at the beginning of each segment, it will not have <code>._.is_milestone</code> attribute.</p>
 </div>
 <h3 id="machete">Machete<a class="headerlink" href="#machete" title="Permanent link">¤</a></h3>
 <p><code>Machete</code> is a cruder method of cutting raw text into segments without the benefit of a language model. It may be particularly valueable as a standalone method of segmenting texts for outside applications.</p>
 <p><code>Machete</code> works in a manner similar to <code>Ginsu</code> and has all the same functionality, except for cutting on milestones (see below). However, before splitting the text it applies a makeshift tokenizer function, and the class then splits the text based on the resulting list of tokens.</p>
-<p>The Lexos API has three tokenizer functions in the <code>cutter</code> function registry: "whitespace" (the default), "character", and "linebreaks". A <code>Machete</code> object can be initialised with one of the tokenizers or the tokenizer can be passed to the <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.__init__.Machete.split">lexos.cutter.Machete.split</a> or <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.__init__.Machete.splitn">lexos.cutter.Machete.splitn</a> functions with the <code>tokenizer</code> parameter.</p>
+<p>The Lexos API has three tokenizer functions in the <code>cutter</code> function registry: "whitespace" (the default), "character", and "linebreaks". A <code>Machete</code> object can be initialised with one of the tokenizers or the tokenizer can be passed to the <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Machete.split">lexos.cutter.Machete.split</a> or <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Machete.splitn">lexos.cutter.Machete.splitn</a> functions with the <code>tokenizer</code> parameter.</p>
 <div class="admonition information">
 <p class="admonition-title">What if I don't like the tokenizer?</p>
 <p>You can supply a custom function after first adding it to the registry. Here is an example:</p>
@@ -1412,10 +1412,10 @@
 <span class="n">result</span> <span class="o">=</span> <span class="n">machete</span><span class="o">.</span><span class="n">splitn</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">=</span><span class="s2">&quot;custom_punctuation_tokenizer&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<p><a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.__init__.Machete.split">lexos.cutter.Machete.split</a> and <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.__init__.Machete.split">lexos.cutter.Machete.splitn</a> return a list of lists, where each item in the sublist corresponds to a text. By default, each text contains a list of strings in which the string corresponds to a segment. It is possible to return the segments as lists of tokens by setting the <code>as_string</code> parameter to <code>False</code>.</p>
+<p><a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Machete.split">lexos.cutter.Machete.split</a> and <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Machete.split">lexos.cutter.Machete.splitn</a> return a list of lists, where each item in the sublist corresponds to a text. By default, each text contains a list of strings in which the string corresponds to a segment. It is possible to return the segments as lists of tokens by setting the <code>as_string</code> parameter to <code>False</code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.__init__.Machete">lexos.cutter.Machete</a> has no method of splitting texts on milestones. This is because the desired effect can be achieved by writing a custom function with a regex pattern containing the milestone. Such a function would probably lack the fine-grained possibilities of the query language implemented in <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.__init__.Ginsu">lexos.cutter.Ginsu</a>, but this functionality is probably only suitable for accessing token attributes supplied by a language model.</p>
+<p><a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Machete">lexos.cutter.Machete</a> has no method of splitting texts on milestones. This is because the desired effect can be achieved by writing a custom function with a regex pattern containing the milestone. Such a function would probably lack the fine-grained possibilities of the query language implemented in <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu">lexos.cutter.Ginsu</a>, but this functionality is probably only suitable for accessing token attributes supplied by a language model.</p>
 </div>
 <h3 id="filesplit-codename-chainsaw">Filesplit (codename <code>Chainsaw</code>)<a class="headerlink" href="#filesplit-codename-chainsaw" title="Permanent link">¤</a></h3>
 <p>The <a class="autorefs autorefs-internal" href="../../api/cutter/filesplit/#lexos.cutter.filesplit.Filesplit">lexos.cutter.filesplit.Filesplit</a> class allows the user to cut binary files into numbered file segments with the format <code>filename_1.txt</code>, <code>filename_2.txt</code>, etc. The source file is divided by number of bytes. This class would typically be used as a first step in a workflow if a large file needs to be divided into many smaller files.</p>
@@ -1442,7 +1442,7 @@
           </div>
         </div>
         
-          <a href="#" class="md-top md-top--hidden md-icon" data-md-component="top">
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
             Back to top
           </a>
@@ -1545,10 +1545,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.0f659f14.min.js"></script>
+      <script src="../../assets/javascripts/bundle.431f3d41.min.js"></script>
       
     
   </body>

@@ -9,7 +9,7 @@
       
       
       <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.0">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.5">
     
     
       
@@ -17,7 +17,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.fd896c8a.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4a0965b7.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
@@ -1415,20 +1415,20 @@ extensions.</p>
 </div>
 
 
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h3 id="lexos.tokenizer.lexosdoc.LexosDoc" class="doc doc-heading">
-        <code>
-lexos.tokenizer.lexosdoc.LexosDoc        </code>
-
+        <code>lexos.tokenizer.lexosdoc.LexosDoc</code>
 
 
 <a href="#lexos.tokenizer.lexosdoc.LexosDoc" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+
+  
       <p>A wrapper class for a spaCy doc which allows for extra methods.</p>
 <p>A convenience that allows you to use Doc extensions without the
 underscore prefix.</p>
@@ -1437,9 +1437,179 @@ library of functions in a file called <code>tokenizer.py</code> and import them.
 If certain functions get used commonly, they can be turned into Doc
 extensions.</p>
 
+
         <details class="quote">
           <summary>Source code in <code>lexos\tokenizer\lexosdoc.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">LexosDoc</span><span class="p">():</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 11</span>
+<span class="normal"> 12</span>
+<span class="normal"> 13</span>
+<span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">LexosDoc</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;A wrapper class for a spaCy doc which allows for extra methods.</span>
 
 <span class="sd">    A convenience that allows you to use Doc extensions without the</span>
@@ -1450,32 +1620,35 @@ extensions.</p>
 <span class="sd">    If certain functions get used commonly, they can be turned into Doc</span>
 <span class="sd">    extensions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize a LexosDoc object.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">doc</span>
 
-    <span class="k">def</span> <span class="nf">get_term_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                        <span class="n">start</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                        <span class="n">end</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                        <span class="n">filters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                        <span class="n">regex</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                        <span class="n">normalize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                        <span class="n">normalize_with_filters</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                        <span class="n">as_df</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">get_term_counts</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">start</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">end</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">filters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">regex</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">normalize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">normalize_with_filters</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">as_df</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Get a list of word counts for each token in the doc.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            self: A spaCy doc.</span>
-<span class="sd">            limit: The maximum number of tokens to count.</span>
-<span class="sd">            start: The index of the first token to count.</span>
-<span class="sd">            end: The index of the last token to count after limit is applied.</span>
-<span class="sd">            filters: A list of Doc attributes to ignore.</span>
+<span class="sd">            self (object): A spaCy doc.</span>
+<span class="sd">            limit (int): The maximum number of tokens to count.</span>
+<span class="sd">            start (Any): The index of the first token to count.</span>
+<span class="sd">            end (Any): The index of the last token to count after limit is applied.</span>
+<span class="sd">            filters (List[Union[Dict[str, str], str]]): A list of Doc attributes to ignore.</span>
 <span class="sd">            regex (bool): Whether to match the dictionary value using regex.</span>
 <span class="sd">            normalize (bool): Whether to return raw counts or relative frequencies.</span>
 <span class="sd">            normalize_with_filters (bool): Whether to normalize based on the number</span>
 <span class="sd">                of tokens after filters are applied.</span>
-<span class="sd">            as_df: Whether to return a pandas dataframe.</span>
+<span class="sd">            as_df (bool): Whether to return a pandas dataframe.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Union[List, pd.DataFrame]: A list of word count tuples for</span>
@@ -1504,7 +1677,7 @@ extensions.</p>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">num_tokens</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
-            <span class="n">term_counts</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">num_tokens</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">term_counts</span><span class="p">]</span>
+            <span class="n">term_counts</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">num_tokens</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">term_counts</span><span class="p">]</span>
             <span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;frequency&quot;</span>
         <span class="k">if</span> <span class="n">as_df</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">term_counts</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
@@ -1527,12 +1700,14 @@ extensions.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">!=</span> <span class="s2">&quot;_&quot;</span><span class="p">])</span>
-        <span class="n">exts</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">_</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;has&quot;</span><span class="p">,</span> <span class="s2">&quot;set&quot;</span><span class="p">]])</span>
+        <span class="n">exts</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">_</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;has&quot;</span><span class="p">,</span> <span class="s2">&quot;set&quot;</span><span class="p">]]</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;spacy_attributes&quot;</span><span class="p">:</span> <span class="n">attrs</span><span class="p">,</span> <span class="s2">&quot;extensions&quot;</span><span class="p">:</span> <span class="n">exts</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                     <span class="n">cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span>
-                     <span class="n">show_ranges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span> <span class="n">show_ranges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Get a pandas dataframe of the doc attributes.</span>
 
 <span class="sd">        Args:</span>
@@ -1577,7 +1752,9 @@ extensions.</p>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">_dict_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">regex</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_dict_filter</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">regex</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Filter a token based on a list of dictionary filters.</span>
 
 <span class="sd">        Args:</span>
@@ -1591,7 +1768,10 @@ extensions.</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">filters</span> <span class="ow">and</span> <span class="n">filters</span> <span class="o">!=</span> <span class="p">{}:</span>
             <span class="k">for</span> <span class="nb">filter</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">filters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">regex</span> <span class="ow">and</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="nb">filter</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">regex</span>
+                    <span class="ow">and</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="nb">filter</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="p">):</span>
                     <span class="k">return</span> <span class="kc">False</span>
                 <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="nb">filter</span><span class="p">)</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
                     <span class="k">return</span> <span class="kc">False</span>
@@ -1599,10 +1779,10 @@ extensions.</p>
                     <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1614,158 +1794,259 @@ extensions.</p>
 
 
 
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h4 id="lexos.tokenizer.lexosdoc.LexosDoc.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></code>
 
 <a href="#lexos.tokenizer.lexosdoc.LexosDoc.__init__" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Initialize a LexosDoc object.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\lexosdoc.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
+      <details class="quote">
+        <summary>Source code in <code>lexos\tokenizer\lexosdoc.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Initialize a LexosDoc object.&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">doc</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h4 id="lexos.tokenizer.lexosdoc.LexosDoc.get_term_counts" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_term_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">normalize_with_filters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">as_df</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">get_term_counts</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">normalize_with_filters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">as_df</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 <a href="#lexos.tokenizer.lexosdoc.LexosDoc.get_term_counts" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Get a list of word counts for each token in the doc.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>self</code></td>
-        <td></td>
-        <td><p>A spaCy doc.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>limit</code></td>
-        <td><code>int</code></td>
-        <td><p>The maximum number of tokens to count.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>start</code></td>
-        <td><code>Any</code></td>
-        <td><p>The index of the first token to count.</p></td>
-        <td><code>0</code></td>
-      </tr>
-      <tr>
-        <td><code>end</code></td>
-        <td><code>Any</code></td>
-        <td><p>The index of the last token to count after limit is applied.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>filters</code></td>
-        <td><code>List[Union[Dict[str, str], str]]</code></td>
-        <td><p>A list of Doc attributes to ignore.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>regex</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to match the dictionary value using regex.</p></td>
-        <td><code>False</code></td>
-      </tr>
-      <tr>
-        <td><code>normalize</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to return raw counts or relative frequencies.</p></td>
-        <td><code>False</code></td>
-      </tr>
-      <tr>
-        <td><code>normalize_with_filters</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to normalize based on the number
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>self</code></td>
+          <td>
+                <code>object</code>
+          </td>
+          <td><p>A spaCy doc.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>limit</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>The maximum number of tokens to count.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>start</code></td>
+          <td>
+                <code><span title="typing.Any">Any</span></code>
+          </td>
+          <td><p>The index of the first token to count.</p></td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>end</code></td>
+          <td>
+                <code><span title="typing.Any">Any</span></code>
+          </td>
+          <td><p>The index of the last token to count after limit is applied.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>filters</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[<span title="typing.Union">Union</span>[<span title="typing.Dict">Dict</span>[str, str], str]]</code>
+          </td>
+          <td><p>A list of Doc attributes to ignore.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>regex</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to match the dictionary value using regex.</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>normalize</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to return raw counts or relative frequencies.</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>normalize_with_filters</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to normalize based on the number
 of tokens after filters are applied.</p></td>
-        <td><code>False</code></td>
-      </tr>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>as_df</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to return a pandas dataframe.</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>as_df</code></td>
-        <td></td>
-        <td><p>Whether to return a pandas dataframe.</p></td>
-        <td><code>False</code></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>Union[List, pd.DataFrame]</code></td>
-      <td><p>A list of word count tuples for
-each token in the doc. Alternatively, a pandas dataframe.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\lexosdoc.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_term_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                    <span class="n">start</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                    <span class="n">end</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                    <span class="n">filters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                    <span class="n">regex</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                    <span class="n">normalize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                    <span class="n">normalize_with_filters</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                    <span class="n">as_df</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="typing.List">List</span>, <span title="pandas">pd</span>.<span title="pandas.DataFrame">DataFrame</span>]</code>
+          </td>
+          <td><p>Union[List, pd.DataFrame]: A list of word count tuples for</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="typing.List">List</span>, <span title="pandas">pd</span>.<span title="pandas.DataFrame">DataFrame</span>]</code>
+          </td>
+          <td><p>each token in the doc. Alternatively, a pandas dataframe.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\tokenizer\lexosdoc.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_term_counts</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">start</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">end</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">filters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">regex</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">normalize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">normalize_with_filters</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">as_df</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Get a list of word counts for each token in the doc.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        self: A spaCy doc.</span>
-<span class="sd">        limit: The maximum number of tokens to count.</span>
-<span class="sd">        start: The index of the first token to count.</span>
-<span class="sd">        end: The index of the last token to count after limit is applied.</span>
-<span class="sd">        filters: A list of Doc attributes to ignore.</span>
+<span class="sd">        self (object): A spaCy doc.</span>
+<span class="sd">        limit (int): The maximum number of tokens to count.</span>
+<span class="sd">        start (Any): The index of the first token to count.</span>
+<span class="sd">        end (Any): The index of the last token to count after limit is applied.</span>
+<span class="sd">        filters (List[Union[Dict[str, str], str]]): A list of Doc attributes to ignore.</span>
 <span class="sd">        regex (bool): Whether to match the dictionary value using regex.</span>
 <span class="sd">        normalize (bool): Whether to return raw counts or relative frequencies.</span>
 <span class="sd">        normalize_with_filters (bool): Whether to normalize based on the number</span>
 <span class="sd">            of tokens after filters are applied.</span>
-<span class="sd">        as_df: Whether to return a pandas dataframe.</span>
+<span class="sd">        as_df (bool): Whether to return a pandas dataframe.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Union[List, pd.DataFrame]: A list of word count tuples for</span>
@@ -1794,32 +2075,30 @@ each token in the doc. Alternatively, a pandas dataframe.</p></td>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">num_tokens</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
-        <span class="n">term_counts</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">num_tokens</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">term_counts</span><span class="p">]</span>
+        <span class="n">term_counts</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">num_tokens</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">term_counts</span><span class="p">]</span>
         <span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;frequency&quot;</span>
     <span class="k">if</span> <span class="n">as_df</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">term_counts</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">term_counts</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h4 id="lexos.tokenizer.lexosdoc.LexosDoc.get_token_attrs" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_token_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">get_token_attrs</span><span class="p">()</span></code>
 
 <a href="#lexos.tokenizer.lexosdoc.LexosDoc.get_token_attrs" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Get a list of attributes for each token in the doc.</p>
 <p>Returns a dict with "spacy_attributes" and "extensions".</p>
 <p>Note: This function relies on sampling the first token in a doc
@@ -1827,9 +2106,24 @@ to compile the list of attributes. It does not check for consistency.
 Currently, it is up to the user to reconcile inconsistencies between
 docs.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\lexosdoc.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_token_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <details class="quote">
+        <summary>Source code in <code>lexos\tokenizer\lexosdoc.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_token_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get a list of attributes for each token in the doc.</span>
 
 <span class="sd">    Returns a dict with &quot;spacy_attributes&quot; and &quot;extensions&quot;.</span>
@@ -1841,90 +2135,125 @@ docs.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">attrs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">!=</span> <span class="s2">&quot;_&quot;</span><span class="p">])</span>
-    <span class="n">exts</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">_</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;has&quot;</span><span class="p">,</span> <span class="s2">&quot;set&quot;</span><span class="p">]])</span>
+    <span class="n">exts</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;_</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">_</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;has&quot;</span><span class="p">,</span> <span class="s2">&quot;set&quot;</span><span class="p">]]</span>
+    <span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;spacy_attributes&quot;</span><span class="p">:</span> <span class="n">attrs</span><span class="p">,</span> <span class="s2">&quot;extensions&quot;</span><span class="p">:</span> <span class="n">exts</span><span class="p">}</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h4 id="lexos.tokenizer.lexosdoc.LexosDoc.get_tokens" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">get_tokens</span><span class="p">()</span></code>
 
 <a href="#lexos.tokenizer.lexosdoc.LexosDoc.get_tokens" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Return a list of tokens in the doc.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\lexosdoc.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <details class="quote">
+        <summary>Source code in <code>lexos\tokenizer\lexosdoc.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_tokens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return a list of tokens in the doc.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">]</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h4 id="lexos.tokenizer.lexosdoc.LexosDoc.to_dataframe" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">show_ranges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">to_dataframe</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="n">show_ranges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 <a href="#lexos.tokenizer.lexosdoc.LexosDoc.to_dataframe" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Get a pandas dataframe of the doc attributes.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>cols</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>A list of columns to include in the dataframe.</p></td>
-        <td><code>[&#39;text&#39;]</code></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>show_ranges</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to include the token start and end positions in the dataframe.</p></td>
-        <td><code>True</code></td>
-      </tr>
-  </tbody>
-</table>      <p>Returns a pandas dataframe of the doc attributes.</p>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>cols</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>A list of columns to include in the dataframe.</p></td>
+          <td>
+                <code>[&#39;text&#39;]</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>show_ranges</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to include the token start and end positions in the dataframe.</p></td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+      <p>Returns a pandas dataframe of the doc attributes.</p>
 <p>Note: It is a good idea to call <code>LexosDoc.get_token_attrs()</code> first
 to check which attributes are available for the doc.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\lexosdoc.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span>
-                 <span class="n">show_ranges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+      <details class="quote">
+        <summary>Source code in <code>lexos\tokenizer\lexosdoc.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">cols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">],</span> <span class="n">show_ranges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Get a pandas dataframe of the doc attributes.</span>
 
 <span class="sd">    Args:</span>
@@ -1949,21 +2278,19 @@ to check which attributes are available for the doc.</p>
     <span class="k">if</span> <span class="n">show_ranges</span><span class="p">:</span>
         <span class="n">cols</span> <span class="o">=</span> <span class="n">cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
 
   </div>
 
-
-
-
-
   </div>
 
-    </div>
-
-  </div>
+</div>
 
               
             </article>
@@ -1971,7 +2298,7 @@ to check which attributes are available for the doc.</p>
           </div>
         </div>
         
-          <a href="#" class="md-top md-top--hidden md-icon" data-md-component="top">
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
             Back to top
           </a>
@@ -2074,10 +2401,10 @@ to check which attributes are available for the doc.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.0f659f14.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.431f3d41.min.js"></script>
       
     
   </body>

@@ -9,7 +9,7 @@
       
       
       <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.0">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.5">
     
     
       
@@ -17,7 +17,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.fd896c8a.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4a0965b7.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
@@ -1476,43 +1476,65 @@
 <p>This module contains helper functions used by multiple modules.</p>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.utils._decode_bytes" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_decode_bytes</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-private"><code>private</code></small>
-  </span>
-
 <a href="#lexos.utils._decode_bytes" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Decode raw bytes from a user's file into a string.</p>
 <p>Args
     raw_bytes (bytes, str): The bytes to be decoded to a python string.</p>
 
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The decoded string.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_decode_bytes</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The decoded string.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_decode_bytes</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Decode raw bytes from a user&#39;s file into a string.</span>
 
 <span class="sd">    Args</span>
@@ -1535,68 +1557,102 @@
         <span class="n">decoded_str</span> <span class="o">=</span> <span class="n">raw_bytes</span>
 
     <span class="k">return</span> <span class="n">decoded_str</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.utils._try_decode_bytes_" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">_try_decode_bytes_</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-private"><code>private</code></small>
-  </span>
-
 <a href="#lexos.utils._try_decode_bytes_" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Try to decode raw bytes (helper function for decode_bytes().</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>raw_bytes</code></td>
-        <td><code>bytes</code></td>
-        <td><p>The bytes you want to decode to string.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>A decoded string.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_try_decode_bytes_</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>raw_bytes</code></td>
+          <td>
+                <code>bytes</code>
+          </td>
+          <td><p>The bytes you want to decode to string.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>A decoded string.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_try_decode_bytes_</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Try to decode raw bytes (helper function for decode_bytes().</span>
 
 <span class="sd">    Args:</span>
@@ -1628,65 +1684,82 @@
         <span class="n">decoded_string</span> <span class="o">=</span> <span class="n">dammit</span><span class="o">.</span><span class="n">unicode_markup</span>
 
     <span class="k">return</span> <span class="n">decoded_string</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.utils.ensure_list" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_list</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></code>
 
-
 <a href="#lexos.utils.ensure_list" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Ensure string is converted to a Path.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>item</code></td>
-        <td><code>Any</code></td>
-        <td><p>Anything.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>List</code></td>
-      <td><p>The item inside a list if it is not already a list.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">ensure_list</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>item</code></td>
+          <td>
+                <code><span title="typing.Any">Any</span></code>
+          </td>
+          <td><p>Anything.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.List">List</span></code>
+          </td>
+          <td><p>The item inside a list if it is not already a list.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ensure_list</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Ensure string is converted to a Path.</span>
 
 <span class="sd">    Args:</span>
@@ -1698,65 +1771,83 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">item</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">item</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.utils.ensure_path" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></code>
 
-
 <a href="#lexos.utils.ensure_path" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Ensure string is converted to a Path.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>path</code></td>
-        <td><code>Any</code></td>
-        <td><p>Anything. If string, it's converted to Path.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>Any</code></td>
-      <td><p>Path or original argument.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">ensure_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>path</code></td>
+          <td>
+                <code><span title="typing.Any">Any</span></code>
+          </td>
+          <td><p>Anything. If string, it's converted to Path.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Any">Any</span></code>
+          </td>
+          <td><p>Path or original argument.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ensure_path</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Ensure string is converted to a Path.</span>
 
 <span class="sd">    Args:</span>
@@ -1769,32 +1860,43 @@
         <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">path</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.utils.is_url" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">is_url</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></code>
 
-
 <a href="#lexos.utils.is_url" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Check if string is a URL.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">is_url</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+      <details class="quote">
+        <summary>Source code in <code>lexos\utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_url</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Check if string is a URL.&quot;&quot;&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span>
         <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
             <span class="sa">r</span><span class="s2">&quot;(https?|ftp)://&quot;</span>  <span class="c1"># protocol</span>
@@ -1805,58 +1907,80 @@
             <span class="n">s</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.utils.unzip_archive" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">unzip_archive</span><span class="p">(</span><span class="n">archive_path</span><span class="p">,</span> <span class="n">extract_dir</span><span class="p">)</span></code>
 
-
 <a href="#lexos.utils.unzip_archive" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Extract a zip archive.</p>
 <p>For adding a progress indicator, see
 <a href="https://stackoverflow.com/questions/4006970/monitor-zip-file-extraction-python">https://stackoverflow.com/questions/4006970/monitor-zip-file-extraction-python</a>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>archive_path</code></td>
-        <td><code>str</code></td>
-        <td><p>The path to the archive file to be unzipped.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>extract_dir</code></td>
-        <td><code>str</code></td>
-        <td><p>The path to folder where the archive will be extracted.</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">unzip_archive</span><span class="p">(</span><span class="n">archive_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">extract_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>archive_path</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The path to the archive file to be unzipped.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>extract_dir</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The path to folder where the archive will be extracted.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">unzip_archive</span><span class="p">(</span><span class="n">archive_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">extract_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Extract a zip archive.</span>
 
 <span class="sd">    For adding a progress indicator, see</span>
@@ -1872,57 +1996,82 @@
         <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">progress</span><span class="o">.</span><span class="n">track</span><span class="p">(</span><span class="n">zf</span><span class="o">.</span><span class="n">infolist</span><span class="p">(),</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Processing...&quot;</span><span class="p">):</span>
             <span class="n">zf</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">extract_dir</span><span class="p">)</span>
             <span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.utils.zip_folder" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">zip_folder</span><span class="p">(</span><span class="n">source_dir</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">)</span></code>
 
-
 <a href="#lexos.utils.zip_folder" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Zip a folder recursively with no extra root folder in the archive.</p>
 <p>Works with a progress indicator.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>source_dir</code></td>
-        <td><code>Path</code></td>
-        <td><p>The path to the source directory.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>archive_file</code></td>
-        <td><code>Path</code></td>
-        <td><p>The path to the archive file to be created (including file extension).</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">zip_folder</span><span class="p">(</span><span class="n">source_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>source_dir</code></td>
+          <td>
+                <code><span title="pathlib.Path">Path</span></code>
+          </td>
+          <td><p>The path to the source directory.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>archive_file</code></td>
+          <td>
+                <code><span title="pathlib.Path">Path</span></code>
+          </td>
+          <td><p>The path to the archive file to be created (including file extension).</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">zip_folder</span><span class="p">(</span><span class="n">source_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">archive_file</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Zip a folder recursively with no extra root folder in the archive.</span>
 
 <span class="sd">    Works with a progress indicator.</span>
@@ -1941,65 +2090,82 @@
                 <span class="n">relative_path</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">source_dir</span><span class="p">)</span>
                 <span class="nb">zip</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">arcname</span><span class="o">=</span><span class="n">relative_path</span><span class="p">)</span>
                 <span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.utils.get_encoding" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_encoding</span><span class="p">(</span><span class="n">input_string</span><span class="p">)</span></code>
 
-
 <a href="#lexos.utils.get_encoding" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Use chardet to return the encoding type of a string.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>input_string</code></td>
-        <td><code>bytes</code></td>
-        <td><p>A bytestring.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The string's encoding type.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_encoding</span><span class="p">(</span><span class="n">input_string</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>input_string</code></td>
+          <td>
+                <code>bytes</code>
+          </td>
+          <td><p>A bytestring.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The string's encoding type.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_encoding</span><span class="p">(</span><span class="n">input_string</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Use chardet to return the encoding type of a string.</span>
 
 <span class="sd">    Args:</span>
@@ -2011,269 +2177,350 @@
     <span class="n">encoding_detect</span> <span class="o">=</span> <span class="n">chardet</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">input_string</span><span class="p">[:</span> <span class="n">constants</span><span class="o">.</span><span class="n">MIN_ENCODING_DETECT</span><span class="p">])</span>
     <span class="n">encoding_type</span> <span class="o">=</span> <span class="n">encoding_detect</span><span class="p">[</span><span class="s2">&quot;encoding&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">encoding_type</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.utils.normalize" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">)</span></code>
 
-
 <a href="#lexos.utils.normalize" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Normalise a string to LexosFile format.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>raw_bytes</code></td>
-        <td><code>str</code></td>
-        <td><p>The input string.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>Normalised version of the input string.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>raw_bytes</code></td>
+          <td>
+                <code>bytes</code>
+          </td>
+          <td><p>The input bytestring.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>Normalised version of the input string.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Normalise a string to LexosFile format.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        raw_bytes (str): The input string.</span>
+<span class="sd">        raw_bytes (bytes): The input bytestring.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Normalised version of the input string.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">_decode_bytes</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">s</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.utils.normalize_files" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">normalize_files</span><span class="p">(</span><span class="n">filepaths</span><span class="p">,</span> <span class="n">destination_dir</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span></code>
 
-
 <a href="#lexos.utils.normalize_files" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Normalise a list of files to LexosFile format and save the files.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>filepaths</code></td>
-        <td><code>list</code></td>
-        <td><p>The list of paths to input files.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>destination_dir</code></td>
-        <td><code>path, str</code></td>
-        <td><p>The path to the directory where the files
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>filepaths</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[<span title="typing.Union">Union</span>[<span title="pathlib.Path">Path</span>, str]]</code>
+          </td>
+          <td><p>The list of paths to input files.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>destination_dir</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="pathlib.Path">Path</span>, str]</code>
+          </td>
+          <td><p>The path to the directory where the files.
 will be saved.</p></td>
-        <td><code>&#39;.&#39;</code></td>
-      </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">normalize_files</span><span class="p">(</span>
+          <td>
+                <code>&#39;.&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">normalize_files</span><span class="p">(</span>
     <span class="n">filepaths</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">destination_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Normalise a list of files to LexosFile format and save the files.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        filepaths (list): The list of paths to input files.</span>
-<span class="sd">        destination_dir (path, str): The path to the directory where the files</span>
+<span class="sd">        filepaths (List[Union[Path, str]]): The list of paths to input files.</span>
+<span class="sd">        destination_dir (Union[Path, str]): The path to the directory where the files.</span>
 <span class="sd">            will be saved.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="n">filepaths</span><span class="p">:</span>
         <span class="n">filepath</span> <span class="o">=</span> <span class="n">ensure_path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">doc</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">destination_dir</span> <span class="o">/</span> <span class="n">filepath</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">destination_dir</span> <span class="o">/</span> <span class="n">filepath</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">normalize</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.utils.normalize_file" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">normalize_file</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">destination_dir</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span></code>
 
-
 <a href="#lexos.utils.normalize_file" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Normalise a file to LexosFile format and save the file.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>filepath</code></td>
-        <td><code>Path, str</code></td>
-        <td><p>The path to the input file.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>destination_dir</code></td>
-        <td><code>path, str</code></td>
-        <td><p>The path to the directory where the files
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>filepath</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="pathlib.Path">Path</span>, str]</code>
+          </td>
+          <td><p>The path to the input file.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>destination_dir</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="pathlib.Path">Path</span>, str]</code>
+          </td>
+          <td><p>The path to the directory where the files.
 will be saved.</p></td>
-        <td><code>&#39;.&#39;</code></td>
-      </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">normalize_file</span><span class="p">(</span>
+          <td>
+                <code>&#39;.&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">normalize_file</span><span class="p">(</span>
     <span class="n">filepath</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">destination_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Normalise a file to LexosFile format and save the file.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        filepath (Path, str): The path to the input file.</span>
-<span class="sd">        destination_dir (path, str): The path to the directory where the files</span>
+<span class="sd">        filepath (Union[Path, str]): The path to the input file.</span>
+<span class="sd">        destination_dir (Union[Path, str]): The path to the directory where the files.</span>
 <span class="sd">            will be saved.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">filepath</span> <span class="o">=</span> <span class="n">ensure_path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="c1"># filepath = ensure_path(filepath)</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="n">destination_dir</span> <span class="o">=</span> <span class="n">ensure_path</span><span class="p">(</span><span class="n">destination_dir</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">doc</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">destination_dir</span> <span class="o">/</span> <span class="n">filepath</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">destination_dir</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">normalize</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.utils.normalize_strings" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">normalize_strings</span><span class="p">(</span><span class="n">strings</span><span class="p">)</span></code>
 
-
 <a href="#lexos.utils.normalize_strings" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Normalise a list of strings to LexosFile format.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>strings</code></td>
-        <td><code>list</code></td>
-        <td><p>The list of input strings.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>A list of normalised versions of the input strings.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\utils.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">normalize_strings</span><span class="p">(</span><span class="n">strings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>strings</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[<span title="typing.Union">Union</span>[bytes, str]]</code>
+          </td>
+          <td><p>The list of input strings.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>A list of normalised versions of the input strings.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">normalize_strings</span><span class="p">(</span><span class="n">strings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Normalise a list of strings to LexosFile format.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        strings (list): The list of input strings.</span>
+<span class="sd">        strings (List[Union[bytes, str]]): The list of input strings.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A list of normalised versions of the input strings.</span>
@@ -2282,11 +2529,11 @@ will be saved.</p></td>
     <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">strings</span><span class="p">:</span>
         <span class="n">normalized_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">normalize</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">normalized_strings</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
+
+</div>
 
               
             </article>
@@ -2294,7 +2541,7 @@ will be saved.</p></td>
           </div>
         </div>
         
-          <a href="#" class="md-top md-top--hidden md-icon" data-md-component="top">
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
             Back to top
           </a>
@@ -2383,10 +2630,10 @@ will be saved.</p></td>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.0f659f14.min.js"></script>
+      <script src="../../assets/javascripts/bundle.431f3d41.min.js"></script>
       
     
   </body>

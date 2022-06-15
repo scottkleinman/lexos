@@ -9,7 +9,7 @@
       
       
       <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.0">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.5">
     
     
       
@@ -17,7 +17,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.fd896c8a.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4a0965b7.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
@@ -1406,29 +1406,93 @@
 <p>The <code>scrubber</code> component of <code>Scrubber</code> contains a class for managing scrubbing pipelines.</p>
 
 
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
 
 <h3 id="lexos.scrubber.scrubber.Scrubber" class="doc doc-heading">
-        <code>
-lexos.scrubber.scrubber.Scrubber        </code>
-
+        <code>lexos.scrubber.scrubber.Scrubber</code>
 
 
 <a href="#lexos.scrubber.scrubber.Scrubber" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+
+  
       <p>Scrubber class.</p>
-<p>Sample usage:</p>
-<div class="highlight"><pre><span></span><code>scrubber = Scrubber()
-scrubber.to_lower(doc)
-</code></pre></div>
+
+<details class="sample-usage">
+  <summary>Sample usage</summary>
+  <p>scrubber = Scrubber()
+scrubber.to_lower(doc)</p>
+</details>
 
         <details class="quote">
           <summary>Source code in <code>lexos\scrubber\scrubber.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Scrubber</span><span class="p">:</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Scrubber</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Scrubber class.</span>
 
 <span class="sd">    Sample usage:</span>
@@ -1491,10 +1555,10 @@ scrubber.to_lower(doc)
         <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">utils</span><span class="o">.</span><span class="n">ensure_list</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">text</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">texts</span>
-</code></pre></div>
+</code></pre></div></td></tr></table></div>
         </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1506,104 +1570,119 @@ scrubber.to_lower(doc)
 
 
 
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h4 id="lexos.scrubber.scrubber.Scrubber.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-special"><code>special</code></small>
-  </span>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
 
 <a href="#lexos.scrubber.scrubber.Scrubber.__init__" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Initialize the Scrubber class.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\scrubber.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\scrubber.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Initialize the Scrubber class.&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">texts</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span> <span class="o">=</span> <span class="kc">None</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h4 id="lexos.scrubber.scrubber.Scrubber.add_pipeline" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">add_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">funcs</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">add_pipeline</span><span class="p">(</span><span class="o">*</span><span class="n">funcs</span><span class="p">)</span></code>
 
 <a href="#lexos.scrubber.scrubber.Scrubber.add_pipeline" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Add a pipeline.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>*funcs</code></td>
-        <td><code>Callable[[str], str]</code></td>
-        <td><p>The functions to add to the pipeline.</p></td>
-        <td><code>()</code></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\scrubber.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">add_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">funcs</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]):</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>*funcs</code></td>
+          <td>
+                <code><span title="typing.Callable">Callable</span>[[str], str]</code>
+          </td>
+          <td><p>The functions to add to the pipeline.</p></td>
+          <td>
+                <code>()</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\scrubber.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">funcs</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot;Add a pipeline.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        *funcs: The functions to add to the pipeline.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">make_pipeline</span><span class="p">(</span><span class="n">funcs</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h4 id="lexos.scrubber.scrubber.Scrubber.get_pipeline" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">get_pipeline</span><span class="p">()</span></code>
 
 <a href="#lexos.scrubber.scrubber.Scrubber.get_pipeline" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Return a tuple representation of the pipeline.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\scrubber.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\scrubber.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Return a tuple representation of the pipeline.&quot;&quot;&quot;</span>
     <span class="n">pipeline</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span><span class="p">:</span>
@@ -1612,65 +1691,82 @@ scrubber.to_lower(doc)
         <span class="k">else</span><span class="p">:</span>
             <span class="n">pipeline</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h4 id="lexos.scrubber.scrubber.Scrubber.scrub" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">scrub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">scrub</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
 <a href="#lexos.scrubber.scrubber.Scrubber.scrub" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Scrub a text or list of texts.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>data</code></td>
-        <td><code>Union[List[str], str]</code></td>
-        <td><p>The text or list of texts to scrub.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>list</code></td>
-      <td><p>A list of scrubbed texts.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\scrubber.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">scrub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>data</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="typing.List">List</span>[str], str]</code>
+          </td>
+          <td><p>The text or list of texts to scrub.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>list</code></td>          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>A list of scrubbed texts.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\scrubber.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">scrub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Scrub a text or list of texts.</span>
 
 <span class="sd">    Args:</span>
@@ -1682,26 +1778,24 @@ scrubber.to_lower(doc)
     <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">utils</span><span class="o">.</span><span class="n">ensure_list</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="n">text</span><span class="p">))</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">texts</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-method">
+<div class="doc doc-object doc-function">
 
 
 
 <h4 id="lexos.scrubber.scrubber.Scrubber.set_pipeline" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">set_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">)</span></code>
-
+<code class="highlight language-python"><span class="n">set_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span></code>
 
 <a href="#lexos.scrubber.scrubber.Scrubber.set_pipeline" class="headerlink" title="Permanent link">¤</a></h4>
 
-    <div class="doc doc-contents ">
 
+  <div class="doc doc-contents ">
+  
       <p>Set the pipeline.</p>
 <p>This is a variant of add_pipeline that takes a tuple of functions.
 The difference is that function names are given as strings and
@@ -1709,28 +1803,51 @@ keyword arguments as a dictionary. This is useful if you wanted to
 modify the pipeline after initialisation based on the output of
 <code>get_pipeline()</code>, rather than passing callables.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>pipeline</code></td>
-        <td><code>tuple</code></td>
-        <td><p>A tuple of functions.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\scrubber.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">set_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">):</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>pipeline</code></td>
+          <td>
+                <code>tuple</code>
+          </td>
+          <td><p>A tuple of functions.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\scrubber.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">set_pipeline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pipeline</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Set the pipeline.</span>
 
 <span class="sd">    This is a variant of add_pipeline that takes a tuple of functions.</span>
@@ -1749,21 +1866,19 @@ modify the pipeline after initialisation based on the output of
         <span class="k">else</span><span class="p">:</span>
             <span class="n">new_pipeline</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">pipeline</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">make_pipeline</span><span class="p">(</span><span class="n">new_pipeline</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
 
   </div>
 
-
-
-
-
   </div>
 
-    </div>
-
-  </div>
+</div>
 
               
             </article>
@@ -1771,7 +1886,7 @@ modify the pipeline after initialisation based on the output of
           </div>
         </div>
         
-          <a href="#" class="md-top md-top--hidden md-icon" data-md-component="top">
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
             Back to top
           </a>
@@ -1874,10 +1989,10 @@ modify the pipeline after initialisation based on the output of
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.0f659f14.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.431f3d41.min.js"></script>
       
     
   </body>

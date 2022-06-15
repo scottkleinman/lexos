@@ -9,7 +9,7 @@
       
       
       <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.0">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.5">
     
     
       
@@ -17,7 +17,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.fd896c8a.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4a0965b7.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
@@ -1496,63 +1496,85 @@
 <p>Some functions have the same names as functions in the <code>remove</code> component. To distinguish them in the registry, <code>replace</code> functions with the same names are prefixed with <code>re_</code>. When loaded into a script, they can be given any name the user desires.</p>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.replace.currency_symbols" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">currency_symbols</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s1">&#39;_CUR_&#39;</span><span class="p">)</span></code>
 
-
 <a href="#lexos.scrubber.replace.currency_symbols" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Replace all currency symbols in <code>text</code> with <code>repl</code>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text in which currency symbols will be replaced.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text in which currency symbols will be replaced.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>repl</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The replacement value for currency symbols.</p></td>
+          <td>
+                <code>&#39;_CUR_&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>repl</code></td>
-        <td><code>str</code></td>
-        <td><p>The replacement value for currency symbols.</p></td>
-        <td><code>&#39;_CUR_&#39;</code></td>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The text with currency symbols replaced.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">currency_symbols</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_CUR_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>str</code></td>          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text with currency symbols replaced.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">currency_symbols</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_CUR_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Replace all currency symbols in `text` with `repl`.</span>
 
 <span class="sd">    Args:</span>
@@ -1563,71 +1585,91 @@
 <span class="sd">        str: The text with currency symbols replaced.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_CURRENCY_SYMBOL</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">repl</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.replace.digits" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">digits</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s1">&#39;_DIGIT_&#39;</span><span class="p">)</span></code>
 
-
 <a href="#lexos.scrubber.replace.digits" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Replace all digits in <code>text</code> with <code>repl</code>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text in which digits will be replaced.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text in which digits will be replaced.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>repl</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The replacement value for digits.</p></td>
+          <td>
+                <code>&#39;_DIGIT_&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>repl</code></td>
-        <td><code>str</code></td>
-        <td><p>The replacement value for digits.</p></td>
-        <td><code>&#39;_DIGIT_&#39;</code></td>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The text with digits replaced.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">digits</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_DIGIT_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>str</code></td>          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text with digits replaced.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">digits</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_DIGIT_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Replace all digits in `text` with `repl`.</span>
 
 <span class="sd">    Args:</span>
@@ -1638,71 +1680,91 @@
 <span class="sd">        str: The text with digits replaced.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_NUMBER</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">repl</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.replace.emails" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">emails</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s1">&#39;_EMAIL_&#39;</span><span class="p">)</span></code>
 
-
 <a href="#lexos.scrubber.replace.emails" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Replace all email addresses in <code>text</code> with <code>repl</code>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text in which emails will be replaced.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text in which emails will be replaced.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>repl</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The replacement value for emails.</p></td>
+          <td>
+                <code>&#39;_EMAIL_&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>repl</code></td>
-        <td><code>str</code></td>
-        <td><p>The replacement value for emails.</p></td>
-        <td><code>&#39;_EMAIL_&#39;</code></td>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The text with emails replaced.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">emails</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_EMAIL_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>str</code></td>          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text with emails replaced.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">emails</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_EMAIL_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Replace all email addresses in `text` with `repl`.</span>
 
 <span class="sd">    Args:</span>
@@ -1713,77 +1775,103 @@
 <span class="sd">        str: The text with emails replaced.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_EMAIL</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">repl</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.replace.emojis" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">emojis</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s1">&#39;_EMOJI_&#39;</span><span class="p">)</span></code>
 
-
 <a href="#lexos.scrubber.replace.emojis" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Replace all emoji and pictographs in <code>text</code> with <code>repl</code>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text in which emojis will be replaced.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text in which emojis will be replaced.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>repl</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The replacement value for emojis.</p></td>
+          <td>
+                <code>&#39;_EMOJI_&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>repl</code></td>
-        <td><code>str</code></td>
-        <td><p>The replacement value for emojis.</p></td>
-        <td><code>&#39;_EMOJI_&#39;</code></td>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The text with emojis replaced.</p></td>
-    </tr>
-  </tbody>
-</table>      <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If your Python has a narrow unicode build ("USC-2"), only dingbats
+    </thead>
+    <tbody>
+        <tr>
+<td><code>str</code></td>          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text with emojis replaced.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="note">
+  <summary>Note</summary>
+  <p>If your Python has a narrow unicode build ("USC-2"), only dingbats
 and miscellaneous symbols are replaced because Python isn't able
 to represent the unicode data for things like emoticons. Sorry!</p>
-</div>
-
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">emojis</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_EMOJI_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</details>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">emojis</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_EMOJI_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Replace all emoji and pictographs in `text` with `repl`.</span>
 
@@ -1800,71 +1888,91 @@ to represent the unicode data for things like emoticons. Sorry!</p>
 <span class="sd">        to represent the unicode data for things like emoticons. Sorry!</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_EMOJI</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">repl</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.replace.hashtags" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">hashtags</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s1">&#39;_HASHTAG_&#39;</span><span class="p">)</span></code>
 
-
 <a href="#lexos.scrubber.replace.hashtags" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Replace all hashtags in <code>text</code> with <code>repl</code>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text in which hashtags will be replaced.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text in which hashtags will be replaced.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>repl</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The replacement value for hashtags.</p></td>
+          <td>
+                <code>&#39;_HASHTAG_&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>repl</code></td>
-        <td><code>str</code></td>
-        <td><p>The replacement value for hashtags.</p></td>
-        <td><code>&#39;_HASHTAG_&#39;</code></td>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The text with currency hashtags replaced.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">hashtags</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_HASHTAG_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>str</code></td>          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text with currency hashtags replaced.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">hashtags</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_HASHTAG_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Replace all hashtags in `text` with `repl`.</span>
 
 <span class="sd">    Args:</span>
@@ -1875,76 +1983,98 @@ to represent the unicode data for things like emoticons. Sorry!</p>
 <span class="sd">        str: The text with currency hashtags replaced.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_HASHTAG</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">repl</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.replace.pattern" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">pattern</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span></code>
 
-
 <a href="#lexos.scrubber.replace.pattern" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Replace strings from <code>text</code> using a regex pattern.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text in which a pattern or pattern will be replaced.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>pattern</code></td>
-        <td><code>Union[dict, Collection[dict]]</code></td>
-        <td><p>(Union[dict, Collection[dict]]): A dictionary or list of dictionaries
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text in which a pattern or pattern will be replaced.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>pattern</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[dict, <span title="typing.Collection">Collection</span>[dict]]</code>
+          </td>
+          <td><p>(Union[dict, Collection[dict]]): A dictionary or list of dictionaries
 containing the pattern(s) and replacement(s).</p></td>
-        <td><em>required</em></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The text with pattern(s) replaced.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">pattern</span><span class="p">(</span>
-    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="o">*</span><span class="p">,</span>
-    <span class="n">pattern</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>str</code></td>          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text with pattern(s) replaced.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">pattern</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">dict</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Replace strings from `text` using a regex pattern.</span>
 
 <span class="sd">    Args:</span>
@@ -1961,71 +2091,91 @@ containing the pattern(s) and replacement(s).</p></td>
         <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="n">pat</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">text</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">text</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.replace.phone_numbers" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">phone_numbers</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s1">&#39;_PHONE_&#39;</span><span class="p">)</span></code>
 
-
 <a href="#lexos.scrubber.replace.phone_numbers" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Replace all phone numbers in <code>text</code> with <code>repl</code>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text in which phone numbers will be replaced.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text in which phone numbers will be replaced.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>repl</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The replacement value for phone numbers.</p></td>
+          <td>
+                <code>&#39;_PHONE_&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>repl</code></td>
-        <td><code>str</code></td>
-        <td><p>The replacement value for phone numbers.</p></td>
-        <td><code>&#39;_PHONE_&#39;</code></td>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The text with phone numbers replaced.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">phone_numbers</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_PHONE_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>str</code></td>          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text with phone numbers replaced.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">phone_numbers</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_PHONE_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Replace all phone numbers in `text` with `repl`.</span>
 
 <span class="sd">    Args:</span>
@@ -2036,109 +2186,167 @@ containing the pattern(s) and replacement(s).</p></td>
 <span class="sd">        str: The text with phone numbers replaced.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_PHONE_NUMBER</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">repl</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.replace.process_tag_replace_options" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">process_tag_replace_options</span><span class="p">(</span><span class="n">orig_text</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span></code>
 
-
 <a href="#lexos.scrubber.replace.process_tag_replace_options" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Replace html-style tags in text files according to user options.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>orig_text</code></td>
-        <td><code>str</code></td>
-        <td><p>The user's text containing the original tag.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>tag</code></td>
-        <td><code>str</code></td>
-        <td><p>The particular tag to be processed.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>action</code></td>
-        <td><code>str</code></td>
-        <td><p>A string specifying the action to be performed on the tag.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>attribute</code></td>
-        <td><code>str</code></td>
-        <td><p>Replacement value for tag when "replace_with_attribute" is specified.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>Action</code></td>
-        <td><code>options are</code></td>
-        <td></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>-</code></td>
-        <td><code>&#34;remove_tag&#34;</code></td>
-        <td><p>Remove the tag</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>-</code></td>
-        <td><code>&#34;remove_element&#34;</code></td>
-        <td><p>Remove the element and contents</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>-</code></td>
-        <td><code>&#34;replace_element&#34;</code></td>
-        <td><p>Replace the tag with the specified attribute</p></td>
-        <td><em>required</em></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The text after the specified tag is processed.</p></td>
-    </tr>
-  </tbody>
-</table>      
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>orig_text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The user's text containing the original tag.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>tag</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The particular tag to be processed.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>action</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>A string specifying the action to be performed on the tag.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>attribute</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>Replacement value for tag when "replace_with_attribute" is specified.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">process_tag_replace_options</span><span class="p">(</span><span class="n">orig_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                                <span class="n">attribute</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>str</code></td>          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text after the specified tag is processed.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="notes">
+  <summary>Notes</summary>
+  <ul>
+<li>Action options are:</li>
+<li>"remove_tag": Remove the tag</li>
+<li>"remove_element": Remove the element and contents</li>
+<li>"replace_element": Replace the tag with the specified attribute</li>
+<li>The replacement of a tag with the value of an attribute may not be supported. This needs a second look.</li>
+</ul>
+</details>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">process_tag_replace_options</span><span class="p">(</span>
+    <span class="n">orig_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">attribute</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Replace html-style tags in text files according to user options.</span>
 
 <span class="sd">    Args:</span>
@@ -2147,22 +2355,23 @@ containing the pattern(s) and replacement(s).</p></td>
 <span class="sd">        action: A string specifying the action to be performed on the tag.</span>
 <span class="sd">        attribute: Replacement value for tag when &quot;replace_with_attribute&quot; is specified.</span>
 
-<span class="sd">        Action options are:</span>
-<span class="sd">        - &quot;remove_tag&quot;: Remove the tag</span>
-<span class="sd">        - &quot;remove_element&quot;: Remove the element and contents</span>
-<span class="sd">        - &quot;replace_element&quot;: Replace the tag with the specified attribute</span>
-
 <span class="sd">    Returns:</span>
 <span class="sd">        str: The text after the specified tag is processed.</span>
 
-<span class="sd">    Note: The replacement of a tag with the value of an attribute may not be supported. This needs a second look.</span>
+<span class="sd">    Notes:</span>
+<span class="sd">      - Action options are:</span>
+<span class="sd">        - &quot;remove_tag&quot;: Remove the tag</span>
+<span class="sd">        - &quot;remove_element&quot;: Remove the element and contents</span>
+<span class="sd">        - &quot;replace_element&quot;: Replace the tag with the specified attribute</span>
+<span class="sd">      - The replacement of a tag with the value of an attribute may not be supported. This needs a second look.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;remove_tag&quot;</span><span class="p">:</span>
         <span class="c1"># searching for variants this specific tag:  &lt;tag&gt; ...</span>
         <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-            <span class="sa">r</span><span class="s1">&#39;&lt;(?:&#39;</span> <span class="o">+</span> <span class="n">tag</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;(?=\s)(?!(?:[^&gt;&quot;</span><span class="se">\&#39;</span><span class="s1">]|&quot;[^&quot;]*&quot;|</span><span class="se">\&#39;</span><span class="s1">[^</span><span class="se">\&#39;</span><span class="s1">]*</span><span class="se">\&#39;</span><span class="s1">)*?(?&lt;=\s)&#39;</span>
-                            <span class="sa">r</span><span class="s1">&#39;\s*=)(?!\s*/?&gt;)\s+(?:&quot;.*?&quot;|</span><span class="se">\&#39;</span><span class="s1">.*?</span><span class="se">\&#39;</span><span class="s1">|[^&gt;]*?)+|/?&#39;</span>
-            <span class="o">+</span> <span class="n">tag</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;\s*/?)&gt;&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+            <span class="sa">r</span><span class="s2">&quot;&lt;(?:&quot;</span> <span class="o">+</span> <span class="n">tag</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;(?=\s)(?!(?:[^&gt;&quot;</span><span class="se">\&#39;</span><span class="s1">]|&quot;[^&quot;]*&quot;|</span><span class="se">\&#39;</span><span class="s1">[^</span><span class="se">\&#39;</span><span class="s1">]*</span><span class="se">\&#39;</span><span class="s1">)*?(?&lt;=\s)&#39;</span>
+            <span class="sa">r</span><span class="s1">&#39;\s*=)(?!\s*/?&gt;)\s+(?:&quot;.*?&quot;|</span><span class="se">\&#39;</span><span class="s1">.*?</span><span class="se">\&#39;</span><span class="s1">|[^&gt;]*?)+|/?&#39;</span> <span class="o">+</span> <span class="n">tag</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;\s*/?)&gt;&quot;</span><span class="p">,</span>
+            <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># substitute all matching patterns with one space</span>
         <span class="n">processed_text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">orig_text</span><span class="p">)</span>
@@ -2172,15 +2381,17 @@ containing the pattern(s) and replacement(s).</p></td>
         <span class="c1"># as applied across newlines, (re.MULTILINE), on re.UNICODE,</span>
         <span class="c1"># and .* includes newlines (re.DOTALL)</span>
         <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-            <span class="sa">r</span><span class="s2">&quot;&lt;\s*&quot;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;( .+?&gt;|&gt;).+?&lt;/\s*&quot;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="o">+</span>
-            <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+            <span class="sa">r</span><span class="s2">&quot;&lt;\s*&quot;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;( .+?&gt;|&gt;).+?&lt;/\s*&quot;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span>
+            <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">processed_text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">orig_text</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;replace_element&quot;</span><span class="p">:</span>
         <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-            <span class="sa">r</span><span class="s2">&quot;&lt;\s*&quot;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;.*?&gt;.+?&lt;/\s*&quot;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="o">+</span>
-            <span class="s2">&quot;.*?&gt;&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
+            <span class="sa">r</span><span class="s2">&quot;&lt;\s*&quot;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;.*?&gt;.+?&lt;/\s*&quot;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.*?&gt;&quot;</span><span class="p">,</span>
+            <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">processed_text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">orig_text</span><span class="p">)</span>
 
@@ -2188,87 +2399,144 @@ containing the pattern(s) and replacement(s).</p></td>
         <span class="n">processed_text</span> <span class="o">=</span> <span class="n">orig_text</span>  <span class="c1"># Leave Tag Alone</span>
 
     <span class="k">return</span> <span class="n">processed_text</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.replace.punctuation" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">punctuation</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
-
 <a href="#lexos.scrubber.replace.punctuation" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Replace punctuation from <code>text</code>.</p>
 <p>Replaces all instances of punctuation (or a subset thereof specified by <code>only</code>)
 with whitespace.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text in which punctuation will be replaced.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>exclude</code></td>
-        <td><code>Optional[str | Collection[str]]</code></td>
-        <td><p>Remove all punctuation except designated characters.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>only</code></td>
-        <td><code>Optional[str | Collection[str]]</code></td>
-        <td><p>Remove only those punctuation marks specified here. For example,
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text in which punctuation will be replaced.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>exclude</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str | <span title="typing.Collection">Collection</span>[str]]</code>
+          </td>
+          <td><p>Remove all punctuation except designated characters.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>only</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str | <span title="typing.Collection">Collection</span>[str]]</code>
+          </td>
+          <td><p>Remove only those punctuation marks specified here. For example,
 <code>"."</code> removes only periods, while <code>[",", ";", ":"]</code> removes commas,
 semicolons, and colons; if None, all unicode punctuation marks are removed.</p></td>
-        <td><code>None</code></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>str</p></td>
-    </tr>
-  </tbody>
-</table>      <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>When <code>only=None</code>, Python's built-in <code>str.translate()</code> is used;
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>str</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="note">
+  <summary>Note</summary>
+  <p>When <code>only=None</code>, Python's built-in <code>str.translate()</code> is used;
 otherwise, a regular expression is used. The former's performance
 can be up to an order of magnitude faster.</p>
-</div>
-
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">punctuation</span><span class="p">(</span>
+</details>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">punctuation</span><span class="p">(</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">exclude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2302,88 +2570,121 @@ can be up to an order of magnitude faster.</p>
             <span class="n">exclude</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">ensure_list</span><span class="p">(</span><span class="n">exclude</span><span class="p">)</span>
             <span class="n">translation_table</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span>
                 <span class="p">(</span>
-                    <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">maxunicode</span><span class="p">)</span>
+                    <span class="n">i</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">maxunicode</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">)</span>
-                    <span class="ow">and</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">),</span> <span class="s2">&quot; &quot;</span>
+                    <span class="ow">and</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span>
+                <span class="p">),</span>
+                <span class="s2">&quot; &quot;</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">translation_table</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">PUNCT_TRANSLATION_TABLE</span>
         <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">translation_table</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.replace.special_characters" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">special_characters</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ruleset</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
-
 <a href="#lexos.scrubber.replace.special_characters" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Replace strings from <code>text</code> using a regex pattern.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text in which special characters will be replaced.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text in which special characters will be replaced.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>is_html</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to replace HTML entities.</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>ruleset</code></td>
+          <td>
+                <code>dict</code>
+          </td>
+          <td><p>A dict containing the special characters to match and their replacements.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>is_html</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to replace HTML entities.</p></td>
-        <td><code>False</code></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-      <tr>
-        <td><code>ruleset</code></td>
-        <td><code>dict</code></td>
-        <td><p>A dict containing the special characters to match and their replacements.</p></td>
-        <td><code>None</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>str</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">special_characters</span><span class="p">(</span>
-    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="o">*</span><span class="p">,</span>
-    <span class="n">is_html</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="n">ruleset</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>str</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">special_characters</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">is_html</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ruleset</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Replace strings from `text` using a regex pattern.</span>
 
@@ -2402,88 +2703,152 @@ can be up to an order of magnitude faster.</p>
             <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
             <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">text</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.replace.tag_map" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">tag_map</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">map</span><span class="p">,</span> <span class="n">remove_comments</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">remove_doctype</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">remove_whitespace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
-
 <a href="#lexos.scrubber.replace.tag_map" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Handle tags that are found in the text.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text in which tags will be replaced.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text in which tags will be replaced.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>remove_comments</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to remove comments.</p></td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>remove_doctype</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to remove the doctype or xml declaration.</p></td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>remove_whitespace</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to remove whitespace.</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>remove_comments</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to remove comments.</p></td>
-        <td><code>True</code></td>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
       </tr>
-      <tr>
-        <td><code>remove_doctype</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to remove the doctype or xml declaration.</p></td>
-        <td><code>True</code></td>
-      </tr>
-      <tr>
-        <td><code>remove_whitespace</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to remove whitespace.</p></td>
-        <td><code>False</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The text after tags have been replaced.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">tag_map</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>str</code></td>          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text after tags have been replaced.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tag_map</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="c1"># xmlhandlingoptions: List[dict],</span>
     <span class="nb">map</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">remove_comments</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">remove_doctype</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">remove_whitespace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">remove_whitespace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Handle tags that are found in the text.</span>
 
 <span class="sd">    Args:</span>
@@ -2496,7 +2861,9 @@ can be up to an order of magnitude faster.</p>
 <span class="sd">        str: The text after tags have been replaced.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">remove_whitespace</span><span class="p">:</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\n\s\t\v ]+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>  <span class="c1"># Remove extra white space</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s2">&quot;[\n\s\t\v ]+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span>
+        <span class="p">)</span>  <span class="c1"># Remove extra white space</span>
     <span class="k">if</span> <span class="n">remove_doctype</span><span class="p">:</span>
         <span class="n">doctype</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&lt;!DOCTYPE.*?&gt;&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">doctype</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>  <span class="c1"># Remove DOCTYPE declarations</span>
@@ -2519,71 +2886,91 @@ can be up to an order of magnitude faster.</p>
         <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\n\s\t\v ]+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">text</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.replace.urls" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">urls</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s1">&#39;_URL_&#39;</span><span class="p">)</span></code>
 
-
 <a href="#lexos.scrubber.replace.urls" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Replace all URLs in <code>text</code> with <code>repl</code>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text in which urls will be replaced.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text in which urls will be replaced.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>repl</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The replacement value for urls.</p></td>
+          <td>
+                <code>&#39;_URL_&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>repl</code></td>
-        <td><code>str</code></td>
-        <td><p>The replacement value for urls.</p></td>
-        <td><code>&#39;_URL_&#39;</code></td>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The text with urls replaced.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">urls</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_URL_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>str</code></td>          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text with urls replaced.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">urls</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_URL_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Replace all URLs in `text` with `repl`.</span>
 
 <span class="sd">    Args:</span>
@@ -2594,71 +2981,91 @@ can be up to an order of magnitude faster.</p>
 <span class="sd">        str: The text with urls replaced.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_SHORT_URL</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">repl</span><span class="p">,</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_URL</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">repl</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.scrubber.replace.user_handles" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">user_handles</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">repl</span><span class="o">=</span><span class="s1">&#39;_USER_&#39;</span><span class="p">)</span></code>
 
-
 <a href="#lexos.scrubber.replace.user_handles" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Replace all (Twitter-style) user handles in <code>text</code> with <code>repl</code>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text in which user handles will be replaced.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text in which user handles will be replaced.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>repl</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The replacement value for user handles.</p></td>
+          <td>
+                <code>&#39;_USER_&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>repl</code></td>
-        <td><code>str</code></td>
-        <td><p>The replacement value for user handles.</p></td>
-        <td><code>&#39;_USER_&#39;</code></td>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The text with user handles replaced.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">user_handles</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_USER_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>str</code></td>          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text with user handles replaced.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\replace.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">user_handles</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repl</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;_USER_&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Replace all (Twitter-style) user handles in `text` with `repl`.</span>
 
 <span class="sd">    Args:</span>
@@ -2669,11 +3076,11 @@ can be up to an order of magnitude faster.</p>
 <span class="sd">        str: The text with user handles replaced.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_USER_HANDLE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">repl</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
+
+</div>
 
               
             </article>
@@ -2681,7 +3088,7 @@ can be up to an order of magnitude faster.</p>
           </div>
         </div>
         
-          <a href="#" class="md-top md-top--hidden md-icon" data-md-component="top">
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
             Back to top
           </a>
@@ -2784,10 +3191,10 @@ can be up to an order of magnitude faster.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.0f659f14.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.431f3d41.min.js"></script>
       
     
   </body>

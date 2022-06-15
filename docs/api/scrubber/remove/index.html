@@ -9,7 +9,7 @@
       
       
       <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.0">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.5">
     
     
       
@@ -17,7 +17,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.fd896c8a.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.4a0965b7.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
@@ -1032,56 +1032,63 @@
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.accents" class="md-nav__link">
-    accents()
+    lexos.scrubber.remove.accents
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.brackets" class="md-nav__link">
-    brackets()
+    lexos.scrubber.remove.brackets
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.digits" class="md-nav__link">
-    digits()
+    lexos.scrubber.remove.digits
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.new_lines" class="md-nav__link">
-    new_lines()
+    lexos.scrubber.remove.new_lines
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.pattern" class="md-nav__link">
-    pattern()
+    lexos.scrubber.remove.pattern
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lexos.scrubber.remove.project_gutenberg_headers" class="md-nav__link">
+    lexos.scrubber.remove.project_gutenberg_headers
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.punctuation" class="md-nav__link">
-    punctuation()
+    lexos.scrubber.remove.punctuation
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.tabs" class="md-nav__link">
-    tabs()
+    lexos.scrubber.remove.tabs
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.tags" class="md-nav__link">
-    tags()
+    lexos.scrubber.remove.tags
   </a>
   
 </li>
@@ -1346,56 +1353,63 @@
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.accents" class="md-nav__link">
-    accents()
+    lexos.scrubber.remove.accents
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.brackets" class="md-nav__link">
-    brackets()
+    lexos.scrubber.remove.brackets
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.digits" class="md-nav__link">
-    digits()
+    lexos.scrubber.remove.digits
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.new_lines" class="md-nav__link">
-    new_lines()
+    lexos.scrubber.remove.new_lines
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.pattern" class="md-nav__link">
-    pattern()
+    lexos.scrubber.remove.pattern
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lexos.scrubber.remove.project_gutenberg_headers" class="md-nav__link">
+    lexos.scrubber.remove.project_gutenberg_headers
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.punctuation" class="md-nav__link">
-    punctuation()
+    lexos.scrubber.remove.punctuation
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.tabs" class="md-nav__link">
-    tabs()
+    lexos.scrubber.remove.tabs
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#lexos.scrubber.remove.tags" class="md-nav__link">
-    tags()
+    lexos.scrubber.remove.tags
   </a>
   
 </li>
@@ -1422,89 +1436,147 @@
 <p>The <code>remove</code> component of <code>Scrubber</code> contains a set of functions for removing strings and patterns from text.</p>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
-
-<h3 id="lexos.scrubber.remove.accents" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">remove</span><span class="o">.</span><span class="n">accents</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">fast</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">accents</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.remove.accents" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
+<a id="lexos.scrubber.remove.accents"></a>
+  <div class="doc doc-contents first">
+  
       <p>Remove accents from any accented unicode characters in <code>text</code>, either
 by replacing them with ASCII equivalents or removing them entirely.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text from which accents will be removed.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>fast</code></td>
-        <td><code>bool</code></td>
-        <td><p>If False, accents are removed from any unicode symbol
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text from which accents will be removed.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>fast</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>If False, accents are removed from any unicode symbol
 with a direct ASCII equivalent; if True, accented chars
 for all unicode symbols are removed, regardless.</p></td>
-        <td><code>False</code></td>
-      </tr>
-      <tr>
-        <td><code>accents</code></td>
-        <td><code>Union[str, tuple]</code></td>
-        <td><p>An optional string or tuple of strings indicating the
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>accents</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[str, tuple]</code>
+          </td>
+          <td><p>An optional string or tuple of strings indicating the
 names of diacritics to be stripped.</p></td>
-        <td><code>None</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>str</p></td>
-    </tr>
-  </tbody>
-</table>      <div class="admonition note">
-<p class="admonition-title"><code>fast=True</code> can be significantly faster than <code>fast=False</code>,</p>
-<p>but its transformation of <code>text</code> is less "safe" and more likely
-to result in changes of meaning, spelling errors, etc.</p>
-</div>
-<p>See Also:
-    - For a chart containing Unicode standard names of diacritics, see
-    <a href="https://en.wikipedia.org/wiki/Combining_Diacritical_Marks#Character_table">https://en.wikipedia.org/wiki/Combining_Diacritical_Marks#Character_table</a>
-    - For a more powerful (but slower) alternative, check out <code>unidecode</code>:
-    <a href="https://github.com/avian2/unidecode">https://github.com/avian2/unidecode</a></p>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">accents</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="o">*</span><span class="p">,</span>
-            <span class="n">fast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="n">accents</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Remove accents from any accented unicode characters in `text`, either</span>
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>str</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="note">
+  <summary><code>fast=True</code> can be significantly faster than <code>fast=False</code>,</summary>
+  <p>but its transformation of <code>text</code> is less "safe" and more likely
+to result in changes of meaning, spelling errors, etc.</p>
+</details>
+<details class="see-also">
+  <summary>See Also</summary>
+  <ul>
+<li>For a chart containing Unicode standard names of diacritics, see
+<a href="https://en.wikipedia.org/wiki/Combining_Diacritical_Marks#Character_table">https://en.wikipedia.org/wiki/Combining_Diacritical_Marks#Character_table</a></li>
+<li>For a more powerful (but slower) alternative, check out <code>unidecode</code>:
+<a href="https://github.com/avian2/unidecode">https://github.com/avian2/unidecode</a></li>
+</ul>
+</details>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">accents</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">fast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">accents</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Remove accents from any accented unicode characters in `text`, either</span>
 <span class="sd">    by replacing them with ASCII equivalents or removing them entirely.</span>
 
 <span class="sd">    Args:</span>
@@ -1553,83 +1625,123 @@ to result in changes of meaning, spelling errors, etc.</p>
             <span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
             <span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
         <span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div><div class="highlight"><pre><span></span><code>rendering:
+  show_root_heading: true
+  heading_level: 3
+</code></pre></div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
-
-<h3 id="lexos.scrubber.remove.brackets" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">remove</span><span class="o">.</span><span class="n">brackets</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.remove.brackets" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
+<a id="lexos.scrubber.remove.brackets"></a>
+  <div class="doc doc-contents first">
+  
       <p>Remove text within curly {}, square [], and/or round () brackets, as well as
 the brackets themselves.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text from which brackets will be removed.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>only</code></td>
-        <td><code>Optional[str | Collection[str]]</code></td>
-        <td><p>Remove only those bracketed contents as specified here: "curly", "square",
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text from which brackets will be removed.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>only</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str | <span title="typing.Collection">Collection</span>[str]]</code>
+          </td>
+          <td><p>Remove only those bracketed contents as specified here: "curly", "square",
 and/or "round". For example, <code>"square"</code> removes only those contents found
 between square brackets, while <code>["round", "square"]</code> removes those contents
 found between square or round brackets, but not curly.</p></td>
-        <td><code>None</code></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>str</p></td>
-    </tr>
-  </tbody>
-</table>      <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This function relies on regular expressions, applied sequentially for curly,
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>str</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="note">
+  <summary>Note</summary>
+  <p>This function relies on regular expressions, applied sequentially for curly,
 square, then round brackets; as such, it doesn't handle nested brackets of the
 same type and may behave unexpectedly on text with "wild" use of brackets.
 It should be fine removing structured bracketed contents, as is often used,
 for instance, to denote in-text citations.</p>
-</div>
-
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">brackets</span><span class="p">(</span>
+</details>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span>
+<span class="normal">98</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">brackets</span><span class="p">(</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">only</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1662,26 +1774,22 @@ for instance, to denote in-text citations.</p>
     <span class="k">if</span> <span class="n">only</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="s2">&quot;round&quot;</span> <span class="ow">in</span> <span class="n">only</span><span class="p">:</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_BRACKETS_ROUND</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">text</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div><div class="highlight"><pre><span></span><code>rendering:
+  show_root_heading: true
+  heading_level: 3
+</code></pre></div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
-
-<h3 id="lexos.scrubber.remove.digits" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">remove</span><span class="o">.</span><span class="n">digits</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.remove.digits" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
+<a id="lexos.scrubber.remove.digits"></a>
+  <div class="doc doc-contents first">
+  
       <p>Remove digits.</p>
 <p>Remove digits from <code>text</code> by replacing all instances of digits
 (or a subset thereof specified by <code>only</code>) with whitespace.</p>
@@ -1689,55 +1797,106 @@ for instance, to denote in-text citations.</p>
 numbers. Does not remove currency symbols. Some tokens containing
 digits will be modified.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text from which digits will be removed.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>only</code></td>
-        <td><code>Optional[str | Collection[str]]</code></td>
-        <td><p>Remove only those digits specified here. For example,
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text from which digits will be removed.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>only</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str | <span title="typing.Collection">Collection</span>[str]]</code>
+          </td>
+          <td><p>Remove only those digits specified here. For example,
 <code>"9"</code> removes only 9, while <code>["1", "2", "3"]</code> removes 1, 2, 3;
 if None, all unicode digits marks are removed.</p></td>
-        <td><code>None</code></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>str</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">digits</span><span class="p">(</span>
-    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="o">*</span><span class="p">,</span>
-    <span class="n">only</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>str</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">digits</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Remove digits.</span>
 
 <span class="sd">    Remove digits from `text` by replacing all instances of digits</span>
@@ -1769,74 +1928,93 @@ if None, all unicode digits marks are removed.</p></td>
         <span class="c1"># 2) ***.***</span>
         <span class="n">unicode_digits</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">maxunicode</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">):</span>
                 <span class="n">unicode_digits</span> <span class="o">=</span> <span class="n">unicode_digits</span> <span class="o">+</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([+-]?[&quot;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">unicode_digits</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;])|((?&lt;=&quot;</span>
-                            <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">unicode_digits</span><span class="p">)</span> <span class="o">+</span>
-                            <span class="sa">r</span><span class="s2">&quot;)[\u0027|\u002C|\u002E|\u00B7|&quot;</span>
-                            <span class="sa">r</span><span class="s2">&quot;\u02D9|\u066B|\u066C|\u2396][&quot;</span>
-                            <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">unicode_digits</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;]+)&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
-</code></pre></div>
-        </details>
-    </div>
-
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s2">&quot;([+-]?[&quot;</span>
+            <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">unicode_digits</span><span class="p">)</span>
+            <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;])|((?&lt;=&quot;</span>
+            <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">unicode_digits</span><span class="p">)</span>
+            <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;)[\u0027|\u002C|\u002E|\u00B7|&quot;</span>
+            <span class="sa">r</span><span class="s2">&quot;\u02D9|\u066B|\u066C|\u2396][&quot;</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">unicode_digits</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;]+)&quot;</span><span class="p">,</span>
+            <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div><div class="highlight"><pre><span></span><code>rendering:
+  show_root_heading: true
+  heading_level: 3
+</code></pre></div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
-
-<h3 id="lexos.scrubber.remove.new_lines" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">remove</span><span class="o">.</span><span class="n">new_lines</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.remove.new_lines" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
+<a id="lexos.scrubber.remove.new_lines"></a>
+  <div class="doc doc-contents first">
+  
       <p>Remove new lines.</p>
 <p>Remove all line-breaking spaces.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text from which new lines will be removed.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The normalized text.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">new_lines</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text from which new lines will be removed.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The normalized text.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">new_lines</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Remove new lines.</span>
 
 <span class="sd">    Remove all line-breaking spaces.</span>
@@ -1848,75 +2026,92 @@ if None, all unicode digits marks are removed.</p></td>
 <span class="sd">        The normalized text.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_LINEBREAK</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div><div class="highlight"><pre><span></span><code>rendering:
+  show_root_heading: true
+  heading_level: 3
+</code></pre></div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
-
-<h3 id="lexos.scrubber.remove.pattern" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">remove</span><span class="o">.</span><span class="n">pattern</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.remove.pattern" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
+<a id="lexos.scrubber.remove.pattern"></a>
+  <div class="doc doc-contents first">
+  
       <p>Remove strings from <code>text</code> using a regex pattern.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text from which patterns will be removed.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text from which patterns will be removed.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>pattern</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[str, <span title="typing.Collection">Collection</span>[str]]</code>
+          </td>
+          <td><p>The pattern to match.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>pattern</code></td>
-        <td><code>Union[str, Collection[str]]</code></td>
-        <td><p>The pattern to match.</p></td>
-        <td><em>required</em></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>str</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">pattern</span><span class="p">(</span>
-    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="o">*</span><span class="p">,</span>
-    <span class="n">pattern</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>str</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">pattern</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Remove strings from `text` using a regex pattern.</span>
 
 <span class="sd">    Args:</span>
@@ -1930,86 +2125,325 @@ if None, all unicode digits marks are removed.</p></td>
         <span class="n">pattern</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
     <span class="n">pat</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pat</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div><div class="highlight"><pre><span></span><code>rendering:
+  show_root_heading: true
+  heading_level: 3
+</code></pre></div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
+<a id="lexos.scrubber.remove.project_gutenberg_headers"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Remove Project Gutenberg headers and footers.</p>
 
-<h3 id="lexos.scrubber.remove.punctuation" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">remove</span><span class="o">.</span><span class="n">punctuation</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text from which headers and footers will be removed.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>str</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="notes">
+  <summary>Notes</summary>
+  <p>This function is reproduced from Gutenberg package's <code>strip_headers()</code>
+function (<a href="https://github.com/c-w/gutenberg">https://github.com/c-w/gutenberg</a>), itself a port ofthe C++ utility
+by Johannes Krugel.</p>
+</details>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">project_gutenberg_headers</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Remove Project Gutenberg headers and footers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text (str): The text from which headers and footers will be removed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        This function is reproduced from Gutenberg package&#39;s `strip_headers()`</span>
+<span class="sd">        function (https://github.com/c-w/gutenberg), itself a port ofthe C++ utility</span>
+<span class="sd">        by Johannes Krugel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+    <span class="n">sep</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">footer_found</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">ignore_section</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="n">reset</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">600</span><span class="p">:</span>
+            <span class="c1"># Check if the header ends here</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">resources</span><span class="o">.</span><span class="n">TEXT_START_MARKERS</span><span class="p">):</span>
+                <span class="n">reset</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="c1"># If it&#39;s the end of the header, delete the output produced so far.</span>
+            <span class="c1"># May be done several times, if multiple lines occur indicating the</span>
+            <span class="c1"># end of the header</span>
+            <span class="k">if</span> <span class="n">reset</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="c1"># Check if the footer begins here</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">resources</span><span class="o">.</span><span class="n">TEXT_END_MARKERS</span><span class="p">):</span>
+                <span class="n">footer_found</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="c1"># If it&#39;s the beginning of the footer, stop output</span>
+            <span class="k">if</span> <span class="n">footer_found</span><span class="p">:</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">resources</span><span class="o">.</span><span class="n">LEGALESE_START_MARKERS</span><span class="p">):</span>
+            <span class="n">ignore_section</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">continue</span>
+        <span class="k">elif</span> <span class="nb">any</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">resources</span><span class="o">.</span><span class="n">LEGALESE_END_MARKERS</span><span class="p">):</span>
+            <span class="n">ignore_section</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ignore_section</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="n">sep</span><span class="p">))</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div><div class="highlight"><pre><span></span><code>rendering:
+  show_root_heading: true
+  heading_level: 3
+</code></pre></div>
 
 
-<a href="#lexos.scrubber.remove.punctuation" class="headerlink" title="Permanent link">¤</a></h3>
+<div class="doc doc-object doc-function">
 
-    <div class="doc doc-contents first">
 
+<a id="lexos.scrubber.remove.punctuation"></a>
+  <div class="doc doc-contents first">
+  
       <p>Remove punctuation from <code>text</code>.</p>
 <p>Removes all instances of punctuation (or a subset thereof specified by <code>only</code>).</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text from which punctuation will be removed.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>exclude</code></td>
-        <td><code>Optional[str | Collection[str]]</code></td>
-        <td><p>Remove all punctuation except designated characters.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>only</code></td>
-        <td><code>Optional[str | Collection[str]]</code></td>
-        <td><p>Remove only those punctuation marks specified here. For example,
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text from which punctuation will be removed.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>exclude</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str | <span title="typing.Collection">Collection</span>[str]]</code>
+          </td>
+          <td><p>Remove all punctuation except designated characters.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>only</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str | <span title="typing.Collection">Collection</span>[str]]</code>
+          </td>
+          <td><p>Remove only those punctuation marks specified here. For example,
 <code>"."</code> removes only periods, while <code>[",", ";", ":"]</code> removes commas,
 semicolons, and colons; if None, all unicode punctuation marks are removed.</p></td>
-        <td><code>None</code></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>str</p></td>
-    </tr>
-  </tbody>
-</table>      <div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>When <code>only=None</code>, Python's built-in <code>str.translate()</code> is used;
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>str</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="note">
+  <summary>Note</summary>
+  <p>When <code>only=None</code>, Python's built-in <code>str.translate()</code> is used;
 otherwise, a regular expression is used. The former's performance
 can be up to an order of magnitude faster.</p>
-</div>
-
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">punctuation</span><span class="p">(</span>
+</details>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">punctuation</span><span class="p">(</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">exclude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">Collection</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2046,72 +2480,91 @@ can be up to an order of magnitude faster.</p>
         <span class="c1"># the punctuation with whitespace, so we have to build a new one.</span>
         <span class="n">translation_table</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span>
             <span class="p">(</span>
-                <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">maxunicode</span><span class="p">)</span>
+                <span class="n">i</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">maxunicode</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">category</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">)</span>
-                <span class="ow">and</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">),</span> <span class="s2">&quot;&quot;</span>
+                <span class="ow">and</span> <span class="nb">chr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span>
+            <span class="p">),</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">translation_table</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div><div class="highlight"><pre><span></span><code>rendering:
+  show_root_heading: true
+  heading_level: 3
+</code></pre></div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
-
-<h3 id="lexos.scrubber.remove.tabs" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">remove</span><span class="o">.</span><span class="n">tabs</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.remove.tabs" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
+<a id="lexos.scrubber.remove.tabs"></a>
+  <div class="doc doc-contents first">
+  
       <p>Remove tabs.</p>
 <p>If you want to replace tabs with a single space, use
 <code>normalize.whitespace()</code> instead.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text from which tabs will be removed.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>The stripped text.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">tabs</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text from which tabs will be removed.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The stripped text.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tabs</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Remove tabs.</span>
 
 <span class="sd">    If you want to replace tabs with a single space, use</span>
@@ -2124,78 +2577,96 @@ can be up to an order of magnitude faster.</p>
 <span class="sd">        The stripped text.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">resources</span><span class="o">.</span><span class="n">RE_TAB</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div><div class="highlight"><pre><span></span><code>rendering:
+  show_root_heading: true
+  heading_level: 3
+</code></pre></div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
-
-<h3 id="lexos.scrubber.remove.tags" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">remove</span><span class="o">.</span><span class="n">tags</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">remove_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
-
-
-<a href="#lexos.scrubber.remove.tags" class="headerlink" title="Permanent link">¤</a></h3>
-
-    <div class="doc doc-contents first">
-
+<a id="lexos.scrubber.remove.tags"></a>
+  <div class="doc doc-contents first">
+  
       <p>Remove tags from <code>text</code>.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text from which tags will be removed.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>sep</code></td>
-        <td><code>str</code></td>
-        <td><p>A string to insert between tags and text found between them.</p></td>
-        <td><code>&#39; &#39;</code></td>
-      </tr>
-      <tr>
-        <td><code>remove_whitespace</code></td>
-        <td><code>bool</code></td>
-        <td><p>If True, remove extra whitespace between text
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text from which tags will be removed.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>sep</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>A string to insert between tags and text found between them.</p></td>
+          <td>
+                <code>&#39; &#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>remove_whitespace</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>If True, remove extra whitespace between text
 after tags are removed.</p></td>
-        <td><code>True</code></td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>str</code></td>
-      <td><p>A string containing just the text found between tags and other
-non-data elements.</p></td>
-    </tr>
-  </tbody>
-</table>      <div class="admonition note">
-<p class="admonition-title">Note</p>
-<ul>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>A string containing just the text found between tags and other</p></td>
+        </tr>
+        <tr>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>non-data elements.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="note">
+  <summary>Note</summary>
+  <ul>
 <li>If you want to perfom selective removal of tags,
     use <code>replace.tag_map</code> instead.</li>
 <li>This function relies on the stdlib <code>html.parser.HTMLParser</code>.
@@ -2203,11 +2674,36 @@ non-data elements.</p></td>
     Using <code>lxml</code> or BeautifulSoup might be faster, but this is untested.</li>
 <li>This function preserves text in comments, as well as tags</li>
 </ul>
-</div>
-
-        <details class="quote">
-          <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">tags</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">remove_whitespace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</details>
+      <details class="quote">
+        <summary>Source code in <code>lexos\scrubber\remove.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tags</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">remove_whitespace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Remove tags from `text`.</span>
 
 <span class="sd">    Args:</span>
@@ -2234,12 +2730,14 @@ non-data elements.</p></td>
     <span class="k">if</span> <span class="n">remove_whitespace</span><span class="p">:</span>
         <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[\n\s\t\v ]+&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">text</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div><div class="highlight"><pre><span></span><code>rendering:
+  show_root_heading: true
+  heading_level: 3
+</code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 </div>
@@ -2251,7 +2749,7 @@ non-data elements.</p></td>
           </div>
         </div>
         
-          <a href="#" class="md-top md-top--hidden md-icon" data-md-component="top">
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
             Back to top
           </a>
@@ -2354,10 +2852,10 @@ non-data elements.</p></td>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.0f659f14.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.431f3d41.min.js"></script>
       
     
   </body>

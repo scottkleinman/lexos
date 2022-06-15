@@ -9,7 +9,7 @@
       
       
       <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.0">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.5">
     
     
       
@@ -17,7 +17,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.fd896c8a.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4a0965b7.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
@@ -1332,29 +1332,36 @@
 <p>The <code>Tokenizer</code> uses spaCy to convert texts to documents using one of the functions below. If no language model is specified, spaCy's multi-lingual <code>xx_sent_ud_sm</code> model is used.</p>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.tokenizer._get_disabled_components" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">_get_disabled_components</span><span class="p">(</span><span class="n">disable</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline_components</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-private"><code>private</code></small>
-  </span>
-
 <a href="#lexos.tokenizer._get_disabled_components" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Get a list of components to disable in the pipeline.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_get_disabled_components</span><span class="p">(</span>
-    <span class="n">disable</span><span class="p">:</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">pipeline_components</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+      <details class="quote">
+        <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_get_disabled_components</span><span class="p">(</span>
+    <span class="n">disable</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pipeline_components</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Get a list of components to disable in the pipeline.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">disable</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">disable</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1364,37 +1371,42 @@
             <span class="n">custom_disable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
     <span class="n">disable</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">custom_disable</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">disable</span><span class="p">))</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.tokenizer._get_excluded_components" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">_get_excluded_components</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pipeline_components</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
-  <span class="doc doc-properties">
-      <small class="doc doc-property doc-property-private"><code>private</code></small>
-  </span>
-
 <a href="#lexos.tokenizer._get_excluded_components" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Get a list of components to exclude from the pipeline.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">_get_excluded_components</span><span class="p">(</span>
-    <span class="n">exclude</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">pipeline_components</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+      <details class="quote">
+        <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_get_excluded_components</span><span class="p">(</span>
+    <span class="n">exclude</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pipeline_components</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Get a list of components to exclude from the pipeline.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">exclude</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">exclude</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1404,83 +1416,123 @@
             <span class="n">custom_exclude</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">component</span><span class="p">)</span>
     <span class="n">exclude</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">custom_exclude</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">exclude</span><span class="p">))</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.tokenizer.doc_from_ngrams" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">doc_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
-
 <a href="#lexos.tokenizer.doc_from_ngrams" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Generate spaCy doc from a list of ngrams.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>ngrams</code></td>
-        <td><code>list</code></td>
-        <td><p>A list of ngrams.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>ngrams</code></td>
+          <td>
+                <code>list</code>
+          </td>
+          <td><p>A list of ngrams.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>model</code></td>
+          <td>
+                <code>object</code>
+          </td>
+          <td><p>The language model to use for tokenisation.</p></td>
+          <td>
+                <code>&#39;xx_sent_ud_sm&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>strict</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to preserve token divisions, include whitespace in the source.</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>model</code></td>
-        <td><code>object</code></td>
-        <td><p>The language model to use for tokenisation.</p></td>
-        <td><code>&#39;xx_sent_ud_sm&#39;</code></td>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
       </tr>
-      <tr>
-        <td><code>strict</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to preserve token divisions, include whitespace in the source.</p></td>
-        <td><code>False</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>object</code></td>
-      <td><p>A spaCy doc</p></td>
-    </tr>
-  </tbody>
-</table>      <div class="admonition notes">
-<p class="admonition-title">Notes</p>
-<p>The <code>strict=False</code> setting will allow spaCy's language model to remove whitespace from
+    </thead>
+    <tbody>
+        <tr>
+<td><code>object</code></td>          <td>
+                <code>object</code>
+          </td>
+          <td><p>A spaCy doc</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+<details class="notes">
+  <summary>Notes</summary>
+  <p>The <code>strict=False</code> setting will allow spaCy's language model to remove whitespace from
 ngrams and split punctuation into separate tokens. <code>strict=True</code> will preserve the
 sequences in the source list.</p>
-</div>
-
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">doc_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+</details>
+      <details class="quote">
+        <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">doc_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Generate spaCy doc from a list of ngrams.</span>
 
 <span class="sd">    Args:</span>
@@ -1499,8 +1551,7 @@ sequences in the source list.</p>
     <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
         <span class="n">spaces</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">ngrams</span> <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Doc</span><span class="p">(</span>
-            <span class="n">nlp</span><span class="o">.</span><span class="n">vocab</span><span class="p">,</span> <span class="n">words</span><span class="o">=</span><span class="n">ngrams</span><span class="p">,</span> <span class="n">spaces</span><span class="o">=</span><span class="n">spaces</span><span class="p">)</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Doc</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">vocab</span><span class="p">,</span> <span class="n">words</span><span class="o">=</span><span class="n">ngrams</span><span class="p">,</span> <span class="n">spaces</span><span class="o">=</span><span class="n">spaces</span><span class="p">)</span>
         <span class="c1"># Run the standard pipeline against the doc</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">proc</span> <span class="ow">in</span> <span class="n">nlp</span><span class="o">.</span><span class="n">pipeline</span><span class="p">:</span>
             <span class="n">doc</span> <span class="o">=</span> <span class="n">proc</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
@@ -1508,77 +1559,110 @@ sequences in the source list.</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ngrams</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.tokenizer.docs_from_ngrams" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">docs_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
-
 <a href="#lexos.tokenizer.docs_from_ngrams" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Generate spaCy doc from a list of ngram lists.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>ngrams</code></td>
-        <td><code>List[list]</code></td>
-        <td><p>A list of ngram lists.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>ngrams</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[list]</code>
+          </td>
+          <td><p>A list of ngram lists.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>model</code></td>
+          <td>
+                <code>object</code>
+          </td>
+          <td><p>The language model to use for tokenisation.</p></td>
+          <td>
+                <code>&#39;xx_sent_ud_sm&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>strict</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to preserve token divisions, include whitespace in the source.</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>model</code></td>
-        <td><code>object</code></td>
-        <td><p>The language model to use for tokenisation.</p></td>
-        <td><code>&#39;xx_sent_ud_sm&#39;</code></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-      <tr>
-        <td><code>strict</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to preserve token divisions, include whitespace in the source.</p></td>
-        <td><code>False</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>List[object]</code></td>
-      <td><p>A list of spaCy docs</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">docs_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">list</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">]:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.List">List</span>[object]</code>
+          </td>
+          <td><p>List[object]: A list of spaCy docs</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">docs_from_ngrams</span><span class="p">(</span>
+    <span class="n">ngrams</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">list</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Generate spaCy doc from a list of ngram lists.</span>
 
 <span class="sd">    Args:</span>
@@ -1594,79 +1678,108 @@ sequences in the source list.</p>
         <span class="n">doc</span> <span class="o">=</span> <span class="n">doc_from_ngrams</span><span class="p">(</span><span class="n">ngram_list</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">strict</span><span class="p">)</span>
         <span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">docs</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.tokenizer.generate_character_ngrams" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">generate_character_ngrams</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
-
 <a href="#lexos.tokenizer.generate_character_ngrams" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Generate character n-grams from raw text.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The source text.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The source text.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>size</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>The size of the ngram.</p></td>
+          <td>
+                <code>1</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>drop_whitespace</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>Whether to preserve whitespace in the ngram list.</p></td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>size</code></td>
-        <td><code>int</code></td>
-        <td><p>The size of the ngram.</p></td>
-        <td><code>1</code></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-      <tr>
-        <td><code>drop_whitespace</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to preserve whitespace in the ngram list.</p></td>
-        <td><code>True</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>List[str]</code></td>
-      <td><p>A list of ngrams</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">generate_character_ngrams</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                              <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-                              <span class="n">drop_whitespace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>List[str]: A list of ngrams</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">generate_character_ngrams</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Generate character n-grams from raw text.</span>
 
 <span class="sd">    Args:</span>
@@ -1678,118 +1791,199 @@ sequences in the source list.</p>
 <span class="sd">        List[str]: A list of ngrams</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">textwrap</span> <span class="kn">import</span> <span class="n">wrap</span>
-    <span class="k">return</span> <span class="n">wrap</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="o">=</span><span class="n">drop_whitespace</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
 
+    <span class="k">return</span> <span class="n">wrap</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="o">=</span><span class="n">drop_whitespace</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.tokenizer.make_doc" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[],</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[],</span> <span class="n">add_stopwords</span><span class="o">=</span><span class="p">[],</span> <span class="n">remove_stopwords</span><span class="o">=</span><span class="p">[],</span> <span class="n">pipeline_components</span><span class="o">=</span><span class="p">[])</span></code>
 
-
 <a href="#lexos.tokenizer.make_doc" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Return a doc from a text.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>str</code></td>
-        <td><p>The text to be parsed.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>model</code></td>
-        <td><code>object</code></td>
-        <td><p>The model to be used.</p></td>
-        <td><code>&#39;xx_sent_ud_sm&#39;</code></td>
-      </tr>
-      <tr>
-        <td><code>max_length</code></td>
-        <td><code>int</code></td>
-        <td><p>The maximum length of the doc.</p></td>
-        <td><code>2000000</code></td>
-      </tr>
-      <tr>
-        <td><code>disable</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>A list of spaCy pipeline components to disable.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-      <tr>
-        <td><code>exclude</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>A list of spaCy pipeline components to exclude.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-      <tr>
-        <td><code>add_stopwords</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>A list of stop words to add to the model.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-      <tr>
-        <td><code>remove_stopwords</code></td>
-        <td><code>Union[List[str], str]</code></td>
-        <td><p>A list of stop words to remove
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The text to be parsed.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>model</code></td>
+          <td>
+                <code>object</code>
+          </td>
+          <td><p>The model to be used.</p></td>
+          <td>
+                <code>&#39;xx_sent_ud_sm&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>max_length</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>The maximum length of the doc.</p></td>
+          <td>
+                <code>2000000</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>disable</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>A list of spaCy pipeline components to disable.</p></td>
+          <td>
+                <code>[]</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>exclude</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>A list of spaCy pipeline components to exclude.</p></td>
+          <td>
+                <code>[]</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>add_stopwords</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>A list of stop words to add to the model.</p></td>
+          <td>
+                <code>[]</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>remove_stopwords</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="typing.List">List</span>[str], str]</code>
+          </td>
+          <td><p>A list of stop words to remove
 from the model. If "all" is specified, all stop words will be removed.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-      <tr>
-        <td><code>pipeline_components</code></td>
-        <td><code>List[dict]</code></td>
-        <td><p>A list custom component dicts to add
+          <td>
+                <code>[]</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>pipeline_components</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[dict]</code>
+          </td>
+          <td><p>A list custom component dicts to add
 to the pipeline. See <a href="https://spacy.io/api/language/#add_pipe">https://spacy.io/api/language/#add_pipe</a> for
 more information.</p></td>
-        <td><code>[]</code></td>
+          <td>
+                <code>[]</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>object</code></td>
-      <td><p>A spaCy doc object.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_doc</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-             <span class="n">model</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span>
-             <span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000000</span><span class="p">,</span>
-             <span class="n">disable</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-             <span class="n">exclude</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-             <span class="n">add_stopwords</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-             <span class="n">remove_stopwords</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-             <span class="n">pipeline_components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>object</code></td>          <td>
+                <code>object</code>
+          </td>
+          <td><p>A spaCy doc object.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">make_doc</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000000</span><span class="p">,</span>
+    <span class="n">disable</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">exclude</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">add_stopwords</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">remove_stopwords</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">pipeline_components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Return a doc from a text.</span>
 
 <span class="sd">    Args:</span>
@@ -1813,132 +2007,213 @@ more information.</p></td>
     <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="n">disable</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">)</span>
     <span class="n">nlp</span><span class="o">.</span><span class="n">max_length</span> <span class="o">=</span> <span class="n">max_length</span>
     <span class="k">if</span> <span class="n">add_stopwords</span><span class="p">:</span>
-        <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">add_stopwords</span><span class="p">)</span> <span class="c1"># A set, e.g. {&quot;and&quot;, &quot;the&quot;}</span>
+        <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">add_stopwords</span><span class="p">)</span>  <span class="c1"># A set, e.g. {&quot;and&quot;, &quot;the&quot;}</span>
     <span class="k">if</span> <span class="n">remove_stopwords</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">remove_stopwords</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
             <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="p">{}</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">remove_stopwords</span><span class="p">)</span> <span class="c1"># A set, e.g. {&quot;and&quot;, &quot;the&quot;}</span>
+            <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span>
+                <span class="n">remove_stopwords</span>
+            <span class="p">)</span>  <span class="c1"># A set, e.g. {&quot;and&quot;, &quot;the&quot;}</span>
     <span class="k">if</span> <span class="n">pipeline_components</span> <span class="ow">and</span> <span class="s2">&quot;custom&quot;</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">[</span><span class="s2">&quot;custom&quot;</span><span class="p">]:</span>
             <span class="n">nlp</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="o">**</span><span class="n">component</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.tokenizer.make_docs" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">make_docs</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">2000000</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[],</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[],</span> <span class="n">add_stopwords</span><span class="o">=</span><span class="p">[],</span> <span class="n">remove_stopwords</span><span class="o">=</span><span class="p">[],</span> <span class="n">pipeline_components</span><span class="o">=</span><span class="p">[])</span></code>
 
-
 <a href="#lexos.tokenizer.make_docs" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Return a list of docs from a text or list of texts.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>text</code></td>
-        <td><code>Union[List[str], str]</code></td>
-        <td><p>The text(s) to be parsed.</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
-      <tr>
-        <td><code>model</code></td>
-        <td><code>object</code></td>
-        <td><p>The model to be used.</p></td>
-        <td><code>&#39;xx_sent_ud_sm&#39;</code></td>
-      </tr>
-      <tr>
-        <td><code>max_length</code></td>
-        <td><code>int</code></td>
-        <td><p>The maximum length of the doc.</p></td>
-        <td><code>2000000</code></td>
-      </tr>
-      <tr>
-        <td><code>disable</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>A list of spaCy pipeline components to disable.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-      <tr>
-        <td><code>exclude</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>A list of spaCy pipeline components to exclude.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-      <tr>
-        <td><code>add_stopwords</code></td>
-        <td><code>List[str]</code></td>
-        <td><p>A list of stop words to add to the model.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-      <tr>
-        <td><code>remove_stopwords</code></td>
-        <td><code>Union[List[str], str]</code></td>
-        <td><p>A list of stop words to remove
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>texts</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="typing.List">List</span>[str], str]</code>
+          </td>
+          <td><p>The text(s) to be parsed.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>model</code></td>
+          <td>
+                <code>object</code>
+          </td>
+          <td><p>The model to be used.</p></td>
+          <td>
+                <code>&#39;xx_sent_ud_sm&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>max_length</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>The maximum length of the doc.</p></td>
+          <td>
+                <code>2000000</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>disable</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>A list of spaCy pipeline components to disable.</p></td>
+          <td>
+                <code>[]</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>exclude</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>A list of spaCy pipeline components to exclude.</p></td>
+          <td>
+                <code>[]</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>add_stopwords</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>A list of stop words to add to the model.</p></td>
+          <td>
+                <code>[]</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>remove_stopwords</code></td>
+          <td>
+                <code><span title="typing.Union">Union</span>[<span title="typing.List">List</span>[str], str]</code>
+          </td>
+          <td><p>A list of stop words to remove
 from the model. If "all" is specified, all stop words will be removed.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-      <tr>
-        <td><code>pipeline_components</code></td>
-        <td><code>List[dict]</code></td>
-        <td><p>A list custom component dicts to add
+          <td>
+                <code>[]</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>pipeline_components</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[dict]</code>
+          </td>
+          <td><p>A list custom component dicts to add
 to the pipeline. See <a href="https://spacy.io/api/language/#add_pipe">https://spacy.io/api/language/#add_pipe</a> for
 more information.</p></td>
-        <td><code>[]</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>list</code></td>
-      <td><p>A list of spaCy doc objects.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_docs</span><span class="p">(</span><span class="n">texts</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
-              <span class="n">model</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span>
-              <span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000000</span><span class="p">,</span>
-              <span class="n">disable</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-              <span class="n">exclude</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-              <span class="n">add_stopwords</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-              <span class="n">remove_stopwords</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
-              <span class="n">pipeline_components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+          <td>
+                <code>[]</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
 
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.List">List</span>[object]</code>
+          </td>
+          <td><p>List[object]: A list of spaCy doc objects.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">make_docs</span><span class="p">(</span>
+    <span class="n">texts</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span>
+    <span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000000</span><span class="p">,</span>
+    <span class="n">disable</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">exclude</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">add_stopwords</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">remove_stopwords</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">pipeline_components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Return a list of docs from a text or list of texts.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        text (Union[List[str], str]): The text(s) to be parsed.</span>
+<span class="sd">        texts (Union[List[str], str]): The text(s) to be parsed.</span>
 <span class="sd">        model (object): The model to be used.</span>
 <span class="sd">        max_length (int): The maximum length of the doc.</span>
 <span class="sd">        disable (List[str]): A list of spaCy pipeline components to disable.</span>
@@ -1951,111 +2226,141 @@ more information.</p></td>
 <span class="sd">            more information.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        list: A list of spaCy doc objects.</span>
+<span class="sd">        List[object]: A list of spaCy doc objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">disable</span> <span class="o">=</span> <span class="n">_get_disabled_components</span><span class="p">(</span><span class="n">disable</span><span class="p">,</span> <span class="n">pipeline_components</span><span class="p">)</span>
     <span class="n">exclude</span> <span class="o">=</span> <span class="n">_get_excluded_components</span><span class="p">(</span><span class="n">exclude</span><span class="p">,</span> <span class="n">pipeline_components</span><span class="p">)</span>
     <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="n">disable</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">)</span>
     <span class="n">nlp</span><span class="o">.</span><span class="n">max_length</span> <span class="o">=</span> <span class="n">max_length</span>
     <span class="k">if</span> <span class="n">add_stopwords</span><span class="p">:</span>
-        <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">add_stopwords</span><span class="p">)</span> <span class="c1"># A set, e.g. {&quot;and&quot;, &quot;the&quot;}</span>
+        <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">add_stopwords</span><span class="p">)</span>  <span class="c1"># A set, e.g. {&quot;and&quot;, &quot;the&quot;}</span>
     <span class="k">if</span> <span class="n">remove_stopwords</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">remove_stopwords</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
             <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="p">{}</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">remove_stopwords</span><span class="p">)</span> <span class="c1"># A set, e.g. {&quot;and&quot;, &quot;the&quot;}</span>
+            <span class="n">nlp</span><span class="o">.</span><span class="n">Defaults</span><span class="o">.</span><span class="n">stop_words</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span>
+                <span class="n">remove_stopwords</span>
+            <span class="p">)</span>  <span class="c1"># A set, e.g. {&quot;and&quot;, &quot;the&quot;}</span>
     <span class="k">if</span> <span class="n">pipeline_components</span> <span class="ow">and</span> <span class="s2">&quot;custom&quot;</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">pipeline_components</span><span class="p">[</span><span class="s2">&quot;custom&quot;</span><span class="p">]:</span>
             <span class="n">nlp</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="o">**</span><span class="n">component</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">ensure_list</span><span class="p">(</span><span class="n">texts</span><span class="p">)))</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
 
+</div>
 
-
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
 <h3 id="lexos.tokenizer.ngrams_from_doc" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">ngrams_from_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></code>
 
-
 <a href="#lexos.tokenizer.ngrams_from_doc" class="headerlink" title="Permanent link">¤</a></h3>
 
-    <div class="doc doc-contents first">
 
+  <div class="doc doc-contents first">
+  
       <p>Generate a list of ngrams from a spaCy doc.</p>
 <p>A wrapper for <code>textacy.extract.basics.ngrams</code>. With basic functionality.
 Further functionality can be accessed by calling <code>textacy</code> directly.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>ngrams</code></td>
-        <td><code>object</code></td>
-        <td><p>A spaCy doc</p></td>
-        <td><em>required</em></td>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
       </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>doc</code></td>
+          <td>
+                <code>object</code>
+          </td>
+          <td><p>A spaCy doc</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>size</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>The size of the ngrams.</p></td>
+          <td>
+                <code>2</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
       <tr>
-        <td><code>size</code></td>
-        <td><code>int</code></td>
-        <td><p>The size of the ngrams.</p></td>
-        <td><code>2</code></td>
+        <th>Type</th>
+        <th>Description</th>
       </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>List[str]</code></td>
-      <td><p>A list of ngrams.</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">ngrams_from_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>List[str]: A list of ngrams.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ngrams_from_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Generate a list of ngrams from a spaCy doc.</span>
 
 <span class="sd">    A wrapper for `textacy.extract.basics.ngrams`. With basic functionality.</span>
 <span class="sd">    Further functionality can be accessed by calling `textacy` directly.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        ngrams (object): A spaCy doc</span>
+<span class="sd">        doc (object): A spaCy doc</span>
 <span class="sd">        size (int): The size of the ngrams.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        List[str]: A list of ngrams.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">textacy.extract.basics.ngrams</span> <span class="k">as</span> <span class="nn">textacy_ngrams</span>
+
     <span class="n">ngrams</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">textacy_ngrams</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">min_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
     <span class="c1"># Ensure quoted strings are returned</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">ngrams</span><span class="p">]</span>
-</code></pre></div>
-        </details>
-    </div>
-
+</code></pre></div></td></tr></table></div>
+      </details>
   </div>
+
+</div>
 
               
             </article>
@@ -2063,7 +2368,7 @@ Further functionality can be accessed by calling <code>textacy</code> directly.<
           </div>
         </div>
         
-          <a href="#" class="md-top md-top--hidden md-icon" data-md-component="top">
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
             Back to top
           </a>
@@ -2166,10 +2471,10 @@ Further functionality can be accessed by calling <code>textacy</code> directly.<
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.b028fd86.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.0f659f14.min.js"></script>
+      <script src="../../assets/javascripts/bundle.431f3d41.min.js"></script>
       
     
   </body>
