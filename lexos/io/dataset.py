@@ -8,8 +8,11 @@ This class currently supports data in the following formats:
 """
 
 import io
-import json
-from typing import IO, AnyStr, Dict, List, Optional, Type, TypeVar
+import itertools
+import tempfile
+import zipfile
+from pathlib import Path
+from typing import IO, Any, AnyStr, Dict, List, Optional, Type, TypeVar, Union
 
 import pandas as pd
 from pydantic import BaseModel
@@ -46,7 +49,7 @@ class Dataset(BaseModel):
             List[str]: The locations of the object data.
         """
         if "locations" in self.df.columns:
-            return self.df["locations"].values.tolist()
+            return self.dataframe["locations"].values.tolist()
         else:
             return None
 
@@ -57,7 +60,7 @@ class Dataset(BaseModel):
         Returns:
             List[str]: The names of the object data.
         """
-        return self.df["title"].values.tolist()
+        return self.dataframe["title"].values.tolist()
 
     @property
     def texts(self) -> List[str]:
@@ -66,7 +69,7 @@ class Dataset(BaseModel):
         Returns:
             List[str]: The texts of the object data.
         """
-        return self.df["text"].values.tolist()
+        return self.dataframe["text"].values.tolist()
 
     def df(self) -> pd.DataFrame:
         """Return the dataframe of the object data.
@@ -155,21 +158,40 @@ class Dataset(BaseModel):
         return cls.parse_obj({"data": df.to_dict(orient="records")})
 
     @classmethod
-    def parse_json(cls: Type["Model"], source: str,) -> "Model":
+    def parse_json(
+        cls: Type["Model"],
+        source: str,
+        title_field: Optional[str] = None,
+        text_field: Optional[str] = None,
+        **kwargs: Dict[str, str],
+    ) -> "Model":
         """Parse JSON files or strings.
 
         Args:
             source (str): The json string to parse.
+            title_field (Optional[str]): The field name to convert to "title".
+            text_field (Optional[str]): The field name to convert to "text".
 
         Returns:
             Model: A dataset object.
         """
         try:
             with open(source) as f:
-                doc = json.loads(f.read())
-            return cls.parse_obj({"data": doc})
+                df = pd.read_json(f, **kwargs)
         except Exception:
-            return cls.parse_obj({"data": source})
+            df = pd.read_json(io.StringIO(source), **kwargs)
+        if title_field:
+            df = df.rename(columns={title_field: "title"})
+        if text_field:
+            df = df.rename(columns={text_field: "text"})
+        if "title" not in df.columns or "text" not in df.columns:
+            err = (
+                "JSON files must contain fields named `title` and `text`. ",
+                "You can convert the names of existing fields to these with the ",
+                "`title_field` and `text_field` parameters.",
+            )
+            raise Exception(err)
+        return cls.parse_obj({"data": df.to_dict(orient="records")})
 
     @classmethod
     def parse_jsonl(
@@ -265,3 +287,199 @@ class Dataset(BaseModel):
         except:
             pass
         return io.StringIO(source)
+
+
+class DatasetLoader:
+    """Loads a dataset.
+
+    Usage:
+        loader = DatasetLoader(source)
+        dataset = loader.dataset
+
+    Notes:
+      - Different types of data may require different keyword parameters. Error messages
+        provide some help in identifying what keywords are required.
+      - The class will handle lists of sources, but errors may occur if the sources are
+        of different formats or require different arguments or argument values.
+    """
+
+    def __init__(
+        self,
+        source: Any,
+        labels: List[str] = None,
+        locations: Optional[List[str]] = None,
+        title_col: Optional[str] = None,
+        text_col: Optional[str] = None,
+        title_field: Optional[str] = None,
+        text_field: Optional[str] = None,
+        location_col: Optional[str] = None,
+        location_field: Optional[str] = None,
+        **kwargs: Dict[str, str],
+    ) -> Union[Dataset, List[Dataset]]:
+        """Initialise the loader.
+
+        Args:
+            source (Any): The source type to detect.
+            labels (List[str]): The labels to use.
+            locations (Optional[List[str]]): The locations of the texts.
+            title_col (str): The name of the column containing the titles.
+            text_col (str): The name of the column containing the texts.
+            title_field (str): The name of the field containing the titles.
+            text_field (str): The name of the field containing the texts.
+            location_col (str): The name of the column containing the locations.
+            location_field (str): The name of the field containing the locations.
+
+        Return:
+            Dataset: A Dataset object.
+        """
+        if isinstance(source, list):
+            new_data = [
+                self.load(
+                    item,
+                    labels,
+                    locations,
+                    title_col,
+                    text_col,
+                    title_field,
+                    text_field,
+                    location_col,
+                    location_field,
+                    **kwargs,
+                ).data
+                for item in source
+            ]
+            # Flatten the list of lists of dicts
+            combined_data = list(itertools.chain(*new_data))
+            self.data = Dataset.parse_obj({"data": combined_data})
+        else:
+            self.data = self.load(
+                source,
+                labels,
+                locations,
+                title_col,
+                text_col,
+                title_field,
+                text_field,
+                location_col,
+                location_field,
+                **kwargs,
+            )
+
+    def load(
+        self,
+        source: Any,
+        labels: List[str] = None,
+        locations: Optional[List[str]] = None,
+        title_col: Optional[str] = None,
+        text_col: Optional[str] = None,
+        title_field: Optional[str] = None,
+        text_field: Optional[str] = None,
+        location_col: Optional[str] = None,
+        location_field: Optional[str] = None,
+        **kwargs: Dict[str, str],
+    ) -> Dataset:
+        """Load the given file.
+
+        Args:
+            source (Any): The source the data to load.
+            labels (List[str]): The labels to use.
+            locations (Optional[List[str]]): The locations of the texts.
+            title_col (str): The name of the column containing the titles.
+            text_col (str): The name of the column containing the texts.
+            title_field (str): The name of the field containing the titles.
+            text_field (str): The name of the field containing the texts.
+            location_col (str): The name of the column containing the locations.
+            location_field (str): The name of the field containing the locations.
+
+        Returns:
+            Dataset: A Data object.
+        """
+        ext = Path(source).suffix
+        if ext == "" or ext == ".txt":
+            return Dataset.parse_string(source, labels, locations)
+        elif ext == ".csv":
+            return Dataset.parse_csv(source, title_col, text_col, **kwargs)
+        elif ext == ".tsv":
+            return Dataset.parse_csv(source, title_col, text_col, **kwargs)
+        elif ext == ".xlsx":
+            return Dataset.parse_excel(source, title_col, text_col, **kwargs)
+        elif ext == ".json":
+            return Dataset.parse_json(source, title_field, text_field, **kwargs)
+        elif ext == ".jsonl":
+            return Dataset.parse_jsonl(source, title_field, text_field, **kwargs)
+        elif ext == ".zip":
+            return self._load_zip(
+                source,
+                labels,
+                locations,
+                title_col,
+                text_col,
+                title_field,
+                text_field,
+                location_col,
+                location_field,
+                *kwargs,
+            )
+        else:
+            raise Exception(f"Unknown source type: {source}")
+
+    def _load_zip(
+        self,
+        file_path: str,
+        labels: List[str] = None,
+        locations: Optional[List[str]] = None,
+        title_col: Optional[str] = None,
+        text_col: Optional[str] = None,
+        title_field: Optional[str] = None,
+        text_field: Optional[str] = None,
+        location_col: Optional[str] = None,
+        location_field: Optional[str] = None,
+        **kwargs: Dict[str, str],
+    ) -> Dataset:
+        """
+        Load a zip file.
+
+        Args:
+            file_path (str): The path to the file to load.
+            source (Any): The source the data to load.
+            labels (List[str]): The labels to use.
+            locations (Optional[List[str]]): The locations of the texts.
+            title_col (str): The name of the column containing the titles.
+            text_col (str): The name of the column containing the texts.
+            title_field (str): The name of the field containing the titles.
+            text_field (str): The name of the field containing the texts.
+            location_col (str): The name of the column containing the locations.
+            location_field (str): The name of the field containing the locations.
+
+        Returns:
+            Dataset: A Data object.
+        """
+        new_data = []
+        with open(file_path, "rb") as f:
+            with zipfile.ZipFile(f) as zip:
+                with tempfile.TemporaryDirectory() as tempdir:
+                    zip.extractall(tempdir)
+                    for tmp_path in Path(tempdir).glob("**/*"):
+                        if (
+                            tmp_path.is_file()
+                            and not tmp_path.suffix == ""
+                            and not str(tmp_path).startswith("__MACOSX")
+                            and not str(tmp_path).startswith(".ds_store")
+                        ):
+                            new_data.append(
+                                self.load(
+                                    tmp_path,
+                                    labels,
+                                    locations,
+                                    title_col,
+                                    text_col,
+                                    title_field,
+                                    text_field,
+                                    location_col,
+                                    location_field,
+                                    **kwargs,
+                                ).data
+                            )
+        # Flatten the list of lists of dicts
+        combined_data = list(itertools.chain(*new_data))
+        return Dataset.parse_obj(data=combined_data)
