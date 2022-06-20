@@ -83,7 +83,8 @@ class Dataset(BaseModel):
         Returns:
             Iterable: The dataset.
         """
-        return iter(self.data)
+        for item in iter(self.data):
+            yield item
 
     def __getitem__(self, item: int) -> Dict[str, str]:
         """Get an item from dataset.
@@ -427,7 +428,8 @@ class DatasetLoader:
         Returns:
             Iterable: The dataset.
         """
-        return iter(self.data)
+        for item in iter(self.data):
+            yield item
 
     def __getitem__(self, item: int) -> Dict[str, str]:
         """Get an item from dataset.
