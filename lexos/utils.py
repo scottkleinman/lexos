@@ -48,6 +48,18 @@ def ensure_path(path: Any) -> Any:
         return path
 
 
+def get_paths(path: Union[Path, str],) -> list:
+    """Get a list paths in a directory.
+
+    Args:
+        path(str): The path to the directory.
+
+    Returns:
+        A list of file paths.
+    """
+    return list(Path(path).glob("**/*"))
+
+
 def get_github_raw_paths(
     path: Union[Path, str],
     user: Optional[str] = None,

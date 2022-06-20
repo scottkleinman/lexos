@@ -1,10 +1,24 @@
 """dataset.py.
 
 This class currently supports data in the following formats:
+  - dicts, line-delimited texts, csv, tsv, Excel, dict, json, and jsonl formats
+  - Input from strings, filepaths, or urls (except for dict and Excel data)
+  - Lists of the above, provided that all items in the list are of the same format
 
-    - dicts, line-delimited texts, csv, tsv, Excel, dict, json, and jsonl formats
-    - Input from strings, filepaths, or urls (except for dict and Excel data)
-    - Lists of the above, provided that all items in the list are of the same format
+Tested:
+  - string and file inputs for line-delimited texts, csv, tsv, Excel, dict, json, and jsonl formats
+  - local directories with files of the same format (DatasetLoader)
+  - zip archives (DatasetLoader)
+
+To do:
+  - Test dict format
+  - Test remote directories (DatasetLoader)
+
+Notes:
+  - The Dataset class accepts only single files as input. To load lists of files or zipped files,
+    use the DatasetLoader class.
+  - There could be some issues reading in encoding.
+  - Also, the class does not currently decode dataset data.
 """
 
 import io
@@ -12,11 +26,13 @@ import itertools
 import tempfile
 import zipfile
 from pathlib import Path
-from typing import IO, Any, AnyStr, Dict, List, Optional, Type, TypeVar, Union
+from typing import IO, Any, AnyStr, Dict, Iterable, List, Optional, Type, TypeVar, Union
 
 import pandas as pd
 from pydantic import BaseModel
 from smart_open import open
+
+from lexos import utils
 
 Model = TypeVar("Model", bound="BaseModel")
 
@@ -25,21 +41,11 @@ class Dataset(BaseModel):
     """Dataset class."""
 
     data: Optional[List[Dict[str, str]]] = None
-    dataframe: Optional[pd.DataFrame] = None
 
     class Config:
         """Config class."""
 
         arbitrary_types_allowed = True
-
-    @property
-    def dataframe(self) -> pd.DataFrame:
-        """Return the dataframe of the object data.
-
-        Returns:
-            pd.DataFrame: The dataframe of the object data.
-        """
-        return pd.DataFrame(self.data)
 
     @property
     def locations(self) -> List[str]:
@@ -48,8 +54,8 @@ class Dataset(BaseModel):
         Returns:
             List[str]: The locations of the object data.
         """
-        if "locations" in self.df.columns:
-            return self.dataframe["locations"].values.tolist()
+        if any("location" in item for item in self.data):
+            return [item["locations"] for item in self.data]
         else:
             return None
 
@@ -60,7 +66,7 @@ class Dataset(BaseModel):
         Returns:
             List[str]: The names of the object data.
         """
-        return self.dataframe["title"].values.tolist()
+        return [item["title"] for item in self.data]
 
     @property
     def texts(self) -> List[str]:
@@ -69,7 +75,26 @@ class Dataset(BaseModel):
         Returns:
             List[str]: The texts of the object data.
         """
-        return self.dataframe["text"].values.tolist()
+        return [item["text"] for item in self.data]
+
+    def __iter__(self) -> Iterable:
+        """Iterate over the dataset.
+
+        Returns:
+            Iterable: The dataset.
+        """
+        return iter(self.data)
+
+    def __getitem__(self, item: int) -> Dict[str, str]:
+        """Get an item from dataset.
+
+        Args:
+            item: The index of the item to get.
+
+        Returns:
+            Dict[str, str]: The item at the given index.
+        """
+        return self.data[item]
 
     def df(self) -> pd.DataFrame:
         """Return the dataframe of the object data.
@@ -77,7 +102,7 @@ class Dataset(BaseModel):
         Returns:
             pd.DataFrame: The dataframe of the object data.
         """
-        return self.dataframe
+        return pd.DataFrame(self.data)
 
     @classmethod
     def parse_csv(
@@ -109,7 +134,7 @@ class Dataset(BaseModel):
                 "You can convert the names of existing headers to these with the ",
                 "`title_col` and `text_col` parameters.",
             )
-            raise Exception(err)
+            raise Exception("".join(err))
         return cls.parse_obj({"data": df.to_dict(orient="records")})
 
     @classmethod
@@ -142,8 +167,10 @@ class Dataset(BaseModel):
         Returns:
             Model: A dataset object.
         """
-        source = cls._get_file_like(source)
-        df = pd.read_excel(source, **kwargs)
+        try:
+            df = pd.read_excel(source, **kwargs)
+        except Exception as e:
+            raise Exception(f"Could not read {source}: {e}")
         if title_col:
             df = df.rename(columns={title_col: "title"})
         if text_col:
@@ -250,7 +277,7 @@ class Dataset(BaseModel):
             )
         # Handle files
         try:
-            with open(source) as f:
+            with open(source, "r", encoding="utf-8") as f:
                 source = f.readlines()
         # Handle strings
         except Exception:
@@ -282,7 +309,7 @@ class Dataset(BaseModel):
             IO[AnyStr]: A file-like object containing the source.
         """
         try:
-            with open(source) as f:
+            with open(source, "r", encoding="utf-8") as f:
                 source = f.read()
         except:
             pass
@@ -348,9 +375,8 @@ class DatasetLoader:
                 ).data
                 for item in source
             ]
-            # Flatten the list of lists of dicts
-            combined_data = list(itertools.chain(*new_data))
-            self.data = Dataset.parse_obj({"data": combined_data})
+            # Data a Dataset with the flattened list of dicts
+            self.data = Dataset(data=list(itertools.chain(*new_data)))
         else:
             self.data = self.load(
                 source,
@@ -364,6 +390,55 @@ class DatasetLoader:
                 location_field,
                 **kwargs,
             )
+
+    @property
+    def locations(self) -> List[str]:
+        """Return the locations of the object data.
+
+        Returns:
+            List[str]: The locations of the object data.
+        """
+        if any("location" in item for item in self.data):
+            return [item["locations"] for item in self.data]
+        else:
+            return None
+
+    @property
+    def names(self) -> List[str]:
+        """Return the names of the object data.
+
+        Returns:
+            List[str]: The names of the object data.
+        """
+        return [item["title"] for item in self.data]
+
+    @property
+    def texts(self) -> List[str]:
+        """Return the texts of the object data.
+
+        Returns:
+            List[str]: The names of the object data.
+        """
+        return [item["text"] for item in self.data]
+
+    def __iter__(self) -> Iterable:
+        """Iterate over the dataset.
+
+        Returns:
+            Iterable: The dataset.
+        """
+        return iter(self.data)
+
+    def __getitem__(self, item: int) -> Dict[str, str]:
+        """Get an item from dataset.
+
+        Args:
+            item: The index of the item to get.
+
+        Returns:
+            Dict[str, str]: The item at the given index.
+        """
+        return self.data[item]
 
     def load(
         self,
@@ -394,34 +469,80 @@ class DatasetLoader:
         Returns:
             Dataset: A Data object.
         """
-        ext = Path(source).suffix
-        if ext == "" or ext == ".txt":
-            return Dataset.parse_string(source, labels, locations)
-        elif ext == ".csv":
-            return Dataset.parse_csv(source, title_col, text_col, **kwargs)
-        elif ext == ".tsv":
-            return Dataset.parse_csv(source, title_col, text_col, **kwargs)
-        elif ext == ".xlsx":
-            return Dataset.parse_excel(source, title_col, text_col, **kwargs)
-        elif ext == ".json":
-            return Dataset.parse_json(source, title_field, text_field, **kwargs)
-        elif ext == ".jsonl":
-            return Dataset.parse_jsonl(source, title_field, text_field, **kwargs)
-        elif ext == ".zip":
-            return self._load_zip(
-                source,
-                labels,
-                locations,
-                title_col,
-                text_col,
-                title_field,
-                text_field,
-                location_col,
-                location_field,
-                *kwargs,
-            )
+        if not utils.is_dir(source) and not utils.is_url(source):
+            ext = Path(source).suffix
+            if ext == "" or ext == ".txt":
+                return Dataset.parse_string(source, labels, locations)
+            elif ext == ".csv":
+                return Dataset.parse_csv(source, title_col, text_col, **kwargs)
+            elif ext == ".tsv":
+                return Dataset.parse_csv(source, title_col, text_col, **kwargs)
+            elif ext == ".xlsx":
+                return Dataset.parse_excel(source, title_col, text_col, **kwargs)
+            elif ext == ".json":
+                return Dataset.parse_json(source, title_field, text_field, **kwargs)
+            elif ext == ".jsonl":
+                return Dataset.parse_jsonl(source, title_field, text_field, **kwargs)
+            elif ext == ".zip":
+                return self._load_zip(
+                    source,
+                    labels,
+                    locations,
+                    title_col,
+                    text_col,
+                    title_field,
+                    text_field,
+                    location_col,
+                    location_field,
+                    *kwargs,
+                )
+        elif utils.is_dir(source):
+            new_data = []
+            paths = utils.get_paths(source)
+            for path in paths:
+                new_data.append(
+                    self.load(
+                        path,
+                        labels,
+                        locations,
+                        title_col,
+                        text_col,
+                        title_field,
+                        text_field,
+                        location_col,
+                        location_field,
+                        **kwargs,
+                    )
+                )
+            # Return a Dataset with the flattened list of dicts
+            return Dataset(data=list(itertools.chain(*new_data)))
+        elif utils.is_url(source):
+            if "github.com" in source:
+                new_data = []
+                paths = utils.get_github_raw_paths(
+                    source=source, user="scottkleinman", repo="lexos", branch="main",
+                )
+                for path in paths:
+                    new_data.append(
+                        self.load(
+                            path,
+                            labels,
+                            locations,
+                            title_col,
+                            text_col,
+                            title_field,
+                            text_field,
+                            location_col,
+                            location_field,
+                            **kwargs,
+                        )
+                    )
+            # Return a Dataset with the flattened list of dicts
+            return Dataset(data=list(itertools.chain(*new_data)))
         else:
-            raise Exception(f"Unknown source type: {source}")
+            raise Exception(
+                f"{source} is an unknown source type or requires different arguments than the other sources in the directory."
+            )
 
     def _load_zip(
         self,
@@ -480,6 +601,6 @@ class DatasetLoader:
                                     **kwargs,
                                 ).data
                             )
-        # Flatten the list of lists of dicts
-        combined_data = list(itertools.chain(*new_data))
-        return Dataset.parse_obj(data=combined_data)
+        # Return a Dataset with the flattened list of dicts
+        return Dataset(data=list(itertools.chain(*new_data)))
+
