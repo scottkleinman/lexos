@@ -36,6 +36,7 @@ nav:
       - IO:
           - Index: api/io/index.md
           - Basic: api/io/basic.md
+          - Smart: api/io/smart.md
       - Language_Model:
           - Index: api/language_model/index.md
       - Scrubber:
