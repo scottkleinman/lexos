@@ -104,6 +104,14 @@ def is_dir(filepath: Union[Path, str]) -> bool:
     return ensure_path(filepath).is_dir()
 
 
+def is_github_dir(filepath: Union[Path, str]) -> bool:
+    """Check if a path corresponds to a directory on GitHub."""
+    if "github.com" in str(filepath):
+        if ensure_path(filepath).suffix == "":
+            return True
+    return False
+
+
 def is_docx(filepath: Union[Path, str]) -> bool:
     """Check if a file is a docx."""
     return str(filepath).endswith(".docx")

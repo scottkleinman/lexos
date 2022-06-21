@@ -309,12 +309,15 @@ class Dataset(BaseModel):
         Returns:
             IO[AnyStr]: A file-like object containing the source.
         """
-        try:
-            with open(source, "r", encoding="utf-8") as f:
-                source = f.read()
-        except:
-            pass
-        return io.StringIO(source)
+        if utils.is_file(source) or utils.is_github_dir(source) == False:
+            try:
+                with open(source, "r", encoding="utf-8") as f:
+                    source = f.read()
+            except:
+                pass
+            return io.StringIO(source)
+        else:
+            raise Exception(f"{source} is not a valid file path or input string.")
 
 
 class DatasetLoader:
@@ -471,7 +474,9 @@ class DatasetLoader:
         Returns:
             Dataset: A Data object.
         """
-        if not utils.is_dir(source) and not utils.is_url(source):
+        if not utils.is_dir(source) and not utils.is_github_dir(
+            source
+        ):  # and not utils.is_url(source):
             ext = Path(source).suffix
             if ext == "" or ext == ".txt":
                 return Dataset.parse_string(source, labels, locations)
@@ -498,9 +503,12 @@ class DatasetLoader:
                     location_field,
                     *kwargs,
                 )
-        elif utils.is_dir(source):
+        elif utils.is_dir(source) or utils.is_github_dir(source):
             new_data = []
-            paths = utils.get_paths(source)
+            if utils.is_github_dir(source):
+                paths = utils.get_github_raw_paths(source)
+            else:
+                paths = utils.get_paths(source)
             for path in paths:
                 new_data.append(
                     self.load(
@@ -516,29 +524,6 @@ class DatasetLoader:
                         **kwargs,
                     )
                 )
-            # Return a Dataset with the flattened list of dicts
-            return Dataset(data=list(itertools.chain(*new_data)))
-        elif utils.is_url(source):
-            if "github.com" in source:
-                new_data = []
-                paths = utils.get_github_raw_paths(
-                    source=source, user="scottkleinman", repo="lexos", branch="main",
-                )
-                for path in paths:
-                    new_data.append(
-                        self.load(
-                            path,
-                            labels,
-                            locations,
-                            title_col,
-                            text_col,
-                            title_field,
-                            text_field,
-                            location_col,
-                            location_field,
-                            **kwargs,
-                        )
-                    )
             # Return a Dataset with the flattened list of dicts
             return Dataset(data=list(itertools.chain(*new_data)))
         else:
