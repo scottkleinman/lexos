@@ -19,12 +19,17 @@ jobs:
     # - name: "Run unit-tests"
     #   run: poetry run pytest --ignore=tests/test_scripts
     steps:
-      - uses: actions/checkout@v3
+      - name: "Set up Python"
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
       - name: Install poetry
+        uses: actions/checkout@v3
         run: pipx install poetry
-      - uses: actions/setup-python@v4
+      - name: Cache poetry
+        uses: actions/setup-python@v4
         with:
           python-version: "3.9"
           cache: "poetry"
       - run: poetry install
-      - run: poetry run pytest
+      - run: poetry run pytest --ignore=tests/test_scripts
