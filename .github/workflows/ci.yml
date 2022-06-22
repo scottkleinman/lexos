@@ -4,21 +4,6 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - name: "Set up Python"
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.9
-      - name: Install poetry
-        uses: actions/checkout@v3
-        run: pipx install poetry
-      - name: Cache poetry
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
-          cache: "poetry"
-      - run: poetry install
-      - run: poetry run pytest --ignore=tests/test_scripts
-    steps:
       - name: Check out repository
         uses: actions/checkout@v2
       - name: Set up python
