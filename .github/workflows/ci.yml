@@ -17,3 +17,7 @@ jobs:
           cache: "poetry"
       - name: "Install dependencies"
         run: poetry install --no-interaction --no-root
+      - name: "Run isort"
+        run: poetry run isort lexos
+      - name: "Run unit-tests"
+        run: poetry run pytest --ignore=tests/test_scripts
