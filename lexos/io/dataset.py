@@ -33,6 +33,7 @@ from pydantic import BaseModel
 from smart_open import open
 
 from lexos import utils
+from lexos.exceptions import LexosException
 
 Model = TypeVar("Model", bound="BaseModel")
 
@@ -135,7 +136,7 @@ class Dataset(BaseModel):
                 "You can convert the names of existing headers to these with the ",
                 "`title_col` and `text_col` parameters.",
             )
-            raise Exception("".join(err))
+            raise LexosException("".join(err))
         return cls.parse_obj({"data": df.to_dict(orient="records")})
 
     @classmethod
@@ -171,7 +172,7 @@ class Dataset(BaseModel):
         try:
             df = pd.read_excel(source, **kwargs)
         except Exception as e:
-            raise Exception(f"Could not read {source}: {e}")
+            raise LexosException(f"Could not read {source}: {e}")
         if title_col:
             df = df.rename(columns={title_col: "title"})
         if text_col:
@@ -182,7 +183,7 @@ class Dataset(BaseModel):
                 "You can convert the names of existing headers to these with the ",
                 "`title_col` and `text_col` parameters.",
             )
-            raise Exception(err)
+            raise LexosException(err)
         return cls.parse_obj({"data": df.to_dict(orient="records")})
 
     @classmethod
@@ -218,7 +219,7 @@ class Dataset(BaseModel):
                 "You can convert the names of existing fields to these with the ",
                 "`title_field` and `text_field` parameters.",
             )
-            raise Exception(err)
+            raise LexosException(err)
         return cls.parse_obj({"data": df.to_dict(orient="records")})
 
     @classmethod
@@ -252,7 +253,7 @@ class Dataset(BaseModel):
                 "You can convert the names of existing fields to these with the ",
                 "`title_field` and `text_field` parameters.",
             )
-            raise Exception(err)
+            raise LexosException(err)
         return cls.parse_obj({"data": df.to_dict(orient="records")})
 
     @classmethod
@@ -273,7 +274,7 @@ class Dataset(BaseModel):
             Model: A dataset object.
         """
         if not labels:
-            raise Exception(
+            raise LexosException(
                 "Please use the `labels` argument to provide a list of labels for each row in your data."
             )
         # Handle files
@@ -284,7 +285,7 @@ class Dataset(BaseModel):
         except Exception:
             source = source.split("\n")
         if len(labels) != len(source):
-            raise Exception(
+            raise LexosException(
                 f"The number of labels ({len(labels)}) does not match the number of lines ({len(source)}) in your data."
             )
         else:
@@ -294,7 +295,7 @@ class Dataset(BaseModel):
                     for i, _ in enumerate(data):
                         data[i]["locations"] = locations[i]
                 else:
-                    raise Exception(
+                    raise LexosException(
                         f"The number of locations ({len(locations)}) does not match the number of lines ({len(source)}) in your data."
                     )
             return cls.parse_obj({"data": data})
@@ -317,7 +318,7 @@ class Dataset(BaseModel):
                 pass
             return io.StringIO(source)
         else:
-            raise Exception(f"{source} is not a valid file path or input string.")
+            raise LexosException(f"{source} is not a valid file path or input string.")
 
 
 class DatasetLoader:
@@ -527,7 +528,7 @@ class DatasetLoader:
             # Return a Dataset with the flattened list of dicts
             return Dataset(data=list(itertools.chain(*new_data)))
         else:
-            raise Exception(
+            raise LexosException(
                 f"{source} is an unknown source type or requires different arguments than the other sources in the directory."
             )
 

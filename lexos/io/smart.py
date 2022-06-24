@@ -23,8 +23,10 @@ from lexos import utils
 from lexos.exceptions import LexosException
 
 LANG = {
-    "bad_source": "The source does not contain valid URL, file path, or directory path. Ensure that your source is a string, Path, or list of either.",
     "no_source": "No source provided. Please provide a source.",
+    "encoding_error": "Could not decode the text.",
+    "io_error": "File not found.",
+    "format_error": "The source does not contain valid URL, file path, or directory path. Ensure that your source is a string, Path, or list of either.",
 }
 
 
@@ -62,12 +64,36 @@ class Loader:
             path (str): The path to the text file.
             text (str): The text string.
         """
-        if self.decode:
-            self.texts.append(self._decode(text))
+        try:
+            if self.decode:
+                self.texts.append(self._decode(text))
+            else:
+                self.texts.append(text)
+            self.names.append(utils.ensure_path(path).stem)
+            self.locations.append(path)
+        except LexosException:
+            self.errors.append({"path": path, "message": LANG["encoding_error"]})
+
+    def _ensure_source(self, source: Union[List[Union[Path, str]], Path, str]) -> None:
+        """Ensure that either the object or the method supplies a source value.
+
+        Args:
+            source (Union[List[Union[Path, str]], Path, str]): The source.
+
+        Returns:
+            None: None.
+
+        Raises:
+            LexosException: If no source is provided.
+        """
+        if source:
+            self.source = source
+            self.decode = decode
         else:
-            self.texts.append(text)
-        self.names.append(Path(path).stem)
-        self.locations.append(path)
+            try:
+                assert self.source is not None
+            except AssertionError:
+                raise LexosException(LANG["no_source"])
 
     def _handle_source(self, path: Union[Path, str]) -> None:
         """Add a text based on source type.
@@ -75,7 +101,7 @@ class Loader:
         Args:
             path (str): The path to the text file.
         """
-        ext = Path(path).suffix
+        ext = utils.ensure_path(path).suffix
         path = str(path)
         if ext == ".zip":
             self._handle_zip(path)
@@ -108,8 +134,8 @@ class Loader:
                     ).startswith(".ds_store"):
                         self._add_text(path, zip.read(info))
 
-    def _validate_source(self, source: Any) -> bool:
-        """Validate a source.
+    def _validate_source(self, source: Any, is_valid: bool = True) -> bool:
+        """Validate that the source is a string or Path.
 
         Args:
             source (Any): A source.
@@ -118,29 +144,26 @@ class Loader:
             bool: Whether the source is valid.
         """
         if not isinstance(source, str) and not isinstance(source, Path):
-            self.errors.append(source)
-            return False
-        else:
-            return True
+            is_valid = False
+        return is_valid
 
     def load(
-        self, source: Union[List[Union[Path, str]], Path, str], decode: bool = True
+        self,
+        source: Union[List[Union[Path, str]], Path, str] = None,
+        decode: bool = True,
     ) -> None:
         """Load the source into a list of bytes and strings.
 
         Args:
             source (Union[List[Path, str], Path, str]): A source or list of sources.
             decode (bool): Whether to decode the source.
-
-        Raises:
-            LexosException: An error message.
         """
-        if not source:
-            raise LexosException(LANG["no_source"])
-        else:
-            self.source = source
+        self._ensure_source(source)
+
+        if decode:
             self.decode = decode
-        if isinstance(self.source, str) or isinstance(self.source, Path):
+
+        if not isinstance(self.source, list):
             self.source = [self.source]
 
         for path in self.source:
@@ -155,11 +178,6 @@ class Loader:
                     for filepath in utils.ensure_path(path).rglob("*"):
                         self._handle_source(filepath)
                 else:
-                    raise LexosException(f'{LANG["bad_source"]}: {path}')
+                    self.errors.append({"path": path, "message": LANG["io_error"]})
             else:
-                pass
-
-        if len(self.errors) > 0:
-            print("The following items were not loaded:")
-            for source in self.errors:
-                print(f"Error: {source}")
+                self.errors.append({"path": path, "message": LANG["format_error"]})
