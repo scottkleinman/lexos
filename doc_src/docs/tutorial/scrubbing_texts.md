@@ -4,18 +4,34 @@ Scrubber can be defined as a _destructive_ preprocessor. In other words, it chan
 
 Scrubbing works by applying a single function or a pipeline of functions to the text. As a reminder, we need to load the scrubber components registry with `from lexos.scrubber.registry import scrubber_components, load_components`.
 
+## Scrubber Components
+Scrubber components are divided into three categories:   
+1. [Normalize](https://scottkleinman.github.io/lexos/api/scrubber/normalize/) components are used to manipulate text into a standardized form.   
+2. [Remove](https://scottkleinman.github.io/lexos/api/scrubber/remove/) components are used to remove strings and patterns from text.   
+3. [Replace](https://scottkleinman.github.io/lexos/api/scrubber/replace/) components are used to replace strings and patterns in text.   
+
+Follow these links to view all of the default scrubber components.
+
 ## Loading Scrubber Components
-We can now load the components we want. We can load them individually, as in the first example below, or we can specify multiple components in a tuple, as in the second example. In both cases, the returned variable is a function, which we can then feed to a scrubbing pipeline.
+Components must be loaded before they can be used. We can load them individually, as in the first example below, or we can specify multiple components in a tuple, as in the second example. In both cases, the returned variable is a function, which we can then feed to a scrubbing pipeline.
 
 ```python
-# Load a component from the registry
+# Load a single component from the registry
 lower_case = scrubber_components.get("lower_case")
+#or
+#lower_case = load_component("lower_Case")
 
 # Or, if you want to do several at once...
-title_case, remove_digits = load_components(("title_case", "remove_digits"))
+punctuation, remove_digits = load_components(("punctuation", "remove_digits"))
 ```
 
 In the first example, a component is loaded using the registry's built-in `get` method. It is also possible to load a single component with the the [lexos.scrubber.registry.load_component][] helper method. This parallels [lexos.scrubber.registry.load_components][] for multiple components and is possibly easier to remember.
+
+## Using Components
+Loaded component functions can be called like any normal function. For example:
+`scrubbed_text = remove_digits("Lexos123", only=["2", "3"])` will return "Lexos1".
+
+If you are intending to apply multiple components to a single piece of text, the more efficient method is to use a pipeline.
 
 ## Making a Pipeline
 
@@ -25,7 +41,7 @@ Now let's make the pipeline. We simply feed our component function names into th
 # Make the pipeline
 scrub = make_pipeline(
     lower_case,
-    title_case,
+    punctuation,
     pipe(remove_digits, only=["1"])
 )
 ```
@@ -34,17 +50,14 @@ The value returned is a function that implements the full pipeline when called o
 
 ```python
 # Scrub the text
-scrubbed_text = scrub("Lexos is the number 12 text analysis tool.")
+scrubbed_text = scrub("Lexos is the number 12 text analysis tool!!")
 ```
 
-This will return "Lexos Is The Number 2 Text Analysis Tool".
-
-!!! Note
-    You can also call component functions without a pipeline. For instance,`scrubbed_text = remove_digits("Lexos123", only=["2", "3"])` will return "Lexos1".
+This will return "lexos is the number 2 text analysis tool"
 
 ## Custom Scrubbing Components
 
-The `title_case` function in the example above will not work because `title_case` is a custom component. To use it, we need to add it to the registry.
+Users can write and use custom scrubbing functions. The function is written like a normal function, and to use it like a scrubber component it must be added to the registry. Below is an example with a custom `title_case` function.
 
 ```python
 # Define the custom function
