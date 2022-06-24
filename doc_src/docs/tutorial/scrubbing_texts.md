@@ -22,7 +22,7 @@ lower_case = scrubber_components.get("lower_case")
 #lower_case = load_component("lower_Case")
 
 # Or, if you want to do several at once...
-punctuation, remove_digits = load_components(("punctuation", "remove_digits"))
+punctuation, remove_digits = load_components(("punctuation", "digits"))
 ```
 
 In the first example, a component is loaded using the registry's built-in `get` method. It is also possible to load a single component with the the [lexos.scrubber.registry.load_component][] helper method. This parallels [lexos.scrubber.registry.load_components][] for multiple components and is possibly easier to remember.
