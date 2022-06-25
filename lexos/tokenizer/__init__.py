@@ -1,14 +1,18 @@
 """__init__.py."""
 
-from typing import List, Union
+from typing import Any, List, Union
 
 import spacy
-
 from lexos import utils
+from lexos.exceptions import LexosException
 
 from . import extensions, lexosdoc
 
 default_model = spacy.load("xx_sent_ud_sm")
+
+LANG = {
+    "format_error": f"Expected a string, Doc, or bytes as input, but got:",
+}
 
 
 def _get_excluded_components(
@@ -39,6 +43,49 @@ def _get_disabled_components(
     return list(set(disable))
 
 
+def _input_is_valid(input: Any) -> bool:
+    """Test the input for validity.
+
+    Args:
+        input (Any): The input to be tested.
+
+    Returns:
+        bool: Whether the input is valid.
+    """
+    if not isinstance(input, list):
+        input = [input]
+    for item in input:
+        if not isinstance(item, (str, spacy.tokens.doc.Doc, bytes)):
+            message = f"Error reading {item}. {LANG['format_error']} {str(type(item))}"
+            raise LexosException(message)
+    return True
+
+
+def _load_model(
+    model: str, disable: List[str] = None, exclude: List[str] = None
+) -> object:
+    """Load a model from a file.
+
+    Args:
+        model (str): The path to the model.
+        disable (List[str]): A list of spaCy pipeline components to disable.
+        exclude (List[str]): A list of spaCy pipeline components to exclude.
+
+    Returns:
+        object: The loaded model.
+
+    Note:
+        Attempts to disable or exclude components not found in the pipeline are
+        ignored without raising an error.
+    """
+    try:
+        return spacy.load(model, disable=disable, exclude=exclude)
+    except Exception:
+        raise LexosException(
+            f"Error loading model {model}. Please check the model name and try again."
+        )
+
+
 def make_doc(
     text: str,
     model: object = "xx_sent_ud_sm",
@@ -67,23 +114,24 @@ def make_doc(
     Returns:
         object: A spaCy doc object.
     """
-    disable = _get_disabled_components(disable, pipeline_components)
-    exclude = _get_excluded_components(exclude, pipeline_components)
-    nlp = spacy.load(model, disable=disable, exclude=exclude)
-    nlp.max_length = max_length
-    if add_stopwords:
-        nlp.Defaults.stop_words |= set(add_stopwords)  # A set, e.g. {"and", "the"}
-    if remove_stopwords:
-        if remove_stopwords == "all":
-            nlp.Defaults.stop_words |= {}
-        else:
-            nlp.Defaults.stop_words |= set(
-                remove_stopwords
-            )  # A set, e.g. {"and", "the"}
-    if pipeline_components and "custom" in pipeline_components:
-        for component in pipeline_components["custom"]:
-            nlp.add_pipe(**component)
-    return nlp(text)
+    if _input_is_valid(text):
+        disable = _get_disabled_components(disable, pipeline_components)
+        exclude = _get_excluded_components(exclude, pipeline_components)
+        nlp = _load_model(model, disable=disable, exclude=exclude)
+        nlp.max_length = max_length
+        if add_stopwords:
+            nlp.Defaults.stop_words |= set(add_stopwords)  # A set, e.g. {"and", "the"}
+        if remove_stopwords:
+            if remove_stopwords == "all":
+                nlp.Defaults.stop_words |= {}
+            else:
+                nlp.Defaults.stop_words |= set(
+                    remove_stopwords
+                )  # A set, e.g. {"and", "the"}
+        if pipeline_components and "custom" in pipeline_components:
+            for component in pipeline_components["custom"]:
+                nlp.add_pipe(**component)
+        return nlp(text)
 
 
 def make_docs(
@@ -114,23 +162,24 @@ def make_docs(
     Returns:
         List[object]: A list of spaCy doc objects.
     """
-    disable = _get_disabled_components(disable, pipeline_components)
-    exclude = _get_excluded_components(exclude, pipeline_components)
-    nlp = spacy.load(model, disable=disable, exclude=exclude)
-    nlp.max_length = max_length
-    if add_stopwords:
-        nlp.Defaults.stop_words |= set(add_stopwords)  # A set, e.g. {"and", "the"}
-    if remove_stopwords:
-        if remove_stopwords == "all":
-            nlp.Defaults.stop_words |= {}
-        else:
-            nlp.Defaults.stop_words |= set(
-                remove_stopwords
-            )  # A set, e.g. {"and", "the"}
-    if pipeline_components and "custom" in pipeline_components:
-        for component in pipeline_components["custom"]:
-            nlp.add_pipe(**component)
-    return list(nlp.pipe(utils.ensure_list(texts)))
+    if _input_is_valid(texts):
+        disable = _get_disabled_components(disable, pipeline_components)
+        exclude = _get_excluded_components(exclude, pipeline_components)
+        nlp = _load_model(model, disable=disable, exclude=exclude)
+        nlp.max_length = max_length
+        if add_stopwords:
+            nlp.Defaults.stop_words |= set(add_stopwords)  # A set, e.g. {"and", "the"}
+        if remove_stopwords:
+            if remove_stopwords == "all":
+                nlp.Defaults.stop_words |= {}
+            else:
+                nlp.Defaults.stop_words |= set(
+                    remove_stopwords
+                )  # A set, e.g. {"and", "the"}
+        if pipeline_components and "custom" in pipeline_components:
+            for component in pipeline_components["custom"]:
+                nlp.add_pipe(**component)
+        return list(nlp.pipe(utils.ensure_list(texts)))
 
 
 def doc_from_ngrams(ngrams: list, model="xx_sent_ud_sm", strict=False) -> object:
@@ -149,7 +198,7 @@ def doc_from_ngrams(ngrams: list, model="xx_sent_ud_sm", strict=False) -> object
         ngrams and split punctuation into separate tokens. `strict=True` will preserve the
         sequences in the source list.
     """
-    nlp = spacy.load(model)
+    nlp = _load_model(model)
     if strict:
         spaces = [False for token in ngrams if token != ""]
         doc = spacy.tokens.doc.Doc(nlp.vocab, words=ngrams, spaces=spaces)
@@ -215,6 +264,8 @@ def ngrams_from_doc(doc: object, size: int = 2) -> List[str]:
     """
     import textacy.extract.basics.ngrams as textacy_ngrams
 
+    if size < 1:
+        raise LexosException("The ngram size must be greater than 0.")
     ngrams = list(textacy_ngrams(doc, size, min_freq=1))
     # Ensure quoted strings are returned
     return [token.text for token in ngrams]
