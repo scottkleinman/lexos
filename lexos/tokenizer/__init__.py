@@ -43,24 +43,6 @@ def _get_disabled_components(
     return list(set(disable))
 
 
-def _input_is_valid(input: Any) -> bool:
-    """Test the input for validity.
-
-    Args:
-        input (Any): The input to be tested.
-
-    Returns:
-        bool: Whether the input is valid.
-    """
-    if not isinstance(input, list):
-        input = [input]
-    for item in input:
-        if not isinstance(item, (str, spacy.tokens.doc.Doc, bytes)):
-            message = f"Error reading {item}. {LANG['format_error']} {str(type(item))}"
-            raise LexosException(message)
-    return True
-
-
 def _load_model(
     model: str, disable: List[str] = None, exclude: List[str] = None
 ) -> object:
@@ -84,6 +66,28 @@ def _load_model(
         raise LexosException(
             f"Error loading model {model}. Please check the model name and try again."
         )
+
+
+def _validate_input(input: Any) -> None:
+    """Ensure that input is a string, Doc, or bytes.
+
+    Args:
+        input (Any): The input to be tested.
+
+    Returns:
+        None
+
+    Raises:
+        LexosException if the input is not valid.
+    """
+    if not isinstance(input, list):
+        input = [input]
+    for item in input:
+        if isinstance(item, (str, spacy.tokens.doc.Doc, bytes)):
+            return True
+        else:
+            message = f"Error reading {item}. {LANG['format_error']} {str(type(item))}"
+            raise LexosException(message)
 
 
 def make_doc(
@@ -114,24 +118,24 @@ def make_doc(
     Returns:
         object: A spaCy doc object.
     """
-    if _input_is_valid(text):
-        disable = _get_disabled_components(disable, pipeline_components)
-        exclude = _get_excluded_components(exclude, pipeline_components)
-        nlp = _load_model(model, disable=disable, exclude=exclude)
-        nlp.max_length = max_length
-        if add_stopwords:
-            nlp.Defaults.stop_words |= set(add_stopwords)  # A set, e.g. {"and", "the"}
-        if remove_stopwords:
-            if remove_stopwords == "all":
-                nlp.Defaults.stop_words |= {}
-            else:
-                nlp.Defaults.stop_words |= set(
-                    remove_stopwords
-                )  # A set, e.g. {"and", "the"}
-        if pipeline_components and "custom" in pipeline_components:
-            for component in pipeline_components["custom"]:
-                nlp.add_pipe(**component)
-        return nlp(text)
+    _validate_input(text)
+    disable = _get_disabled_components(disable, pipeline_components)
+    exclude = _get_excluded_components(exclude, pipeline_components)
+    nlp = _load_model(model, disable=disable, exclude=exclude)
+    nlp.max_length = max_length
+    if add_stopwords:
+        nlp.Defaults.stop_words |= set(add_stopwords)  # A set, e.g. {"and", "the"}
+    if remove_stopwords:
+        if remove_stopwords == "all":
+            nlp.Defaults.stop_words |= {}
+        else:
+            nlp.Defaults.stop_words |= set(
+                remove_stopwords
+            )  # A set, e.g. {"and", "the"}
+    if pipeline_components and "custom" in pipeline_components:
+        for component in pipeline_components["custom"]:
+            nlp.add_pipe(**component)
+    return nlp(text)
 
 
 def make_docs(
@@ -162,7 +166,7 @@ def make_docs(
     Returns:
         List[object]: A list of spaCy doc objects.
     """
-    if _input_is_valid(texts):
+    if _validate_input(texts):
         disable = _get_disabled_components(disable, pipeline_components)
         exclude = _get_excluded_components(exclude, pipeline_components)
         nlp = _load_model(model, disable=disable, exclude=exclude)
