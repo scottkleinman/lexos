@@ -88,7 +88,6 @@ class Loader:
         """
         if source:
             self.source = source
-            self.decode = decode
         else:
             try:
                 assert self.source is not None
