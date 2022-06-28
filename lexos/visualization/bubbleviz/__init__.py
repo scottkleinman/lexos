@@ -5,37 +5,83 @@ This is a very experimental module for making bubble charts.
 The easiest way to use it is to import it and call
 `bubble_chart(terms, area)` where `terms` is a list of terms
 and `area` is a list of corresponding counts or frequencies.
+Alternatively, you can use `bubble_chart_from_dtm(dtm)` where
+`dtm` is the output of `lexos.dtm.DTM`.
 """
-from typing import List, Union
+from typing import List, Optional, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from lexos.exceptions import LexosException
+from pydantic import BaseModel, ValidationError, validator
+
+
+class BubbleChartModel(BaseModel):
+    """Ensure BubbleChart inputs are valid."""
+
+    terms: list
+    area: list
+    limit: Optional[int] = 100
+    title: Optional[str] = None
+    bubble_spacing: Optional[Union[float, int]] = 0.1
+    colors: Optional[List[str]] = [
+        "#5A69AF",
+        "#579E65",
+        "#F9C784",
+        "#FC944A",
+        "#F24C00",
+        "#00B825",
+    ]
+    figsize: Optional[tuple] = (15, 15)
+    font_family: Optional[str] = "DejaVu Sans"
+    show: Optional[bool] = True
+    filename: Optional[str] = None
+
+    @validator("terms")
+    def check_terms_not_empty(cls, v):
+        """Ensure `terms` is not empty."""
+        if v == []:
+            raise ValueError("Empty term lists are not allowed.")
+        return v
+
+    @validator("area")
+    def check_area_not_empty(cls, v):
+        """Ensure `area` is not empty."""
+        if v == []:
+            raise ValueError("Empty area lists are not allowed.")
+        return v
+
+    # @validator("area")
+    # def num_terms_must_equal_area(cls, v, values):
+    #     """Ensure the number of terms equals the number of areas."""
+    #     if len(v["terms"]) != len(v["area"]):
+    #         raise ValueError(
+    #             "The number of terms must equal the number of counts or frequencies in the area."
+    #         )
+    #     return v
 
 
 class BubbleChart:
     """Bubble chart."""
 
-    def __init__(
-        self, area: list, bubble_spacing: Union[float, int] = 0, limit: int = 100
-    ):
-        """Setup bubble collapse.
+    def __init__(self, BubbleChartModel: BubbleChartModel):
+        """Instantiate a bubble chart from a BubbleChartModel.
 
         Args:
-            area (list): List of counts or frequencies
-            bubble_spacing: (Union[float, int]): The spacing between bubbles after collapsing.
-            limit (int): The maximum number of bubbles to display.
+            BubbleChartModel (BubbleChartModel): A BubbleChartModel
 
         Notes:
             - If "area" is sorted, the results might look weird.
             - If "limit" is raised too high, it will take a long time to generate the plot
             - Based on https://matplotlib.org/stable/gallery/misc/packed_bubbles.html.
         """
+        self.model = BubbleChartModel
         # Reduce the area to the limited number of terms
-        area = np.asarray(area[0:limit])
+        area = np.asarray(self.model.area[: self.model.limit])
         r = np.sqrt(area / np.pi)
 
-        self.bubble_spacing = bubble_spacing
+        self.bubble_spacing = self.model.bubble_spacing
         self.bubbles = np.ones((len(area), 4))
         self.bubbles[:, 2] = r
         self.bubbles[:, 3] = area
@@ -160,14 +206,22 @@ class BubbleChart:
             if moves / len(self.bubbles) < 0.1:
                 self.step_dist = self.step_dist / 2
 
-    def plot(self, ax: object, labels: List[str], colors: List[str]):
+    def plot(
+        self,
+        ax: object,
+        labels: List[str],
+        colors: List[str],
+        font_family: str = "Arial",
+    ):
         """Draw the bubble plot.
 
         Args:
             ax (matplotlib.axes.Axes): The matplotlib axes.
             labels (List[str]): The labels of the bubbles.
             colors (List[str]): The colors of the bubbles.
+            font_family (str): The font family.
         """
+        plt.rcParams["font.family"] = font_family
         color_num = 0
         for i in range(len(self.bubbles)):
             if color_num == len(colors) - 1:
@@ -186,12 +240,13 @@ class BubbleChart:
             )
 
 
-def bubbleviz(
-    dtm: Union[dict, list, object, pd.DataFrame, str, tuple],
-    limit: int = 100,
-    title: str = None,
-    bubble_spacing: Union[float, int] = 0.1,
-    colors: List[str] = [
+def create_bubble_chart(
+    terms: List[str],
+    area: List[Union[float, int]],
+    limit: Optional[int] = 100,
+    title: Optional[str] = None,
+    bubble_spacing: Optional[Union[float, int]] = 0.1,
+    colors: Optional[List[str]] = [
         "#5A69AF",
         "#579E65",
         "#F9C784",
@@ -199,33 +254,51 @@ def bubbleviz(
         "#F24C00",
         "#00B825",
     ],
-    figsize: tuple = (15, 15),
-    show: bool = True,
-    filename: str = None,
+    figsize: Optional[tuple] = (15, 15),
+    font_family: Optional[str] = "DejaVu Sans",
+    show: Optional[bool] = True,
+    filename: Optional[str] = None,
 ):
-    """Make bubble chart.
+    """Create a bubble chart.
 
     Args:
-        dtm (Union[dict, list, object, pd.DataFrame, str, tuple]): The output of dtm.DTM.
+        terms (List[str]): A list of terms to plot.
+        area (List[Union[float, int]]): A list of counts or frequencies corresponding to the terms.
         limit (int): The maximum number of bubbles to plot.
         title (str): The title of the plot.
         bubble_spacing (Union[float, int]): The spacing between bubbles.
         colors (List[str]): The colors of the bubbles.
         figsize (tuple): The size of the figure.
+        font_family: (Optional[str]): The font family of the plot.
         show (bool): Whether to show the plot.
         filename (str): The filename to save the plot to.
-    """
-    # Get the DTM table and term counts
-    df = dtm.get_table()
-    df["count"] = df.sum(axis=1)
-    terms = df["terms"].values.tolist()
-    area = df["count"].values.tolist()
 
-    # Create the bubble chart
-    bubble_chart = BubbleChart(area=area, bubble_spacing=bubble_spacing, limit=limit)
+    Raises:
+        ValueError: If any of the inputs are of the wrong type or if the length of the terms and
+        area lists are not the same.
+    """
+    # Ensure that the inputs are valid
+    try:
+        model = BubbleChartModel(
+            terms=terms,
+            area=area,
+            limit=limit,
+            title=title,
+            bubble_spacing=bubble_spacing,
+            colors=colors,
+            figsize=figsize,
+            font_family=font_family,
+            show=show,
+            filename=filename,
+        )
+        bubble_chart = BubbleChart(model)
+    except ValidationError as e:
+        raise LexosException(e.json())
+
+    # Create the figure
     bubble_chart.collapse()
     _, ax = plt.subplots(subplot_kw=dict(aspect="equal"), figsize=figsize)
-    bubble_chart.plot(ax, terms, colors=colors)
+    bubble_chart.plot(ax, terms, colors=colors, font_family=font_family)
     ax.axis("off")
     ax.relim()
     ax.autoscale_view()
@@ -241,3 +314,60 @@ def bubbleviz(
     # Save the plot
     if filename:
         plt.to_file(filename)
+
+
+def create_bubble_chart_from_dtm(
+    dtm: Union[dict, list, object, pd.DataFrame, str, tuple],
+    limit: Optional[int] = 100,
+    title: Optional[str] = None,
+    bubble_spacing: Optional[Union[float, int]] = 0.1,
+    colors: Optional[List[str]] = [
+        "#5A69AF",
+        "#579E65",
+        "#F9C784",
+        "#FC944A",
+        "#F24C00",
+        "#00B825",
+    ],
+    figsize: Optional[tuple] = (15, 15),
+    font_family: Optional[str] = "DejaVu Sans",
+    show: Optional[bool] = True,
+    filename: Optional[str] = None,
+):
+    """Create a bubble chart from a DTM.
+
+    Args:
+        dtm (Union[dict, list, object, pd.DataFrame, str, tuple]): The output of dtm.DTM.
+        limit (int): The maximum number of bubbles to plot.
+        title (str): The title of the plot.
+        bubble_spacing (Union[float, int]): The spacing between bubbles.
+        colors (List[str]): The colors of the bubbles.
+        figsize (tuple): The size of the figure.
+        font_family: (Optional[str]): The font family of the plot.
+        show (bool): Whether to show the plot.
+        filename (str): The filename to save the plot to.
+
+    Raises:
+        LexosException: If the input is not a valid DTM.
+    """
+    # Ensure that the inputs are valid
+    try:
+        df = dtm.get_table()
+        df["count"] = df.sum(axis=1, numeric_only=True)
+        terms = df["terms"].values.tolist()
+        area = df["count"].values.tolist()
+    except Exception:
+        raise LexosException("The input is not a valid DTM object.")
+    create_bubble_chart(
+        terms=terms,
+        area=area,
+        limit=limit,
+        title=title,
+        bubble_spacing=bubble_spacing,
+        colors=colors,
+        figsize=figsize,
+        font_family=font_family,
+        show=show,
+        filename=filename,
+    )
+
