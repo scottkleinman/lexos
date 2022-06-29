@@ -266,7 +266,7 @@ def ngrams_from_doc(doc: object, size: int = 2) -> List[str]:
     Returns:
         List[str]: A list of ngrams.
     """
-    import textacy.extract.basics.ngrams as textacy_ngrams
+    from textacy.extract.basics import ngrams as textacy_ngrams
 
     if size < 1:
         raise LexosException("The ngram size must be greater than 0.")
