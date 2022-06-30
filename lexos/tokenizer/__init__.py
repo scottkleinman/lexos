@@ -15,6 +15,40 @@ LANG = {
 }
 
 
+def _add_remove_stopwords(
+    nlp: spacy.Vocab,
+    add_stopwords: Union[List[str], str],
+    remove_stopwords: Union[bool, List[str], str],
+) -> spacy.Vocab:
+    """Add and remove stopwords from the model.
+
+    Args:
+        nlp (spacy.Vocab): The model to add stopwords to.
+        add_stopwords (Union[List[str], str]): A list of stopwords to add to the model.
+        remove_stopwords (Union[bool, List[str], str]): A list of stopwords to remove from the
+                                                        model, or `True` to remove all stopwords.
+
+    Returns:
+        spacy.Vocab: The model with stopwords added and removed.
+    """
+    if add_stopwords:
+        if not isinstance(add_stopwords, list):
+            add_stopwords = [add_stopwords]
+        for term in add_stopwords:
+            nlp.vocab[term].is_stop = True
+    if remove_stopwords:
+        if remove_stopwords == True:
+            for term in nlp.vocab:
+                if term.is_stop:
+                    term.is_stop = False
+        else:
+            if not isinstance(remove_stopwords, list):
+                remove_stopwords = [remove_stopwords]
+            for term in remove_stopwords:
+                nlp.vocab[term].is_stop = False
+    return nlp
+
+
 def _get_excluded_components(
     exclude: List[str] = None, pipeline_components: dict = None
 ) -> List[str]:
@@ -123,15 +157,7 @@ def make_doc(
     exclude = _get_excluded_components(exclude, pipeline_components)
     nlp = _load_model(model, disable=disable, exclude=exclude)
     nlp.max_length = max_length
-    if add_stopwords:
-        nlp.Defaults.stop_words |= set(add_stopwords)  # A set, e.g. {"and", "the"}
-    if remove_stopwords:
-        if remove_stopwords == "all":
-            nlp.Defaults.stop_words |= {}
-        else:
-            nlp.Defaults.stop_words |= set(
-                remove_stopwords
-            )  # A set, e.g. {"and", "the"}
+    _add_remove_stopwords(nlp, add_stopwords, remove_stopwords)
     if pipeline_components and "custom" in pipeline_components:
         for component in pipeline_components["custom"]:
             nlp.add_pipe(**component)
@@ -175,9 +201,9 @@ def make_docs(
             nlp.Defaults.stop_words |= set(add_stopwords)  # A set, e.g. {"and", "the"}
         if remove_stopwords:
             if remove_stopwords == "all":
-                nlp.Defaults.stop_words |= {}
+                nlp.Defaults.stop_words -= {}
             else:
-                nlp.Defaults.stop_words |= set(
+                nlp.Defaults.stop_words -= set(
                     remove_stopwords
                 )  # A set, e.g. {"and", "the"}
         if pipeline_components and "custom" in pipeline_components:
@@ -266,7 +292,7 @@ def ngrams_from_doc(doc: object, size: int = 2) -> List[str]:
     Returns:
         List[str]: A list of ngrams.
     """
-    from textacy.extract.basics import ngrams as textacy_ngrams
+    import textacy.extract.basics.ngrams as textacy_ngrams
 
     if size < 1:
         raise LexosException("The ngram size must be greater than 0.")
