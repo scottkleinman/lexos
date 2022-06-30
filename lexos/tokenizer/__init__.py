@@ -130,8 +130,8 @@ def make_doc(
     max_length: int = 2000000,
     disable: List[str] = [],
     exclude: List[str] = [],
-    add_stopwords: List[str] = [],
-    remove_stopwords: Union[List[str], str] = [],
+    add_stopwords: Union[List[str], str] = [],
+    remove_stopwords: Union[bool, List[str], str] = [],
     pipeline_components: List[dict] = [],
 ) -> object:
     """Return a doc from a text.
@@ -142,9 +142,9 @@ def make_doc(
         max_length (int): The maximum length of the doc.
         disable (List[str]): A list of spaCy pipeline components to disable.
         exclude (List[str]): A list of spaCy pipeline components to exclude.
-        add_stopwords (List[str]): A list of stop words to add to the model.
-        remove_stopwords (Union[List[str], str]): A list of stop words to remove
-            from the model. If "all" is specified, all stop words will be removed.
+        add_stopwords (Union[List[str], str]): A list of stop words to add to the model.
+        remove_stopwords (Union[bool, List[str], str]): A list of stop words to remove
+            from the model. If `True` is specified, all stop words will be removed.
         pipeline_components (List[dict]): A list custom component dicts to add
             to the pipeline. See https://spacy.io/api/language/#add_pipe for
             more information.
@@ -170,8 +170,8 @@ def make_docs(
     max_length: int = 2000000,
     disable: List[str] = [],
     exclude: List[str] = [],
-    add_stopwords: List[str] = [],
-    remove_stopwords: Union[List[str], str] = [],
+    add_stopwords: Union[List[str], str] = [],
+    remove_stopwords: Union[bool, List[str], str] = [],
     pipeline_components: List[dict] = [],
 ) -> List[object]:
     """Return a list of docs from a text or list of texts.
@@ -182,9 +182,9 @@ def make_docs(
         max_length (int): The maximum length of the doc.
         disable (List[str]): A list of spaCy pipeline components to disable.
         exclude (List[str]): A list of spaCy pipeline components to exclude.
-        add_stopwords (List[str]): A list of stop words to add to the model.
-        remove_stopwords (Union[List[str], str]): A list of stop words to remove
-            from the model. If "all" is specified, all stop words will be removed.
+        add_stopwords (Union[List[str], str]): A list of stop words to add to the model.
+        remove_stopwords (Union[bool, List[str], str]): A list of stop words to remove
+            from the model. If `True` is specified, all stop words will be removed.
         pipeline_components (List[dict]): A list custom component dicts to add
             to the pipeline. See https://spacy.io/api/language/#add_pipe for
             more information.
@@ -197,15 +197,7 @@ def make_docs(
         exclude = _get_excluded_components(exclude, pipeline_components)
         nlp = _load_model(model, disable=disable, exclude=exclude)
         nlp.max_length = max_length
-        if add_stopwords:
-            nlp.Defaults.stop_words |= set(add_stopwords)  # A set, e.g. {"and", "the"}
-        if remove_stopwords:
-            if remove_stopwords == "all":
-                nlp.Defaults.stop_words -= {}
-            else:
-                nlp.Defaults.stop_words -= set(
-                    remove_stopwords
-                )  # A set, e.g. {"and", "the"}
+        _add_remove_stopwords(nlp, add_stopwords, remove_stopwords)
         if pipeline_components and "custom" in pipeline_components:
             for component in pipeline_components["custom"]:
                 nlp.add_pipe(**component)
@@ -292,7 +284,7 @@ def ngrams_from_doc(doc: object, size: int = 2) -> List[str]:
     Returns:
         List[str]: A list of ngrams.
     """
-    import textacy.extract.basics.ngrams as textacy_ngrams
+    from textacy.extract.basics import ngrams as textacy_ngrams
 
     if size < 1:
         raise LexosException("The ngram size must be greater than 0.")
