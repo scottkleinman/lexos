@@ -1559,7 +1559,7 @@
     <span class="n">add_stopwords</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span> <span class="s2">&quot;maybe&quot;</span><span class="p">]</span>
 <span class="p">)</span>
 </code></pre></div>
-<p>The <code>remove_stopwords</code> argument removes stop words from the default list. If <code>remove_stopwords="all"</code>, all stop words are removed.</p>
+<p>The <code>remove_stopwords</code> argument removes stop words from the default list. If <code>remove_stopwords=True</code>, all stop words are removed.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p><code>add_stopwords</code> and <code>remove_stopwords</code> do not remove stop word tokens from the doc; rather, they modify the stop word list used to set the <code>is_stop</code> attribute of individual tokens. To get a list of tokens without stop words, you must do something like <code>[token for token in doc if not token.is_stop]</code>. If you a are producing a corpus of documents in which the documents will be processed by different models, it is most efficient to process the documents in batches, one batch for each model.</p>

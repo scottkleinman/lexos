@@ -112,7 +112,7 @@ doc = tokenizer.make_doc(
 )
 ```
 
-The `remove_stopwords` argument removes stop words from the default list. If `remove_stopwords="all"`, all stop words are removed.
+The `remove_stopwords` argument removes stop words from the default list. If `remove_stopwords=True`, all stop words are removed.
 
 !!! important
     `add_stopwords` and `remove_stopwords` do not remove stop word tokens from the doc; rather, they modify the stop word list used to set the `is_stop` attribute of individual tokens. To get a list of tokens without stop words, you must do something like `[token for token in doc if not token.is_stop]`. If you a are producing a corpus of documents in which the documents will be processed by different models, it is most efficient to process the documents in batches, one batch for each model.
