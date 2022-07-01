@@ -3,6 +3,8 @@
 import re
 from typing import Callable, List, Union
 
+import spacy
+
 from lexos.cutter import registry
 
 
@@ -143,11 +145,18 @@ class Ginsu:
                     doc_segments.append(doc[index : index + (d + 1 if i < r else d)])
             # Append the doc segments to the list for all docs
             segments.append(doc_segments)
-        # Convert the list of list segements to a list of spaCy doc segments
-        segmented_docs = [
-            [segment.as_doc() for segment in segmented_doc]
-            for segmented_doc in segments
-        ]
+        # Convert the list of list segemnts to a list of spaCy doc segments
+        # segmented_docs = [
+        #     [segment.as_doc() for segment in segmented_doc]
+        #     for segmented_doc in segments
+        # ]
+        segmented_docs = []
+        for segmented_doc in segments:
+            for segment in segmented_doc:
+                if isinstance(segment, spacy.tokens.doc.Doc):
+                    segmented_docs.append(segment)
+                else:
+                    segmented_docs.append(segment.as_doc())
         return segmented_docs
 
     def split_on_milestones(
@@ -654,7 +663,7 @@ class Machete:
                         seg_start_distance * index : seg_start_distance * index
                         + segment_size
                     ]
-                return spans.as_doc()
+                return spans  # spans.as_doc()
 
         # Return the list of segments, evaluating for last segment
         segments = [
