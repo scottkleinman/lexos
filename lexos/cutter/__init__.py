@@ -457,7 +457,7 @@ class Machete:
             segments = self._split_overlap(token_list, n, merge_threshold, overlap)
         else:
             # Get the segments
-            segments = list(self._chunk_doc(token_list, n))
+            segments = list(self._chunk_tokens(token_list, n))
             # Apply the merge threshold
             if len(segments[-1]) < n * merge_threshold:
                 last_seg = segments.pop(-1)
