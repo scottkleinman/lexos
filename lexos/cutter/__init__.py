@@ -43,7 +43,7 @@ class Ginsu:
         from spacy.tokens import Doc
 
         if overlap:
-            segments = self.split_overlap(doc, n, merge_threshold, overlap)
+            segments = self._split_overlap(doc, n, merge_threshold, overlap)
         else:
             # Get the segments
             segments = list(self._chunk_doc(doc, n))
@@ -454,7 +454,7 @@ class Machete:
             list: A list of token lists.
         """
         if overlap:
-            segments = self.split_overlap(token_list, n, merge_threshold, overlap)
+            segments = self._split_overlap(token_list, n, merge_threshold, overlap)
         else:
             # Get the segments
             segments = list(self._chunk_doc(token_list, n))
@@ -510,10 +510,10 @@ class Machete:
                     last_seg = segments.pop(-1)
                     # Combine the last two segments into a single list
                     segments[-1] = segments[-1] + last_seg
-            if as_string:
-                all_segments.append(["".join(segment) for segment in segments])
-            else:
-                all_segments.append(segments)
+                if as_string:
+                    all_segments.append(["".join(segment) for segment in segments])
+                else:
+                    all_segments.append(segments)
 
         return all_segments
 
