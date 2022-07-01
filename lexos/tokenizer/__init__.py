@@ -204,13 +204,21 @@ def make_docs(
         return list(nlp.pipe(utils.ensure_list(texts)))
 
 
-def doc_from_ngrams(ngrams: list, model="xx_sent_ud_sm", strict=False) -> object:
+def doc_from_ngrams(
+    ngrams: list,
+    model="xx_sent_ud_sm",
+    strict: bool = False,
+    disable: List[str] = [],
+    exclude: List[str] = [],
+) -> object:
     """Generate spaCy doc from a list of ngrams.
 
     Args:
         ngrams (list): A list of ngrams.
         model (object): The language model to use for tokenisation.
         strict (bool): Whether to preserve token divisions, include whitespace in the source.
+        disable (List[str]): A list of spaCy pipeline components to disable.
+        exclude (List[str]): A list of spaCy pipeline components to exclude.
 
     Returns:
         object: A spaCy doc
@@ -220,7 +228,7 @@ def doc_from_ngrams(ngrams: list, model="xx_sent_ud_sm", strict=False) -> object
         ngrams and split punctuation into separate tokens. `strict=True` will preserve the
         sequences in the source list.
     """
-    nlp = _load_model(model)
+    nlp = _load_model(model, disable=disable, exclude=exclude)
     if strict:
         spaces = [False for token in ngrams if token != ""]
         doc = spacy.tokens.doc.Doc(nlp.vocab, words=ngrams, spaces=spaces)
@@ -234,7 +242,11 @@ def doc_from_ngrams(ngrams: list, model="xx_sent_ud_sm", strict=False) -> object
 
 
 def docs_from_ngrams(
-    ngrams: List[list], model="xx_sent_ud_sm", strict=False
+    ngrams: List[list],
+    model="xx_sent_ud_sm",
+    strict=False,
+    disable: List[str] = [],
+    exclude: List[str] = [],
 ) -> List[object]:
     """Generate spaCy doc from a list of ngram lists.
 
@@ -242,13 +254,17 @@ def docs_from_ngrams(
         ngrams (List[list]): A list of ngram lists.
         model (object): The language model to use for tokenisation.
         strict (bool): Whether to preserve token divisions, include whitespace in the source.
+        disable (List[str]): A list of spaCy pipeline components to disable.
+        exclude (List[str]): A list of spaCy pipeline components to exclude.
 
     Returns:
         List[object]: A list of spaCy docs
     """
     docs = []
     for ngram_list in ngrams:
-        doc = doc_from_ngrams(ngram_list, model, strict)
+        doc = doc_from_ngrams(
+            ngram_list, model, strict, disable=disable, exclude=exclude
+        )
         docs.append(doc)
     return docs
 
