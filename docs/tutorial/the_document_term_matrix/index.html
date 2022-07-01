@@ -1516,7 +1516,7 @@
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.dtm</span> <span class="kn">import</span> <span class="n">get_doc_term_counts</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">get_doc_term_counts</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<p>Setting <code>normalize=True</code> will return relative frequencies instead of raw counts. <a class="autorefs autorefs-internal" href="../../api/dtm/#lexos.dtm.get_doc_term_counts">lexos.dtm.get_doc_term_counts</a> has various parameters for limiting and filtering the output based on token labels or regex patterns.</p>
+<p>Setting <code>normalize=True</code> will return relative frequencies instead of raw counts. [lexos.dtm.get_doc_term_counts][] has various parameters for limiting and filtering the output based on token labels or regex patterns.</p>
 <h2 id="the-dtm-class">The <code>DTM</code> Class<a class="headerlink" href="#the-dtm-class" title="Permanent link">¤</a></h2>
 <p>Lexos also wraps Textacy's <code>Vectorizer</code> in the <a class="autorefs autorefs-internal" href="../../api/dtm/#lexos.dtm.DTM">lexos.dtm.DTM</a> class with greater functionality. You can import it with</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.dtm</span> <span class="kn">import</span> <span class="n">DTM</span>

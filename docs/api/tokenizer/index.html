@@ -1598,7 +1598,7 @@
 
 
 <h3 id="lexos.tokenizer.doc_from_ngrams" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">doc_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">doc_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[],</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[])</span></code>
 
 <a href="#lexos.tokenizer.doc_from_ngrams" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -1646,6 +1646,26 @@
           <td><p>Whether to preserve token divisions, include whitespace in the source.</p></td>
           <td>
                 <code>False</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>disable</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>A list of spaCy pipeline components to disable.</p></td>
+          <td>
+                <code>[]</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>exclude</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>A list of spaCy pipeline components to exclude.</p></td>
+          <td>
+                <code>[]</code>
           </td>
         </tr>
     </tbody>
@@ -1703,13 +1723,29 @@ sequences in the source list.</p>
 <span class="normal">230</span>
 <span class="normal">231</span>
 <span class="normal">232</span>
-<span class="normal">233</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">doc_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">doc_from_ngrams</span><span class="p">(</span>
+    <span class="n">ngrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span>
+    <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">disable</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">exclude</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Generate spaCy doc from a list of ngrams.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        ngrams (list): A list of ngrams.</span>
 <span class="sd">        model (object): The language model to use for tokenisation.</span>
 <span class="sd">        strict (bool): Whether to preserve token divisions, include whitespace in the source.</span>
+<span class="sd">        disable (List[str]): A list of spaCy pipeline components to disable.</span>
+<span class="sd">        exclude (List[str]): A list of spaCy pipeline components to exclude.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        object: A spaCy doc</span>
@@ -1719,7 +1755,7 @@ sequences in the source list.</p>
 <span class="sd">        ngrams and split punctuation into separate tokens. `strict=True` will preserve the</span>
 <span class="sd">        sequences in the source list.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">nlp</span> <span class="o">=</span> <span class="n">_load_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">nlp</span> <span class="o">=</span> <span class="n">_load_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="n">disable</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
         <span class="n">spaces</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">ngrams</span> <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
         <span class="n">doc</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Doc</span><span class="p">(</span><span class="n">nlp</span><span class="o">.</span><span class="n">vocab</span><span class="p">,</span> <span class="n">words</span><span class="o">=</span><span class="n">ngrams</span><span class="p">,</span> <span class="n">spaces</span><span class="o">=</span><span class="n">spaces</span><span class="p">)</span>
@@ -1741,7 +1777,7 @@ sequences in the source list.</p>
 
 
 <h3 id="lexos.tokenizer.docs_from_ngrams" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">docs_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">docs_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;xx_sent_ud_sm&#39;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[],</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[])</span></code>
 
 <a href="#lexos.tokenizer.docs_from_ngrams" class="headerlink" title="Permanent link">¤</a></h3>
 
@@ -1791,6 +1827,26 @@ sequences in the source list.</p>
                 <code>False</code>
           </td>
         </tr>
+        <tr>
+          <td><code>disable</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>A list of spaCy pipeline components to disable.</p></td>
+          <td>
+                <code>[]</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>exclude</code></td>
+          <td>
+                <code><span title="typing.List">List</span>[str]</code>
+          </td>
+          <td><p>A list of spaCy pipeline components to exclude.</p></td>
+          <td>
+                <code>[]</code>
+          </td>
+        </tr>
     </tbody>
   </table>
 
@@ -1814,15 +1870,7 @@ sequences in the source list.</p>
 
       <details class="quote">
         <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">244</span>
 <span class="normal">245</span>
 <span class="normal">246</span>
 <span class="normal">247</span>
@@ -1831,8 +1879,28 @@ sequences in the source list.</p>
 <span class="normal">250</span>
 <span class="normal">251</span>
 <span class="normal">252</span>
-<span class="normal">253</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">docs_from_ngrams</span><span class="p">(</span>
-    <span class="n">ngrams</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">list</span><span class="p">],</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">docs_from_ngrams</span><span class="p">(</span>
+    <span class="n">ngrams</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">list</span><span class="p">],</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">,</span>
+    <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">disable</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">exclude</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Generate spaCy doc from a list of ngram lists.</span>
 
@@ -1840,13 +1908,17 @@ sequences in the source list.</p>
 <span class="sd">        ngrams (List[list]): A list of ngram lists.</span>
 <span class="sd">        model (object): The language model to use for tokenisation.</span>
 <span class="sd">        strict (bool): Whether to preserve token divisions, include whitespace in the source.</span>
+<span class="sd">        disable (List[str]): A list of spaCy pipeline components to disable.</span>
+<span class="sd">        exclude (List[str]): A list of spaCy pipeline components to exclude.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        List[object]: A list of spaCy docs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">docs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">ngram_list</span> <span class="ow">in</span> <span class="n">ngrams</span><span class="p">:</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="n">doc_from_ngrams</span><span class="p">(</span><span class="n">ngram_list</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">strict</span><span class="p">)</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">doc_from_ngrams</span><span class="p">(</span>
+            <span class="n">ngram_list</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">strict</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="n">disable</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span>
+        <span class="p">)</span>
         <span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">docs</span>
 </code></pre></div></td></tr></table></div>
@@ -1933,22 +2005,22 @@ sequences in the source list.</p>
 
       <details class="quote">
         <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span>
-<span class="normal">259</span>
-<span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span>
-<span class="normal">269</span>
-<span class="normal">270</span>
-<span class="normal">271</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">generate_character_ngrams</span><span class="p">(</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">generate_character_ngrams</span><span class="p">(</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Generate character n-grams from raw text.</span>
@@ -2464,26 +2536,26 @@ Further functionality can be accessed by calling <code>textacy</code> directly.<
 
       <details class="quote">
         <summary>Source code in <code>lexos\tokenizer\__init__.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">274</span>
-<span class="normal">275</span>
-<span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">290</span>
 <span class="normal">291</span>
 <span class="normal">292</span>
-<span class="normal">293</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ngrams_from_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">ngrams_from_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Generate a list of ngrams from a spaCy doc.</span>
 
 <span class="sd">    A wrapper for `textacy.extract.basics.ngrams`. With basic functionality.</span>

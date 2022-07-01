@@ -1385,7 +1385,9 @@
 
 
 <h1 id="cutter">Cutter<a class="headerlink" href="#cutter" title="Permanent link">¤</a></h1>
-<p><code>Cutter</code> is a module that divides files, texts, or documents into segments. At present, it is highly experimental, and only the methods for splitting spaCy documents (pre-tokenised texts) is available. These methods are implemented through the class code-named "Ginsu".</p>
+<p><code>Cutter</code> is a module that divides files, texts, or documents into segments. At present, it is highly experimental, and only the methods for splitting spaCy documents (pre-tokenised texts) is available. These methods are implemented through two classes: <code>Ginsu</code> and <code>Machete</code>.</p>
+<p><code>Ginsu</code> acts as a more precise cutter, allowing for greater accuracy in exchange for longer loading times.</p>
+<p><code>Machete</code>, on the other hand, allows for faster loading in exchange for precision.</p>
 <iframe style="width: 560px; height: 315px; margin: auto;" src="https://www.youtube.com/embed/Sv_uL1Ar0oM" title="YouTube video player -- Ginsu knives" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
@@ -1418,9 +1420,7 @@
 
         <details class="quote">
           <summary>Source code in <code>lexos\cutter\__init__.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  9</span>
-<span class="normal"> 10</span>
-<span class="normal"> 11</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 11</span>
 <span class="normal"> 12</span>
 <span class="normal"> 13</span>
 <span class="normal"> 14</span>
@@ -1814,7 +1814,16 @@
 <span class="normal">402</span>
 <span class="normal">403</span>
 <span class="normal">404</span>
-<span class="normal">405</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Ginsu</span><span class="p">:</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Ginsu</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Codename Ginsu.</span>
 
 <span class="sd">    https://www.youtube.com/watch?v=Sv_uL1Ar0oM.</span>
@@ -1851,7 +1860,7 @@
         <span class="kn">from</span> <span class="nn">spacy.tokens</span> <span class="kn">import</span> <span class="n">Doc</span>
 
         <span class="k">if</span> <span class="n">overlap</span><span class="p">:</span>
-            <span class="n">segments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_overlap</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">merge_threshold</span><span class="p">,</span> <span class="n">overlap</span><span class="p">)</span>
+            <span class="n">segments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_split_overlap</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">merge_threshold</span><span class="p">,</span> <span class="n">overlap</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Get the segments</span>
             <span class="n">segments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_chunk_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
@@ -1951,11 +1960,18 @@
                     <span class="n">doc_segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="n">index</span> <span class="p">:</span> <span class="n">index</span> <span class="o">+</span> <span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">r</span> <span class="k">else</span> <span class="n">d</span><span class="p">)])</span>
             <span class="c1"># Append the doc segments to the list for all docs</span>
             <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc_segments</span><span class="p">)</span>
-        <span class="c1"># Convert the list of list segements to a list of spaCy doc segments</span>
-        <span class="n">segmented_docs</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="p">[</span><span class="n">segment</span><span class="o">.</span><span class="n">as_doc</span><span class="p">()</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segmented_doc</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">segmented_doc</span> <span class="ow">in</span> <span class="n">segments</span>
-        <span class="p">]</span>
+        <span class="c1"># Convert the list of list segemnts to a list of spaCy doc segments</span>
+        <span class="c1"># segmented_docs = [</span>
+        <span class="c1">#     [segment.as_doc() for segment in segmented_doc]</span>
+        <span class="c1">#     for segmented_doc in segments</span>
+        <span class="c1"># ]</span>
+        <span class="n">segmented_docs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">segmented_doc</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segmented_doc</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">spacy</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Doc</span><span class="p">):</span>
+                    <span class="n">segmented_docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">segmented_docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">as_doc</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">segmented_docs</span>
 
     <span class="k">def</span> <span class="nf">split_on_milestones</span><span class="p">(</span>
@@ -2242,9 +2258,9 @@
 
       <details class="quote">
         <summary>Source code in <code>lexos\cutter\__init__.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Initialize the class.&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
 </code></pre></div></td></tr></table></div>
@@ -2341,9 +2357,7 @@
 
       <details class="quote">
         <summary>Source code in <code>lexos\cutter\__init__.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">59</span>
 <span class="normal">60</span>
 <span class="normal">61</span>
 <span class="normal">62</span>
@@ -2379,7 +2393,9 @@
 <span class="normal">92</span>
 <span class="normal">93</span>
 <span class="normal">94</span>
-<span class="normal">95</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">split</span><span class="p">(</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">split</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">docs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">]],</span>
     <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
@@ -2512,9 +2528,7 @@
 
       <details class="quote">
         <summary>Source code in <code>lexos\cutter\__init__.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
@@ -2542,7 +2556,9 @@
 <span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
-<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">split_doc</span><span class="p">(</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">split_doc</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">doc</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
     <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
@@ -2563,7 +2579,7 @@
     <span class="kn">from</span> <span class="nn">spacy.tokens</span> <span class="kn">import</span> <span class="n">Doc</span>
 
     <span class="k">if</span> <span class="n">overlap</span><span class="p">:</span>
-        <span class="n">segments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_overlap</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">merge_threshold</span><span class="p">,</span> <span class="n">overlap</span><span class="p">)</span>
+        <span class="n">segments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_split_overlap</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">merge_threshold</span><span class="p">,</span> <span class="n">overlap</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Get the segments</span>
         <span class="n">segments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_chunk_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
@@ -2640,16 +2656,7 @@ beginning of every segment. Otherwise, it will be deleted.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>lexos\cutter\__init__.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">162</span>
 <span class="normal">163</span>
 <span class="normal">164</span>
 <span class="normal">165</span>
@@ -2660,7 +2667,16 @@ beginning of every segment. Otherwise, it will be deleted.</p></td>
 <span class="normal">170</span>
 <span class="normal">171</span>
 <span class="normal">172</span>
-<span class="normal">173</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">split_on_milestones</span><span class="p">(</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">split_on_milestones</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">milestone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">preserve_milestone</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Split document on a milestone.</span>
@@ -2806,9 +2822,7 @@ an overlap, even if it is longer than the other segments.</p></td>
 </details>
       <details class="quote">
         <summary>Source code in <code>lexos\cutter\__init__.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 99</span>
 <span class="normal">100</span>
 <span class="normal">101</span>
 <span class="normal">102</span>
@@ -2860,7 +2874,16 @@ an overlap, even if it is longer than the other segments.</p></td>
 <span class="normal">148</span>
 <span class="normal">149</span>
 <span class="normal">150</span>
-<span class="normal">151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">splitn</span><span class="p">(</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">splitn</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">docs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">]],</span>
     <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
@@ -2909,11 +2932,18 @@ an overlap, even if it is longer than the other segments.</p></td>
                 <span class="n">doc_segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="n">index</span> <span class="p">:</span> <span class="n">index</span> <span class="o">+</span> <span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">r</span> <span class="k">else</span> <span class="n">d</span><span class="p">)])</span>
         <span class="c1"># Append the doc segments to the list for all docs</span>
         <span class="n">segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc_segments</span><span class="p">)</span>
-    <span class="c1"># Convert the list of list segements to a list of spaCy doc segments</span>
-    <span class="n">segmented_docs</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">[</span><span class="n">segment</span><span class="o">.</span><span class="n">as_doc</span><span class="p">()</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segmented_doc</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">segmented_doc</span> <span class="ow">in</span> <span class="n">segments</span>
-    <span class="p">]</span>
+    <span class="c1"># Convert the list of list segemnts to a list of spaCy doc segments</span>
+    <span class="c1"># segmented_docs = [</span>
+    <span class="c1">#     [segment.as_doc() for segment in segmented_doc]</span>
+    <span class="c1">#     for segmented_doc in segments</span>
+    <span class="c1"># ]</span>
+    <span class="n">segmented_docs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">segmented_doc</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segmented_doc</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">spacy</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Doc</span><span class="p">):</span>
+                <span class="n">segmented_docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">segmented_docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">as_doc</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">segmented_docs</span>
 </code></pre></div></td></tr></table></div>
       </details>
@@ -2948,16 +2978,7 @@ an overlap, even if it is longer than the other segments.</p></td>
 
         <details class="quote">
           <summary>Source code in <code>lexos\cutter\__init__.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">408</span>
-<span class="normal">409</span>
-<span class="normal">410</span>
-<span class="normal">411</span>
-<span class="normal">412</span>
-<span class="normal">413</span>
-<span class="normal">414</span>
-<span class="normal">415</span>
-<span class="normal">416</span>
-<span class="normal">417</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">417</span>
 <span class="normal">418</span>
 <span class="normal">419</span>
 <span class="normal">420</span>
@@ -3209,7 +3230,16 @@ an overlap, even if it is longer than the other segments.</p></td>
 <span class="normal">666</span>
 <span class="normal">667</span>
 <span class="normal">668</span>
-<span class="normal">669</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Machete</span><span class="p">:</span>
+<span class="normal">669</span>
+<span class="normal">670</span>
+<span class="normal">671</span>
+<span class="normal">672</span>
+<span class="normal">673</span>
+<span class="normal">674</span>
+<span class="normal">675</span>
+<span class="normal">676</span>
+<span class="normal">677</span>
+<span class="normal">678</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Machete</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Codename Machete.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;whitespace&quot;</span><span class="p">):</span>
@@ -3258,10 +3288,10 @@ an overlap, even if it is longer than the other segments.</p></td>
 <span class="sd">            list: A list of token lists.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">overlap</span><span class="p">:</span>
-            <span class="n">segments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_overlap</span><span class="p">(</span><span class="n">token_list</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">merge_threshold</span><span class="p">,</span> <span class="n">overlap</span><span class="p">)</span>
+            <span class="n">segments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_split_overlap</span><span class="p">(</span><span class="n">token_list</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">merge_threshold</span><span class="p">,</span> <span class="n">overlap</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Get the segments</span>
-            <span class="n">segments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_chunk_doc</span><span class="p">(</span><span class="n">token_list</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+            <span class="n">segments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_chunk_tokens</span><span class="p">(</span><span class="n">token_list</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
             <span class="c1"># Apply the merge threshold</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">*</span> <span class="n">merge_threshold</span><span class="p">:</span>
                 <span class="n">last_seg</span> <span class="o">=</span> <span class="n">segments</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
@@ -3314,10 +3344,10 @@ an overlap, even if it is longer than the other segments.</p></td>
                     <span class="n">last_seg</span> <span class="o">=</span> <span class="n">segments</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
                     <span class="c1"># Combine the last two segments into a single list</span>
                     <span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">last_seg</span>
-            <span class="k">if</span> <span class="n">as_string</span><span class="p">:</span>
-                <span class="n">all_segments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">])</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">all_segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">as_string</span><span class="p">:</span>
+                    <span class="n">all_segments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">all_segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">all_segments</span>
 
@@ -3458,7 +3488,7 @@ an overlap, even if it is longer than the other segments.</p></td>
                         <span class="n">seg_start_distance</span> <span class="o">*</span> <span class="n">index</span> <span class="p">:</span> <span class="n">seg_start_distance</span> <span class="o">*</span> <span class="n">index</span>
                         <span class="o">+</span> <span class="n">segment_size</span>
                     <span class="p">]</span>
-                <span class="k">return</span> <span class="n">spans</span><span class="o">.</span><span class="n">as_doc</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">spans</span>  <span class="c1"># spans.as_doc()</span>
 
         <span class="c1"># Return the list of segments, evaluating for last segment</span>
         <span class="n">segments</span> <span class="o">=</span> <span class="p">[</span>
@@ -3502,9 +3532,9 @@ an overlap, even if it is longer than the other segments.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>lexos\cutter\__init__.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">411</span>
-<span class="normal">412</span>
-<span class="normal">413</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;whitespace&quot;</span><span class="p">):</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;whitespace&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Initialize the class.&quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizer</span>
 </code></pre></div></td></tr></table></div>
@@ -3621,16 +3651,7 @@ an overlap, even if it is longer than the other segments.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>lexos\cutter\__init__.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">468</span>
-<span class="normal">469</span>
-<span class="normal">470</span>
-<span class="normal">471</span>
-<span class="normal">472</span>
-<span class="normal">473</span>
-<span class="normal">474</span>
-<span class="normal">475</span>
-<span class="normal">476</span>
-<span class="normal">477</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">477</span>
 <span class="normal">478</span>
 <span class="normal">479</span>
 <span class="normal">480</span>
@@ -3671,7 +3692,16 @@ an overlap, even if it is longer than the other segments.</p></td>
 <span class="normal">515</span>
 <span class="normal">516</span>
 <span class="normal">517</span>
-<span class="normal">518</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">split</span><span class="p">(</span>
+<span class="normal">518</span>
+<span class="normal">519</span>
+<span class="normal">520</span>
+<span class="normal">521</span>
+<span class="normal">522</span>
+<span class="normal">523</span>
+<span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">split</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">texts</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">n</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
@@ -3716,10 +3746,10 @@ an overlap, even if it is longer than the other segments.</p></td>
                 <span class="n">last_seg</span> <span class="o">=</span> <span class="n">segments</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
                 <span class="c1"># Combine the last two segments into a single list</span>
                 <span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">last_seg</span>
-        <span class="k">if</span> <span class="n">as_string</span><span class="p">:</span>
-            <span class="n">all_segments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">all_segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">as_string</span><span class="p">:</span>
+                <span class="n">all_segments</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span> <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">all_segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">all_segments</span>
 </code></pre></div></td></tr></table></div>
@@ -3816,16 +3846,7 @@ an overlap, even if it is longer than the other segments.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>lexos\cutter\__init__.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">438</span>
-<span class="normal">439</span>
-<span class="normal">440</span>
-<span class="normal">441</span>
-<span class="normal">442</span>
-<span class="normal">443</span>
-<span class="normal">444</span>
-<span class="normal">445</span>
-<span class="normal">446</span>
-<span class="normal">447</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">447</span>
 <span class="normal">448</span>
 <span class="normal">449</span>
 <span class="normal">450</span>
@@ -3844,7 +3865,16 @@ an overlap, even if it is longer than the other segments.</p></td>
 <span class="normal">463</span>
 <span class="normal">464</span>
 <span class="normal">465</span>
-<span class="normal">466</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">split_list</span><span class="p">(</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">split_list</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">token_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
     <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
@@ -3863,10 +3893,10 @@ an overlap, even if it is longer than the other segments.</p></td>
 <span class="sd">        list: A list of token lists.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">overlap</span><span class="p">:</span>
-        <span class="n">segments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">split_overlap</span><span class="p">(</span><span class="n">token_list</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">merge_threshold</span><span class="p">,</span> <span class="n">overlap</span><span class="p">)</span>
+        <span class="n">segments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_split_overlap</span><span class="p">(</span><span class="n">token_list</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">merge_threshold</span><span class="p">,</span> <span class="n">overlap</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Get the segments</span>
-        <span class="n">segments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_chunk_doc</span><span class="p">(</span><span class="n">token_list</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+        <span class="n">segments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_chunk_tokens</span><span class="p">(</span><span class="n">token_list</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
         <span class="c1"># Apply the merge threshold</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">segments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">*</span> <span class="n">merge_threshold</span><span class="p">:</span>
             <span class="n">last_seg</span> <span class="o">=</span> <span class="n">segments</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
@@ -4012,16 +4042,7 @@ an overlap, even if it is longer than the other segments.</p></td>
 </details>
       <details class="quote">
         <summary>Source code in <code>lexos\cutter\__init__.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">520</span>
-<span class="normal">521</span>
-<span class="normal">522</span>
-<span class="normal">523</span>
-<span class="normal">524</span>
-<span class="normal">525</span>
-<span class="normal">526</span>
-<span class="normal">527</span>
-<span class="normal">528</span>
-<span class="normal">529</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">529</span>
 <span class="normal">530</span>
 <span class="normal">531</span>
 <span class="normal">532</span>
@@ -4076,7 +4097,16 @@ an overlap, even if it is longer than the other segments.</p></td>
 <span class="normal">581</span>
 <span class="normal">582</span>
 <span class="normal">583</span>
-<span class="normal">584</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">splitn</span><span class="p">(</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">splitn</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">texts</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
@@ -4206,16 +4236,7 @@ an overlap, even if it is longer than the other segments.</p></td>
 
       <details class="quote">
         <summary>Source code in <code>lexos\cutter\__init__.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">415</span>
-<span class="normal">416</span>
-<span class="normal">417</span>
-<span class="normal">418</span>
-<span class="normal">419</span>
-<span class="normal">420</span>
-<span class="normal">421</span>
-<span class="normal">422</span>
-<span class="normal">423</span>
-<span class="normal">424</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">424</span>
 <span class="normal">425</span>
 <span class="normal">426</span>
 <span class="normal">427</span>
@@ -4227,7 +4248,16 @@ an overlap, even if it is longer than the other segments.</p></td>
 <span class="normal">433</span>
 <span class="normal">434</span>
 <span class="normal">435</span>
-<span class="normal">436</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Tokenize an input string without a language model.</span>
 
 <span class="sd">    Loads a tokenizer function from the registry.</span>
