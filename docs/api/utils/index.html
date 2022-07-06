@@ -1550,7 +1550,16 @@
 <span class="normal">346</span>
 <span class="normal">347</span>
 <span class="normal">348</span>
-<span class="normal">349</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_decode_bytes</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_decode_bytes</span><span class="p">(</span><span class="n">raw_bytes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Decode raw bytes from a user&#39;s file into a string.</span>
 
 <span class="sd">    Args</span>
@@ -1571,6 +1580,15 @@
             <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">decoded_str</span> <span class="o">=</span> <span class="n">raw_bytes</span>
+
+    <span class="c1"># Normalize line breaks</span>
+    <span class="c1"># &quot;\r\n&quot; -&gt; &quot;\n&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">decoded_str</span><span class="p">[:</span> <span class="n">constants</span><span class="o">.</span><span class="n">MIN_NEWLINE_DETECT</span><span class="p">]:</span>
+        <span class="n">decoded_str</span> <span class="o">=</span> <span class="n">decoded_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="c1"># &quot;\r&quot; -&gt; &quot;\n&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">decoded_str</span><span class="p">[:</span> <span class="n">constants</span><span class="o">.</span><span class="n">MIN_NEWLINE_DETECT</span><span class="p">]:</span>
+        <span class="n">decoded_str</span> <span class="o">=</span> <span class="n">decoded_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">decoded_str</span>
 </code></pre></div></td></tr></table></div>

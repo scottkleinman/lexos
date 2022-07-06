@@ -423,12 +423,66 @@
     Ginsu
   </a>
   
+    <nav class="md-nav" aria-label="Ginsu">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#splitting-documents-by-number-of-tokens" class="md-nav__link">
+    Splitting Documents by Number of Tokens
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splitting-documents-into-a-pre-determined-number-of-segments" class="md-nav__link">
+    Splitting Documents into a Pre-Determined Number of Segments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splitting-documents-on-milestones" class="md-nav__link">
+    Splitting Documents on Milestones
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
   <a href="#machete" class="md-nav__link">
     Machete
   </a>
+  
+    <nav class="md-nav" aria-label="Machete">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-machete-tokenizer" class="md-nav__link">
+    The Machete Tokenizer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splitting-documents-with-machete" class="md-nav__link">
+    Splitting Documents with Machete
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splitting-lists-of-tokens-with-machete" class="md-nav__link">
+    Splitting Lists of Tokens with Machete
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1343,12 +1397,66 @@
     Ginsu
   </a>
   
+    <nav class="md-nav" aria-label="Ginsu">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#splitting-documents-by-number-of-tokens" class="md-nav__link">
+    Splitting Documents by Number of Tokens
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splitting-documents-into-a-pre-determined-number-of-segments" class="md-nav__link">
+    Splitting Documents into a Pre-Determined Number of Segments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splitting-documents-on-milestones" class="md-nav__link">
+    Splitting Documents on Milestones
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
   <a href="#machete" class="md-nav__link">
     Machete
   </a>
+  
+    <nav class="md-nav" aria-label="Machete">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-machete-tokenizer" class="md-nav__link">
+    The Machete Tokenizer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splitting-documents-with-machete" class="md-nav__link">
+    Splitting Documents with Machete
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splitting-lists-of-tokens-with-machete" class="md-nav__link">
+    Splitting Lists of Tokens with Machete
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1385,7 +1493,7 @@
   <h1>Cutting Documents</h1>
 
 <h2 id="cutting-documents">Cutting Documents<a class="headerlink" href="#cutting-documents" title="Permanent link">¤</a></h2>
-<p><code>Cutter</code> is a module that divides files, texts, or documents into segments. At present, it is highly experimental. There are two classes for cutting documents into segments, one for working with spaCy documents (codename <code>Ginsu</code>) and one for working with raw texts (codename <code>Machete</code>).</p>
+<p><code>Cutter</code> is a module that divides files, texts, or documents into segments. At present, it is highly experimental. There are two classes for cutting documents into segments, one for working with spaCy documents (codename <code>Ginsu</code>) and one for working with raw texts (codename <code>Machete</code>). A third class <code>FileSplit</code> (codename <code>Chainsaw</code>) can be used to split files based on bytesize.</p>
 <h3 id="ginsu"><code>Ginsu</code><a class="headerlink" href="#ginsu" title="Permanent link">¤</a></h3>
 <p>The <code>Ginsu</code> class is used for splitting spaCy documents (pre-tokenised texts).</p>
 <iframe style="width: 560px; height: 315px; margin: auto;" src="https://www.youtube.com/embed/Sv_uL1Ar0oM" title="YouTube video player -- Ginsu knives" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -1393,32 +1501,171 @@
 <p><code>Ginsu</code> is the preferred method for creating segments because it can access information supplied by the language model.</p>
 <p><code>Ginsu</code> has the following features:</p>
 <ul>
-<li>Split by number of tokens (i.e. every N token).</li>
-<li>Split by number of segments (i.e. return a predetermined number of segments).</li>
-<li>Split into overlapping segments of N tokens.</li>
-<li>Merge the last segment into the preceding if its length falls under a customisable threshold.</li>
-<li>Split on milestone tokens.</li>
+<li><a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.split">lexos.cutter.Ginsu.split</a>: Split by number of tokens (i.e. every N token).</li>
+<li><a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.splitn">lexos.cutter.Ginsu.splitn</a>: Split by number of segments (i.e. return a predetermined number of segments).</li>
+<li><a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.split_on_milestones">lexos.cutter.Ginsu.split_on_milestones</a>: Split on milestone tokens.</li>
 </ul>
-<p><a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.split">lexos.cutter.Ginsu.split</a>, <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.splitn">lexos.cutter.Ginsu.splitn</a>, and <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.split_on_milestones">lexos.cutter.Ginsu.split_on_milestones</a> return a list of lists, where each item in the sublist is a spaCy document.</p>
-<p>In <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.split_on_milestones">lexos.cutter.Ginsu.split_on_milestones</a>, the user can choose whether or not to preserve the milestone token at the beginning of each segment. A milestone must be a token, and it can be as simple as a string matching the token text. However, there is also an elaborate query language for more fine-grained matching.</p>
-<p>There is also a <a class="autorefs autorefs-internal" href="../../api/cutter/milestones/#lexos.cutter.milestones.Milestones">lexos.cutter.milestones.Milestones</a> class, which can be used to set milestones in advance. This method adds the custom extension <code>token._.is_milestone</code> (by default <code>False</code>) to each token in the document and uses the same query language to allow the user to match tokens where the value should be <code>True</code>. If documents are pre-processed in this way, the <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.split_on_milestones">lexos.cutter.Ginsu.split_on_milestones</a> method can leverage that information.</p>
+<p><code>Ginsu.split</code> and <code>Ginsu.splitn</code> both have the ability to merge the list segment into the preceding one if it falls under a customisable threshold. Likewise, they can generate overlapping segments. All three methods return a list of lists, where each item in the sublist is a spaCy document.</p>
+<p>With <code>Ginsu.split_on_milestones</code>, the user can choose whether or not to preserve the milestone token at the beginning of each segment. A milestone must be a single token and will generally match the token's <code>text</code> attribute. However, it can also match other attributes of the token if they are available in the language model used to produce the spaCy document. There is also an elaborate query language for fine-grained matching.</p>
+<h4 id="splitting-documents-by-number-of-tokens">Splitting Documents by Number of Tokens<a class="headerlink" href="#splitting-documents-by-number-of-tokens" title="Permanent link">¤</a></h4>
+<p>To split documents every N tokens, use the <code>Ginsu.split</code> method. Here are some examples:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.cutter.ginsu</span> <span class="kn">import</span> <span class="n">Ginsu</span>
+
+<span class="n">cutter</span> <span class="o">=</span> <span class="n">Ginsu</span><span class="p">()</span>
+
+<span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+
+<span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split</span><span class="p">([</span><span class="n">doc1</span><span class="p">,</span> <span class="n">doc2</span><span class="p">])</span>
+</code></pre></div>
+<p>By default, the document will be split every 1000 tokens. Here is an example with the full range of options:</p>
+<div class="highlight"><pre><span></span><code><span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">merge_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</code></pre></div>
+<p>This will split the document every 500 tokens with each segment overlapping by 5 tokens. If the final segment is less than half the length of <code>n</code>, it will be merged with the previous segment (0.5 is the default).</p>
+<h4 id="splitting-documents-into-a-pre-determined-number-of-segments">Splitting Documents into a Pre-Determined Number of Segments<a class="headerlink" href="#splitting-documents-into-a-pre-determined-number-of-segments" title="Permanent link">¤</a></h4>
+<p>To split documents into a pre-determined number of segments, use the <code>Ginsu.split</code> method. Here are some examples:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.cutter.ginsu</span> <span class="kn">import</span> <span class="n">Ginsu</span>
+
+<span class="n">cutter</span> <span class="o">=</span> <span class="n">Ginsu</span><span class="p">()</span>
+
+<span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">splitn</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">splitn</span><span class="p">([</span><span class="n">doc1</span><span class="p">,</span> <span class="n">doc2</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">merge_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</code></pre></div>
+<p>This will split the document(s) into 10 segments. The <code>overlap</code> and <code>merge_threshold</code> flags work exactly as they do for the <code>Ginsu.split()</code> method.</p>
+<h4 id="splitting-documents-on-milestones">Splitting Documents on Milestones<a class="headerlink" href="#splitting-documents-on-milestones" title="Permanent link">¤</a></h4>
+<p>A milestone is a pattern that serves as a boundary between segments of a document. The <code>Ginsu.split_on_milestones</code> method accepts a pattern to match tokens to milestones. Typically a milestone pattern will be a simple string, and Cutter will split the spaCy doc whenever the <code>text</code> attribute of a token matches the pattern. As we will see below, more complex pattern matching methods are possible.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.tokenizer</span> <span class="kn">import</span> <span class="n">make_doc</span>
+<span class="kn">from</span> <span class="nn">lexos.cutter.ginsu</span> <span class="kn">import</span> <span class="n">Ginsu</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    It is a truth universally acknowledged, that a single man</span>
+<span class="s2">    in possession of a good fortune, must be in want of a wife.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">make_doc</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+<span class="n">cutter</span> <span class="o">=</span> <span class="n">Ginsu</span><span class="p">()</span>
+<span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">milestone</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">[</span>
+<span class="s2">    &quot;It is a truth universally acknowledged&quot;,</span>
+<span class="s2">    &quot;that a single man in possession of a good fortune&quot;,</span>
+<span class="s2">    &quot;must be in want of a wife.&quot;</span>
+<span class="s2">]</span>
+</code></pre></div>
+<p>By default, the milestone is deleted from the result. If you wish to preserve it, use <code>preserve_milestones=True</code>. This milestone token will be preserved at the beginning of each segment.</p>
+<p>If the the <code>milestone</code> parameter is supplied with a list of strings, each item in the list will be treated as a milestone:</p>
+<div class="highlight"><pre><span></span><code><span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">(</span>
+        <span class="n">doc</span><span class="p">,</span>
+        <span class="n">milestone</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;be&quot;</span><span class="p">,</span> <span class="s2">&quot;is&quot;</span><span class="p">],</span>
+        <span class="n">preserve_milestones</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">[</span>
+<span class="s2">    &quot;It&quot;,</span>
+<span class="s2">    &quot;is a truth universally acknowledged, that a single man in possession of a good fortune, must&quot;,</span>
+<span class="s2">    &quot;be in want of a wife.&quot;</span>
+<span class="s2">]</span>
+</code></pre></div>
+<p>Milestone patterns can also be matched using a query language supplied in the form of a dict, where the keyword is the name of a spaCy token attribute (e.g. <code>text</code>, <code>pos_</code>, <code>lemma_</code>, etc.) and the value is the value to match. By default a token matches a milestone if its value for the attribute is equivalent the value given in the milestone dict. In other words, if the dict has the form <code>{"text": "chapter"}</code>, any token in the document for which <code>token.text</code> returns "chapter" will be treated as a milestone. As result, the following commands are functionally equivalent:</p>
+<div class="highlight"><pre><span></span><code><span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">milestone</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+
+<span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">milestone</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="p">})</span>
+</code></pre></div>
+<p>However, the following will treat all varieties of "chapter" ("chapters", "chapter's", "Chapter", etc.) as milestones:</p>
+<div class="highlight"><pre><span></span><code><span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">milestone</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;lemma_&quot;</span><span class="p">:</span> <span class="s2">&quot;chapter&quot;</span><span class="p">})</span>
+</code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>At present, <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu.split_on_milestones">lexos.cutter.Ginsu.split_on_milestones</a> cannot set <code>token._.is_milestone</code> on the fly. Although segments created from the milestones are saved, if the user chooses to preserve the milestone token at the beginning of each segment, it will not have <code>._.is_milestone</code> attribute.</p>
+<p>For further information on spaCy token attributes, see <a href="../tokenising_texts/">Tokenising Texts</a>.</p>
+</div>
+<p>Milestone dict values can also be given as tuples consisting of a pattern and an operator. The operator is the method used to perform the match. Currently, the following operators are available:</p>
+<ul>
+<li><code>in</code>: If the pattern is given as a list of strings, any item in the list will be treated as a milestone.</li>
+<li><code>not_in</code>: If the pattern is given as a list of strings, any item not in the list will be treated as a milestone.</li>
+<li><code>starts_with</code>: Any item starting with the string pattern will be treated as a milestone (uses the Python <code>startswith()</code> function).</li>
+<li><code>ends_with</code>: Any item ending with the string pattern will be treated as a milestone (uses the Python <code>endswith()</code> function).</li>
+<li><code>re_match</code>: Any item starting with the regular expression pattern will be treated as a milestone (uses the Python <code>re.match()</code> function).</li>
+<li><code>re_search</code>: Any item containing with the regular expression pattern will be treated as a milestone (uses the Python <code>re.search()</code> function).</li>
+</ul>
+<p>For example, the following command will treat any adjective or noun as a milestone.</p>
+<div class="highlight"><pre><span></span><code><span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">(</span>
+        <span class="n">doc</span><span class="p">,</span>
+        <span class="n">milestone</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pos_&quot;</span><span class="p">:</span> <span class="p">([</span><span class="s2">&quot;ADJ&quot;</span><span class="p">,</span> <span class="s2">&quot;NOUN&quot;</span><span class="p">],</span> <span class="s2">&quot;in&quot;</span><span class="p">)}</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>More complex queries can be built using the <code>and</code> and <code>or</code> keywords. For instance, the following pattern is the equivalent of the previous example.</p>
+<div class="highlight"><pre><span></span><code><span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">(</span>
+        <span class="n">doc</span><span class="p">,</span>
+        <span class="n">milestone</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;and&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;pos_&quot;</span><span class="p">:</span> <span class="s2">&quot;ADJ&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;or&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;pos_&quot;</span><span class="p">:</span> <span class="s2">&quot;NOUN&quot;</span><span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">In</span> <span class="n">the</span> <span class="n">example</span> <span class="n">below</span><span class="p">,</span> <span class="n">the</span> <span class="n">word</span> <span class="s2">&quot;can&quot;</span> <span class="n">would</span> <span class="n">be</span> <span class="n">treated</span> <span class="k">as</span> <span class="n">a</span> <span class="n">milestone</span> <span class="n">only</span> <span class="n">when</span> <span class="n">it</span> <span class="n">functions</span> <span class="k">as</span> <span class="n">a</span> <span class="n">verb</span><span class="p">:</span>
+
+<span class="err">```</span><span class="n">python</span>
+<span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">(</span>
+        <span class="n">doc</span><span class="p">,</span>
+        <span class="n">milestone</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;and&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;can&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;and&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;pos_&quot;</span><span class="p">:</span> <span class="s2">&quot;VERB&quot;</span><span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="err">!!!</span> <span class="n">important</span>
+    <span class="n">Filtering</span> <span class="n">based</span> <span class="n">on</span> <span class="n">parts</span> <span class="n">of</span> <span class="n">speech</span><span class="p">,</span> <span class="n">lemmas</span><span class="p">,</span> <span class="ow">and</span> <span class="n">some</span> <span class="n">other</span> <span class="n">attributes</span> <span class="ow">is</span> <span class="n">only</span> <span class="n">possible</span> <span class="k">if</span> <span class="n">you</span> <span class="n">have</span> <span class="n">tokenised</span> <span class="n">your</span> <span class="n">documents</span> <span class="n">using</span> <span class="n">a</span> <span class="n">language</span> <span class="n">model</span> <span class="n">that</span> <span class="n">contains</span> <span class="n">the</span> <span class="n">relevant</span> <span class="n">attribute</span><span class="o">.</span>
+
+<span class="c1">#### The `Milestone` Class</span>
+
+<span class="n">The</span> <span class="err">`</span><span class="n">Ginsu</span><span class="err">`</span> <span class="n">split</span> <span class="n">functions</span> <span class="n">match</span> <span class="n">tokens</span> <span class="n">to</span> <span class="n">milestones</span> <span class="n">patterns</span> <span class="ow">and</span> <span class="n">cut</span> <span class="n">documents</span> <span class="n">on</span> <span class="n">the</span> <span class="n">fly</span><span class="o">.</span> <span class="n">However</span><span class="p">,</span> <span class="n">it</span> <span class="ow">is</span> <span class="n">also</span> <span class="n">possible</span> <span class="n">to</span> <span class="n">use</span> <span class="n">the</span> <span class="p">[</span><span class="n">lexos</span><span class="o">.</span><span class="n">cutter</span><span class="o">.</span><span class="n">milestones</span><span class="o">.</span><span class="n">Milestones</span><span class="p">][]</span> <span class="k">class</span> <span class="nc">to</span> <span class="n">preprocess</span> <span class="n">documents</span><span class="o">.</span> <span class="n">This</span> <span class="n">adds</span> <span class="n">the</span> <span class="n">custom</span> <span class="n">extension</span> <span class="err">`</span><span class="n">token</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">is_milestone</span><span class="err">`</span> <span class="p">(</span><span class="n">by</span> <span class="n">default</span> <span class="err">`</span><span class="kc">False</span><span class="err">`</span><span class="p">)</span> <span class="n">to</span> <span class="n">each</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">document</span> <span class="ow">and</span> <span class="n">uses</span> <span class="n">the</span> <span class="n">same</span> <span class="n">query</span> <span class="n">language</span> <span class="n">to</span> <span class="n">allow</span> <span class="n">the</span> <span class="n">user</span> <span class="n">to</span> <span class="n">match</span> <span class="n">tokens</span> <span class="n">where</span> <span class="n">the</span> <span class="n">value</span> <span class="n">should</span> <span class="n">be</span> <span class="err">`</span><span class="kc">True</span><span class="err">`</span><span class="o">.</span> <span class="n">If</span> <span class="n">documents</span> <span class="n">are</span> <span class="n">pre</span><span class="o">-</span><span class="n">processed</span> <span class="ow">in</span> <span class="n">this</span> <span class="n">way</span><span class="p">,</span> <span class="n">the</span> <span class="p">[</span><span class="n">lexos</span><span class="o">.</span><span class="n">cutter</span><span class="o">.</span><span class="n">Ginsu</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">][</span><span class="n">lexos</span><span class="o">.</span><span class="n">cutter</span><span class="o">.</span><span class="n">Ginsu</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">]</span> <span class="n">method</span> <span class="n">can</span> <span class="n">leverage</span> <span class="n">that</span> <span class="n">information</span><span class="o">.</span>
+
+<span class="err">```</span><span class="n">python</span>
+<span class="kn">from</span> <span class="nn">lexos.tokenizer</span> <span class="kn">import</span> <span class="n">make_doc</span>
+<span class="kn">from</span> <span class="nn">lexos.cutter.ginsu</span> <span class="kn">import</span> <span class="n">Ginsu</span>
+<span class="kn">from</span> <span class="nn">lexos.cutter.milestones</span> <span class="kn">import</span> <span class="n">Milestones</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    It is a truth universally acknowledged, that a single man</span>
+<span class="s2">    in possession of a good fortune, must be in want of a wife.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">make_doc</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+<span class="c1"># Set commas as milestones</span>
+<span class="n">Milestones</span><span class="p">()</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">)</span>
+
+<span class="n">cutter</span> <span class="o">=</span> <span class="n">Ginsu</span><span class="p">()</span>
+<span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">milestone</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;_.is_milestone&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">[</span>
+<span class="s2">    &quot;It is a truth universally acknowledged&quot;,</span>
+<span class="s2">    &quot;that a single man in possession of a good fortune&quot;,</span>
+<span class="s2">    &quot;must be in want of a wife.&quot;</span>
+<span class="s2">]</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>An obvious advantage of preprocessing milestones is that the custom attribute can be saved. If the user chooses to preserve milestones when using <code>Ginsu.split_on_milestones</code>, the milestone will appear at the beginning of each document, but will not have <code>._.is_milestone</code> attribute. In the future, it is hoped that we will incorporate the ability to set milestones on the fly.</p>
 </div>
 <h3 id="machete">Machete<a class="headerlink" href="#machete" title="Permanent link">¤</a></h3>
 <p><code>Machete</code> is a cruder method of cutting raw text into segments without the benefit of a language model. It may be particularly valueable as a standalone method of segmenting texts for outside applications.</p>
-<p><code>Machete</code> works in a manner similar to <code>Ginsu</code> and has all the same functionality, except for cutting on milestones (see below). However, before splitting the text it applies a makeshift tokenizer function, and the class then splits the text based on the resulting list of tokens.</p>
-<p>The Lexos API has three tokenizer functions in the <code>cutter</code> function registry: "whitespace" (the default), "character", and "linebreaks". A <code>Machete</code> object can be initialised with one of the tokenizers or the tokenizer can be passed to the <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Machete.split">lexos.cutter.Machete.split</a> or <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Machete.splitn">lexos.cutter.Machete.splitn</a> functions with the <code>tokenizer</code> parameter.</p>
+<h4 id="the-machete-tokenizer">The <code>Machete</code> Tokenizer<a class="headerlink" href="#the-machete-tokenizer" title="Permanent link">¤</a></h4>
+<p><code>Machete</code> works in a manner similar to <code>Ginsu</code> and has all the same functionality. However, before splitting the text it applies a makeshift tokenizer function and then splits the text based on the resulting list of tokens.</p>
+<p>The Lexos API has three tokenizer functions in the <code>cutter</code> function registry: "whitespace" (the default), "character", and "linebreaks". A <code>Machete</code> object can be initialised with one of the tokenizers or the tokenizer can be passed to the <code>Machete.split</code>, <code>Machete.splitn</code>, and <code>Machete.split_on_milestones</code> methods using the <code>tokenizer</code> parameter.</p>
 <div class="admonition information">
 <p class="admonition-title">What if I don't like the tokenizer?</p>
 <p>You can supply a custom function after first adding it to the registry. Here is an example:</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">custom_punctuation_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.cutter.machete</span> <span class="kn">import</span> <span class="n">Machete</span>
+<span class="kn">import</span> <span class="nn">lexos.cutter.registry</span>
+
+<span class="k">def</span> <span class="nf">custom_punctuation_tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Split the text on punctuation or whitespace.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\W+)&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
 
 <span class="c1"># Register the custom function</span>
-<span class="kn">import</span> <span class="nn">lexos.cutter.registry</span>
 <span class="n">registry</span><span class="o">.</span><span class="n">tokenizers</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;custom_punctuation_tokenizer&quot;</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">custom_punctuation_tokenizer</span><span class="p">)</span>
 
 <span class="c1"># Create a `Machete` object</span>
@@ -1428,11 +1675,95 @@
 <span class="n">result</span> <span class="o">=</span> <span class="n">machete</span><span class="o">.</span><span class="n">splitn</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">tokenizer</span><span class="o">=</span><span class="s2">&quot;custom_punctuation_tokenizer&quot;</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<p><a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Machete.split">lexos.cutter.Machete.split</a> and <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Machete.split">lexos.cutter.Machete.splitn</a> return a list of lists, where each item in the sublist corresponds to a text. By default, each text contains a list of strings in which the string corresponds to a segment. It is possible to return the segments as lists of tokens by setting the <code>as_string</code> parameter to <code>False</code>.</p>
+<h4 id="splitting-documents-with-machete">Splitting Documents with <code>Machete</code><a class="headerlink" href="#splitting-documents-with-machete" title="Permanent link">¤</a></h4>
+<p><code>Machete.split</code>, <code>Machete.splitn</code>, and <code>Machete.split_on_milestones</code> return a list of lists, where each item in the outer list corresponds to a text and each sublist contains the text's segments. <code>Machete.split</code>, <code>Machete.splitn</code> take the same <code>merge_threshold</code> and <code>overlap</code> parameters as in the <code>Ginsu</code> class. <code>Machete.split_on_milestones</code> is more limited than its <code>Ginsu</code> equivalent. Milestone patterns are evaluated as regular expressions and searched from the beginning of the token string using Python's <code>re.match()</code> function.</p>
+<p>By default, all three methods return segments as lists of strings. In the example below, we get results with the default <code>as_string=True</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.cutter.machete</span> <span class="kn">import</span> <span class="n">Machete</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    It is a truth universally acknowledged, that a single man</span>
+<span class="s2">    in possession of a good fortune, must be in want of a wife.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">cutter</span> <span class="o">=</span> <span class="n">Machete</span><span class="p">()</span>
+<span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">[</span>
+<span class="s2">    [</span>
+<span class="s2">    &quot;It is a truth universally acknowledged, that a single man in possession&quot;,</span>
+<span class="s2">    &quot;of a good fortune, must be in want of a wife.&quot;</span>
+<span class="s2">]</span>
+</code></pre></div>
+<p>The basis for the division can be seen by displaying the segments as lists of tokens using <code>as_string=False</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">[</span>
+<span class="s2">    [&#39;It &#39;, &#39;is &#39;, &#39;a &#39;, &#39;truth &#39;, &#39;universally &#39;, &#39;acknowledged, &#39;, &#39;that &#39;, &#39;a &#39;, &#39;single &#39;, &#39;man</span><span class="se">\n</span><span class="s2">    &#39;, &#39;in &#39;, &#39;possession &#39;],</span>
+<span class="s2">    [&#39;of &#39;, &#39;a &#39;, &#39;good &#39;, &#39;fortune, &#39;, &#39;must &#39;, &#39;be &#39;, &#39;in &#39;, &#39;want &#39;, &#39;of &#39;, &#39;a &#39;, &#39;wife.</span><span class="se">\n</span><span class="s2">&#39;]</span>
+<span class="s2">]</span>
+</code></pre></div>
+<p>The default "whitespace" tokenizer does not strip whitespace around words and does not treat punctuation as separate functions. This makes it very easy to reconstitute the text as a string, but it may not be the desired behaviour for all applications. You may need to apply a custom tokenizer as described above. For specific languages, more reliable results may be obtained by using a language model as described in <a href="../tokenising_texts/">Tokenising Texts</a>.</p>
+<h4 id="splitting-lists-of-tokens-with-machete">Splitting Lists of Tokens with <code>Machete</code><a class="headerlink" href="#splitting-lists-of-tokens-with-machete" title="Permanent link">¤</a></h4>
+<p>Sometimes data will be available as lists of tokens, rather than as strings (for instance, if you have already tokenised your texts using a tool like <a href="https://www.nltk.org/" target="_blank">NLTK</a>). In this case, you can cut your texts using the <code>Machete.split_list</code> method. It works just like <code>Machete.split</code>, except that it takes a list of tokens as input.</p>
+<p>def split_list(
+        self,
+        texts: List[str],
+        n: int = 1000,
+        merge_threshold: float = 0.5,
+        overlap: int = None,
+        as_strin</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.cutter.machete</span> <span class="kn">import</span> <span class="n">Machete</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;It&quot;</span><span class="p">,</span> <span class="s2">&quot;is&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;truth&quot;</span><span class="p">,</span> <span class="s2">&quot;universally&quot;</span><span class="p">,</span> <span class="s2">&quot;acknowledged&quot;</span><span class="p">,</span> <span class="s2">&quot;that&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;single&quot;</span><span class="p">,</span> <span class="s2">&quot;man&quot;</span><span class="p">,</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="s2">&quot;possession&quot;</span><span class="p">,</span> <span class="s2">&quot;of&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;good&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fortune&quot;</span><span class="p">,</span> <span class="s2">&quot;must&quot;</span><span class="p">,</span> <span class="s2">&quot;be&quot;</span><span class="p">,</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="s2">&quot;want&quot;</span><span class="p">,</span> <span class="s2">&quot;of&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;wife&quot;</span>
+    <span class="p">]</span>
+
+<span class="c1"># Pad each token with a following space</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="n">cutter</span> <span class="o">=</span> <span class="n">Machete</span><span class="p">()</span>
+<span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split_list</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">[</span>
+<span class="s2">    [</span>
+<span class="s2">    &quot;It is a truth universally acknowledged that a single man in possession&quot;,</span>
+<span class="s2">    &quot;of a good fortune must be in want of a wife.&quot;</span>
+<span class="s2">]</span>
+</code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Machete">lexos.cutter.Machete</a> has no method of splitting texts on milestones. This is because the desired effect can be achieved by writing a custom function with a regex pattern containing the milestone. Such a function would probably lack the fine-grained possibilities of the query language implemented in <a class="autorefs autorefs-internal" href="../../api/cutter/#lexos.cutter.Ginsu">lexos.cutter.Ginsu</a>, but this functionality is probably only suitable for accessing token attributes supplied by a language model.</p>
+<p><code>Machete</code> assumes that spaces and punctuation between words are preserved, which makes it easier to return the segments as a human-readable string. In the example above, our token list did not preserve spaces or punctuation between words. As a result, it was necessary to take the extra step of padding each token (although the resulting segments have still lost the original punctuation). Steps like this may be necessary when using lists of tokens, depending on how they are created.</p>
 </div>
+<p>It should be noted that, whilst of the Machete functions will accept either a single text string or a list of text strings, <code>Machete.split_list</code> accepts only a list of token strings. If you have multiple lists, you should handle them in a loop (or equivalent list comprehension) as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.cutter.machete</span> <span class="kn">import</span> <span class="n">Machete</span>
+
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span><span class="s2">&quot;It&quot;</span><span class="p">,</span> <span class="s2">&quot;is&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;truth&quot;</span><span class="p">,</span> <span class="s2">&quot;universally&quot;</span><span class="p">,</span> <span class="s2">&quot;acknowledged&quot;</span><span class="p">,</span> <span class="s2">&quot;that&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;single&quot;</span><span class="p">,</span> <span class="s2">&quot;man&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="s2">&quot;possession&quot;</span><span class="p">,</span> <span class="s2">&quot;of&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;good&quot;</span><span class="p">,</span> <span class="s2">&quot;fortune&quot;</span><span class="p">,</span> <span class="s2">&quot;must&quot;</span><span class="p">,</span> <span class="s2">&quot;be&quot;</span><span class="p">,</span> <span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="s2">&quot;want&quot;</span><span class="p">,</span> <span class="s2">&quot;of&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;wife&quot;</span><span class="p">]</span>
+    <span class="p">]</span>
+
+<span class="c1"># Pad each token with a following space</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span>
+
+<span class="n">cutter</span> <span class="o">=</span> <span class="n">Machete</span><span class="p">()</span>
+<span class="n">all_segments</span> <span class="o">=</span> <span class="p">[</span><span class="n">cutter</span><span class="o">.</span><span class="n">split_list</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">all_segments</span><span class="p">)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">[</span>
+<span class="s2">    [</span>
+<span class="s2">        &quot;It is a truth universally acknowledged&quot;,</span>
+<span class="s2">        &quot;that a single man in possession&quot;</span>
+<span class="s2">    ], [</span>
+<span class="s2">        &quot;of a good fortune must be&quot;,</span>
+<span class="s2">        &quot;in want of a wife.&quot;</span>
+<span class="s2">    ]</span>
+<span class="s2">]</span>
+</code></pre></div>
 <h3 id="filesplit-codename-chainsaw">Filesplit (codename <code>Chainsaw</code>)<a class="headerlink" href="#filesplit-codename-chainsaw" title="Permanent link">¤</a></h3>
 <p>The <a class="autorefs autorefs-internal" href="../../api/cutter/filesplit/#lexos.cutter.filesplit.Filesplit">lexos.cutter.filesplit.Filesplit</a> class allows the user to cut binary files into numbered file segments with the format <code>filename_1.txt</code>, <code>filename_2.txt</code>, etc. The source file is divided by number of bytes. This class would typically be used as a first step in a workflow if a large file needs to be divided into many smaller files.</p>
 <p>The class is a fork of Ram Prakash Jayapalan's <a href="https://github.com/ram-jayapalan/filesplit/releases/tag/v3.0.2" target="_blank">filesplit</a> module with a few minor tweaks. The most important is that the <code>split</code> function takes a <code>sep</code> argument to allow the user to specify the separator between the filename and number in each generated file.</p>

@@ -1399,8 +1399,7 @@
 
         <details class="quote">
           <summary>Source code in <code>lexos\cutter\milestones.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 20</span>
-<span class="normal"> 21</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 21</span>
 <span class="normal"> 22</span>
 <span class="normal"> 23</span>
 <span class="normal"> 24</span>
@@ -1599,7 +1598,17 @@
 <span class="normal">217</span>
 <span class="normal">218</span>
 <span class="normal">219</span>
-<span class="normal">220</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Milestones</span><span class="p">():</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Milestones</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Milestones class.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -1610,14 +1619,19 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
 
-    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">milestone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">],</span> <span class="nb">object</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">docs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">spacy</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Doc</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">spacy</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Doc</span><span class="p">]],</span>
+        <span class="n">milestone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">],</span> <span class="nb">object</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Set the milestones for a doc or a list of docs.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            docs (object): A spaCy doc or a list of spaCy docs.</span>
+<span class="sd">            docs (Union[spacy.tokens.doc.Doc, List[spacy.tokens.doc.Doc]]): A spaCy doc or a list of spaCy docs.</span>
 <span class="sd">            milestone (Union[dict, str]): The milestone token(s) to match.</span>
+
 <span class="sd">        Returns:</span>
-<span class="sd">            Union[List[object], object]: A spaCy doc or list of spacy docs with</span>
+<span class="sd">            Union[List[spacy.tokens.doc.Doc], spacy.tokens.doc.Doc]: A spaCy doc or list of spacy docs with</span>
 <span class="sd">                `doc._.is_milestone` set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Holder for processed docs</span>
@@ -1634,11 +1648,13 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">result</span>
 
-    <span class="k">def</span> <span class="nf">_set_milestones</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">milestone</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_set_milestones</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">spacy</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Doc</span><span class="p">,</span> <span class="n">milestone</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">spacy</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Doc</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Set the milestones for a doc.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            doc (object): A spaCy doc.</span>
+<span class="sd">            doc (spacy.tokens.doc.Doc): A spaCy doc.</span>
 <span class="sd">            milestone (str): The milestone token(s) to match.</span>
 
 <span class="sd">        Returns:</span>
@@ -1655,11 +1671,13 @@
                 <span class="n">token</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">is_milestone</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="n">doc</span>
 
-    <span class="k">def</span> <span class="nf">_matches_milestone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">milestone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_matches_milestone</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="n">spacy</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">token</span><span class="o">.</span><span class="n">Token</span><span class="p">,</span> <span class="n">milestone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Check if a token matches a milestone.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            token (object): The token to test.</span>
+<span class="sd">            token (spacy.tokens.token.Token): The token to test.</span>
 <span class="sd">            milestone (Union[dict, list, str]): The milestone token(s) to match.</span>
 
 <span class="sd">        Returns:</span>
@@ -1678,7 +1696,6 @@
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">milestone</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_milestone_dict</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">milestone</span><span class="p">)</span>
 
-
     <span class="k">def</span> <span class="nf">_parse_milestone_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">milestone_dict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse a milestone dictionary and get results for each criterion.</span>
 
@@ -1692,7 +1709,7 @@
 <span class="sd">        will be used.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            token (object): The token to test.</span>
+<span class="sd">            token (spacy.tokens.token.Token): The token to test.</span>
 <span class="sd">            milestone_dict (dict): A dict in the format given above.</span>
 
 <span class="sd">        Returns:</span>
@@ -1743,8 +1760,9 @@
         <span class="c1"># Return the result</span>
         <span class="k">return</span> <span class="n">is_match</span>
 
-
-    <span class="k">def</span> <span class="nf">_get_milestone_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_get_milestone_result</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="n">spacy</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">token</span><span class="o">.</span><span class="n">Token</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Test a token for a match.</span>
 
 <span class="sd">        If value is a tuple, it must have the form `(pattern, operator)`,</span>
@@ -1756,7 +1774,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            attr (str): The attribute to test.</span>
-<span class="sd">            token (object): The token to test.</span>
+<span class="sd">            token (spacy.tokens.token.Token): The token to test.</span>
 <span class="sd">            value (Union[str, tuple]): The value to test.</span>
 
 <span class="sd">        Returns:</span>
@@ -1855,13 +1873,13 @@
 
       <details class="quote">
         <summary>Source code in <code>lexos\cutter\milestones.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">23</span>
-<span class="normal">24</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span>
 <span class="normal">28</span>
-<span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="normal">29</span>
+<span class="normal">30</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Initialise a Milestones object.</span>
 
 <span class="sd">    Args:</span>
@@ -1902,7 +1920,7 @@
         <tr>
           <td><code>docs</code></td>
           <td>
-                <code>object</code>
+                <code><span title="typing.Union">Union</span>[spacy.<span title="spacy.tokens">tokens</span>.<span title="spacy.tokens.doc">doc</span>.<span title="spacy.tokens.doc.Doc">Doc</span>, <span title="typing.List">List</span>[spacy.<span title="spacy.tokens">tokens</span>.<span title="spacy.tokens.doc">doc</span>.<span title="spacy.tokens.doc.Doc">Doc</span>]]</code>
           </td>
           <td><p>A spaCy doc or a list of spaCy docs.</p></td>
           <td>
@@ -1935,7 +1953,7 @@
           <td>
                 <code><span title="typing.Union">Union</span>[<span title="typing.List">List</span>[object], object]</code>
           </td>
-          <td><p>Union[List[object], object]: A spaCy doc or list of spacy docs with
+          <td><p>Union[List[spacy.tokens.doc.Doc], spacy.tokens.doc.Doc]: A spaCy doc or list of spacy docs with
 <code>doc._.is_milestone</code> set.</p></td>
         </tr>
     </tbody>
@@ -1943,8 +1961,7 @@
 
       <details class="quote">
         <summary>Source code in <code>lexos\cutter\milestones.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">31</span>
-<span class="normal">32</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">32</span>
 <span class="normal">33</span>
 <span class="normal">34</span>
 <span class="normal">35</span>
@@ -1965,14 +1982,25 @@
 <span class="normal">50</span>
 <span class="normal">51</span>
 <span class="normal">52</span>
-<span class="normal">53</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">milestone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">],</span> <span class="nb">object</span><span class="p">]:</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">set</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">docs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">spacy</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Doc</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">spacy</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Doc</span><span class="p">]],</span>
+    <span class="n">milestone</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">],</span> <span class="nb">object</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;Set the milestones for a doc or a list of docs.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        docs (object): A spaCy doc or a list of spaCy docs.</span>
+<span class="sd">        docs (Union[spacy.tokens.doc.Doc, List[spacy.tokens.doc.Doc]]): A spaCy doc or a list of spaCy docs.</span>
 <span class="sd">        milestone (Union[dict, str]): The milestone token(s) to match.</span>
+
 <span class="sd">    Returns:</span>
-<span class="sd">        Union[List[object], object]: A spaCy doc or list of spacy docs with</span>
+<span class="sd">        Union[List[spacy.tokens.doc.Doc], spacy.tokens.doc.Doc]: A spaCy doc or list of spacy docs with</span>
 <span class="sd">            `doc._.is_milestone` set.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Holder for processed docs</span>
