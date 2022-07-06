@@ -28,7 +28,7 @@ from lexos.dtm import get_doc_term_counts
 df = get_doc_term_counts(docs, as_df=True)
 ```
 
-Setting `normalize=True` will return relative frequencies instead of raw counts. [lexos.dtm.get_doc_term_counts][] has various parameters for limiting and filtering the output based on token labels or regex patterns.
+Setting `normalize=True` will return relative frequencies instead of raw counts. `lexos.dtm.get_doc_term_counts` has various parameters for limiting and filtering the output based on token labels or regex patterns.
 
 ## The `DTM` Class
 

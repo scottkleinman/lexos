@@ -2,22 +2,23 @@
 
 Usage:
 
-    from lexos.cutters.milestones import Milestones
+    from lexos.cutter.milestones import Milestones
     milestones = "chapter"
     Milestones().set(docs, milestones)
 
 Once milestones are set, they can be accessed with
-`token._.is_milestone`. The cuter `split_on_milestones`
+`token._.is_milestone`. The cutter `split_on_milestones`
 method can be used to split documents using this information.
 """
 
 import re
 from typing import List, Union
 
+import spacy
 from spacy.tokens import Token
 
 
-class Milestones():
+class Milestones:
     """Milestones class."""
 
     def __init__(self, config: dict = None):
@@ -28,14 +29,19 @@ class Milestones():
         """
         self.config = config
 
-    def set(self, docs: Union[object, list], milestone: Union[dict, str]) -> Union[List[object], object]:
+    def set(
+        self,
+        docs: Union[spacy.tokens.doc.Doc, List[spacy.tokens.doc.Doc]],
+        milestone: Union[dict, str],
+    ) -> Union[List[object], object]:
         """Set the milestones for a doc or a list of docs.
 
         Args:
-            docs (object): A spaCy doc or a list of spaCy docs.
+            docs (Union[spacy.tokens.doc.Doc, List[spacy.tokens.doc.Doc]]): A spaCy doc or a list of spaCy docs.
             milestone (Union[dict, str]): The milestone token(s) to match.
+
         Returns:
-            Union[List[object], object]: A spaCy doc or list of spacy docs with
+            Union[List[spacy.tokens.doc.Doc], spacy.tokens.doc.Doc]: A spaCy doc or list of spacy docs with
                 `doc._.is_milestone` set.
         """
         # Holder for processed docs
@@ -52,11 +58,13 @@ class Milestones():
         else:
             return result
 
-    def _set_milestones(self, doc: object, milestone: str) -> object:
+    def _set_milestones(
+        self, doc: spacy.tokens.doc.Doc, milestone: str
+    ) -> spacy.tokens.doc.Doc:
         """Set the milestones for a doc.
 
         Args:
-            doc (object): A spaCy doc.
+            doc (spacy.tokens.doc.Doc): A spaCy doc.
             milestone (str): The milestone token(s) to match.
 
         Returns:
@@ -73,11 +81,13 @@ class Milestones():
                 token._.is_milestone = False
         return doc
 
-    def _matches_milestone(self, token: object, milestone: Union[dict, list, str]) -> bool:
+    def _matches_milestone(
+        self, token: spacy.tokens.token.Token, milestone: Union[dict, list, str]
+    ) -> bool:
         """Check if a token matches a milestone.
 
         Args:
-            token (object): The token to test.
+            token (spacy.tokens.token.Token): The token to test.
             milestone (Union[dict, list, str]): The milestone token(s) to match.
 
         Returns:
@@ -96,7 +106,6 @@ class Milestones():
         elif isinstance(milestone, dict):
             return self._parse_milestone_dict(token, milestone)
 
-
     def _parse_milestone_dict(self, token, milestone_dict):
         """Parse a milestone dictionary and get results for each criterion.
 
@@ -110,7 +119,7 @@ class Milestones():
         will be used.
 
         Args:
-            token (object): The token to test.
+            token (spacy.tokens.token.Token): The token to test.
             milestone_dict (dict): A dict in the format given above.
 
         Returns:
@@ -161,8 +170,9 @@ class Milestones():
         # Return the result
         return is_match
 
-
-    def _get_milestone_result(self, attr: str, token: object, value: Union[str, tuple]) -> bool:
+    def _get_milestone_result(
+        self, attr: str, token: spacy.tokens.token.Token, value: Union[str, tuple]
+    ) -> bool:
         """Test a token for a match.
 
         If value is a tuple, it must have the form `(pattern, operator)`,
@@ -174,7 +184,7 @@ class Milestones():
 
         Args:
             attr (str): The attribute to test.
-            token (object): The token to test.
+            token (spacy.tokens.token.Token): The token to test.
             value (Union[str, tuple]): The value to test.
 
         Returns:

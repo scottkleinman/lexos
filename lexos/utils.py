@@ -346,4 +346,13 @@ def _decode_bytes(raw_bytes: Union[bytes, str]) -> str:
     else:
         decoded_str = raw_bytes
 
+    # Normalize line breaks
+    # "\r\n" -> "\n"
+    if "\r\n" in decoded_str[: constants.MIN_NEWLINE_DETECT]:
+        decoded_str = decoded_str.replace("\r", "")
+
+    # "\r" -> "\n"
+    if "\r" in decoded_str[: constants.MIN_NEWLINE_DETECT]:
+        decoded_str = decoded_str.replace("\r", "\n")
+
     return decoded_str

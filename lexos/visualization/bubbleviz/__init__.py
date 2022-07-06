@@ -274,8 +274,7 @@ def create_bubble_chart(
         filename (str): The filename to save the plot to.
 
     Raises:
-        ValueError: If any of the inputs are of the wrong type or if the length of the terms and
-        area lists are not the same.
+        ValidationError: If any of the inputs are of the wrong type or if the length of the terms and area lists are not the same.
     """
     # Ensure that the inputs are valid
     try:

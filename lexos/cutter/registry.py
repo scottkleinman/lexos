@@ -18,6 +18,7 @@ def whitespace_tokenizer(text):
     """
     return re.findall(r"\S+\s*", text)
 
+
 # Character tokenizer
 def character_tokenizer(text: str) -> list:
     """Tokenize by single characters, keeping whitespace.
@@ -29,6 +30,7 @@ def character_tokenizer(text: str) -> list:
         list: A list of character tokens.
     """
     return [char for char in text]
+
 
 # Linebreak tokenizer
 def linebreak_tokenizer(text: str) -> list:
@@ -47,6 +49,7 @@ def linebreak_tokenizer(text: str) -> list:
 tokenizers.register("whitespace", func=whitespace_tokenizer)
 tokenizers.register("character", func=character_tokenizer)
 tokenizers.register("linebreak", func=linebreak_tokenizer)
+
 
 def load(s: str):
     """Load a single tokenizer from a string.
