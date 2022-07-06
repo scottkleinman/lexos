@@ -4,8 +4,10 @@ from collections import Counter
 from typing import Any, Dict, List, Union
 
 import pandas as pd
+import spacy
+from lexos.exceptions import LexosException
 
-from . import extensions
+from lexos.tokenizer import extensions
 
 
 class LexosDoc:
@@ -22,7 +24,10 @@ class LexosDoc:
 
     def __init__(self, doc: object):
         """Initialize a LexosDoc object."""
-        self.doc = doc
+        if isinstance(doc, spacy.tokens.doc.Doc):
+            self.doc = doc
+        else:
+            raise LexosException("The input must be a spaCy doc.")
 
     def get_term_counts(
         self,
@@ -57,6 +62,7 @@ class LexosDoc:
         bool_filters = []
         dict_filters = {}
         if filters:
+            self._validate_filters(filters)
             for filter in filters:
                 if isinstance(filter, dict):
                     dict_filters[list(filter.keys())[0]] = list(filter.values())[0]
@@ -79,7 +85,7 @@ class LexosDoc:
             term_counts = [(x[0], x[1] / num_tokens) for x in term_counts]
             columns[1] = "frequency"
         if as_df:
-            return pd.DataFrame(term_counts, columns=columns)
+            return self._dataframe(term_counts, columns)
         else:
             return term_counts
 
@@ -130,7 +136,7 @@ class LexosDoc:
             rows.append(t)
         if show_ranges:
             cols = cols + ["start", "end"]
-        return pd.DataFrame(rows, columns=cols)
+        return self._dataframe(rows, cols)
 
     def _bool_filter(self, token: object, filters: List[str]) -> bool:
         """Filter a token based on a list of boolean filters.
@@ -151,6 +157,24 @@ class LexosDoc:
         else:
             return True
 
+    def _dataframe(self, rows: List[dict], columns: List[str]) -> pd.DataFrame:
+        """Return a pandas dataframe of the doc attributes.
+
+        Args:
+            rows (List[dict]): A list of dicts with the doc attributes.
+            columns (List[str]): A list of column names.
+
+        Returns:
+            pd.DataFrame: A pandas dataframe of the doc attributes.
+
+        Raises:
+            LexosException: If a pandas exception occurs.
+        """
+        try:
+            return pd.DataFrame(rows, columns=columns)
+        except Exception as e:
+            raise LexosException(e)
+
     def _dict_filter(
         self, token: object, filters: List[Dict[str, str]], regex: bool = False
     ) -> bool:
@@ -165,6 +189,10 @@ class LexosDoc:
         Returns:
             bool: Whether the token passes the filters.
         """
+        if not isinstance(token, spacy.tokens.Token):
+            raise LexosException("The input must be a spaCy token.")
+        if not isinstance(regex, bool):
+            raise LexosException("The regex flag must be a boolean.")
         if filters and filters != {}:
             for filter, value in filters.items():
                 if (
@@ -178,3 +206,22 @@ class LexosDoc:
                     return True
         else:
             return True
+
+    def _validate_filters(self, filters: List[str]) -> None:
+        """Ensure that filters are in the correct format.
+
+        Args:
+            filters (Union[List[Dict[str, str]], List[str])): A list of filter dictionaries with keys
+            or a list of boolean filters (the names of spaCy token attributes).
+
+        Returns:
+            None
+
+        Raises:
+            LexosException: If the format for the filter is not correct.
+        """
+        message = "The filter must be a list of filter dictionaries with keys or a list of boolean filters (the names of spaCy token attributes)"
+        if not isinstance(filters, list) or any(
+            not isinstance(x, (dict, str)) for x in filters
+        ):
+            raise LexosException(message)
