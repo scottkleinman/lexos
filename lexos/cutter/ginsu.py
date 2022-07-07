@@ -19,7 +19,7 @@ class SplitMilestoneModel(BaseModel):
 
     docs: Union[spacy.tokens.doc.Doc, List[spacy.tokens.doc.Doc]]
     milestone: Union[dict, str]
-    preserve_milestone: Optional[bool] = True
+    preserve_milestones: Optional[bool] = True
 
     class Config:
         """Config for SplitMilestoneModel."""
@@ -128,7 +128,12 @@ class Ginsu:
         Returns:
             bool: Whether the token matches the query.
         """
-        if isinstance(value, str):
+        if attr == "is_milestone":
+            if token._.is_milestone == True:
+                return True
+            else:
+                return False
+        elif isinstance(value, str) or isinstance(value, bool):
             if getattr(token, attr) == value:
                 return True
             else:
@@ -345,14 +350,14 @@ class Ginsu:
         self,
         doc: spacy.tokens.doc.Doc,
         milestone: Union[dict, str],
-        preserve_milestone: bool = True,
+        preserve_milestones: bool = True,
     ):
         """Split document on a milestone.
 
         Args:
             doc (spacy.tokens.doc.Doc): The document to be split.
             milestone (Union[dict, str]): A variable representing the value(s) to be matched.
-            preserve_milestone (bool): If True, the milestone token will be preserved at the
+            preserve_milestones (bool): If True, the milestone token will be preserved at the
                 beginning of every segment. Otherwise, it will be deleted.
         """
         segments = []
@@ -360,10 +365,10 @@ class Ginsu:
             i for i, x in enumerate(doc) if self._matches_milestone(x, milestone)
         ]
         for start, end in zip([0, *indices], [*indices, len(doc)]):
-            if preserve_milestone:
-                segments.append(doc[start:end])
+            if preserve_milestones:
+                segments.append(doc[start:end].as_doc())
             else:
-                segments.append(doc[start + 1 : end])
+                segments.append(doc[start + 1 : end].as_doc())
         return segments
 
     def split(
@@ -455,32 +460,32 @@ class Ginsu:
         self,
         docs: Union[spacy.tokens.doc.Doc, List[spacy.tokens.doc.Doc]],
         milestone: Union[dict, str],
-        preserve_milestone: bool = True,
+        preserve_milestones: bool = True,
     ):
         """Split document on a milestone.
 
         Args:
             docs (Union[spacy.tokens.doc.Doc, List[spacy.tokens.doc.Doc]]): The document(s) to be split.
             milestone (Union[dict, str]): A variable representing the value(s) to be matched.
-            preserve_milestone (bool): If True, the milestone token will be preserved at the
+            preserve_milestones (bool): If True, the milestone token will be preserved at the
                 beginning of every segment. Otherwise, it will be deleted.
         """
         # Validate input
         try:
             _ = SplitMilestoneModel(
-                docs=docs, milestone=milestone, preserve_milestone=preserve_milestone
+                docs=docs, milestone=milestone, preserve_milestones=preserve_milestones
             )
         except ValidationError as e:
             raise LexosException(e)
         # Handle single docs
         if isinstance(docs, spacy.tokens.doc.Doc):
-            return self._splitn_doc(docs, milestone, preserve_milestone)
+            return self._split_doc_on_milestones(docs, milestone, preserve_milestones)
         # Handle multiple docs
         else:
             all_segments = []
             for doc in docs:
                 all_segments.append(
-                    self._split_doc_on_milestones(doc, milestone, preserve_milestone)
+                    self._split_doc_on_milestones(doc, milestone, preserve_milestones)
                 )
             return all_segments
 
