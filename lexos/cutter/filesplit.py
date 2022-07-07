@@ -256,18 +256,17 @@ class Filesplit:
         Args:
             input_dir (str): Directory containing the split files and
                 manifest file
-            sep (str): Separator to used in the file names.
+            sep (str): Separator used in the file names.
             output_file (str): Final merged output file path. If not
                 provided, the final merged filename is derived from
                 the split filename and placed in the same input dir.
+            manifest_file (str): path to the manifest file. If not provided,
+                the process will look for the file within the input_dir.
             callback (Callable): callback function [func (str, long)]
                 that accepts 2 arguments - path to destination,
-                size of the file in bytes cleanup (bool): if True,
-                all the split files, manifest file will be deleted
-                after merge leaving behind the merged file.
-                manifest_file (str): path to the manifest file.
-                If not provided, the process will look for the file
-                within the input_dir.
+                size of the file in bytes.
+            cleanup (bool): if True, all the split files and the manifest file
+                will be deleted after the merge, leaving behind the merged file.
         Raises:
             FileNotFoundError: If missing manifest and split files.
             NotADirectoryError: If input path is not a directory.

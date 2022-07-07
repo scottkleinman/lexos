@@ -15,7 +15,7 @@ from lexos.exceptions import LexosException
 class SplitListModel(BaseModel):
     """Validate the input for split_list function."""
 
-    texts: List[str]
+    text: List[str]
     n: Optional[int] = 1000
     merge_threshold: Optional[float] = 0.5
     overlap: Optional[int] = None
@@ -248,7 +248,7 @@ class Machete:
 
     def split_list(
         self,
-        texts: List[str],
+        text: List[str],
         n: int = 1000,
         merge_threshold: float = 0.5,
         overlap: int = None,
@@ -257,23 +257,19 @@ class Machete:
         """Split a list into chunks by a fixed number of tokens.
 
         Args:
-            texts (List[str]): A list of tokens.
+            text (List[str]): A list of tokens.
             n (int): The number of tokens to split on.
             merge_threshold (float): The threshold to merge the last segment.
             overlap (int): The number of tokens to overlap.
             as_string (bool): Whether to return the segments as a list of strings.
 
         Returns:
-            list: A list of token lists, one token list for each text.
-
-        Note:
-            This is poorly executed because it only handles flat token lists,
-            not nested lists for multiple texts.
+            list: A list of token lists, one token list for each segment.
         """
         # Validate input
         try:
             model = SplitListModel(
-                texts=texts,
+                text=text,
                 n=n,
                 merge_threshold=merge_threshold,
                 overlap=overlap,
@@ -283,12 +279,12 @@ class Machete:
             raise LexosException(e)
 
         # Ensure a list of texts as the starting point
-        if isinstance(model.texts[0], str):
-            model.texts = [model.texts]
+        if isinstance(model.text[0], str):
+            model.text = [model.text]
 
         # Process the texts into segments
         all_segments = []
-        for text in model.texts:
+        for text in model.text:
             segments = list(self._chunk_tokens(text, model.n))
             # Apply the merge threshold
             if len(segments[-1]) < model.n * model.merge_threshold:
