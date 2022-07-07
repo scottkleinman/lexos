@@ -181,7 +181,7 @@ doc = make_doc(text.strip())
 Milestones().set(doc, ",")
 
 cutter = Ginsu()
-segments = cutter.split_on_milestones(doc, milestone={"_.is_milestone": True})
+segments = cutter.split_on_milestones(doc, milestone={"is_milestone": True})
 print(segments)
 """
 [
@@ -192,7 +192,9 @@ print(segments)
 ```
 
 !!! note
-    An obvious advantage of preprocessing milestones is that the custom attribute can be saved. If the user chooses to preserve milestones when using `Ginsu.split_on_milestones`, the milestone will appear at the beginning of each document, but will not have `._.is_milestone` attribute. In the future, it is hoped that we will incorporate the ability to set milestones on the fly.
+    Custom extension attributes like `token._.is_milestone` are normally referenced with the `_.` prefix. However, in milestone dicts, only the name "is_milestone" is given, parallelling built-in attributes like "is_punct". The same is true for any other custom extension available in the token's attributes.
+
+An obvious advantage of preprocessing milestones is that the custom attribute can be saved. If the user chooses to preserve milestones when using `Ginsu.split_on_milestones`, the milestone will appear at the beginning of each document, but will not have the `_.is_milestone` attribute. In the future, it is hoped that we will incorporate the ability to set milestones on the fly.
 
 ### Machete
 
