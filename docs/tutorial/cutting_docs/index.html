@@ -1637,7 +1637,7 @@
 <span class="n">Milestones</span><span class="p">()</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="p">)</span>
 
 <span class="n">cutter</span> <span class="o">=</span> <span class="n">Ginsu</span><span class="p">()</span>
-<span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">milestone</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;_.is_milestone&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="n">segments</span> <span class="o">=</span> <span class="n">cutter</span><span class="o">.</span><span class="n">split_on_milestones</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">milestone</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;is_milestone&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">segments</span><span class="p">)</span>
 <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">[</span>
@@ -1648,8 +1648,9 @@
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>An obvious advantage of preprocessing milestones is that the custom attribute can be saved. If the user chooses to preserve milestones when using <code>Ginsu.split_on_milestones</code>, the milestone will appear at the beginning of each document, but will not have <code>._.is_milestone</code> attribute. In the future, it is hoped that we will incorporate the ability to set milestones on the fly.</p>
+<p>Custom extension attributes like <code>token._.is_milestone</code> are normally referenced with the <code>_.</code> prefix. However, in milestone dicts, only the name "is_milestone" is given, parallelling built-in attributes like "is_punct". The same is true for any other custom extension available in the token's attributes.</p>
 </div>
+<p>An obvious advantage of preprocessing milestones is that the custom attribute can be saved. If the user chooses to preserve milestones when using <code>Ginsu.split_on_milestones</code>, the milestone will appear at the beginning of each document, but will not have the <code>_.is_milestone</code> attribute. In the future, it is hoped that we will incorporate the ability to set milestones on the fly.</p>
 <h3 id="machete">Machete<a class="headerlink" href="#machete" title="Permanent link">¤</a></h3>
 <p><code>Machete</code> is a cruder method of cutting raw text into segments without the benefit of a language model. It may be particularly valueable as a standalone method of segmenting texts for outside applications.</p>
 <h4 id="the-machete-tokenizer">The <code>Machete</code> Tokenizer<a class="headerlink" href="#the-machete-tokenizer" title="Permanent link">¤</a></h4>
