@@ -1,6 +1,5 @@
 """dtm.py."""
-import re
-from typing import Any, Dict, List, Union
+from typing import Any, List, Union
 
 import pandas as pd
 import spacy
@@ -185,7 +184,7 @@ class DTM:
 
         Args:
             max_n_terms (int): The number of terms to return.
-            start: int = 0: The start index in the DTM table.
+            start: int = -1: The start index in the DTM table.
 
         Returns:
             pd.DataFrame: The reduced DTM table.
