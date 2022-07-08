@@ -307,7 +307,7 @@ class Machete:
         self,
         texts: Union[List[str], str],
         milestone: Union[dict, str],
-        preserve_milestones: bool = False,
+        preserve_milestones: bool = True,
         tokenizer: str = None,
         as_string: bool = True,
     ) -> list:
