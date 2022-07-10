@@ -63,7 +63,7 @@ $(document).on("click", ".fulltext", function (e) {
 /* Handle the check box to show punctuation and spaces */
 $(document).on("change", "#show-punct", function () {
   if ($(this).prop("checked") == true) {
-    // Remove the table filter
+    // Remove the tabel filter
     $("#featureTable").bootstrapTable("filterBy", {});
   } else {
     // Get the data and re-create the POS list without PUNCT and SPACE

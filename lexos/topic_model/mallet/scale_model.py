@@ -15,7 +15,7 @@ try:
     sklearn_present = True
 except ImportError:
     sklearn_present = False
-from past.builtins import basestring
+# from past.builtins import basestring
 from scipy.spatial.distance import pdist, squareform
 from scipy.stats import entropy
 
@@ -304,7 +304,8 @@ def get_topic_coordinates(
         scaled_coordinates (pd.DataFrame): A pandas dataframe containing scaled x and y coordinates.
     """
     # parse mds
-    if isinstance(mds, basestring):
+    # if isinstance(mds, basestring):
+    if isinstance(mds, (str,bytes)):
         mds = mds.lower()
         if mds == "pcoa":
             mds = js_PCoA
