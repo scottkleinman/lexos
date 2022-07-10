@@ -22,6 +22,7 @@ scipy = "^1.8.1"
 spacy = "^3.3.1"
 textacy = "^0.12.0"
 openpyxl = "^3.0.10"
+plotly = "^5.9.0"
 
 [tool.poetry.dependencies.xx_sent_ud_sm]
 url = "https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.3.0/xx_sent_ud_sm-3.3.0.tar.gz"
