@@ -15,7 +15,7 @@ def main(args: Optional[list] = None):
     Args:
         args (list): The command line arguments.
     """
-    if len(args) > 1:
+    if args:
         lexos_dir = args[1]
     else:
         lexos_dir = "lexos"
