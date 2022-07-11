@@ -349,24 +349,24 @@ def create_bubble_chart_from_dtm(
     Raises:
         LexosException: If the input is not a valid DTM.
     """
-    # Ensure that the inputs are valid
     try:
-        df = dtm.get_table()
-        df["count"] = df.sum(axis=1, numeric_only=True)
-        terms = df["terms"].values.tolist()
-        area = df["count"].values.tolist()
+        df = dtm.get_stats_table()
+        assert "terms" in df.columns
+        terms = df["terms"].tolist()
+        area = df["sum"].tolist()
+        assert len(terms) == len(area)
+        create_bubble_chart(
+            terms=terms,
+            area=area,
+            limit=limit,
+            title=title,
+            bubble_spacing=bubble_spacing,
+            colors=colors,
+            figsize=figsize,
+            font_family=font_family,
+            show=show,
+            filename=filename,
+        )
     except Exception:
         raise LexosException("The input is not a valid DTM object.")
-    create_bubble_chart(
-        terms=terms,
-        area=area,
-        limit=limit,
-        title=title,
-        bubble_spacing=bubble_spacing,
-        colors=colors,
-        figsize=figsize,
-        font_family=font_family,
-        show=show,
-        filename=filename,
-    )
 
