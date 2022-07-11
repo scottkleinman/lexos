@@ -179,12 +179,12 @@ class DTM:
         sums = df["sum"].values.tolist()
         return [(terms[i], sums[i]) for i, _ in enumerate(terms)]
 
-    def least_frequent(self, max_n_terms: int = 100, start: int = -1) -> pd.DataFrame:
+    def least_frequent(self, max_n_terms: int = 100, start: int = 0) -> pd.DataFrame:
         """Get the most frequent terms in the DTM.
 
         Args:
             max_n_terms (int): The number of terms to return.
-            start: int = -1: The start index in the DTM table.
+            start: int = 0: The start index in the DTM table.
 
         Returns:
             pd.DataFrame: The reduced DTM table.
@@ -193,7 +193,8 @@ class DTM:
         the vectorizer because the table will be cut twice.
         """
         df = self.get_stats_table("sum").sort_values(by="sum", ascending=True)
-        return df[start:max_n_terms]
+        df = df[start:]
+        return df.tail(max_n_terms)
 
     def most_frequent(self, max_n_terms: int = 100, start: int = 0) -> pd.DataFrame:
         """Get the most frequent terms in the DTM.
