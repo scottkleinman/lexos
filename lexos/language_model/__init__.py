@@ -19,7 +19,13 @@ from spacy.cli._util import import_code, setup_gpu, show_validation_error
 from spacy.schemas import ConfigSchemaTraining
 from spacy.training.initialize import init_nlp
 from spacy.training.loop import train
-from spacy.util import is_in_jupyter, load_config, load_model_from_config, registry, run_command
+from spacy.util import (
+    is_in_jupyter,
+    load_config,
+    load_model_from_config,
+    registry,
+    run_command,
+)
 from thinc.api import Config, fix_random_seed, set_gpu_allocator
 
 
@@ -42,21 +48,23 @@ class Timer:
 class LanguageModel:
     """Create a LanguageModel object."""
 
-    def __init__(self,
-                 model_dir: str = "language_model",
-                 config_file: str = "config.cfg",
-                 training_file: str = "train.conllu",
-                 dev_file: str = "dev.conllu",
-                 test_file: str = "test.conllu",
-                 gpu: int = -1,
-                 lang: str = "xx",
-                 package_name: str = "model_sm",
-                 package_version: str = "1.0.0",
-                 components: List[str] = ["tagger"],
-                 optimize: str = "efficiency",
-                 exclusive_classes: bool = True,
-                 force: bool = False,
-                 recipe: str = None):
+    def __init__(
+        self,
+        model_dir: str = "language_model",
+        config_file: str = "config.cfg",
+        training_file: str = "train.conllu",
+        dev_file: str = "dev.conllu",
+        test_file: str = "test.conllu",
+        gpu: int = -1,
+        lang: str = "xx",
+        package_name: str = "model_sm",
+        package_version: str = "1.0.0",
+        components: List[str] = ["tagger"],
+        optimize: str = "efficiency",
+        exclusive_classes: bool = True,
+        force: bool = False,
+        recipe: str = None,
+    ):
         """Initialise the LanguageModel object."""
         self.model_dir = model_dir
         self.config = None
@@ -76,12 +84,18 @@ class LanguageModel:
         msg = Printer()
 
         # Issue a warning if the user is working in a Jupyter notebook
-        if is_in_jupyter and Path.cwd().name == "lexos" and Path(self.model_dir).resolve().parts[-2] == "lexos":
-            msg.warn("It looks like you're calling `LanguageModel()` from within a "
-            "Jupyter notebook or a similar environment. If you set the system path "
-            "to the Lexos API folder to import locally, you should configure "
-            "your model directory with an absolute path or a path relative. "
-            "to the lexos directory.")
+        if (
+            is_in_jupyter
+            and Path.cwd().name == "lexos"
+            and Path(self.model_dir).resolve().parts[-2] == "lexos"
+        ):
+            msg.warn(
+                "It looks like you're calling `LanguageModel()` from within a "
+                "Jupyter notebook or a similar environment. If you set the system path "
+                "to the Lexos API folder to import locally, you should configure "
+                "your model directory with an absolute path or a path relative. "
+                "to the lexos directory."
+            )
         # Otherwise, we're safe to proceed
         else:
             # Create the model directory if it doesn't exist
@@ -92,7 +106,12 @@ class LanguageModel:
             self.corpus_dir = f"{self.model_dir}/corpus/{self.lang}"
             self.metrics_dir = f"{self.model_dir}/metrics/{self.lang}"
             self.training_dir = f"{self.model_dir}/training/{self.lang}"
-            for dir in [self.assets_dir, self.corpus_dir, self.metrics_dir, self.training_dir]:
+            for dir in [
+                self.assets_dir,
+                self.corpus_dir,
+                self.metrics_dir,
+                self.training_dir,
+            ]:
                 Path(dir).mkdir(parents=True, exist_ok=True)
             msg.good(f"Created assets directory: {self.assets_dir}.")
             msg.good(f"Created corpus directory: {self.corpus_dir}.")
@@ -116,19 +135,28 @@ class LanguageModel:
                         lang=self.lang,
                         pipeline=self.components,
                         optimize=self.optimize,
-                        gpu=gpu)
+                        gpu=gpu,
+                    )
                 # Add the file paths to the config
-                files = {"train": self.training_file, "dev": self.dev_file, "test": self.test_file}
+                files = {
+                    "train": self.training_file,
+                    "dev": self.dev_file,
+                    "test": self.test_file,
+                }
                 for k, file in files.items():
                     if file is not None:
-                        self.config["paths"][k] = f'{self.corpus_dir}/{file.replace(".conllu", ".spacy")}'
+                        self.config["paths"][
+                            k
+                        ] = f'{self.corpus_dir}/{file.replace(".conllu", ".spacy")}'
                 self.config.to_disk(self.config_filepath)
                 self._fix_config()
                 msg.good(f"Saved config file to {self.config_filepath}.")
                 msg.text("You can now add your data and train your pipeline.")
             else:
-                msg.warn(f"{self.config_filepath} already exists. "
-                         "You can now add your data and train your pipeline.")
+                msg.warn(
+                    f"{self.config_filepath} already exists. "
+                    "You can now add your data and train your pipeline."
+                )
 
     def _fix_config(self) -> None:
         """Fix the config file.
@@ -147,13 +175,11 @@ class LanguageModel:
             "morph_acc": 0.17,
             "dep_uas": 0.17,
             "dep_las": 0.17,
-            "sents_f": 0.0
+            "sents_f": 0.0,
         }
         self.config.to_disk(self.config_filepath)
 
-    def convert_assets(self,
-                       n_sents=10,
-                       merge_subtokens=True):
+    def convert_assets(self, n_sents=10, merge_subtokens=True):
         """Convert CONLLU assets to spaCy DocBins.
 
         Args:
@@ -173,21 +199,22 @@ class LanguageModel:
                         file_type="spacy",
                         converter="conllu",
                         n_sents=n_sents,
-                        merge_subtokens=merge_subtokens
+                        merge_subtokens=merge_subtokens,
                     )
                 except Exception:
                     success = False
-                    msg.fail(f"Error converting {file}. Check that the CONLLU file formatting is valid.")
+                    msg.fail(
+                        f"Error converting {file}. Check that the CONLLU file formatting is valid."
+                    )
         if success:
             msg.good(f"Assets converted and saved to {self.corpus_dir}.")
             msg.text("You can now train your pipeline.")
         else:
             msg.fail("Failed to convert one or more assets.")
 
-    def copy_assets(self,
-                    training_file: str = None,
-                    dev_file: str = None,
-                    test_file: str = None):
+    def copy_assets(
+        self, training_file: str = None, dev_file: str = None, test_file: str = None
+    ):
         """Copy assets to the assets folder.
 
         Args:
@@ -208,15 +235,17 @@ class LanguageModel:
         msg = Printer()
         msg.good(f"Copied assets to {self.assets_dir}.")
 
-    def evaluate(self,
-                 model: str = None,
-                 testfile: Union[Path, str] = None,
-                 output: Path = None,
-                 use_gpu: int = -1,
-                 gold_preproc: bool = False,
-                 displacy_path: Optional[Path] = None,
-                 displacy_limit: int = 25,
-                 silent: bool = False) -> None:
+    def evaluate(
+        self,
+        model: str = None,
+        testfile: Union[Path, str] = None,
+        output: Path = None,
+        use_gpu: int = -1,
+        gold_preproc: bool = False,
+        displacy_path: Optional[Path] = None,
+        displacy_limit: int = 25,
+        silent: bool = False,
+    ) -> None:
         """Evaluate a spaCy model.
 
         Args:
@@ -245,15 +274,17 @@ class LanguageModel:
             gold_preproc=gold_preproc,
             displacy_path=displacy_path,
             displacy_limit=displacy_limit,
-            silent=silent
+            silent=silent,
         )
 
-    def fill_config(self,
+    def fill_config(
+        self,
         path: Union[str, Path],
         output_file: Union[str, Path] = None,
         pretraining: bool = False,
         diff: bool = False,
-        code_path: Union[str, Path] = None) -> None:
+        code_path: Union[str, Path] = None,
+    ) -> None:
         """
         Fill partial config file with default values.
 
@@ -299,18 +330,20 @@ class LanguageModel:
         self.config = load_config(filepath)
         self.config.to_disk(self.config_filepath)
 
-    def package(self,
-                input_dir: str = None,
-                output_dir: str = None,
-                meta_path: Optional[str] = None,
-                code_paths: Optional[List[str]] = [],
-                name: str = None,
-                version: str = None,
-                create_meta: bool = False,
-                create_sdist: bool = True,
-                create_wheel: bool = False,
-                force: bool = False,
-                silent: bool = False) -> None:
+    def package(
+        self,
+        input_dir: str = None,
+        output_dir: str = None,
+        meta_path: Optional[str] = None,
+        code_paths: Optional[List[str]] = [],
+        name: str = None,
+        version: str = None,
+        create_meta: bool = False,
+        create_sdist: bool = True,
+        create_wheel: bool = False,
+        force: bool = False,
+        silent: bool = False,
+    ) -> None:
         """Package the model so that it can be installed."""
         input_dir = Path(input_dir)
         output_dir = Path(output_dir)
@@ -332,14 +365,14 @@ class LanguageModel:
             create_sdist=create_sdist,
             create_wheel=create_wheel,
             force=force,
-            silent=silent
+            silent=silent,
         )
         # Print the paths to the package
         tarfile = f"{self.lang}_{name}-{version}.tar.gz"
+        print(f"Model Directory for spacy.load(): {output_dir}/{self.lang}-{version}")
         print(
-            f"Model Directory for spacy.load(): {output_dir}/{self.lang}-{version}")
-        print(
-            f"Binary file (for pip install): {output_dir}/{self.lang}-{version}/dist/{tarfile}")
+            f"Binary file (for pip install): {output_dir}/{self.lang}-{version}/dist/{tarfile}"
+        )
 
     def save_config(self, filepath: Path = None):
         """Save the config from the config file.
@@ -361,8 +394,13 @@ class LanguageModel:
         timer = Timer()
         config = load_config(self.config_filepath)
         nlp = init_nlp(config, use_gpu=self.gpu)
-        train(nlp=nlp, output_path=Path(self.training_dir),
-                    use_gpu=self.gpu, stdout=sys.stdout, stderr=sys.stderr)
+        train(
+            nlp=nlp,
+            output_path=Path(self.training_dir),
+            use_gpu=self.gpu,
+            stdout=sys.stdout,
+            stderr=sys.stderr,
+        )
         msg = Printer()
         msg.text(f"Time elapsed: {timer.get_time_elapsed()}")
 
@@ -372,7 +410,7 @@ def debug_config(
     overrides: dict = {},
     code_path: Union[str, Path] = None,
     show_funcs: bool = False,
-    show_vars: bool = False
+    show_vars: bool = False,
 ):
     """Debug a config file and show validation errors.
 
@@ -410,7 +448,7 @@ def debug_data(
     code_path: Union[str, Path] = None,
     ignore_warnings: bool = False,
     verbose: bool = False,
-    no_format: bool = False
+    no_format: bool = False,
 ):
     """Analyze, debug and validate your training and development data.
 
@@ -431,8 +469,10 @@ def debug_data(
         remove the `sys.exit()` call at the end.
     """
     msg = Printer()
-    msg.info("Note: If at least one error is found at the end of the analysis, "
-             "the script will terminate with a `SystemExit: 1` error code.")
+    msg.info(
+        "Note: If at least one error is found at the end of the analysis, "
+        "the script will terminate with a `SystemExit: 1` error code."
+    )
     if isinstance(config_path, str):
         config_path = Path(config_path)
     if isinstance(code_path, str):
@@ -444,7 +484,7 @@ def debug_data(
         ignore_warnings=ignore_warnings,
         verbose=verbose,
         no_format=no_format,
-        silent=False
+        silent=False,
     )
 
 
