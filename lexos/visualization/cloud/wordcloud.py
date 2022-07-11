@@ -4,6 +4,7 @@ from typing import Iterator, List, Union
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from lexos.dtm import DTM
 from wordcloud import WordCloud
 
 
@@ -37,9 +38,9 @@ def wordcloud(
 
     Args:
         dtm (Union[dict, list, object, pd.DataFrame, str, tuple]): The data.
-            Accepts a text string, a list of lists or tuples, a dataframe,
-            or a dict with the terms as keys and the counts/frequencies as
-            values, or a dataframe with "term" and "count" or "frequency" columns.
+            Accepts a text string, a list of lists or tuples, a dict with
+            the terms as keys and the counts/frequencies as values, or a
+            dataframe with "term" and "count" or "frequency" columns.
         docs (list): A list of documents to be selected from the DTM.
         opts (dict): The WordCloud() options.
             For testing, try {"background_color": "white", "max_words": 2000, "contour_width": 3, "contour_color": "steelblue"}
@@ -67,21 +68,24 @@ def wordcloud(
     if figure_opts is None:
         figure_opts = {}
 
-    # Get the dtm table
-    data = dtm.get_table()
+    if isinstance(dtm, DTM):
+        # Get the dtm table
+        data = dtm.get_table()
 
-    # Get the counts for the desired documents
-    if docs:
-        docs = ["terms"] + docs
-        data = data[docs].copy()
-        # Create a new column with the total for each row
-        data["count"] = data.sum(axis=1)
-    # Get the dtm sums
+        # Get the counts for the desired documents
+        if docs:
+            docs = ["terms"] + docs
+            data = data[docs].copy()
+            # Create a new column with the total for each row
+            data["count"] = data.sum(axis=1, numeric_only=True)
+        # Get the dtm sums
+        else:
+            data["count"] = data.sum(axis=1, numeric_only=True)
+
+        # Ensure that the table only has terms and counts
+        data = data[["terms", "count"]].copy()
     else:
-        data["count"] = data.sum(axis=1)
-
-    # Ensure that the table only has terms and counts
-    data = data[["terms", "count"]].copy()
+        data = dtm
 
     # Set the mask, if using
     if round:
@@ -172,15 +176,19 @@ def multicloud(
     if figure_opts is None:
         figure_opts = {}
 
-    # Get table
-    data = dtm.get_table()
+    if isinstance(dtm, DTM):
+        # Get table
+        data = dtm.get_table()
 
-    # Get the counts for the desired documents
-    if docs:
-        data = data[["terms"] + docs].copy()
+        # Get the counts for the desired documents
+        if docs:
+            data = data[["terms"] + docs].copy()
 
-    # Transposed table
-    data = data.T
+        # Transposed table
+        data = data.T
+
+    else:
+        data = dtm
 
     # Process the data data into a list
     if isinstance(data, pd.DataFrame):
