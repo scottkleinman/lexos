@@ -20,7 +20,7 @@ A suite of Jupyter notebooks demonstrating the functionality can be found [here]
 <li>Performs text pre-processing ("scrubbing") and splitting ("cutting").</li>
 <li>Performs tokenization and trains language models using <a href="https://spacy.io/" target="_blank">spaCy</a>.</li>
 <li>Creates assorted visualizations of term vectors.</li>
-<li>Generates topic models and topic model visualizations using <a href="https://spacy.io/" target="_blank">MALLET</a> and <a href="https://spacy.io/" target="_blank">dfr-browser</a>.</li>
+<li>Generates topic models and topic model visualizations using <a href="https://github.com/mimno/Mallet" target="_blank">MALLET</a> and <a href="https://github.com/agoldst/dfr-browser" target="_blank">dfr-browser</a>.</li>
 
 An expanded set of features is planned for the future.
 
