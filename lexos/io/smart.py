@@ -13,7 +13,7 @@ The Loader class does not yet filter for file format.
 import io
 import zipfile
 from pathlib import Path
-from typing import Any, List, Union
+from typing import Any, Iterable, List, Union
 
 import docx2txt
 from pdfminer.high_level import extract_text
@@ -45,6 +45,15 @@ class Loader:
         self.texts = []
         self.errors = []
         self.decode = True
+
+    def __iter__(self) -> Iterable:
+        """Iterate over the loader.
+
+        Returns:
+            Iterable: The loader.
+        """
+        for i, _ in enumerate(iter(self.names)):
+            yield Text(self.source, self.names[i], self.locations[i], self.texts[i])
 
     def _decode(self, text: Union[bytes, str]) -> str:
         """Decode a text.
@@ -180,3 +189,16 @@ class Loader:
                     self.errors.append({"path": path, "message": LANG["io_error"]})
             else:
                 self.errors.append({"path": path, "message": LANG["format_error"]})
+
+
+class Text:
+    """Class for accessing a text from an iterator."""
+
+    def __init__(
+        self, source: str = None, name: str = "", location: str = "", text: str = ""
+    ) -> None:
+        """__init__ method."""
+        self.source = source
+        self.name = name
+        self.location = location
+        self.text = text

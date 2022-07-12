@@ -361,8 +361,8 @@ class DatasetLoader:
             location_col (str): The name of the column containing the locations.
             location_field (str): The name of the field containing the locations.
 
-        Return:
-            Dataset: A Dataset object.
+        Returns:
+            Dataset: A Dataset or list of Dataset object.
         """
         if isinstance(source, list):
             new_data = [
@@ -591,4 +591,3 @@ class DatasetLoader:
                             )
         # Return a Dataset with the flattened list of dicts
         return Dataset(data=list(itertools.chain(*new_data)))
-
