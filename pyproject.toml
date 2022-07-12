@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "lexos"
 version = "0.0.1"
-description = ""
+description = "Lexos is a tool for the analysis of lexical data. The Lexos package is the Python API for the Lexos tool."
 authors = ["Scott Kleinman <scott.kleinman@csun.edu>"]
 
 [tool.poetry.dependencies]
@@ -19,19 +19,19 @@ rich = "^12.4.4"
 typer = "^0.4.1"
 wordcloud = "^1.8.1"
 scipy = "^1.8.1"
-spacy = "^3.3.1"
+spacy = ">=3.4.0,<3.5.0"
 textacy = "^0.12.0"
 openpyxl = "^3.0.10"
 plotly = "^5.9.0"
+gensim = "^4.2.0"
+pyLDAvis = "^3.3.1"
+seaborn = "^0.11.2"
 
 [tool.poetry.dependencies.xx_sent_ud_sm]
-url = "https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.3.0/xx_sent_ud_sm-3.3.0.tar.gz"
+url = "https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.4.0/xx_sent_ud_sm-3.4.0.tar.gz"
 
 [tool.poetry.dependencies.en_core_web_sm]
-url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.3.0/en_core_web_sm-3.3.0.tar.gz"
-
-[tool.poetry.dependencies.fr_core_news_sm]
-url = "https://github.com/explosion/spacy-models/releases/download/fr_core_news_sm-3.3.0/fr_core_news_sm-3.3.0.tar.gz"
+url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.4.0/en_core_web_sm-3.4.0.tar.gz"
 
 [tool.poetry.dev-dependencies]
 mkdocs = "^1.3.0"
