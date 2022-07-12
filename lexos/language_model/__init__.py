@@ -6,27 +6,23 @@ are methods of the `LanguageModel` class, but debugging is done through separate
 import sys
 from pathlib import Path
 from time import time
-from wasabi import Printer
 from typing import List, Optional, Union
 
 from smart_open import open
-from spacy.cli import convert, evaluate, package
+from spacy.cli import convert
 from spacy.cli import debug_config as spacy_debug_config
 from spacy.cli import debug_data as spacy_debug_data
 from spacy.cli import debug_model as spacy_debug_model
-from spacy.cli.init_config import fill_config, init_config
+from spacy.cli import evaluate, package
 from spacy.cli._util import import_code, setup_gpu, show_validation_error
+from spacy.cli.init_config import fill_config, init_config
 from spacy.schemas import ConfigSchemaTraining
 from spacy.training.initialize import init_nlp
 from spacy.training.loop import train
-from spacy.util import (
-    is_in_jupyter,
-    load_config,
-    load_model_from_config,
-    registry,
-    run_command,
-)
+from spacy.util import (is_in_jupyter, load_config, load_model_from_config,
+                        registry, run_command)
 from thinc.api import Config, fix_random_seed, set_gpu_allocator
+from wasabi import Printer
 
 
 class Timer:

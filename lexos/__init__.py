@@ -1,4 +1,4 @@
-"""__init.py."""
+"""__init__.py."""
 
 __version__ = "0.0.1"
 __docs__ = "https://scottkleinman.github.io/lexos/"

@@ -1,8 +1,7 @@
 """scale_model.py."""
-from typing import Callable
-
 import gzip
 import logging
+from typing import Callable
 
 import numpy as np
 import pandas as pd

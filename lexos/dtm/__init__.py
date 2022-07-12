@@ -4,7 +4,6 @@ from typing import Any, List, Union
 import pandas as pd
 import spacy
 from natsort import natsort_keygen, ns
-
 from pydantic import BaseModel, ValidationError, validator
 
 from lexos.exceptions import LexosException

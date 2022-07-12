@@ -26,7 +26,8 @@ import itertools
 import tempfile
 import zipfile
 from pathlib import Path
-from typing import IO, Any, AnyStr, Dict, Iterable, List, Optional, Type, TypeVar, Union
+from typing import (IO, Any, AnyStr, Dict, Iterable, List, Optional, Type,
+                    TypeVar, Union)
 
 import pandas as pd
 from pydantic import BaseModel

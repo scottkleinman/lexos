@@ -5,8 +5,8 @@ from typing import Any, Dict, List, Union
 
 import pandas as pd
 import spacy
-from lexos.exceptions import LexosException
 
+from lexos.exceptions import LexosException
 from lexos.tokenizer import extensions
 
 

@@ -3,6 +3,7 @@
 from typing import Any, List, Union
 
 import spacy
+
 from lexos import utils
 from lexos.exceptions import LexosException
 

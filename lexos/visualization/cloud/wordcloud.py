@@ -4,8 +4,9 @@ from typing import Iterator, List, Union
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from lexos.dtm import DTM
 from wordcloud import WordCloud
+
+from lexos.dtm import DTM
 
 
 def get_rows(lst, n) -> Iterator[int]:
