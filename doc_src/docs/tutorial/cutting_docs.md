@@ -12,13 +12,13 @@ The `Ginsu` class is used for splitting spaCy documents (pre-tokenised texts).
 
 `Ginsu` has the following features:
 
-- [lexos.cutter.Ginsu.split][lexos.cutter.Ginsu.split]: Split by number of tokens (i.e. every N token).
-- [lexos.cutter.Ginsu.splitn][lexos.cutter.Ginsu.splitn]: Split by number of segments (i.e. return a predetermined number of segments).
-- [lexos.cutter.Ginsu.split_on_milestones][lexos.cutter.Ginsu.split_on_milestones]: Split on milestone tokens.
+- [`split()`][lexos.cutter.ginsu.Ginsu.split]: Split by number of tokens (i.e. every N token).
+- [`splitn()`][lexos.cutter.ginsu.Ginsu.splitn]: Split by number of segments (i.e. return a predetermined number of segments).
+- [`split_on_milestones()`][lexos.cutter.ginsu.Ginsu.split_on_milestones]: Split on milestone tokens.
 
-`Ginsu.split` and `Ginsu.splitn` both have the ability to merge the list segment into the preceding one if it falls under a customisable threshold. Likewise, they can generate overlapping segments. All three methods return a list of lists, where each item in the sublist is a spaCy document.
+`Ginsu.split()` and `Ginsu.splitn()` both have the ability to merge the list segment into the preceding one if it falls under a customisable threshold. Likewise, they can generate overlapping segments. All three methods return a list of lists, where each item in the sublist is a spaCy document.
 
-With `Ginsu.split_on_milestones`, the user can choose whether or not to preserve the milestone token at the beginning of each segment. A milestone must be a single token and will generally match the token's `text` attribute. However, it can also match other attributes of the token if they are available in the language model used to produce the spaCy document. There is also an elaborate query language for fine-grained matching.
+With `Ginsu.split_on_milestones()`, the user can choose whether or not to preserve the milestone token at the beginning of each segment. A milestone must be a single token and will generally match the token's `text` attribute. However, it can also match other attributes of the token if they are available in the language model used to produce the spaCy document. There is also an elaborate query language for fine-grained matching.
 
 #### Splitting Documents by Number of Tokens
 
@@ -60,7 +60,7 @@ This will split the document(s) into 10 segments. The `overlap` and `merge_thres
 
 #### Splitting Documents on Milestones
 
-A milestone is a pattern that serves as a boundary between segments of a document. The `Ginsu.split_on_milestones` method accepts a pattern to match tokens to milestones. Typically a milestone pattern will be a simple string, and Cutter will split the spaCy doc whenever the `text` attribute of a token matches the pattern. As we will see below, more complex pattern matching methods are possible.
+A milestone is a pattern that serves as a boundary between segments of a document. The `Ginsu.split_on_milestones()` method accepts a pattern to match tokens to milestones. Typically a milestone pattern will be a simple string, and Cutter will split the spaCy doc whenever the `text` attribute of a token matches the pattern. As we will see below, more complex pattern matching methods are possible.
 
 ```python
 from lexos.tokenizer import make_doc
@@ -203,7 +203,7 @@ An obvious advantage of preprocessing milestones is that the custom attribute ca
 #### The `Machete` Tokenizer
 `Machete` works in a manner similar to `Ginsu` and has all the same functionality. However, before splitting the text it applies a makeshift tokenizer function and then splits the text based on the resulting list of tokens.
 
-The Lexos API has three tokenizer functions in the `cutter` function registry: "whitespace" (the default), "character", and "linebreaks". A `Machete` object can be initialised with one of the tokenizers or the tokenizer can be passed to the `Machete.split`, `Machete.splitn`, and `Machete.split_on_milestones` methods using the `tokenizer` parameter.
+The Lexos API has three tokenizer functions in the `cutter` function registry: "whitespace" (the default), "character", and "linebreaks". A `Machete` object can be initialised with one of the tokenizers or the tokenizer can be passed to the `Machete.split()`, `Machete.splitn()`, and `Machete.split_on_milestones()` methods using the `tokenizer` parameter.
 
 !!! information "What if I don't like the tokenizer?"
     You can supply a custom function after first adding it to the registry. Here is an example:
@@ -228,7 +228,7 @@ The Lexos API has three tokenizer functions in the `cutter` function registry: "
 
 #### Splitting Documents with `Machete`
 
-`Machete.split`, `Machete.splitn`, and `Machete.split_on_milestones` return a list of lists, where each item in the outer list corresponds to a text and each sublist contains the text's segments. `Machete.split`, `Machete.splitn` take the same `merge_threshold` and `overlap` parameters as in the `Ginsu` class. `Machete.split_on_milestones` is more limited than its `Ginsu` equivalent. Milestone patterns are evaluated as regular expressions and searched from the beginning of the token string using Python's `re.match()` function.
+`Machete.split()`, `Machete.splitn()`, and `Machete.split_on_milestones()` return a list of lists, where each item in the outer list corresponds to a text and each sublist contains the text's segments. `Machete.split()`, `Machete.splitn()` take the same `merge_threshold` and `overlap` parameters as in the `Ginsu` class. `Machete.split_on_milestones()` is more limited than its `Ginsu` equivalent. Milestone patterns are evaluated as regular expressions and searched from the beginning of the token string using Python's `re.match()` function.
 
 
 By default, all three methods return segments as lists of strings. In the example below, we get results with the default `as_string=True`:
@@ -268,7 +268,7 @@ The default "whitespace" tokenizer does not strip whitespace around words and do
 
 #### Splitting Lists of Tokens with `Machete`
 
-Sometimes data will be available as lists of tokens, rather than as strings (for instance, if you have already tokenised your texts using a tool like <a href="https://www.nltk.org/" target="_blank">NLTK</a>). In this case, you can cut your texts using the `Machete.split_list` method. It works just like `Machete.split`, except that it takes a list of tokens as input.
+Sometimes data will be available as lists of tokens, rather than as strings (for instance, if you have already tokenised your texts using a tool like <a href="https://www.nltk.org/" target="_blank">NLTK</a>). In this case, you can cut your texts using the `Machete.split_list()` method. It works just like `Machete.split()`, except that it takes a list of tokens as input.
 
 def split_list(
         self,
@@ -304,7 +304,7 @@ print(segments)
 !!! note
     `Machete` assumes that spaces and punctuation between words are preserved, which makes it easier to return the segments as a human-readable string. In the example above, our token list did not preserve spaces or punctuation between words. As a result, it was necessary to take the extra step of padding each token (although the resulting segments have still lost the original punctuation). Steps like this may be necessary when using lists of tokens, depending on how they are created.
 
-It should be noted that, whilst of the Machete functions will accept either a single text string or a list of text strings, `Machete.split_list` accepts only a list of token strings. If you have multiple lists, you should handle them in a loop (or equivalent list comprehension) as follows:
+It should be noted that, whilst of the Machete functions will accept either a single text string or a list of text strings, `Machete.split_list()` accepts only a list of token strings. If you have multiple lists, you should handle them in a loop (or equivalent list comprehension) as follows:
 
 ```python
 from lexos.cutter.machete import Machete

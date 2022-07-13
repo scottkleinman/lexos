@@ -1,4 +1,4 @@
-"""clustermap.py"""
+"""clustermap.py."""
 
 from typing import Any, Dict, List, Tuple, Union
 

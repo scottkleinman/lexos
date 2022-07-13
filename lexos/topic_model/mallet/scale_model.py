@@ -112,8 +112,7 @@ def _pcoa(pair_dists: np.array, n_components: int = 2) -> np.array:
     """Perform Principal Coordinate Analysis.
 
     AKA Classical Multidimensional Scaling
-    Code referenced from skbio.stats.ordination.pcoa
-    https://github.com/biocore/scikit-bio/blob/0.5.0/skbio/stats/ordination/_principal_coordinate_analysis.py
+    Code referenced from [skbio.stats.ordination.pcoa](https://github.com/biocore/scikit-bio/blob/0.5.0/skbio/stats/ordination/_principal_coordinate_analysis.py)
 
     Args:
         pair_dists (np.array): Pairwise distances.
@@ -304,7 +303,7 @@ def get_topic_coordinates(
     """
     # parse mds
     # if isinstance(mds, basestring):
-    if isinstance(mds, (str,bytes)):
+    if isinstance(mds, (str, bytes)):
         mds = mds.lower()
         if mds == "pcoa":
             mds = js_PCoA

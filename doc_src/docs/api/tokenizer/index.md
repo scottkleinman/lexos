@@ -17,6 +17,16 @@ The `Tokenizer` uses spaCy to convert texts to documents using one of the functi
       show_root_heading: true
       heading_level: 3
 
+### ::: lexos.tokenizer._load_model
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
+### ::: lexos.tokenizer._validate_input
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
 ### ::: lexos.tokenizer.doc_from_ngrams
     rendering:
       show_root_heading: true

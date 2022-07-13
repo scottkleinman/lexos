@@ -1,6 +1,6 @@
 # Cluster
 
-`Cluster` is a module that performs cluster analysis.
+`Cluster` is a module that performs various types of cluster analysis. Currently, the only implementation is hierarchical agglomerative clustering, which is implemented throught the `Dendrogram` class.
 
 ### ::: lexos.cluster.dendrogram.Dendrogram
     rendering:

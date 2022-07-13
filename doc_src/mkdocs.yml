@@ -4,43 +4,42 @@ site_dir: "../docs"
 nav:
   - Home: index.md
   - Installation: installation.md
-  # - Tutorial: tutorial.md
   - Tutorial:
-      - Index: tutorial/index.md
-      # - Overview: tutorial/overview.md
+      - Overview: tutorial/index.md
       - Getting Started: tutorial/getting_started.md
       - Loading Texts: tutorial/loading_texts.md
       - Scrubbing Texts: tutorial/scrubbing_texts.md
       - Tokenising Texts: tutorial/tokenising_texts.md
       - Cutting Documents: tutorial/cutting_docs.md
       - The Document-Term Matrix: tutorial/the_document_term_matrix.md
-      - Visualisation: tutorial/visualisation.md
+      - Visualization: tutorial/visualization.md
       - Managing a Corpus: tutorial/managing_a_corpus.md
       - Training a Language Model: tutorial/training_a_language_model.md
       - Topic Modelling with MALLET: tutorial/mallet_topic_models.md
+  - Development:
+      - Index: development/index.md
   - API:
-      - Index: api/index.md
-      # - Overview: api/overview.md
+      - Overview: api/index.md
       - Cluster:
-          - Index: api/cluster/index.md
+          - Cluster: api/cluster/index.md
       - Corpus:
-          - Index: api/corpus/index.md
+          - Corpus: api/corpus/index.md
       - Cutter:
-          - Index: api/cutter/index.md
+          - Cutter: api/cutter/index.md
           - Filesplit: api/cutter/filesplit.md
+          - Ginsu: api/cutter/ginsu.md
+          - Machete: api/cutter/machete.md
           - Milestones: api/cutter/milestones.md
       - DTM:
-          - Index: api/dtm/index.md
-          - Wordcloud: api/dtm/wordcloud.md
-          - Bubble Charts: api/dtm/bubbleviz.md
+          - DTM: api/dtm/index.md
       - IO:
-          - Index: api/io/index.md
-          - Basic: api/io/basic.md
+          - IO: api/io/index.md
           - Smart: api/io/smart.md
+          - Dataset: api/io/dataset.md
       - Language_Model:
-          - Index: api/language_model/index.md
+          - Language_Model: api/language_model/index.md
       - Scrubber:
-          - Index: api/scrubber/index.md
+          - Scrubber: api/scrubber/index.md
           - Normalize: api/scrubber/normalize.md
           - Pipeline: api/scrubber/pipeline.md
           - Registry: api/scrubber/registry.md
@@ -50,12 +49,17 @@ nav:
           - Scrubber: api/scrubber/scrubber.md
           - Utils: api/scrubber/utils.md
       - Topic_Model:
-          - Index: api/topic_model/index.md
+          - Topic_Model: api/topic_model/index.md
       - Tokenizer:
-          - Index: api/tokenizer/index.md
+          - Tokenizer: api/tokenizer/index.md
           - Extensions: api/tokenizer/extensions.md
           - LexosDoc: api/tokenizer/lexosdoc.md
-      - Visualisation: api/visualisation.md
+      - Visualization:
+          - Overview: api/visualization/index.md
+          - Bubbleviz: api/visualization/bubbleviz.md
+          - Cloud: api/visualization/wordcloud.md
+          - Plotly: api/visualization/plotly.md
+          - Seaborn: api/visualization/seaborn.md
       - Utils: api/utils.md
 
 theme:

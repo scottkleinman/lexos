@@ -6,3 +6,8 @@ The smart `Loader` class is the primary component of the IO module, superseding 
     rendering:
       show_root_heading: true
       heading_level: 3
+
+### ::: lexos.io.smart.Text
+    rendering:
+      show_root_heading: true
+      heading_level: 3

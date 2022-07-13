@@ -113,7 +113,7 @@ def _validate_input(input: Any) -> None:
         None
 
     Raises:
-        LexosException if the input is not valid.
+        LexosException (Exception): Raise an error if the input is not valid.
     """
     if not isinstance(input, list):
         input = [input]

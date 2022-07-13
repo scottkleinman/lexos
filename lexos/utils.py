@@ -48,14 +48,14 @@ def ensure_path(path: Any) -> Any:
         return path
 
 
-def get_paths(path: Union[Path, str],) -> list:
+def get_paths(path: Union[Path, str]) -> list:
     """Get a list paths in a directory.
 
     Args:
-        path(str): The path to the directory.
+        path (Union[Path, str]): The path to the directory.
 
     Returns:
-        A list of file paths.
+        list: A list of file paths.
     """
     return list(Path(path).glob("**/*"))
 
@@ -69,13 +69,13 @@ def get_github_raw_paths(
     """Get raw paths to files in a GitHub directory.
 
     Args:
-        path(str): The path to the directory.
-        user(str): The user name of the GitHub repository.
-        repo(str): The repository name of the GitHub repository.
-        branch(str): The branch of the GitHub repository.
+        path (Union[Path, str]): The path to the directory.
+        user (Optional[str]): The user name of the GitHub repository.
+        repo (Optional[str]): The repository name of the GitHub repository.
+        branch (Optional[str]): The branch of the GitHub repository.
 
     Returns:
-        A list of raw download paths.
+        list: A list of raw download paths.
     """
     path = str(path)
     if not user or not repo or not branch:
@@ -148,14 +148,17 @@ def to_collection(
     col_type: Type[Any],
 ) -> Collection[AnyVal]:
     """Validate and cast a value or values to a collection.
+
     Args:
         val (object): Value or values to validate and cast.
         val_type (type): Type of each value in collection, e.g. ``int`` or ``(str, bytes)``.
         col_type (type): Type of collection to return, e.g. ``tuple`` or ``set``.
+
     Returns:
         Collection of type ``col_type`` with values all of type ``val_type``.
+
     Raises:
-        TypeError
+        TypeError: An invalid value was passed.
     """
     if val is None:
         return []

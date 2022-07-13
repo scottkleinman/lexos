@@ -11,10 +11,9 @@ init_notebook_mode(connected=True)
 from wordcloud import WordCloud
 
 
-def make_wordcloud(data: Union[dict, list, object, str, tuple],
-                   opts: dict = None,
-                   round: int = None
-                  ):
+def make_wordcloud(
+    data: Union[dict, list, object, str, tuple], opts: dict = None, round: int = None
+) -> object:
     """Make a word cloud.
 
     Accepts data from a string, list of lists or tuples, a dict with
@@ -29,7 +28,7 @@ def make_wordcloud(data: Union[dict, list, object, str, tuple],
         round (int): An integer (generally between 100-300) to apply a mask that rounds the word cloud.
 
     Returns:
-        object: A WordCloud object if show is set to False.
+        word cloud (object): A WordCloud object if show is set to False.
 
     Notes:
         - For a full list of options, see https://amueller.github.io/word_cloud/generated/wordcloud.WordCloud.html#wordcloud-wordcloud.
@@ -51,11 +50,14 @@ def make_wordcloud(data: Union[dict, list, object, str, tuple],
         wordcloud = WordCloud(**opts).generate_from_frequencies(data)
     return wordcloud
 
-def plot(dtm: object,
-         docs: List[str] = None,
-         opts: dict = None,
-         layout: dict = None,
-         show: bool = True,) -> go.Figure:
+
+def plot(
+    dtm: object,
+    docs: List[str] = None,
+    opts: dict = None,
+    layout: dict = None,
+    show: bool = True,
+) -> go.Figure:
     """Convert a Python word cloud to a Plotly word cloud.
 
     This is some prototype code for generating word clouds in Plotly.
@@ -88,33 +90,19 @@ def plot(dtm: object,
     Returns:
         object: A Plotly figure.
     """
-    word_list=[]
-    freq_list=[]
-    fontsize_list=[]
-    position_list=[]
-    orientation_list=[]
-    color_list=[]
+    word_list = []
+    freq_list = []
+    fontsize_list = []
+    position_list = []
+    orientation_list = []
+    color_list = []
     layout_opts = {
-        "xaxis": {
-            "showgrid": False,
-            "showticklabels": False,
-            "zeroline": False
-        },
-        "yaxis": {
-            "showgrid": False,
-            "showticklabels": False,
-            "zeroline": False
-        },
+        "xaxis": {"showgrid": False, "showticklabels": False, "zeroline": False},
+        "yaxis": {"showgrid": False, "showticklabels": False, "zeroline": False},
         "autosize": False,
         "width": 750,
         "height": 750,
-        "margin": {
-            "l": 50,
-            "r": 50,
-            "b": 100,
-            "t": 100,
-            "pad": 4
-        }
+        "margin": {"l": 50, "r": 50, "b": 100, "t": 100, "pad": 4},
     }
 
     if layout:
@@ -153,8 +141,8 @@ def plot(dtm: object,
         color_list.append(color)
 
     # Get the positions
-    x=[]
-    y=[]
+    x = []
+    y = []
     for i in position_list:
         x.append(i[0])
         y.append(i[1])
@@ -164,14 +152,15 @@ def plot(dtm: object,
     for i in freq_list:
         new_freq_list.append(f"{round(i*100, 2)}%")
     new_freq_list
-    trace = go.Scatter(x=x,
-                       y=y,
-                       textfont = dict(size=fontsize_list, color=color_list),
-                       hoverinfo="text",
-                       hovertext=[f"{w}: {f}" for w, f in zip(word_list, new_freq_list)],
-                       mode="text",
-                       text=word_list
-                      )
+    trace = go.Scatter(
+        x=x,
+        y=y,
+        textfont=dict(size=fontsize_list, color=color_list),
+        hoverinfo="text",
+        hovertext=[f"{w}: {f}" for w, f in zip(word_list, new_freq_list)],
+        mode="text",
+        text=word_list,
+    )
 
     # Set the laoyt and create the figure
     layout = go.Layout(layout_opts)

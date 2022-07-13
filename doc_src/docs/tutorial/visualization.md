@@ -11,7 +11,7 @@ Each of the available visualisation types is described below.
 
 ### Single Word Clouds
 
-The simplest way to generate a word cloud is to import the `wordcloud` function from [lexos.visualization.cloud.wordcloud][] and pass it a document-term matrix.
+The simplest way to generate a word cloud is to import the `[wordcloud](lexos.visualization.cloud.wordcloud.wordcloud)` function and pass it a document-term matrix.
 
 ```python
 from lexos.visualization.cloud.wordcloud import wordcloud
@@ -42,19 +42,19 @@ The `round` parameter (normally between 100 and 300) will add various degrees of
 
 If a `filename` is provided, the plot will be saved to the specified file. By default, `show=True`, and the wordcloud will be plotted to the screen if the environment is appropriate. If `show=False`, the `WordCloud` object will be returned. In this instance, you can still save the word cloud by calling `wordcloud.to_file(filename)`.
 
-By default, [lexos.visualization.cloud.wordcloud][], creates a word cloud based on the total term counts for all documents. If you wish to use a single or a subset of documents, use the `docs` parameter.
+By default, `wordcloud()`, creates a word cloud based on the total term counts for all documents. If you wish to use a single or a subset of documents, use the `docs` parameter.
 
 ```python
 wordcloud(dtm, docs=["doc1", "doc2", etc.])
 ```
 
 !!! note
-    [lexos.visualization.cloud.wordcloud][] takes a number of other input formats, including raw text, but a `lexos.dtm.DTM` is by far the easiest method to generate data from pre-tokenised texts.
+    `wordcloud()` takes a number of other input formats, including raw text, but a `lexos.dtm.DTM` is by far the easiest method to generate data from pre-tokenised texts.
 
 ### Multiclouds
 
 Multiclouds are grid-organised word clouds of individual documents, which allow you to compare the document clouds side by side. The method of generating multiclouds is similar to word clouds. The basic input is a `lexos.dtm.DTM` object, where one word cloud will be generated for each document. If a subset of documents is required, the `docs` parameter shown above should be used. Once the data is prepared, the multiclouds are generated as showb below:
-with a [lexos.visualization.cloud.wordcloud.multicloud][].
+with a `[multicloud](lexos.visualization.cloud.wordcloud.multicloud)`.
 
 ```python
 from lexos.visualization.cloud.wordcloud import multicloud
@@ -64,10 +64,10 @@ multicloud(dtm, title="My Multicloud", labels=labels, ncols=3)
 
 Since multicloud produce multiple subplots, there is a `title` parameter to give the entire figure a title and a `labels` parameter, which includes a list labels to be assigned to each subplot. In the example above, we are just taking the labels from the DTM, minus the first "terms" column. The `ncols` parameter sets the number of subplots per row.
 
-If a `filename` is provided, the entire plot will be saved. If `show=False`, [lexos.visualization.cloud.wordcloud.multicloud][] returns a list of word clouds. These can be saved individually by calling `to_file()` on them.
+If a `filename` is provided, the entire plot will be saved. If `show=False`, `multicloud()` returns a list of word clouds. These can be saved individually by calling `to_file()` on them.
 
 !!! note
-    As with word clouds, [lexos.dtm.wordcloud.make_multiclouds][] takes a number of different input formats, but pandas dataframes are the easiest to work with.
+    As with word clouds, the `multicloud()` function takes a number of different input formats, but pandas dataframes are the easiest to work with.
 
 ### Bubble Charts
 
@@ -78,7 +78,7 @@ from lexos.visualization.bubbleviz import bubbleviz
 bubbleviz(dtm)
 ```
 
-See [lexos.visualization.bubbleviz][] for a description of the various options.
+See [lexos.visualization.bubbleviz.BubbleChart][] for a description of the various options.
 
 !!! warning
     The algorithm to produce bubble charts in pure Python is experimental and not nearly as good as the Javascript implementation used in the Lexos app.

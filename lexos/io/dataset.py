@@ -26,8 +26,7 @@ import itertools
 import tempfile
 import zipfile
 from pathlib import Path
-from typing import (IO, Any, AnyStr, Dict, Iterable, List, Optional, Type,
-                    TypeVar, Union)
+from typing import IO, Any, AnyStr, Dict, Iterable, List, Optional, Type, TypeVar, Union
 
 import pandas as pd
 from pydantic import BaseModel
@@ -235,7 +234,6 @@ class Dataset(BaseModel):
 
         Args:
             source (str): The string or path to file containing the lines to parse.
-            lines (Optional[str]): The lines to parse.
             title_field (Optional[str]): The field name to convert to "title".
             text_field (Optional[str]): The field name to convert to "text".
 

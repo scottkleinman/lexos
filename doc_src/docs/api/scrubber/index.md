@@ -2,7 +2,7 @@
 
 `Scrubber` is a destructive preprocessing module that contains a set of functions for manipulating text. It leans heavily on the code base for <a href="https://github.com/chartbeat-labs/textacy/" target="_blank">Textacy</a> but tweaks some of that library's functions in order to modify or extend the functionality.
 
-`Scrubber` is divided into five submodules:
+`Scrubber` is divided into eight submodules:
 
 <table>
     <colgroup>
@@ -12,7 +12,7 @@
     <tbody>
         <tr class="row-odd">
             <td><a href="https://scottkleinman.github.io/lexos/api/scrubber/normalize/" title="lexos.scrubber.normalize"><code>normalize</code></a></td>
-            <td>A set of functions for massaging text into standardised forms.</td>
+            <td>A set of functions for massaging text into standardized forms.</td>
         </tr>
         <tr class="row-even">
             <td><a href=".https://scottkleinman.github.io/lexos/api/scrubber/pipeline/" title="lexos.scrubber.pipeline"><code>pipeline</code></a></td>
@@ -38,7 +38,7 @@
         </tr>
         <tr class="row-odd">
             <td><a href="https://scottkleinman.github.io/lexos/api/scrubber/scrubber/" title="lexos.scrubber.scrubber"><code>scrubber</code></a></td>
-            <td>Constains the <code>lexos.scrubber.scrubber.Scrub</code> class for managing scrubbing pipelines.</td>
+            <td>Contains the <code>lexos.scrubber.scrubber.Scrub</code> class for managing scrubbing pipelines.</td>
         </tr>
         <tr class="row-even">
             <td><a href="https://scottkleinman.github.io/lexos/api/scrubber/utils/" title="lexos.scrubber.utils"><code>utils</code></a></td>

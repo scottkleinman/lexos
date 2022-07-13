@@ -3,12 +3,11 @@
 from typing import Any, Callable, List, Union
 
 import matplotlib.pyplot as plt
-import pandas as pd
 import scipy.cluster.hierarchy as sch
 from scipy.spatial.distance import pdist
 
 
-class Dendrogram():
+class Dendrogram:
     """Dendrogram.
 
     Typical usage:
@@ -20,7 +19,7 @@ class Dendrogram():
 
     or
 
-    dendrogram = Dendrogram(dtm, show=True)
+    dendrogram = Dendrogram(dtm, show=False)
     dendrogram.fig
     ```
     """
@@ -45,11 +44,11 @@ class Dendrogram():
         leaf_label_func: Callable = None,
         show_contracted: bool = False,
         link_color_func: Callable = None,
-        ax = None,
+        ax=None,
         above_threshold_color: str = "C0",
         title: str = None,
         figsize: tuple = (10, 10),
-        show: bool = False
+        show: bool = False,
     ) -> dict:
         """Initialise the Dendrogram."""
         # Create an empty plot for matplotlib
@@ -116,7 +115,7 @@ class Dendrogram():
             show_contracted=self.show_contracted,
             link_color_func=self.link_color_func,
             ax=self.ax,
-            above_threshold_color=self.above_threshold_color
+            above_threshold_color=self.above_threshold_color,
         )
         self.fig = fig
 
