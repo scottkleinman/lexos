@@ -260,12 +260,12 @@ class Filesplit:
             output_file (str): Final merged output file path. If not
                 provided, the final merged filename is derived from
                 the split filename and placed in the same input dir.
-            manifest_file (str): path to the manifest file. If not provided,
+            manifest_file (str): Path to the manifest file. If not provided,
                 the process will look for the file within the input_dir.
-            callback (Callable): callback function [func (str, long)]
+            callback (Callable): Callback function [func (str, long)]
                 that accepts 2 arguments - path to destination,
                 size of the file in bytes.
-            cleanup (bool): if True, all the split files and the manifest file
+            cleanup (bool): If True, all the split files and the manifest file
                 will be deleted after the merge, leaving behind the merged file.
         Raises:
             FileNotFoundError: If missing manifest and split files.
