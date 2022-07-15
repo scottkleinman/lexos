@@ -13,14 +13,14 @@
     
     
       
-        <title>Pipeline - The Lexos API</title>
+        <title>Index - The Lexos API</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.4a0965b7.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.4a0965b7.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
         
       
       
@@ -36,11 +36,11 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pipeline" class="md-skip">
+        <a href="#development-notes" class="md-skip">
           Skip to content
         </a>
       
@@ -82,7 +82,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../.." title="The Lexos API" class="md-header__button md-logo" aria-label="The Lexos API" data-md-component="logo">
+    <a href=".." title="The Lexos API" class="md-header__button md-logo" aria-label="The Lexos API" data-md-component="logo">
       
   
   <svg id="lexos-dragon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245.59 217.84"><defs><style>.circle{fill:#e3e3e3;}.base{fill:#fff;}.shadow{fill:#909090;}.lines{fill:none;stroke:#505050;stroke-miterlimit:10;stroke-width:6px;}.iris{fill:#47bcff;}</style></defs><g id="circle"><circle class="circle" cx="114.34" cy="108.92" r="108.92"></circle></g><g id="base"><path class="base" d="M18.22,71.24S25,76.48,54.38,65c-.59-8.7-1.73-31.14-1.73-34.15,6.77,0,26,19.57,36.25,25.95,12,1.09,46.16,2,64.91,4.59,9.58,1,45.8,21,51.72,30.09s10,19,16.18,25.41,17.08,18,20.95,23.6,7.89,18.49,3.11,21.72S231,172.29,231,172.29l1.87-6.92-7.19-.75L215,170s1.6-5.85,1.2-9.6c-4-3-11.92-9.25-14.12-10.62s-6.69,12.09-6.25,14.79c.34,2.11,15,22.4,18,24.68,2-1.88,4.11-6.56,4.11-6.56s1.29,5.68-1.34,9.75c-6,9.33-12.5,10.71-15.92,10.56s-10.63,1-15.11-2.35-25.74-14-40.87-25.28c-11.4-8.49-19.18-15.74-19.18-15.74s-33.95,6.6-40.56,9.07-32.35,11.61-32.35,11.61a74,74,0,0,0-1.78-20.6c.57-1.05-17.28,15.62-17.28,15.62S10,148.77,11.09,107.2C11.7,84.17,18.22,71.24,18.22,71.24Z" transform="translate(-5.97 -0.51)"></path></g><g id="shadow"><path class="shadow" d="M125.92,133.44c0-4.87-46.64-12.73-58.75-15.06-12-2.3-37.58-5.19-48.44-6.37-.35,0,17.14,11.38,25.93,25.37a63.82,63.82,0,0,1,9.69,29.21S84.24,159.82,125.92,133.44Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M217.52,139.28c-.46,2.91,1.44,5.56,3,7.16s5.5,6.43,8.54,4.46c2.28-1.49-.78-4.62-1.77-6.16C225.77,142.41,218.12,135.4,217.52,139.28Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M174.72,142.19c-3.07,2.28-8.46,4.56-9.34,11.55s4,10.86,6.15,14.73a57.17,57.17,0,0,0,6.34,8.49,61.6,61.6,0,0,0,5.13,5.11c3.08,2.73,7.78,6.15,9,6.38a39.8,39.8,0,0,0,12-1.87c-.37,3-.3,4.48-.41,6.61,3,.63,11.42-2.66,10.57-3.45-2.41-2.23-7.33-8.68-8.59-10.5s-8.74-11.48-9.41-14.17c-.54-2.16,3.31-12.84,5.17-14.53S174.72,142.19,174.72,142.19Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M127.26,107.61c-.56,4.3-101.15-6.45-101.15-6.45S42.93,90.52,48.94,81.42a45.67,45.67,0,0,0,7-33.93S127.9,102.73,127.26,107.61Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M154.48,62.57c-1.6-2.2-5.36-5.24-16-19-15.42-19.92-19-28.08-19.85-23.13s2.32,39.7,2.32,39.7A229.63,229.63,0,0,1,154.48,62.57Z" transform="translate(-5.97 -0.51)"></path></g><g id="lines"><path class="lines" d="M150.41,84.12s-11.85,3.42-26-3.19S85.25,55.64,74.77,47.21A228,228,0,0,0,51.53,31.26s-2,2.68,0,8.14,5,22.74,4,27.21c0,0-26.79,5.83-38,6.64" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M231.3,172.77c4.52.91,8.5-5.42,8.5-5.42a39.46,39.46,0,0,0,7.91-9.39c2.73-5-2-12.7-2-12.7s-5.47-9.34-10.48-13.35-12.76-13.31-17.32-20.37S206.54,94,201.07,86.93s-17.77-12.07-23.7-15l-23.24-10a305.76,305.76,0,0,1-20.5-27.34c-8.21-12.53-15-14.13-15-14.13L122,59.19s-.06,1.17-5,.86c-8.93-.57-24.75.42-24.75.42" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M202.44,192.2c2.28-2.51,3.9-7.81,3.9-7.81S197,189.24,191.5,189l-10.94-8.2c-5.92-6.16-8.65-11.17-12.76-17.32s-4.1-13,0-17.54,7.75-5.93,9.57-4.33,18.23,5.69,25.07,8.65l14.12,10.62c0,5.56-3.39,10.71-3.39,10.71s12.49-3.29,12.82-6.5" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M125.92,133.44c-4.63-6.33-34.22-11.65-57-14.61s-44.84-3.48-50.52-5.92" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M224.24,141c2.28,1.59,7.29,8.55,6.38,9.69s-4.41,1.15-6-.44" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M211.55,200.4a11.76,11.76,0,0,1-5.92,3.19c-7.82,1.76-18.23,0-18.23,0L164.73,189s-19.26-12.08-26.09-18.16a121.25,121.25,0,0,0-12.76-10c-9.57,1-45.57,9.05-53.77,11.86S53,180.81,53,180.81s-3.58-3.14,0-9.18-3.71-25.8-9.22-34.25c-6.16-9.43-14.89-16.75-22.37-22.33-4.75-3.54-7.51-4.72-11.41-10.37,0,0,4.41-3.82,8.76-4.67s13.09-1.7,20.6-8.79S48,82.7,48,82.7" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M217.06,182.4s-1.93,5.47-5.12,7.69l-6.84-9s-8.11-12.45-10.36-15.81c-.62-.93,1.57-10.16,5.58-15.35" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M14.35,108.56" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M52.93,159.72s-13.63,4.74-19.34,15.62" transform="translate(-5.97 -0.51)"></path></g><g id="iris" style="opacity: 1;"><path class="iris" d="M172.94,103.12c3.17,2.4,7.91,12.46,7.91,12.46a30.43,30.43,0,0,1-14.18-1.9c-7.72-3.53-9-12-9-12S167,98.79,172.94,103.12Z" transform="translate(-5.97 -0.51)"></path></g><g id="eye" style="opacity: 1;"><path class="lines" d="M170.15,114.64c5.93,1.14,13.65.16,13.65.16a140.92,140.92,0,0,0-9.21-12.8c-4.11-4.79-17.19-3.11-17.19-3.11" transform="translate(-5.97 -0.51)"></path></g><g id="eye-2" style="opacity: 0;"><polyline class="lines" points="176.53 116.69 169.13 99.84 151.42 98.37"></polyline></g></svg>
@@ -101,7 +101,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Pipeline
+              Index
             
           </span>
         </div>
@@ -202,7 +202,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="The Lexos API" class="md-nav__button md-logo" aria-label="The Lexos API" data-md-component="logo">
+    <a href=".." title="The Lexos API" class="md-nav__button md-logo" aria-label="The Lexos API" data-md-component="logo">
       
   
   <svg id="lexos-dragon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245.59 217.84"><defs><style>.circle{fill:#e3e3e3;}.base{fill:#fff;}.shadow{fill:#909090;}.lines{fill:none;stroke:#505050;stroke-miterlimit:10;stroke-width:6px;}.iris{fill:#47bcff;}</style></defs><g id="circle"><circle class="circle" cx="114.34" cy="108.92" r="108.92"></circle></g><g id="base"><path class="base" d="M18.22,71.24S25,76.48,54.38,65c-.59-8.7-1.73-31.14-1.73-34.15,6.77,0,26,19.57,36.25,25.95,12,1.09,46.16,2,64.91,4.59,9.58,1,45.8,21,51.72,30.09s10,19,16.18,25.41,17.08,18,20.95,23.6,7.89,18.49,3.11,21.72S231,172.29,231,172.29l1.87-6.92-7.19-.75L215,170s1.6-5.85,1.2-9.6c-4-3-11.92-9.25-14.12-10.62s-6.69,12.09-6.25,14.79c.34,2.11,15,22.4,18,24.68,2-1.88,4.11-6.56,4.11-6.56s1.29,5.68-1.34,9.75c-6,9.33-12.5,10.71-15.92,10.56s-10.63,1-15.11-2.35-25.74-14-40.87-25.28c-11.4-8.49-19.18-15.74-19.18-15.74s-33.95,6.6-40.56,9.07-32.35,11.61-32.35,11.61a74,74,0,0,0-1.78-20.6c.57-1.05-17.28,15.62-17.28,15.62S10,148.77,11.09,107.2C11.7,84.17,18.22,71.24,18.22,71.24Z" transform="translate(-5.97 -0.51)"></path></g><g id="shadow"><path class="shadow" d="M125.92,133.44c0-4.87-46.64-12.73-58.75-15.06-12-2.3-37.58-5.19-48.44-6.37-.35,0,17.14,11.38,25.93,25.37a63.82,63.82,0,0,1,9.69,29.21S84.24,159.82,125.92,133.44Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M217.52,139.28c-.46,2.91,1.44,5.56,3,7.16s5.5,6.43,8.54,4.46c2.28-1.49-.78-4.62-1.77-6.16C225.77,142.41,218.12,135.4,217.52,139.28Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M174.72,142.19c-3.07,2.28-8.46,4.56-9.34,11.55s4,10.86,6.15,14.73a57.17,57.17,0,0,0,6.34,8.49,61.6,61.6,0,0,0,5.13,5.11c3.08,2.73,7.78,6.15,9,6.38a39.8,39.8,0,0,0,12-1.87c-.37,3-.3,4.48-.41,6.61,3,.63,11.42-2.66,10.57-3.45-2.41-2.23-7.33-8.68-8.59-10.5s-8.74-11.48-9.41-14.17c-.54-2.16,3.31-12.84,5.17-14.53S174.72,142.19,174.72,142.19Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M127.26,107.61c-.56,4.3-101.15-6.45-101.15-6.45S42.93,90.52,48.94,81.42a45.67,45.67,0,0,0,7-33.93S127.9,102.73,127.26,107.61Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M154.48,62.57c-1.6-2.2-5.36-5.24-16-19-15.42-19.92-19-28.08-19.85-23.13s2.32,39.7,2.32,39.7A229.63,229.63,0,0,1,154.48,62.57Z" transform="translate(-5.97 -0.51)"></path></g><g id="lines"><path class="lines" d="M150.41,84.12s-11.85,3.42-26-3.19S85.25,55.64,74.77,47.21A228,228,0,0,0,51.53,31.26s-2,2.68,0,8.14,5,22.74,4,27.21c0,0-26.79,5.83-38,6.64" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M231.3,172.77c4.52.91,8.5-5.42,8.5-5.42a39.46,39.46,0,0,0,7.91-9.39c2.73-5-2-12.7-2-12.7s-5.47-9.34-10.48-13.35-12.76-13.31-17.32-20.37S206.54,94,201.07,86.93s-17.77-12.07-23.7-15l-23.24-10a305.76,305.76,0,0,1-20.5-27.34c-8.21-12.53-15-14.13-15-14.13L122,59.19s-.06,1.17-5,.86c-8.93-.57-24.75.42-24.75.42" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M202.44,192.2c2.28-2.51,3.9-7.81,3.9-7.81S197,189.24,191.5,189l-10.94-8.2c-5.92-6.16-8.65-11.17-12.76-17.32s-4.1-13,0-17.54,7.75-5.93,9.57-4.33,18.23,5.69,25.07,8.65l14.12,10.62c0,5.56-3.39,10.71-3.39,10.71s12.49-3.29,12.82-6.5" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M125.92,133.44c-4.63-6.33-34.22-11.65-57-14.61s-44.84-3.48-50.52-5.92" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M224.24,141c2.28,1.59,7.29,8.55,6.38,9.69s-4.41,1.15-6-.44" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M211.55,200.4a11.76,11.76,0,0,1-5.92,3.19c-7.82,1.76-18.23,0-18.23,0L164.73,189s-19.26-12.08-26.09-18.16a121.25,121.25,0,0,0-12.76-10c-9.57,1-45.57,9.05-53.77,11.86S53,180.81,53,180.81s-3.58-3.14,0-9.18-3.71-25.8-9.22-34.25c-6.16-9.43-14.89-16.75-22.37-22.33-4.75-3.54-7.51-4.72-11.41-10.37,0,0,4.41-3.82,8.76-4.67s13.09-1.7,20.6-8.79S48,82.7,48,82.7" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M217.06,182.4s-1.93,5.47-5.12,7.69l-6.84-9s-8.11-12.45-10.36-15.81c-.62-.93,1.57-10.16,5.58-15.35" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M14.35,108.56" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M52.93,159.72s-13.63,4.74-19.34,15.62" transform="translate(-5.97 -0.51)"></path></g><g id="iris" style="opacity: 1;"><path class="iris" d="M172.94,103.12c3.17,2.4,7.91,12.46,7.91,12.46a30.43,30.43,0,0,1-14.18-1.9c-7.72-3.53-9-12-9-12S167,98.79,172.94,103.12Z" transform="translate(-5.97 -0.51)"></path></g><g id="eye" style="opacity: 1;"><path class="lines" d="M170.15,114.64c5.93,1.14,13.65.16,13.65.16a140.92,140.92,0,0,0-9.21-12.8c-4.11-4.79-17.19-3.11-17.19-3.11" transform="translate(-5.97 -0.51)"></path></g><g id="eye-2" style="opacity: 0;"><polyline class="lines" points="176.53 116.69 169.13 99.84 151.42 98.37"></polyline></g></svg>
@@ -233,7 +233,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         Home
       </a>
     </li>
@@ -248,7 +248,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../installation/" class="md-nav__link">
+      <a href="../installation/" class="md-nav__link">
         Installation
       </a>
     </li>
@@ -300,7 +300,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../../tutorial/">Tutorial</a>
+          <a href="../tutorial/">Tutorial</a>
           
             <label for="__nav_3">
               <span class="md-nav__icon md-icon"></span>
@@ -323,7 +323,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/getting_started/" class="md-nav__link">
+      <a href="../tutorial/getting_started/" class="md-nav__link">
         Getting Started
       </a>
     </li>
@@ -337,7 +337,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/loading_texts/" class="md-nav__link">
+      <a href="../tutorial/loading_texts/" class="md-nav__link">
         Loading Texts
       </a>
     </li>
@@ -351,7 +351,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/scrubbing_texts/" class="md-nav__link">
+      <a href="../tutorial/scrubbing_texts/" class="md-nav__link">
         Scrubbing Texts
       </a>
     </li>
@@ -365,7 +365,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/tokenizing_texts/" class="md-nav__link">
+      <a href="../tutorial/tokenizing_texts/" class="md-nav__link">
         Tokenizing Texts
       </a>
     </li>
@@ -379,7 +379,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/cutting_docs/" class="md-nav__link">
+      <a href="../tutorial/cutting_docs/" class="md-nav__link">
         Cutting Documents
       </a>
     </li>
@@ -393,7 +393,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/the_document_term_matrix/" class="md-nav__link">
+      <a href="../tutorial/the_document_term_matrix/" class="md-nav__link">
         The Document-Term Matrix
       </a>
     </li>
@@ -407,7 +407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/visualization/" class="md-nav__link">
+      <a href="../tutorial/visualization/" class="md-nav__link">
         Visualization
       </a>
     </li>
@@ -421,7 +421,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/managing_a_corpus/" class="md-nav__link">
+      <a href="../tutorial/managing_a_corpus/" class="md-nav__link">
         Managing a Corpus
       </a>
     </li>
@@ -435,7 +435,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/training_a_language_model/" class="md-nav__link">
+      <a href="../tutorial/training_a_language_model/" class="md-nav__link">
         Training a Language Model
       </a>
     </li>
@@ -449,7 +449,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../tutorial/mallet_topic_models/" class="md-nav__link">
+      <a href="../tutorial/mallet_topic_models/" class="md-nav__link">
         Topic Modelling with MALLET
       </a>
     </li>
@@ -469,12 +469,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
       
       
       
@@ -487,8 +489,8 @@
       
         
         
-        <div class="md-nav__link md-nav__link--index ">
-          <a href="../../../development/">Development</a>
+        <div class="md-nav__link md-nav__link--index md-nav__link--active">
+          <a href="./">Development</a>
           
             <label for="__nav_4">
               <span class="md-nav__icon md-icon"></span>
@@ -517,14 +519,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
       
       
       
@@ -560,7 +560,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../">API</a>
+          <a href="../api/">API</a>
           
             <label for="__nav_5">
               <span class="md-nav__icon md-icon"></span>
@@ -600,7 +600,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../cluster/">Cluster</a>
+          <a href="../api/cluster/">Cluster</a>
           
             <label for="__nav_5_2">
               <span class="md-nav__icon md-icon"></span>
@@ -647,7 +647,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../corpus/">Corpus</a>
+          <a href="../api/corpus/">Corpus</a>
           
             <label for="__nav_5_3">
               <span class="md-nav__icon md-icon"></span>
@@ -706,7 +706,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../cutter/">Cutter</a>
+          <a href="../api/cutter/">Cutter</a>
           
             <label for="__nav_5_4">
               <span class="md-nav__icon md-icon"></span>
@@ -729,7 +729,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cutter/filesplit/" class="md-nav__link">
+      <a href="../api/cutter/filesplit/" class="md-nav__link">
         Filesplit
       </a>
     </li>
@@ -743,7 +743,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cutter/ginsu/" class="md-nav__link">
+      <a href="../api/cutter/ginsu/" class="md-nav__link">
         Ginsu
       </a>
     </li>
@@ -757,7 +757,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cutter/machete/" class="md-nav__link">
+      <a href="../api/cutter/machete/" class="md-nav__link">
         Machete
       </a>
     </li>
@@ -771,7 +771,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cutter/merge/" class="md-nav__link">
+      <a href="../api/cutter/merge/" class="md-nav__link">
         Merge
       </a>
     </li>
@@ -785,7 +785,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cutter/milestones/" class="md-nav__link">
+      <a href="../api/cutter/milestones/" class="md-nav__link">
         Milestones
       </a>
     </li>
@@ -799,7 +799,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cutter/registry/" class="md-nav__link">
+      <a href="../api/cutter/registry/" class="md-nav__link">
         Registry
       </a>
     </li>
@@ -837,7 +837,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../dtm/">DTM</a>
+          <a href="../api/dtm/">DTM</a>
           
             <label for="__nav_5_5">
               <span class="md-nav__icon md-icon"></span>
@@ -888,7 +888,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../io/">IO</a>
+          <a href="../api/io/">IO</a>
           
             <label for="__nav_5_6">
               <span class="md-nav__icon md-icon"></span>
@@ -911,7 +911,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../io/smart/" class="md-nav__link">
+      <a href="../api/io/smart/" class="md-nav__link">
         Smart
       </a>
     </li>
@@ -925,7 +925,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../io/dataset/" class="md-nav__link">
+      <a href="../api/io/dataset/" class="md-nav__link">
         Dataset
       </a>
     </li>
@@ -963,7 +963,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../language_model/">Language_Model</a>
+          <a href="../api/language_model/">Language_Model</a>
           
             <label for="__nav_5_7">
               <span class="md-nav__icon md-icon"></span>
@@ -991,14 +991,12 @@
               
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_8" type="checkbox" id="__nav_5_8" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_8" type="checkbox" id="__nav_5_8" >
       
       
       
@@ -1028,7 +1026,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../">Scrubber</a>
+          <a href="../api/scrubber/">Scrubber</a>
           
             <label for="__nav_5_8">
               <span class="md-nav__icon md-icon"></span>
@@ -1051,7 +1049,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../normalize/" class="md-nav__link">
+      <a href="../api/scrubber/normalize/" class="md-nav__link">
         Normalize
       </a>
     </li>
@@ -1063,66 +1061,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Pipeline
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../api/scrubber/pipeline/" class="md-nav__link">
         Pipeline
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.pipeline.make_pipeline" class="md-nav__link">
-    make_pipeline()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.pipeline.make_pipeline_from_tuple" class="md-nav__link">
-    make_pipeline_from_tuple()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.pipeline.pipe" class="md-nav__link">
-    pipe()
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1134,7 +1077,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../registry/" class="md-nav__link">
+      <a href="../api/scrubber/registry/" class="md-nav__link">
         Registry
       </a>
     </li>
@@ -1148,7 +1091,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../remove/" class="md-nav__link">
+      <a href="../api/scrubber/remove/" class="md-nav__link">
         Remove
       </a>
     </li>
@@ -1162,7 +1105,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../replace/" class="md-nav__link">
+      <a href="../api/scrubber/replace/" class="md-nav__link">
         Replace
       </a>
     </li>
@@ -1176,7 +1119,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../resources/" class="md-nav__link">
+      <a href="../api/scrubber/resources/" class="md-nav__link">
         Resources
       </a>
     </li>
@@ -1190,7 +1133,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../scrubber/" class="md-nav__link">
+      <a href="../api/scrubber/scrubber/" class="md-nav__link">
         Scrubber
       </a>
     </li>
@@ -1204,7 +1147,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../utils/" class="md-nav__link">
+      <a href="../api/scrubber/utils/" class="md-nav__link">
         Utils
       </a>
     </li>
@@ -1242,7 +1185,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../topic_model/">Topic_Model</a>
+          <a href="../api/topic_model/">Topic_Model</a>
           
             <label for="__nav_5_9">
               <span class="md-nav__icon md-icon"></span>
@@ -1293,7 +1236,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../tokenizer/">Tokenizer</a>
+          <a href="../api/tokenizer/">Tokenizer</a>
           
             <label for="__nav_5_10">
               <span class="md-nav__icon md-icon"></span>
@@ -1316,7 +1259,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tokenizer/extensions/" class="md-nav__link">
+      <a href="../api/tokenizer/extensions/" class="md-nav__link">
         Extensions
       </a>
     </li>
@@ -1330,7 +1273,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tokenizer/lexosdoc/" class="md-nav__link">
+      <a href="../api/tokenizer/lexosdoc/" class="md-nav__link">
         LexosDoc
       </a>
     </li>
@@ -1376,7 +1319,7 @@
         
         
         <div class="md-nav__link md-nav__link--index ">
-          <a href="../../visualization/">Visualization</a>
+          <a href="../api/visualization/">Visualization</a>
           
             <label for="__nav_5_11">
               <span class="md-nav__icon md-icon"></span>
@@ -1399,7 +1342,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualization/bubbleviz/" class="md-nav__link">
+      <a href="../api/visualization/bubbleviz/" class="md-nav__link">
         Bubbleviz
       </a>
     </li>
@@ -1413,7 +1356,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualization/wordcloud/" class="md-nav__link">
+      <a href="../api/visualization/wordcloud/" class="md-nav__link">
         Cloud
       </a>
     </li>
@@ -1427,7 +1370,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualization/plotly/" class="md-nav__link">
+      <a href="../api/visualization/plotly/" class="md-nav__link">
         Plotly
       </a>
     </li>
@@ -1441,7 +1384,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../visualization/seaborn/" class="md-nav__link">
+      <a href="../api/visualization/seaborn/" class="md-nav__link">
         Seaborn
       </a>
     </li>
@@ -1462,7 +1405,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../utils/" class="md-nav__link">
+      <a href="../api/utils/" class="md-nav__link">
         Utils
       </a>
     </li>
@@ -1496,35 +1439,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.pipeline.make_pipeline" class="md-nav__link">
-    make_pipeline()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.pipeline.make_pipeline_from_tuple" class="md-nav__link">
-    make_pipeline_from_tuple()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexos.scrubber.pipeline.pipe" class="md-nav__link">
-    pipe()
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1535,328 +1449,21 @@
             <article class="md-content__inner md-typeset">
               
                 
-  <a href="https://github.com/scottkleinman/lexos/edit/master/docs/api/scrubber/pipeline.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/scottkleinman/lexos/edit/master/docs/development/index.md" title="Edit this page" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
 
-<h1 id="pipeline">Pipeline<a class="headerlink" href="#pipeline" title="Permanent link">¤</a></h1>
-<p>The <code>pipeline</code> component of <code>Scrubber</code> is used
-    to manage an ordered application of <code>Scrubber</code> component
-    functions to text.</p>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.scrubber.pipeline.make_pipeline" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">make_pipeline</span><span class="p">(</span><span class="o">*</span><span class="n">funcs</span><span class="p">)</span></code>
-
-<a href="#lexos.scrubber.pipeline.make_pipeline" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents first">
-  
-      <p>Make a callable pipeline.</p>
-<p>Make a callable pipeline that passes a text through a series of
-functions in sequential order, then outputs a (scrubbed) text string.</p>
-<p>This function is intended as a lightweight convenience for users,
-allowing them to flexibly specify scrubbing options and their order,which (and in which order) preprocessing
-treating the whole thing as a single callable.</p>
-<p><code>python -m pip install cytoolz</code> is required for this function to work.</p>
-<p>Use <code>pipe</code> (an alias for <code>functools.partial</code>) to pass arguments to preprocessors.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos</span> <span class="kn">import</span> <span class="n">scrubber</span>
-<span class="n">scrubber</span> <span class="o">=</span> <span class="n">Scrubber</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">make_pipeline</span><span class="p">(</span>
-    <span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">hashtags</span><span class="p">,</span>
-    <span class="n">scrubber</span><span class="o">.</span><span class="n">replace</span><span class="o">.</span><span class="n">emojis</span><span class="p">,</span>
-    <span class="n">pipe</span><span class="p">(</span><span class="n">scrubber</span><span class="o">.</span><span class="n">remove</span><span class="o">.</span><span class="n">punctuation</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="s2">&quot;!&quot;</span><span class="p">])</span>
-<span class="p">)</span>
-<span class="n">scrubber</span><span class="p">(</span><span class="s2">&quot;@spacy_io is OSS for industrial-strength NLP in Python developed by @explosion_ai 💥&quot;</span><span class="p">)</span>
-<span class="s1">&#39;_USER_ is OSS for industrial-strength NLP in Python developed by _USER_ _EMOJI_&#39;</span>
-</code></pre></div>
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>*funcs</code></td>
-          <td>
-                <code>dict</code>
-          </td>
-          <td><p>A series of functions to be applied to the text.</p></td>
-          <td>
-                <code>()</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code><span title="typing.Callable">Callable</span>[[str], str]</code>
-          </td>
-          <td><p>Pipeline composed of <code>*funcs</code> that applies each in sequential order.</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-      <details class="quote">
-        <summary>Source code in <code>lexos\scrubber\pipeline.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
-<span class="normal">53</span>
-<span class="normal">54</span>
-<span class="normal">55</span>
-<span class="normal">56</span>
-<span class="normal">57</span>
-<span class="normal">58</span>
-<span class="normal">59</span>
-<span class="normal">60</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">make_pipeline</span><span class="p">(</span><span class="o">*</span><span class="n">funcs</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;Make a callable pipeline.</span>
-
-<span class="sd">    Make a callable pipeline that passes a text through a series of</span>
-<span class="sd">    functions in sequential order, then outputs a (scrubbed) text string.</span>
-
-<span class="sd">    This function is intended as a lightweight convenience for users,</span>
-<span class="sd">    allowing them to flexibly specify scrubbing options and their order,which (and in which order) preprocessing</span>
-<span class="sd">    treating the whole thing as a single callable.</span>
-
-<span class="sd">    `python -m pip install cytoolz` is required for this function to work.</span>
-
-<span class="sd">    Use `pipe` (an alias for `functools.partial`) to pass arguments to preprocessors.</span>
-
-<span class="sd">    ```python</span>
-<span class="sd">    from lexos import scrubber</span>
-<span class="sd">    scrubber = Scrubber.pipeline.make_pipeline(</span>
-<span class="sd">        scrubber.replace.hashtags,</span>
-<span class="sd">        scrubber.replace.emojis,</span>
-<span class="sd">        pipe(scrubber.remove.punctuation, only=[&quot;.&quot;, &quot;?&quot;, &quot;!&quot;])</span>
-<span class="sd">    )</span>
-<span class="sd">    scrubber(&quot;@spacy_io is OSS for industrial-strength NLP in Python developed by @explosion_ai 💥&quot;)</span>
-<span class="sd">    &#39;_USER_ is OSS for industrial-strength NLP in Python developed by _USER_ _EMOJI_&#39;</span>
-<span class="sd">    ```</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        *funcs (dict): A series of functions to be applied to the text.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Pipeline composed of ``*funcs`` that applies each in sequential order.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">functoolz</span><span class="o">.</span><span class="n">compose_left</span><span class="p">(</span><span class="o">*</span><span class="n">funcs</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.scrubber.pipeline.make_pipeline_from_tuple" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">make_pipeline_from_tuple</span><span class="p">(</span><span class="n">funcs</span><span class="p">)</span></code>
-
-<a href="#lexos.scrubber.pipeline.make_pipeline_from_tuple" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents first">
-  
-      <p>Return a pipeline from a tuple.</p>
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>funcs</code></td>
-          <td>
-                <code>tuple</code>
-          </td>
-          <td><p>A tuple containing callables or string names of functions.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-      <p>Returns a tuple of functions.</p>
-
-      <details class="quote">
-        <summary>Source code in <code>lexos\scrubber\pipeline.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">62</span>
-<span class="normal">63</span>
-<span class="normal">64</span>
-<span class="normal">65</span>
-<span class="normal">66</span>
-<span class="normal">67</span>
-<span class="normal">68</span>
-<span class="normal">69</span>
-<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">make_pipeline_from_tuple</span><span class="p">(</span><span class="n">funcs</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Return a pipeline from a tuple.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        funcs (tuple): A tuple containing callables or string names of functions.</span>
-
-<span class="sd">    Returns a tuple of functions.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="nb">eval</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">funcs</span><span class="p">])</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div><div class="admonition note">
-<p class="admonition-title">Note</p>
-<p><code>lexos.scrubber.pipeline.make_pipeline_from_tuple</code> is deprecated.
-It should not be necessary if you are using <code>lexos.scrubber.registry</code>.</p>
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h3 id="lexos.scrubber.pipeline.pipe" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">lexos</span><span class="o">.</span><span class="n">scrubber</span><span class="o">.</span><span class="n">pipeline</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
-
-<a href="#lexos.scrubber.pipeline.pipe" class="headerlink" title="Permanent link">¤</a></h3>
-
-
-  <div class="doc doc-contents first">
-  
-      <p>Apply functool.partial and add <code>__name__</code> to the partial function.</p>
-<p>This allows the function to be passed to the pipeline along with
-keyword arguments.</p>
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>func</code></td>
-          <td>
-                <code><span title="typing.Callable">Callable</span></code>
-          </td>
-          <td><p>A callable.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code><span title="typing.Callable">Callable</span></code>
-          </td>
-          <td><p>A partial function with <code>__name__</code> set to the name of the function.</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-      <details class="quote">
-        <summary>Source code in <code>lexos\scrubber\pipeline.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">pipe</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Apply functool.partial and add `__name__` to the partial function.</span>
-
-<span class="sd">    This allows the function to be passed to the pipeline along with</span>
-<span class="sd">    keyword arguments.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        func (Callable): A callable.</span>
-<span class="sd">    Returns:</span>
-<span class="sd">        A partial function with `__name__` set to the name of the function.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">func</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">partial_func</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">update_wrapper</span><span class="p">(</span><span class="n">partial_func</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">partial_func</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
+<h1 id="development-notes">Development Notes<a class="headerlink" href="#development-notes" title="Permanent link">¤</a></h1>
+<ul>
+<li>Dependency management is handled with <a href="https://python-poetry.org/">Poetry</a>.</li>
+<li>The code is tested with <a href="https://docs.pytest.org/en/7.0.x/">pytest</a> as a pre-commit hook.</li>
+<li>Before commit, I generally run <a href="https://pycqa.github.io/isort/">isort</a> and <a href="https://interrogate.readthedocs.io/en/latest/">interrogate</a> to ensure consistent imports and docstrings, but these are not currently implemented as pre-commit hooks.</li>
+<li>Docstrings are given an fully as possible in Google style, with as much type hinting as possible. Docstrings are used by <a href="https://www.mkdocs.org/">mkdocs</a> to auto-generate the documentation through the magic of <a href="https://mkdocstrings.github.io/">mkdocstrings</a>.</li>
+<li>A number of test scripts have been implemented, and they are used by the continuous integration process. However, the scripts are incomplete and intended primarily for quick testing from the command line. A fuller test suite is intended once the API is more complete.</li>
+</ul>
+<p>More information for developers will be added soon. In the meantime, see the <a href="https://github.com/scottkleinman/lexos/wiki" target="_blank">GitHub Wiki</a> for information on getting started.</p>
 
               
             </article>
@@ -1876,7 +1483,7 @@ keyword arguments.</p>
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../normalize/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../tutorial/mallet_topic_models/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -1885,19 +1492,19 @@ keyword arguments.</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Normalize
+              Topic Modelling with MALLET
             </div>
           </div>
         </a>
       
       
-        <a href="../registry/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../api/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Registry
+              Overview
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -1967,10 +1574,10 @@ keyword arguments.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.top", "navigation.indexes"], "search": "../assets/javascripts/workers/search.85cb4492.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.431f3d41.min.js"></script>
+      <script src="../assets/javascripts/bundle.431f3d41.min.js"></script>
       
     
   </body>

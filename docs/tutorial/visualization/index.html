@@ -13,7 +13,7 @@
     
     
       
-        <title>Tokenising Texts - The Lexos API</title>
+        <title>Visualization - The Lexos API</title>
       
     
     
@@ -68,7 +68,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#language-models" class="md-skip">
+        <a href="#overview" class="md-skip">
           Skip to content
         </a>
       
@@ -101,7 +101,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Tokenising Texts
+              Visualization
             
           </span>
         </div>
@@ -365,123 +365,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Tokenising Texts
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        Tokenising Texts
+    <li class="md-nav__item">
+      <a href="../tokenizing_texts/" class="md-nav__link">
+        Tokenizing Texts
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#language-models" class="md-nav__link">
-    Language Models
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tokenised-documents" class="md-nav__link">
-    Tokenised Documents
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#spacy-docs" class="md-nav__link">
-    spaCy Docs
-  </a>
-  
-    <nav class="md-nav" aria-label="spaCy Docs">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#the-spacy-pipeline" class="md-nav__link">
-    The spaCy Pipeline
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#handling-stop-words" class="md-nav__link">
-    Handling Stop Words
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#lexosdocs" class="md-nav__link">
-    LexosDocs
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ngrams" class="md-nav__link">
-    Ngrams
-  </a>
-  
-    <nav class="md-nav" aria-label="Ngrams">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#generating-word-ngrams" class="md-nav__link">
-    Generating Word Ngrams
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generating-character-ngrams" class="md-nav__link">
-    Generating Character Ngrams
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#summary-of-workflow" class="md-nav__link">
-    Summary of Workflow
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -519,11 +407,135 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../visualisation/" class="md-nav__link">
-        Visualisation
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Visualization
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Visualization
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+    <nav class="md-nav" aria-label="Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#word-clouds-and-variants" class="md-nav__link">
+    Word Clouds (and Variants)
+  </a>
+  
+    <nav class="md-nav" aria-label="Word Clouds (and Variants)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-word-clouds" class="md-nav__link">
+    Single Word Clouds
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiclouds" class="md-nav__link">
+    Multiclouds
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bubble-charts" class="md-nav__link">
+    Bubble Charts
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dendrograms" class="md-nav__link">
+    Dendrograms
+  </a>
+  
+    <nav class="md-nav" aria-label="Dendrograms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plotly-dendrograms" class="md-nav__link">
+    Plotly Dendrograms
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clustermaps" class="md-nav__link">
+    Clustermaps
+  </a>
+  
+    <nav class="md-nav" aria-label="Clustermaps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-seaborn" class="md-nav__link">
+    Using Seaborn
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-plotly" class="md-nav__link">
+    Using Plotly
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -597,6 +609,54 @@
             
           
         
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../development/">Development</a>
+          
+            <label for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Development" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Development
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+        
+          
+            
+          
+        
           
         
           
@@ -626,14 +686,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../api/">API</a>
           
-            <label for="__nav_4">
+            <label for="__nav_5">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="API" data-md-level="1">
-        <label class="md-nav__title" for="__nav_4">
+        <label class="md-nav__title" for="__nav_5">
           <span class="md-nav__icon md-icon"></span>
           API
         </label>
@@ -650,7 +710,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_2" type="checkbox" id="__nav_5_2" >
       
       
       
@@ -666,14 +726,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../api/cluster/">Cluster</a>
           
-            <label for="__nav_4_2">
+            <label for="__nav_5_2">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="Cluster" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_2">
+        <label class="md-nav__title" for="__nav_5_2">
           <span class="md-nav__icon md-icon"></span>
           Cluster
         </label>
@@ -697,7 +757,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_3" type="checkbox" id="__nav_4_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_3" type="checkbox" id="__nav_5_3" >
       
       
       
@@ -713,14 +773,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../api/corpus/">Corpus</a>
           
-            <label for="__nav_4_3">
+            <label for="__nav_5_3">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="Corpus" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_3">
+        <label class="md-nav__title" for="__nav_5_3">
           <span class="md-nav__icon md-icon"></span>
           Corpus
         </label>
@@ -744,13 +804,21 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_4" type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_4" type="checkbox" id="__nav_5_4" >
       
       
       
         
           
             
+          
+        
+          
+        
+          
+        
+          
+        
           
         
           
@@ -764,14 +832,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../api/cutter/">Cutter</a>
           
-            <label for="__nav_4_4">
+            <label for="__nav_5_4">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="Cutter" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_4">
+        <label class="md-nav__title" for="__nav_5_4">
           <span class="md-nav__icon md-icon"></span>
           Cutter
         </label>
@@ -799,8 +867,64 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/cutter/ginsu/" class="md-nav__link">
+        Ginsu
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/cutter/machete/" class="md-nav__link">
+        Machete
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/cutter/merge/" class="md-nav__link">
+        Merge
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/cutter/milestones/" class="md-nav__link">
         Milestones
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/cutter/registry/" class="md-nav__link">
+        Registry
       </a>
     </li>
   
@@ -823,17 +947,13 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_5" type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_5" type="checkbox" id="__nav_5_5" >
       
       
       
         
           
             
-          
-        
-          
-        
           
         
       
@@ -843,47 +963,19 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../api/dtm/">DTM</a>
           
-            <label for="__nav_4_5">
+            <label for="__nav_5_5">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="DTM" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_5">
+        <label class="md-nav__title" for="__nav_5_5">
           <span class="md-nav__icon md-icon"></span>
           DTM
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../api/dtm/wordcloud/" class="md-nav__link">
-        Wordcloud
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../api/dtm/bubbleviz/" class="md-nav__link">
-        Bubble Charts
-      </a>
-    </li>
-  
-
             
           
         </ul>
@@ -902,7 +994,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_6" type="checkbox" id="__nav_4_6" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_6" type="checkbox" id="__nav_5_6" >
       
       
       
@@ -922,14 +1014,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../api/io/">IO</a>
           
-            <label for="__nav_4_6">
+            <label for="__nav_5_6">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="IO" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_6">
+        <label class="md-nav__title" for="__nav_5_6">
           <span class="md-nav__icon md-icon"></span>
           IO
         </label>
@@ -943,8 +1035,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/io/basic/" class="md-nav__link">
-        Basic
+      <a href="../../api/io/smart/" class="md-nav__link">
+        Smart
       </a>
     </li>
   
@@ -957,8 +1049,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/io/smart/" class="md-nav__link">
-        Smart
+      <a href="../../api/io/dataset/" class="md-nav__link">
+        Dataset
       </a>
     </li>
   
@@ -981,7 +1073,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_7" type="checkbox" id="__nav_4_7" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_7" type="checkbox" id="__nav_5_7" >
       
       
       
@@ -997,14 +1089,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../api/language_model/">Language_Model</a>
           
-            <label for="__nav_4_7">
+            <label for="__nav_5_7">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="Language_Model" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_7">
+        <label class="md-nav__title" for="__nav_5_7">
           <span class="md-nav__icon md-icon"></span>
           Language_Model
         </label>
@@ -1028,7 +1120,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_8" type="checkbox" id="__nav_4_8" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_8" type="checkbox" id="__nav_5_8" >
       
       
       
@@ -1060,14 +1152,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../api/scrubber/">Scrubber</a>
           
-            <label for="__nav_4_8">
+            <label for="__nav_5_8">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="Scrubber" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_8">
+        <label class="md-nav__title" for="__nav_5_8">
           <span class="md-nav__icon md-icon"></span>
           Scrubber
         </label>
@@ -1203,7 +1295,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_9" type="checkbox" id="__nav_4_9" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_9" type="checkbox" id="__nav_5_9" >
       
       
       
@@ -1219,14 +1311,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../api/topic_model/">Topic_Model</a>
           
-            <label for="__nav_4_9">
+            <label for="__nav_5_9">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="Topic_Model" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_9">
+        <label class="md-nav__title" for="__nav_5_9">
           <span class="md-nav__icon md-icon"></span>
           Topic_Model
         </label>
@@ -1250,7 +1342,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_10" type="checkbox" id="__nav_4_10" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_10" type="checkbox" id="__nav_5_10" >
       
       
       
@@ -1270,14 +1362,14 @@
         <div class="md-nav__link md-nav__link--index ">
           <a href="../../api/tokenizer/">Tokenizer</a>
           
-            <label for="__nav_4_10">
+            <label for="__nav_5_10">
               <span class="md-nav__icon md-icon"></span>
             </label>
           
         </div>
       
       <nav class="md-nav" aria-label="Tokenizer" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_10">
+        <label class="md-nav__title" for="__nav_5_10">
           <span class="md-nav__icon md-icon"></span>
           Tokenizer
         </label>
@@ -1325,10 +1417,107 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_11" type="checkbox" id="__nav_5_11" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../api/visualization/">Visualization</a>
+          
+            <label for="__nav_5_11">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Visualization" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_11">
+          <span class="md-nav__icon md-icon"></span>
+          Visualization
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../api/visualisation/" class="md-nav__link">
-        Visualisation
+      <a href="../../api/visualization/bubbleviz/" class="md-nav__link">
+        Bubbleviz
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/visualization/wordcloud/" class="md-nav__link">
+        Cloud
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/visualization/plotly/" class="md-nav__link">
+        Plotly
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/visualization/seaborn/" class="md-nav__link">
+        Seaborn
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -1379,37 +1568,31 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#language-models" class="md-nav__link">
-    Language Models
+  <a href="#overview" class="md-nav__link">
+    Overview
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tokenised-documents" class="md-nav__link">
-    Tokenised Documents
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#spacy-docs" class="md-nav__link">
-    spaCy Docs
-  </a>
-  
-    <nav class="md-nav" aria-label="spaCy Docs">
+    <nav class="md-nav" aria-label="Overview">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#the-spacy-pipeline" class="md-nav__link">
-    The spaCy Pipeline
+  <a href="#word-clouds-and-variants" class="md-nav__link">
+    Word Clouds (and Variants)
+  </a>
+  
+    <nav class="md-nav" aria-label="Word Clouds (and Variants)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#single-word-clouds" class="md-nav__link">
+    Single Word Clouds
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#handling-stop-words" class="md-nav__link">
-    Handling Stop Words
+  <a href="#multiclouds" class="md-nav__link">
+    Multiclouds
   </a>
   
 </li>
@@ -1418,32 +1601,25 @@
     </nav>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#lexosdocs" class="md-nav__link">
-    LexosDocs
+        
+          <li class="md-nav__item">
+  <a href="#bubble-charts" class="md-nav__link">
+    Bubble Charts
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#ngrams" class="md-nav__link">
-    Ngrams
+        
+          <li class="md-nav__item">
+  <a href="#dendrograms" class="md-nav__link">
+    Dendrograms
   </a>
   
-    <nav class="md-nav" aria-label="Ngrams">
+    <nav class="md-nav" aria-label="Dendrograms">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#generating-word-ngrams" class="md-nav__link">
-    Generating Word Ngrams
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generating-character-ngrams" class="md-nav__link">
-    Generating Character Ngrams
+  <a href="#plotly-dendrograms" class="md-nav__link">
+    Plotly Dendrograms
   </a>
   
 </li>
@@ -1452,11 +1628,36 @@
     </nav>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#summary-of-workflow" class="md-nav__link">
-    Summary of Workflow
+        
+          <li class="md-nav__item">
+  <a href="#clustermaps" class="md-nav__link">
+    Clustermaps
   </a>
+  
+    <nav class="md-nav" aria-label="Clustermaps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-seaborn" class="md-nav__link">
+    Using Seaborn
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-plotly" class="md-nav__link">
+    Using Plotly
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1472,166 +1673,146 @@
             <article class="md-content__inner md-typeset">
               
                 
-  <a href="https://github.com/scottkleinman/lexos/edit/master/docs/tutorial/tokenising_texts.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/scottkleinman/lexos/edit/master/docs/tutorial/visualization.md" title="Edit this page" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
 
-  <h1>Tokenising Texts</h1>
+  <h1>Visualization</h1>
 
-<h2 id="language-models">Language Models<a class="headerlink" href="#language-models" title="Permanent link">¤</a></h2>
-<p>The <code>tokenizer</code> module is a big change for Lexos, as it formally separates tokenisation from preprocessing. In the Lexos app, the user employs Scrubber to massage the text into shape using his or her implicit knowledge about the text's language. Tokenisation then takes place by splitting the text according to a regular expression pattern (normally whitespace). By contrast, the Lexos API uses a language model that formalises the implicit rules and thus automates the tokenisation process. Language models can implement both rule-based and probabilistic strategies for separating document strings into tokens. Because they have built-in procedures appropriate to specific languages, language models can often do a better job of tokenisation than the approach used in the Lexos app.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>There are some trade-offs to using language models. Because the algorithm does more than split strings, processing times can be greater. In addition, tokenisation is no longer (explicitly) language agnostic. A language model is "opinionated" and it may overfit the data. At the same time, if no language model exist for the language being tokenised, the results may not be satisfactory. The Lexos API strategy for handling this situation is described below.</p>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¤</a></h2>
+<p>Once you have generated a document-term matrix, it becomes easy to convert it to pandas dataframe and then to use any of the <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html" target="_blank"><code>pandas.DataFrame.plot</code></a> methods, or to export the data for use with other tools. However, the Lexos API has a number of built-in visualizations to make the process easier. These are accessed through the <code>lexos.visualization</code> module. By default, all Lexos visualizations are <em>static</em> plots produced with the Python <code>matplotlib</code> library. However, both static and interactive plots can be produced using third-party libraries like Plotly and Seaborn. These can be imported from their own folders within the visualization module. For instance, the Plotly dendrogram module can be imported with <code>from lexos.visualization.plotly.cluster import dendrogram</code>.</p>
+<p>Each of the available visualization types is described below.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Currently, there is some inconsistency with respect to the format of the input data for dendrograms. Wherever possible, the document-term matrix (the output of <code>lexos.dtm.DTM</code>) is used. Generally, the visualization function will then call <code>DTM.get_table()</code> to retrieve the data as a pandas dataframe. However, in some cases, the visualization function requires the dataframe table to be format of input document. Eventually, these functions will be made consistent.</p>
 </div>
-<h2 id="tokenised-documents">Tokenised Documents<a class="headerlink" href="#tokenised-documents" title="Permanent link">¤</a></h2>
-<p>A tokenised document can be defined as a text split into tokens in which each token is stored with any number of annotations assigned by the model. These annotations are token "attributes". The structure of a tokenised document can then be conceived in theory as a list of tuples like</p>
-<div class="highlight"><pre><span></span><code><span class="p">[</span>
-    <span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;The&quot;</span><span class="p">,</span> <span class="n">part_of_speech</span><span class="o">=</span><span class="s2">&quot;noun&quot;</span><span class="p">,</span> <span class="n">is_stopword</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="n">part_of_speech</span><span class="o">=</span><span class="s2">&quot;noun&quot;</span><span class="p">,</span> <span class="n">is_stopword</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">),</span>
+<h3 id="word-clouds-and-variants">Word Clouds (and Variants)<a class="headerlink" href="#word-clouds-and-variants" title="Permanent link">¤</a></h3>
+<h4 id="single-word-clouds">Single Word Clouds<a class="headerlink" href="#single-word-clouds" title="Permanent link">¤</a></h4>
+<p>The simplest way to generate a word cloud is to import the <code>wordcloud</code> function and pass it a document-term matrix.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.visualization.cloud.wordcloud</span> <span class="kn">import</span> <span class="n">wordcloud</span>
 
-<span class="p">]</span>
-</code></pre></div>
-<p>It is then a simple matter to iterate through the document and retrieve all the tokens that are not stopwords using a Python list comprehension. Many filtering procedures are easy to implement in this way.</p>
-<p>For languages such as Modern English, language models exist that can automatically annotate tokens with information like part of speech, lemmas, stop words, and other information. However, token attributes can also be set after the text has been tokenised.</p>
-<p>If no language model exists for the text's language, it will only be possible to tokenise using general rules, and it will not be possible to add other labels (at the tokenisation stage). But new language models, including models for historical languages, are being produced all the time, and this is a growing area of interest in DH.</p>
-<h2 id="spacy-docs">spaCy Docs<a class="headerlink" href="#spacy-docs" title="Permanent link">¤</a></h2>
-<p>The Lexos API wraps the <a href="https://spacy.io/" target="_blank">spaCy</a> NLP library for loading language models and tokenising texts. Because spaCy has excellent documentation and fairly wide acceptance in the DH community, it is a good tool to use under the bonnet. spaCy has a growing number of language models in a number of languages, as well as wrappers for loading models from other common NLP libraries such as Stanford Stanza.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The architecture of the Scrubber module is partially built on top of the preprocessing functions in <a href="https://github.com/chartbeat-labs/textacy/" target="_blank">Textacy</a>, which also accesses and extends spaCy.</p>
-</div>
-<p>In spaCy, texts are parsed into <code>spacy.Doc</code> objects consisting of sequences of tokens.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>In order to formalise the difference between a text string that has been scrubbed and one that has been tokenised, we refer wherever possible to the string as a "text" and to the tokenised <code>spacy.Doc</code> object as a "document" (or just "doc"). We continue to refer to the individual items as "documents" if we are not concerned with their data type.</p>
-</div>
-<p>Each token is <code>spacy.Token</code> object which stores all the token's attributes.</p>
-<p>The Lexos API wraps this procedure in the <a class="autorefs autorefs-internal" href="../../api/tokenizer/#lexos.tokenizer.make_doc">lexos.tokenizer.make_doc</a> function:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos</span> <span class="kn">import</span> <span class="n">tokenizer</span>
+<span class="n">dtm</span> <span class="o">=</span> <span class="n">DTM</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
 
-<span class="n">doc</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">wordcloud</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">opts</span><span class="p">,</span> <span class="n">figure_opts</span><span class="p">)</span>
 </code></pre></div>
-<p>This returns a <code>spacy.Doc</code> object.</p>
-<p>By default the tokenizer uses spaCy's <a href="https://github.com/explosion/spacy-models/releases/tag/xx_sent_ud_sm-3.2.0">"xx_sent_ud_sm"</a> language model, which has been trained for tokenisation and sentence segmentation on multiple languages. This model performs statistical sentence segmentation and possesses general rules for token segmentation.</p>
-<p>If you were making a document from a text in a language for which a more language-specific model, you would specify the model to be used. For instance, to use spaCy's small English model trained on web texts, you would call</p>
-<div class="highlight"><pre><span></span><code><span class="n">doc</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;en_core_web_sm&quot;</span><span class="p">)</span>
-</code></pre></div>
-<p><code>tokenizer</code> also has a <a class="autorefs autorefs-internal" href="../../api/tokenizer/#lexos.tokenizer.make_docs">lexos.tokenizer.make_docs</a> function to parse a list of texts into spaCy docs.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>Tokenisation using spaCy uses a lot of memory. For a small English-language model, the parser and named entity recogniser (NER) can require roughly 1GB of temporary memory per 100,000 characters in the input. This means long texts may cause memory allocation errors. If you're not using the parser or NER, it's probably safe to increase the memory limit with the <code>max_length</code> parameter. The limit is in number of characters (the default is set to 2000000 for Lexos), so you can check whether your inputs are too long by checking <code>len(text)</code>. If you are not using RAM-hungry pipeline components, you can disable or exclude them to avoid errors an increase efficiency (see the discussion on the spaCy pipeline below). In some cases, it may also be possible to cut the texts into segments before tokenisation.</p>
-</div>
-<p>A list of individual tokens can be obtained by iterating over the spaCy doc:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Get a list of tokens</span>
-<span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">]</span>
-</code></pre></div>
-<p>Here the <code>text</code> attribute stores the original text form of the token. SpaCy docs are <em>non-destructive</em> because they preserve the original text alongside the list of tokens and their attributes. You can access the original text of the entire doc by calling <code>doc.text</code> (assuming you have assigned the <code>Doc</code> object to the <code>doc</code> variable). Indeed, calling <code>doc.to_json()</code> will return a JSON representation which gives the start and end position of each token in the original text!</p>
-<p>As mentioned above, you can use a Python list comprehension to filter the the contents of the doc using information in the document's attributes. For instance:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Get a list of non-punctuation tokens</span>
-<span class="n">non_punct_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">token</span><span class="o">.</span><span class="n">is_punct</span><span class="p">]</span>
-</code></pre></div>
-<p>The example above leverages the built-in <code>is_punct</code> attribute to indicate whether the token is defined as (or predicted to be) a punctuation mark in the language model. SpaCy docs have a number of built-in attributes, which are described in the <a href="https://spacy.io/api/doc#attributes" target="_blank">spaCy API reference</a>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>It is possible to extend spaCy's Doc object with its extension attribute. The Lexos API has a sample <code>is_fruit</code> extension, which is illustrated below. Note that extensions are accessed via the underscore prefix, as shown.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Indicate whether the token is labelled as fruit</span>
-<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">is_fruit</span><span class="p">)</span>
-</code></pre></div>
-<p>The sample extension can be found in <a class="autorefs autorefs-internal" href="../../api/tokenizer/extensions/#extensions">lexos.tokenizer.extensions</a>.</p>
-</div>
-<h3 id="the-spacy-pipeline">The spaCy Pipeline<a class="headerlink" href="#the-spacy-pipeline" title="Permanent link">¤</a></h3>
-<p>Once spaCy tokenises a text, it normally passes the resulting document to a pipeline of functions to parse it for other features. Typically, these functions will perform actions such as part-of-speech tagging, labelling syntactic dependencies, and identifying named entities. Processing times can be increased by disabling pipeline components if they are unavailable in the language model or not needed for the application's purposes. <a class="autorefs autorefs-internal" href="../../api/tokenizer/#lexos.tokenizer.make_doc">lexos.tokenizer.make_doc</a> and <a class="autorefs autorefs-internal" href="../../api/tokenizer/#lexos.tokenizer.make_docs">lexos.tokenizer.make_docs</a> will automatically run all pipeline components in the model unless they are disabled or excluded with the <code>disable</code> or <code>exclude</code> parameter. Check the model's documentation for the names of the components it includes.</p>
-<p>It is also possible to include custom pipeline components, which can be inserted at any point in the pipeline order. Custom components are supplied with the <code>pipeline_components</code> parameter, which takes a dictionary containing the keyword "custom". The value is a list of dictionaries where each dictionary contains information about the component as described at <a href="https://spacy.io/api/language/#add_pipe">https://spacy.io/api/language/#add_pipe</a>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <code>pipeline_components</code> dict also contains <code>disable</code> and <code>exclude</code> keywords. The values are lists of components which will be merged with any components supplied in the <code>disable</code> or <code>exclude</code> paramaters of <a class="autorefs autorefs-internal" href="../../api/tokenizer/#lexos.tokenizer.make_doc">lexos.tokenizer.make_doc</a> and <a class="autorefs autorefs-internal" href="../../api/tokenizer/#lexos.tokenizer.make_docs">lexos.tokenizer.make_docs</a>.</p>
-</div>
-<p>The ability to add custom pipeline components is valuable for certain language- or application-specific scenarios. However, it also opens Lexos up to the wealth of third-part pipeline components available through the <a href="https://spacy.io/universe/category/pipeline" target="_blank">spaCy Universe</a>.</p>
-<h3 id="handling-stop-words">Handling Stop Words<a class="headerlink" href="#handling-stop-words" title="Permanent link">¤</a></h3>
-<p>Every token in a spaCy doc has an <code>is_stop</code> attribute. Most language models will have a list of default stop words, and this list is used to set the <code>is_stop</code> attribute <code>True</code> for every token when the document is parsed. It is possible to add stop words to the default list by passing a list to <a class="autorefs autorefs-internal" href="../../api/tokenizer/#lexos.tokenizer.make_doc">lexos.tokenizer.make_doc</a> or <a class="autorefs autorefs-internal" href="../../api/tokenizer/#lexos.tokenizer.make_docs">lexos.tokenizer.make_docs</a> with the <code>add_stopwords</code> argument:</p>
-<div class="highlight"><pre><span></span><code><span class="n">doc</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span>
-    <span class="n">text</span><span class="p">,</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;en_core_web_sm&quot;</span><span class="p">,</span>
-    <span class="n">add_stopwords</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span> <span class="s2">&quot;maybe&quot;</span><span class="p">]</span>
+<p>Wordclouds are generated by the Python <a href="https://amueller.github.io/word_cloud/" target="_blank">Wordcloud</a> library. Options can be passed to <code>WordCloud</code> using the <code>opts</code> parameter. Figures are generated using Python's <code>matplotlib</code>, and its options can be passed using <code>figure_opts</code>. Both take a dictionary of options, as in the example below:</p>
+<div class="highlight"><pre><span></span><code><span class="n">opts</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;max_words&quot;</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span>
+    <span class="s2">&quot;background_color&quot;</span><span class="p">:</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;contour_width&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s2">&quot;contour_color&quot;</span><span class="p">:</span> <span class="s2">&quot;steelblue&quot;</span>
+<span class="p">}</span>
+
+<span class="n">figure_opts</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;figsize&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">)}</span>
+
+<span class="n">wordcloud</span> <span class="o">=</span> <span class="n">wordcloud</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span>
+    <span class="n">opts</span><span class="o">=</span><span class="n">opts</span><span class="p">,</span>
+    <span class="n">figure_opts</span><span class="o">=</span><span class="n">figure_opts</span><span class="p">,</span>
+    <span class="nb">round</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;wordcloud.png&quot;</span>
 <span class="p">)</span>
 </code></pre></div>
-<p>The <code>remove_stopwords</code> argument removes stop words from the default list. If <code>remove_stopwords=True</code>, all stop words are removed.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p><code>add_stopwords</code> and <code>remove_stopwords</code> do not remove stop word tokens from the doc; rather, they modify the stop word list used to set the <code>is_stop</code> attribute of individual tokens. To get a list of tokens without stop words, you must do something like <code>[token for token in doc if not token.is_stop]</code>. If you a are producing a corpus of documents in which the documents will be processed by different models, it is most efficient to process the documents in batches, one batch for each model.</p>
-</div>
-<h2 id="lexosdocs">LexosDocs<a class="headerlink" href="#lexosdocs" title="Permanent link">¤</a></h2>
-<p>The Lexos API also has a <a class="autorefs autorefs-internal" href="../../api/tokenizer/lexosdoc/#lexos.tokenizer.lexosdoc.LexosDoc">LexosDoc</a> class, which provides a wrapper for spaCy docs. Its use is illustrated below.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.tokenizer.lexosdoc</span> <span class="kn">import</span> <span class="n">LexosDoc</span>
-
-<span class="n">lexos_doc</span> <span class="o">=</span> <span class="n">LexosDoc</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
-<span class="n">tokens</span> <span class="o">=</span> <span class="n">lexos_doc</span><span class="o">.</span><span class="n">get_tokens</span><span class="p">()</span>
-</code></pre></div>
-<p>This example just returns <code>[token.text for token in doc]</code>, so it is not strictly necessary. But using the <code>LexosDoc</code> wrapper can be useful for producing clean code. In other cases, it might be useful to manipulate spaCy docs with methods that do not access their built-in or extended attributes or method. For instance, <a class="autorefs autorefs-internal" href="../../api/tokenizer/lexosdoc/#lexos.tokenizer.lexosdoc.LexosDoc.get_token_attrs">lexos.tokenizer.lexosdoc.LexosDoc.get_token_attrs</a> shows what attributes are available for tokens in the doc and <a class="autorefs autorefs-internal" href="../../api/tokenizer/lexosdoc/#lexos.tokenizer.lexosdoc.LexosDoc.to_dataframe">lexos.tokenizer.lexosdoc.LexosDoc.to_dataframe</a> exports the tokens and their attributes to a pandas dataframe.</p>
-<h2 id="ngrams">Ngrams<a class="headerlink" href="#ngrams" title="Permanent link">¤</a></h2>
-<p>Both texts and documents can be parsed into sequences of two or more tokens called ngrams. Many spaCy models can identify syntactic units such as noun chunks. These capabilities are not covered here since they are language specific. Instead, the section below describe how to obtain more general ngram sequences.</p>
-<h3 id="generating-word-ngrams">Generating Word Ngrams<a class="headerlink" href="#generating-word-ngrams" title="Permanent link">¤</a></h3>
-<p>The easiest method of obtaining ngrams from a text is to create a spaCy doc and then call Textacy's <code>textacy.extract.basics.ngrams</code> method:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">spacy</span>
-<span class="kn">import</span> <span class="nn">textacy.extract.basics.ngrams</span> <span class="k">as</span> <span class="nn">ng</span>
-<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">)</span>
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;The end is nigh.&quot;</span>
-<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="n">ngrams</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ng</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">min_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
-</code></pre></div>
-<p>This will produce <code>[The end, end is, is nigh]</code>. The output is a list of spaCy tokens. (An additional <code>[token.text for token in ngrams]</code> is required to ensure that you have quoted strings: <code>["The end", "end is", "is nigh"]</code>).</p>
-<p>Textacy has a lot of additional options, which are documented in the Textacy API reference under <code><a href="https://textacy.readthedocs.io/en/latest/api_reference/extract.html#textacy.extract.basics.ngrams" target="_blank">textacy.extract.basics.ngrams</a></code>. However, if you do not need these options, you can use Lexos' helper function <a class="autorefs autorefs-internal" href="../../api/tokenizer/#lexos.tokenizer.ngrams_from_doc">lexos.tokenizer.ngrams_from_doc</a>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">spacy</span>
-<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">)</span>
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;The end is nigh.&quot;</span>
-<span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="n">ngrams</span> <span class="o">=</span> <span class="n">ngrams_from_doc</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div>
-<p>Notice that in both cases, the output will be a list of overlapping ngrams generated by a rolling window across the pre-tokenised document. If you want your document to contain ngrams <em>as</em> tokens, you will need to create a new document using the <a class="autorefs autorefs-internal" href="../../api/tokenizer/#lexos.tokenizer.doc_from_ngrams">lexos.tokenizer.doc_from_ngrams</a> function:</p>
-<div class="highlight"><pre><span></span><code><span class="n">doc</span> <span class="o">=</span> <span class="n">doc_from_ngrams</span><span class="p">(</span><span class="n">ngrams</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<p>The <code>round</code> parameter (normally between 100 and 300) will add various degrees of rounded corners to the word cloud.</p>
+<p>If a <code>filename</code> is provided, the plot will be saved to the specified file. By default, <code>show=True</code>, and the wordcloud will be plotted to the screen if the environment is appropriate. If <code>show=False</code>, the <code>WordCloud</code> object will be returned. In this instance, you can still save the word cloud by calling <code>wordcloud.to_file(filename)</code>.</p>
+<p>By default, <code>wordcloud()</code>, creates a word cloud based on the total term counts for all documents. If you wish to use a single or a subset of documents, use the <code>docs</code> parameter.</p>
+<div class="highlight"><pre><span></span><code><span class="n">wordcloud</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">docs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;doc1&quot;</span><span class="p">,</span> <span class="s2">&quot;doc2&quot;</span><span class="p">,</span> <span class="n">etc</span><span class="o">.</span><span class="p">])</span>
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Setting <code>strict=False</code> will preserve all the whitespace in the ngrams; otherwise, your language model may modify the output by doing things like splitting punctuation into separate tokens.</p>
+<p><code>wordcloud()</code> takes a number of other input formats, including raw text, but a <code>lexos.dtm.DTM</code> is by far the easiest method to generate data from pre-tokenised texts.</p>
 </div>
-<p>There is also a <a class="autorefs autorefs-internal" href="../../api/tokenizer/#lexos.tokenizer.docs_from_ngrams">lexos.tokenizer.docs_from_ngrams</a> function to which you can feed multiple lists of ngrams.</p>
-<p>A possible workflow might call Textacy directly to take advantage of some its filters, when generating ngrams and then calling <a class="autorefs autorefs-internal" href="../../api/tokenizer/#lexos.tokenizer.doc_from_ngrams">lexos.tokenizer.doc_from_ngrams</a> to pipe the extracted tokens back into a doc. <code><a href="https://textacy.readthedocs.io/en/latest/api_reference/extract.html#textacy.extract.basics.ngrams" target="_blank">textacy.extract.basics.ngrams</a></code> has sister functions that do things like extract noun chunks (if available in the language model), making this a very powerful approach generating ngrams with semantic information.</p>
-<h3 id="generating-character-ngrams">Generating Character Ngrams<a class="headerlink" href="#generating-character-ngrams" title="Permanent link">¤</a></h3>
-<p>Character ngrams at their most basic level split the <em>untokenised</em> string every N characters. So "The end is nigh." would produce something like <code>["Th", "e ", "nd", " i", "s ", "ni", "gh", "."]</code> (if we wanted to preserve the whitespace). Lexos does this with the <a href="">lexos.tokenizer.generate_ngrams</a> function:</p>
-<div class="highlight"><pre><span></span><code><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;The end is nigh.&quot;</span>
-<span class="n">ngrams</span> <span class="o">=</span> <span class="n">generate_character_ngrams</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">drop_whitespace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<h4 id="multiclouds">Multiclouds<a class="headerlink" href="#multiclouds" title="Permanent link">¤</a></h4>
+<p>Multiclouds are grid-organized word clouds of individual documents, which allow you to compare the document clouds side by side. The method of generating multiclouds is similar to word clouds. The basic input is a <code>lexos.dtm.DTM</code> object, where one word cloud will be generated for each document. If a subset of documents is required, the <code>docs</code> parameter shown above should be used. Once the data is prepared, the multiclouds are generated as shown below:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.visualization.cloud.wordcloud</span> <span class="kn">import</span> <span class="n">multicloud</span>
+
+<span class="n">labels</span> <span class="o">=</span> <span class="n">dtm</span><span class="o">.</span><span class="n">get_table</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+
+<span class="n">multicloud</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Multicloud&quot;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
-<p>This will produce the output shown above. If we wanted to output <code>["Th", "en", "di", "sn", "ig", "h."]</code>, we would use <code>drop_whitespace=True</code> (which is the default).</p>
+<p>Since multicloud produce multiple subplots, there is a <code>title</code> parameter to give the entire figure a title and a <code>labels</code> parameter, which includes a list labels to be assigned to each subplot. In the example above, we are just taking the labels from the DTM, minus the first "terms" column. The <code>ncols</code> parameter sets the number of subplots per row.</p>
+<p>If a <code>filename</code> is provided, the entire plot will be saved. If <code>show=False</code>, <code>multicloud()</code> returns a list of word clouds. These can be saved individually by calling <code>to_file()</code> on them.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code>lexos.tokenizer.generate_character_ngrams</code> is a wrapper for Python's <code>textwrap.wrap</code> method, which can also be called directly.</p>
+<p>As with word clouds, the <code>multicloud()</code> function takes a number of different input formats, but pandas dataframes are the easiest to work with.</p>
 </div>
-<p>Once you have produced a list of ngrams, you can create a doc from them using <a class="autorefs autorefs-internal" href="../../api/tokenizer/#lexos.tokenizer.ngrams_from_doc">lexos.tokenizer.ngrams_from_doc</a>, as shown above.</p>
-<p>Use <a class="autorefs autorefs-internal" href="../../api/tokenizer/#lexos.tokenizer.generate_character_ngrams">lexos.tokenizer.generate_character_ngrams</a> (a) when you simply want a list of non-overlapping ngrams, or (b) when you want to produce docs with non-overlapping ngrams as tokens.</p>
-<p>Note that your language model may not be able apply labels effectively to ngram tokens, so working with character ngrams is primarily useful if you are planning to work with the token forms only, or if the ngram size you use maps closely to character lengths of words in the language you are working in.</p>
-<h2 id="summary-of-workflow">Summary of Workflow<a class="headerlink" href="#summary-of-workflow" title="Permanent link">¤</a></h2>
-<p>Tokenisation can be considered the end of the text preparation workflow, although, in its use language models, it already begins to introduce some elements of analysis. Before proceeding to the analysis stage, it is useful to have summary of what a minimal text preparation workflow might look like:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Create the loader and load the data</span>
-<span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">()</span>
-<span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<h3 id="bubble-charts">Bubble Charts<a class="headerlink" href="#bubble-charts" title="Permanent link">¤</a></h3>
+<p>Bubble charts (known as "bubbleviz" in Lexos) are produced as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.visualization.bubbleviz</span> <span class="kn">import</span> <span class="n">bubbleviz</span>
 
-<span class="c1"># Load Scrubber components, make a pipeline, and scrub the texts</span>
-<span class="n">lower_case</span><span class="p">,</span> <span class="n">remove_digits</span> <span class="o">=</span> <span class="n">load_components</span><span class="p">(</span>
-    <span class="p">(</span><span class="s2">&quot;lower_case&quot;</span><span class="p">,</span> <span class="s2">&quot;remove_digits&quot;</span><span class="p">)</span>
-<span class="p">)</span>
-<span class="n">scrub</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span>
-    <span class="n">lower_case</span><span class="p">,</span>
-    <span class="n">pipe</span><span class="p">(</span><span class="n">remove_digits</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">])</span>
-<span class="p">)</span>
-<span class="n">scrubbed_texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">scrub</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">loader</span><span class="o">.</span><span class="n">texts</span><span class="p">]</span>
-
-<span class="c1"># Tokenise the texts</span>
-<span class="n">docs</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">make_docs</span><span class="p">(</span><span class="n">scrubbed_texts</span><span class="p">)</span>
+<span class="n">bubbleviz</span><span class="p">(</span><span class="n">dtm</span><span class="p">)</span>
 </code></pre></div>
+<p>See <a class="autorefs autorefs-internal" href="../../api/visualization/bubbleviz/#lexos.visualization.bubbleviz.BubbleChart">lexos.visualization.bubbleviz.BubbleChart</a> for a description of the various options.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The algorithm to produce bubble charts in pure Python is experimental and not nearly as good as the Javascript implementation used in the Lexos app.</p>
+</div>
+<h3 id="dendrograms">Dendrograms<a class="headerlink" href="#dendrograms" title="Permanent link">¤</a></h3>
+<p>Static dendrograms based on hierarchical agglomerative clustering are produced using the <code>Dendrogram</code> class. It operates directly on the document-term matrix.</p>
+<div class="highlight"><pre><span></span><code><span class="n">dendrogram</span> <span class="o">=</span> <span class="n">Dendrogram</span><span class="p">(</span><span class="n">dtm</span><span class="p">)</span>
+
+<span class="n">dendrogram</span><span class="o">.</span><span class="n">fig</span>
+
+<span class="ow">or</span>
+
+<span class="n">dendrogram</span> <span class="o">=</span> <span class="n">Dendrogram</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>The dendrogram plot is not shown by default, so you need to use one of the methods above to display it. The class is a wrapper around <code><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.dendrogram.html">scipy.cluster.hierarchy.dendrogram</a></code>, and you can change any of its options by calling them, e.g. <code>Dendrogram.orientation = bottom</code>. If you change any of the options, you must then rebuild the dendrogram by calling <code>Dendrogram.build()</code>.</p>
+<p>The distance title, distance metric, and linkage method, of the dendrogram can be set in the same way by passing <code>title</code>, <code>metric</code>, and <code>method</code> when instantiating the class or by setting them afterwards in the same manner as shown above.</p>
+<p>There is also a <code>savefig()</code> method which takes a filename or filepath to save the file. The image format is detected automatically from the extension type.</p>
+<h4 id="plotly-dendrograms">Plotly Dendrograms<a class="headerlink" href="#plotly-dendrograms" title="Permanent link">¤</a></h4>
+<p>To create a dendrogram in plotly, do the following:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.visualization.plotly.cluster.dendrogram</span> <span class="kn">import</span> <span class="n">PlotlyDendrogram</span>
+
+<span class="n">layout</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="mi">20</span><span class="p">))</span>
+
+<span class="n">dendrogram</span> <span class="o">=</span> <span class="n">PlotlyDendrogram</span><span class="p">(</span>
+    <span class="n">dtm</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Plotly Dendrogram&quot;</span><span class="p">,</span>
+    <span class="n">x_tickangle</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">layout</span>
+<span class="p">)</span>
+</code></pre></div>
+<p>The <code>plot()</code> function accepts the <code>labels</code>, <code>colorscale</code>, <code>hovertext</code>, and <code>color_threshold</code> parameters in the <code><a href="https://plotly.github.io/plotly.py-docs/generated/plotly.figure_factory.create_dendrogram.html">plotly.figure_factory.create_dendrogram</a></code> function. However, it requires strings, rather than functions, for the names of distance metric and linkage method, as shown above. Use the <code>x_tickangle</code> parameter to change the rotation of the leaf labels.</p>
+<p>A dictionary of <a href="https://plotly.com/python/configuration-options/">Plotly configuration options</a> can be passed to the <code>config</code> parameter. Likewise, <a href="https://plotly.com/python/reference/layout/">Plotly layout options</a> can be passed using the <code>layout</code> parameter, as shown in the example above.</p>
+<p>Once the dendrogram object has been instantiated, it can be displayed with the <code>Dendrogram.showfig()</code> method it can also be converted to HTML with <code>Dendrogram.to_html()</code>. By default, this will return an HTML div element, but the <code>output_type</code> can also be set to "file" and a <code>filename</code> supplied to save the HTML string as a file.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you create a dendrogram with something like <code>dendrogram = Dendrogram(dtm, show=False)</code> and then call <code>dendrogram.fig</code>, you will get a plot, but it will not have any configurations you have specified applied to it. This includes the default configurations such as removing the Plotly logo from the menubar. This is due to a flaw in Plotly's API. Accessing the dendrogram figure with <code>dendrogram.showfig()</code> avoids this problem.</p>
+</div>
+<h3 id="clustermaps">Clustermaps<a class="headerlink" href="#clustermaps" title="Permanent link">¤</a></h3>
+<h4 id="using-seaborn">Using Seaborn<a class="headerlink" href="#using-seaborn" title="Permanent link">¤</a></h4>
+<p>A clustermap is a dendrogram attached to a heatmap, showing the relative similarity of documents using a colour scale. Lexos can generate static clustermap images using the Python Seaborn library.</p>
+<p>To generate a clustermap, use the following code:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.visualization.seaborn.cluster.clustermap</span> <span class="kn">import</span> <span class="n">ClusterMap</span>
+
+<span class="n">cluster_map</span> <span class="o">=</span> <span class="n">ClusterMap</span><span class="p">(</span><span class="n">dtm</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Clustermap&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><a href="">lexos.visualization.seaborn.cluster.clustermap.ClusterMap</a> accepts any <a href="https://seaborn.pydata.org/generated/seaborn.clustermap.html"><code>Seaborn.clustermap</code> parameter.</a></p>
+<p>The distance title, distance metric, and linkage method, of the dendrogram can be set in the same way by passing <code>title</code>, <code>metric</code>, and <code>method</code> when instantiating the class or by setting them afterwards calling <code>ClusterMap.build()</code>.</p>
+<p>The clustermap plot is not shown by default. To display the plot, generate it with <code>show=True</code> or refernce it with <code>ClusterMap.fig</code>. If you change any of the options, you must then rebuild the dendrogram by calling <code>ClusterMap.build()</code>.</p>
+<p>There is also a <code>savefig()</code> method which takes a filename or filepath to save the file. The image format is detected automatically from the extension type.</p>
+<h4 id="using-plotly">Using Plotly<a class="headerlink" href="#using-plotly" title="Permanent link">¤</a></h4>
+<p>Plotly clustermaps are somewhat experimental and may not render plots that are as informative as Seaborn clustermaps. One advantage they have is that, instead of providing labels for each document at the bottom of the graph, they provide the document labels on the x and y axes, as well as the z (distance) score in the hovertext. This allows you to mouse over individual sections of the heatmap to see which documents are represented by that particular section.</p>
+<p>Plotly clustermaps are constructed in the same manner to Plotly dendrograms:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">lexos.visualization.seaborn.cluster.clustermap</span> <span class="kn">import</span> <span class="n">PlotlyClustermap</span>
+
+<span class="n">cluster_map</span> <span class="o">=</span> <span class="n">PlotlyClustermap</span><span class="p">(</span><span class="n">dtm</span><span class="p">)</span>
+
+<span class="n">cluster_map</span><span class="o">.</span><span class="n">showfig</span><span class="p">()</span>
+</code></pre></div>
+<p>All the options for Plotly dendrograms are available with the following differences:</p>
+<ul>
+<li>Figure size is determined by configuring the <code>width</code> and <code>height</code> parameters.</li>
+<li><code>colorscale</code> is the name of a <a href="https://plotly.com/python/builtin-colorscales/" target="_blank">built-in Plotly colorscale</a>. This is applied to the heatmap and converted internally to a list of colorus to apply to the dendrograms.</li>
+<li>Two additional parameters, <code>hide_upper</code> and <code>hide_side</code> allow you to hide the individual dendrograms.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Once the clustermap plot has been generated, it is inadvisable to use the modebar zoom and pan buttons because this tends to separate the heatmap from the dendrogram leaves. It may even be advisable to remove these buttons from the modebar by default.</p>
+</div>
 
               
             </article>
@@ -1651,7 +1832,7 @@
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../scrubbing_texts/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../the_document_term_matrix/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -1660,19 +1841,19 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              Scrubbing Texts
+              The Document-Term Matrix
             </div>
           </div>
         </a>
       
       
-        <a href="../cutting_docs/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../managing_a_corpus/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Cutting Documents
+              Managing a Corpus
             </div>
           </div>
           <div class="md-footer__button md-icon">
