@@ -110,6 +110,18 @@ class Machete:
                 )
         return tokenizer(text)
 
+    def merge(self, segments: List[str], sep=" ") -> str:
+        """Merge a list of segments into a single string.
+
+        Args:
+            segments (List[str]): The list of segments to merge.
+            sep (str): The separator to use.
+
+        Returns:
+            str: The merged string.
+        """
+        return sep.join(segments)
+
     def split(
         self,
         texts: Union[List[str], str],
