@@ -295,6 +295,20 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#downloading-the-default-language-model-required" class="md-nav__link">
+    Downloading the Default Language Model (Required)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#downloading-additional-language-models-optional" class="md-nav__link">
+    Downloading Additional Language Models (Optional)
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1505,6 +1519,20 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#downloading-the-default-language-model-required" class="md-nav__link">
+    Downloading the Default Language Model (Required)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#downloading-additional-language-models-optional" class="md-nav__link">
+    Downloading Additional Language Models (Optional)
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1529,7 +1557,7 @@
 <ol>
 <li>Visit the <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda Distribution</a> page to download the Anaconda installer for your operating system.</li>
 <li>Once it has finished downloading, run the Anaconda Installer and follow the instructions.</li>
-<li>To verify Python has been installed correctly, open the Anaconda Powershell Prompt and enter `python -V`.
+<li>To verify Python has been installed correctly, open the Anaconda prompt and enter `python -V`.
 The response should be a Python version number,  e.g. "Python 3.9.12".</li>
 </ol>
 
@@ -1540,7 +1568,17 @@ The response should be a Python version number,  e.g. "Python 3.9.12".</li>
 <p>To update to the latest version, use</p>
 <div class="highlight"><pre><span></span><code>pip install -U lexos
 </code></pre></div>
-<p>This will install the Lexos API and all of its dependencies, including spaCy's multilanguage model and its small English language model. If you are working in another language or need a larger language model, you can download additional models from the <a href="https://spacy.io/models" target="_blank">spaCy models</a> page.</p>
+<p>This will install the Lexos API and all of its dependencies.</p>
+<h2 id="downloading-the-default-language-model-required">Downloading the Default Language Model (Required)<a class="headerlink" href="#downloading-the-default-language-model-required" title="Permanent link">¤</a></h2>
+<p>Before using Lexos, you will want to install its default language model:</p>
+<div class="highlight"><pre><span></span><code>python -m spacy download xx_sent_ud_sm
+</code></pre></div>
+<p>For information on how Lexos uses language models, see <a href="../tutorial/tokenizing_texts/">Tokenizing Texts</a>.</p>
+<h2 id="downloading-additional-language-models-optional">Downloading Additional Language Models (Optional)<a class="headerlink" href="#downloading-additional-language-models-optional" title="Permanent link">¤</a></h2>
+<p>This is a minimal model that performs sentence and token segmentation for a variety of languages. If you want a model for a specific language, such as English, download it by providing the name of the model:</p>
+<div class="highlight"><pre><span></span><code>python -m spacy download en_core_web_sm
+</code></pre></div>
+<p>If you are working in another language or need a larger language model, you can download instructions for additional models from the <a href="https://spacy.io/models" target="_blank">spaCy models</a> page.</p>
 
               
             </article>
