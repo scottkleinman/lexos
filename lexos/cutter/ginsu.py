@@ -371,6 +371,17 @@ class Ginsu:
                 segments.append(doc[start + 1 : end].as_doc())
         return segments
 
+    def merge(self, segments: List[spacy.tokens.doc.Doc]) -> str:
+        """Merge a list of segments into a single string.
+
+        Args:
+            segments (List[spacy.tokens.doc.Doc]): The list of segments to merge.
+
+        Returns:
+            spacy.tokens.doc.Doc: The merged doc.
+        """
+        return Doc.from_docs(segments)
+
     def split(
         self,
         docs: Union[spacy.tokens.doc.Doc, List[spacy.tokens.doc.Doc]],
