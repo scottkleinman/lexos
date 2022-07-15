@@ -1,5 +1,6 @@
 """registry.py."""
 import re
+from typing import Callable
 
 import catalogue
 
@@ -7,7 +8,7 @@ import catalogue
 tokenizers = catalogue.create("lexos", "tokenizers")
 
 # Whitespace tokenizer
-def whitespace_tokenizer(text):
+def whitespace_tokenizer(text: str) -> list:
     """Tokenize on whitespace, keeping whitespace.
 
     Args:
@@ -51,10 +52,13 @@ tokenizers.register("character", func=character_tokenizer)
 tokenizers.register("linebreak", func=linebreak_tokenizer)
 
 
-def load(s: str):
+def load(s: str) -> Callable:
     """Load a single tokenizer from a string.
 
     Args:
         s: The name of the function.
+
+    Returns:
+        list: A tokenizer function.
     """
     return tokenizers.get(s)
