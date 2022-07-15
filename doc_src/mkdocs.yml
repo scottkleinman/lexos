@@ -9,7 +9,7 @@ nav:
       - Getting Started: tutorial/getting_started.md
       - Loading Texts: tutorial/loading_texts.md
       - Scrubbing Texts: tutorial/scrubbing_texts.md
-      - Tokenising Texts: tutorial/tokenising_texts.md
+      - Tokenizing Texts: tutorial/tokenizing_texts.md
       - Cutting Documents: tutorial/cutting_docs.md
       - The Document-Term Matrix: tutorial/the_document_term_matrix.md
       - Visualization: tutorial/visualization.md
@@ -29,7 +29,9 @@ nav:
           - Filesplit: api/cutter/filesplit.md
           - Ginsu: api/cutter/ginsu.md
           - Machete: api/cutter/machete.md
+          - Merge: api/cutter/merge.md
           - Milestones: api/cutter/milestones.md
+          - Registry: api/cutter/registry.md
       - DTM:
           - DTM: api/dtm/index.md
       - IO:
@@ -99,7 +101,6 @@ markdown_extensions:
   - pymdownx.magiclink
   - pymdownx.highlight
   - pymdownx.inlinehilite
-  - pymdownx.superfences
   - pymdownx.tabbed
   - pymdownx.tasklist
   - pymdownx.keys
@@ -109,6 +110,11 @@ markdown_extensions:
   - tables
   - toc:
       permalink: "¤"
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 
 extra_css:
   - stylesheets/extra.css

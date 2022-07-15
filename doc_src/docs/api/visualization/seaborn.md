@@ -6,10 +6,7 @@ The `seaborn` submodule contains components for generating word clouds and clust
 
 ## Seaborn Clustermaps
 
-!!! important
-  The API docs below are for the wrong function because mkdocs currently cannot find `seaborn.cluster.clustermap.ClusterMap`. We are looking into this.
-
-### ::: lexos.visualization.plotly.cluster.clustermap.PlotlyClustermap
+### ::: lexos.visualization.seaborn.cluster.clustermap.ClusterMap
     rendering:
       show_root_heading: true
       heading_level: 3

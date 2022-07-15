@@ -6,7 +6,7 @@ Topic modelling is a widely-used method of exploring the semantic and discursive
 
 <a href="https://mimno.github.io/Mallet/" target="_blank">MALLET</a> is the most widely used topic modelling tool in the Digital Humanities, both because it is very performant and because its implementation of the Latent Dirichlet Allocation (LDA) algorithm tends to produce quality topics. MALLET is a command-line tool written in Java. It is independent of Lexos and must be installed separately. User-friendly instructions for installing and using MALLET can be found in the _Programming Historian_ tutorial [Getting Started with Topic Modeling and MALLET](https://programminghistorian.org/en/lessons/topic-modeling-and-mallet).
 
-One of the difficulties of using MALLET is that its output is relatively difficult to manipulate into data structures useful for visualisation. This tutorial is a proof of concept for how we might use Lexos to generate a MALLET topic model and then use the model to create a visualisation with Andrew Goldstone's <a href="http://agoldst.github.io/dfr-browser/" target="_blank">dfr-browser</a>.
+One of the difficulties of using MALLET is that its output is relatively difficult to manipulate into data structures useful for visualization. This tutorial is a proof of concept for how we might use Lexos to generate a MALLET topic model and then use the model to create a visualization with Andrew Goldstone's <a href="http://agoldst.github.io/dfr-browser/" target="_blank">dfr-browser</a>.
 
 !!! note
     Much of the legwork for this procedure was done for the <a href="https://we1s.ucsb.edu/" target="_blank">WhatEvery1Says Project</a>, which established the basic workflow.
@@ -16,9 +16,6 @@ One of the difficulties of using MALLET is that its output is relatively difficu
 Before you get started, make sure that you have a working installation of MALLET by following the instructions in the _Programming Historian_ tutorial [Getting Started with Topic Modeling and MALLET](https://programminghistorian.org/en/lessons/topic-modeling-and-mallet). Make sure that you know the path to the MALLET binary file.
 
 Next, make a new folder for your topic model. In this tutorial, we will locate our new folder at `../topic_model`, which indicates that the folder is at the same level as the Lexos API's `lexos` folder.
-
-!!! important
-    There are some special considerations when working in a Jupyter notebook if you are importing the Lexos API from a local folder, as opposed to your Python environment. In this case, you must first set your system environment to the `lexos` folder as shown [here](../../installation#running-the-development-library-locally) and then make sure to reference paths in your model relative to the `lexos` folder (when in doubt, use absolute paths).
 
 ## Import Some Data
 
@@ -37,67 +34,36 @@ for file in os.listdir(data_path):
 
 ## Create Metadata
 
-Although not required for topic modelling, metadata is needed to generate a dfr-browser. Since the MALLET sample data does not come with metadata, we will just generate some fake metadata and save it to a CSV file.
+Although not required for topic modelling, metadata is required to generate a dfr-browser. Dfr-browser was originally designed for displaying models of journal articles in the JSTOR database, so you need to supply metadata fields with the categories it expects. These categories are `id`, `title`, `publication`, `authors`, `volume`, `issue`, `year`, and `pagerange`. If these categories are not appropriate to your data, you can leave them blank (as an empty string). You can also include additional fields (e.g. `file` or `url`), although they may not be displayed in the dfr-browser. Further information on customizing metadata can be found in the <a href="https://github.com/agoldst/dfr-browser#adapting-this-project-to-other-kinds-of-documents-or-models" target="_blank">dfr-browser documentation</a>.
 
-```python
-import csv
-import pandas as pd
-
-metadata_file = f"../topic_model/meta.csv"
-
-rows = []
-files = os.listdir(data_path)
-for i, item in enumerate(data):
-    d = {
-        "id": i + 1,
-        "articlebody": item,
-        "title": files[i],
-        "publication": f"{files[i]}_pub",
-        "author": f"{files[i]}_author",
-        "pubdate": "unknown",
-        "docUrl": "http://www.google.com",
-        "wordcount": len(item)
-    }
-    rows.append(d)
-
-columns = ["id", "articlebody", "title", "publication", "author", "pubdate", "docUrl", "wordcount"]
-df = pd.DataFrame(rows, columns=columns)
-df.to_csv(
-    metadata_file,
-    header=False,
-    index=False,
-    sep=",",
-    na_rep="NA",
-    quoting=csv.QUOTE_ALL
-)
-```
-
-If you were doing it for real, you would create a headerless CSV file where each column would contain the information "id", "articlebody", "title", "publication", "author", "pubdate", "docUrl", and "wordcount" (in that order). Some customisation of the metadata fields is possible (see the <a href="https://github.com/agoldst/dfr-browser#adapting-this-project-to-other-kinds-of-documents-or-models" target="_blank">dfr-browser documentation</a>, but this is not covered in this tutorial).
+Metadata should be stored in a CSV file with no headings called `meta.csv`.
 
 ## Scrub the Data
 
-Now we will use Lexos to scrub the data. We import the Scrubber components, make a pipeline, and run the pipeline on each text. The components here are just random samples of the possible options.
+Now we will use Lexos to scrub the data. We import the `Scrubber` components, make a pipeline, and run the pipeline on each text. The components here are just random samples of the possible options.
 
 ```python
 from lexos.scrubber.pipeline import make_pipeline, pipe
 from lexos.scrubber.registry import scrubber_components, load_components
 
 emails, new_lines, pattern = load_components(("emails", "new_lines", "pattern"))
+
 scrub = make_pipeline(
     emails,
     new_lines,
     pipe(pattern, pattern="\'")
 )
+
 data = [scrub(item) for item in data]
 ```
 
-## Tokenise the Data
+## Tokenize the Data
 
 We will import the Lexos tokenizer and create a list of spaCy docs. In the example below, we use spaCy's "en_core_web_sm" language model, and we'll add "gorillas" as an arbitrary extra stop word.
 
 Keep in mind that each token in the doc is annotated with its part of speech, whether or not it is a stop word, and whether or not it is a punctuation mark (to name a few examples). We will use these properties below.
 
-Note that because tokenisation also involves adding these annotations, it may take a long time for large datasets.
+Note that because tokenization also involves adding these annotations, it may take a long time for large datasets.
 
 ```python
 from lexos import tokenizer
@@ -124,19 +90,23 @@ model = Mallet(
 
 ### Import the Data
 
-We use our `Mallet` object to import our tokenised docs. In the example below, we will import only tokens labelled as nouns. The default behaviour is to skip stop words and punctuation.
+We use our `Mallet` object to import our tokenized docs. In the example below, we will import only tokens labelled as nouns. The default behaviour is to skip stop words and punctuation.
 
-This process creates two files in the model directory. The first is called `data.txt`. This file contains all our doc tokens with one doc per line. Each doc is a bag of words (meaning token order is lost). The second file is called `import.mallet`. This contains the information in `data.txt`, imported into a binary format. It will also have the method's default settings overridden by any MALLET parameters supplied. However, we'll stick with the defaults below.
+This process creates two files in the model directory. The first is called `data.txt`. This file contains all our doc tokens with one doc per line. Each doc is a bag of words (meaning token order is lost). The second file is called `import.mallet`. This contains the information in `data.txt`, imported into a binary format. It will also have the method's default settings overridden by any MALLET parameters you supply. However, we'll stick with the defaults below.
 
 ```python
 model.import_data(docs, allowed=["NOUN"])
 ```
 
 !!! note
-    You can override the default settings by creating a dict of keyword-value pairs based on MALLET settings and then passing the dict to the `import_data()` function. For instance, say you wanted to use an external stop word file:
+    You can override the default settings by creating a dict of keyword-value pairs based on MALLET settings and then passing the dict to the `import_data()` function. For instance, say you wanted to use an external stop word file called `stoplist.txt`:
 
     ```python
-    opts = {"remove-stopwords": True, "stoplist-file": "stoplist.txt"}
+    opts = {
+        "remove-stopwords": True,
+        "stoplist-file": "stoplist.txt"
+    }
+
     model.import_data(docs, **opts)
     ```
 
