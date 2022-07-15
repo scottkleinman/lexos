@@ -9,7 +9,12 @@ from lexos.exceptions import LexosException
 
 from . import extensions, lexosdoc
 
-default_model = spacy.load("xx_sent_ud_sm")
+try:
+    default_model = spacy.load("xx_sent_ud_sm")
+except ImportError as e:
+    raise LexosException(
+        "The default model is not available. Please run `python -m spacy download xx_sent_ud_sm` from the command line."
+    )
 
 LANG = {
     "format_error": f"Expected a string, Doc, or bytes as input, but got:",
@@ -99,7 +104,7 @@ def _load_model(
         return spacy.load(model, disable=disable, exclude=exclude)
     except Exception:
         raise LexosException(
-            f"Error loading model {model}. Please check the model name and try again."
+            f"Error loading model {model}. Please check the name and try again. You may need to install the model on your system."
         )
 
 
