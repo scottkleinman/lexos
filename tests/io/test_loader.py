@@ -12,11 +12,11 @@ Notes:
 
 - You may need to adjust the path to the data files for this script to work.
 """
-from lexos.io import basic
+from lexos.io.smart import Loader
 
 data = ["tests/test_data/txt/Austen_Pride.txt", "tests/test_data/txt/Austen_Sense.txt"]
 
-loader = basic.Loader()
+loader = Loader()
 loader.load(data)
 
 for i, text in enumerate(loader.texts):

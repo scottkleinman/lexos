@@ -2,7 +2,7 @@
 
 # Import a minimal text loader class, the functions for scrubber pipelines,
 # and the scrubber function registry
-from lexos.io.basic import Loader
+from lexos.io.smart import Loader
 from lexos.scrubber.pipeline import make_pipeline
 from lexos.scrubber.registry import scrubber_components
 from lexos.scrubber.scrubber import Scrubber

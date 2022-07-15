@@ -12,7 +12,7 @@ from typing import List
 
 import typer
 
-from lexos.io import basic
+from lexos.io.smart import Loader
 
 LANG = {
     "loading": "Loading...",
@@ -31,7 +31,7 @@ def cli_load(data: List[str] = typer.Argument(..., help=LANG["help"])):
     # Begin loading
     typer.echo(LANG["loading"])
     # Load data
-    loader = basic.Loader()
+    loader = Loader()
     loader.load(data)
     # End loading
     typer.echo(LANG["done"])
