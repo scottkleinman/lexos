@@ -3,7 +3,7 @@ name = "lexos"
 version = "0.0.1"
 description = "Lexos is a tool for the analysis of lexical data. The Lexos package is the Python API for the Lexos tool."
 authors = ["Scott Kleinman <scott.kleinman@csun.edu>"]
-repository = "hhttps://github.com/scottkleinman/lexos"
+repository = "https://github.com/scottkleinman/lexos"
 readme = "README.md"
 keywords = ["text analysis", "lexomics", "lexos"]
 
