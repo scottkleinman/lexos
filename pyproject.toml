@@ -27,10 +27,10 @@ gensim = "^4.2.0"
 pyLDAvis = "^3.3.1"
 seaborn = "^0.11.2"
 
-[tool.poetry.dependencies.xx_sent_ud_sm]
+[tool.poetry.dev-dependencies.xx_sent_ud_sm]
 url = "https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.4.0/xx_sent_ud_sm-3.4.0.tar.gz"
 
-[tool.poetry.dependencies.en_core_web_sm]
+[tool.poetry.dev-dependencies.en_core_web_sm]
 url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.4.0/en_core_web_sm-3.4.0.tar.gz"
 
 [tool.poetry.dev-dependencies]
