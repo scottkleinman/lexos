@@ -37,6 +37,22 @@ To update to the latest version, use
 pip install -U lexos
 ```
 
+Before using Lexos, you will want to install its default language model:
+
+```bash
+python -m spacy download xx_sent_ud_sm
+```
+
+This is a minimal model that performs sentence and token segmentation for a variety of languages. If you want a model for a specific language, such as English, download it by providing the name of the model:
+
+```bash
+python -m spacy download en_core_web_sm
+```
+
+For information on how Lexos uses language models, see <a href="https://scottkleinman.github.io/lexos/tutorial/tokenizing_texts/" target="_blank">Tokenizing Texts</a>.
+
+If you are working in another language or need a larger language model, you can download instructions for additional models from the <a href="https://spacy.io/models" target="_blank">spaCy models</a> page.
+
 ## 💝 Contribute
 
 - Bug reports and feature requests: Please use [GitHub issues](https://github.com/scottkleinman/lexos/issues).
