@@ -135,6 +135,9 @@ extra:
       link: https://twitter.com/Lexomics
     - icon: fontawesome/brands/github
       link: https://github.com/WheatonCS/Lexos/
+  analytics:
+    provider: google
+    property: G-S7XYDZ16KZ
 
 plugins:
   - search
