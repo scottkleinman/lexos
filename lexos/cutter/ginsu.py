@@ -8,7 +8,9 @@ import re
 from typing import Callable, List, Optional, Union
 
 import spacy
-from pydantic import BaseModel, ValidationError, validator
+
+# Deprecated: from pydantic import BaseModel, ValidationError, validator
+from pydantic import BaseModel
 from spacy.tokens import Doc
 
 from lexos.exceptions import LexosException
@@ -70,7 +72,9 @@ class Ginsu:
             yield doc[i : i + n].as_doc()
 
     def _create_overlapping_segments(
-        self, segments: List[spacy.tokens.doc.Doc], overlap: int,
+        self,
+        segments: List[spacy.tokens.doc.Doc],
+        overlap: int,
     ) -> List[spacy.tokens.doc.Doc]:
         """Create overlapping segments.
 
@@ -499,4 +503,3 @@ class Ginsu:
                     self._split_doc_on_milestones(doc, milestone, preserve_milestones)
                 )
             return all_segments
-

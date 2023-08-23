@@ -4,7 +4,14 @@ from typing import Any, List, Union
 import pandas as pd
 import spacy
 from natsort import natsort_keygen, ns
-from pydantic import BaseModel, ValidationError, validator
+
+# Deprecated: from pydantic import BaseModel, ValidationError, validator
+from pydantic import (
+    BaseModel,
+    FieldValidationInfo,
+    ValidationError,
+    field_validator,
+)
 
 from lexos.exceptions import LexosException
 
@@ -26,9 +33,11 @@ class DtmData(BaseModel):
 
         arbitrary_types_allowed = True
 
-    @validator("docs", pre=True, always=True)
-    def ensure_token_lists(cls, v):
-        """Coerces input to a list of token lists where each token is a string."""
+    # Deprecated: @validator("docs", pre=True, always=True)
+    @field_validator("docs")
+    @classmethod
+    def ensure_token_lists(cls, v) -> List[str]:
+        """Coerce input to a list of token lists where each token is a string."""
         tokens = []
         for doc in v:
             if isinstance(doc, spacy.tokens.doc.Doc):

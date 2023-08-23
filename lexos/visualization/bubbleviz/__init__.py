@@ -13,7 +13,14 @@ from typing import List, Optional, Union
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from pydantic import BaseModel, ValidationError, validator
+
+# Deprecated: from pydantic import BaseModel, ValidationError, validator
+from pydantic import (
+    BaseModel,
+    FieldValidationInfo,
+    ValidationError,
+    field_validator,
+)
 
 from lexos.exceptions import LexosException
 
@@ -39,20 +46,25 @@ class BubbleChartModel(BaseModel):
     show: Optional[bool] = True
     filename: Optional[str] = None
 
-    @validator("terms")
+    # Deprecated: @validator("terms")
+    @field_validator("terms")
+    @classmethod
     def check_terms_not_empty(cls, v):
         """Ensure `terms` is not empty."""
         if v == []:
             raise ValueError("Empty term lists are not allowed.")
         return v
 
-    @validator("area")
+    # Deprecated: @validator("area")
+    @field_validator("area")
+    @classmethod
     def check_area_not_empty(cls, v):
         """Ensure `area` is not empty."""
         if v == []:
             raise ValueError("Empty area lists are not allowed.")
         return v
 
+    # Deprecated
     # @validator("area")
     # def num_terms_must_equal_area(cls, v, values):
     #     """Ensure the number of terms equals the number of areas."""
@@ -370,4 +382,3 @@ def create_bubble_chart_from_dtm(
         )
     except Exception:
         raise LexosException("The input is not a valid DTM object.")
-

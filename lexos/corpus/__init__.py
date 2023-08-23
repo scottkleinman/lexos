@@ -6,7 +6,12 @@ records stored as Record objects.
 To Do:
 
 - Improve type annotations.
-- Look into a better serialisation format than pickle.
+- A json alternative to pickle has now been added for serialising records, but it has
+  not been tested. I still need to look into how this impacts corpus serialisation. I
+  could store the doc in binary using spacy.tokens.Doc.to_bytes(), but what to do about
+  the rest? Maybe Docbin is the method if it allows arbitrary metadata. Nope, it does
+  not, and it is impossible to extract individual docs without deserialising the whole
+  thing...
 - Add more `Corpus` methods. Since the Corpus is just a folder with a metadata file
   and a set of binary resources, it should be easy to archive as a zip file, or, say,
   a Frictionless Data data package. So we could add something like a `Corpus.to_zip()`
@@ -15,6 +20,7 @@ To Do:
 """
 import os
 import pickle
+import ujson as json
 import uuid
 from collections import Counter
 from pathlib import Path
@@ -102,6 +108,38 @@ class Record(BaseModel):
         """Return the tokens in the record."""
         return self.content
 
+    def from_json(self, data: str) -> None:
+        """Deserialise the record from a JSON object.
+
+        Args:
+            data: The json string
+        """
+        data = json.loads(data)
+        for k, v in data.items():
+            if k == "content":
+                nlp = spacy.load(data["model"])
+                setattr(self, k, Doc(nlp.vocab).from_json(v))
+            else:
+                setattr(self, k, v)
+
+    def load(self, filename: str, format: str = "pickle"):
+        """Deserialise the record from disk.
+
+        Args:
+            filename: The location of the file to deserialisen.
+            format: The format used ("pickle" or "json") for serialisation.
+        """
+        if format == "pickle":
+            with open(filename, "rb") as f:
+                tmp = pickle.load(self, f)
+            for k, v in tmp.model_dump().items():
+                setattr(self, k, v)
+
+        else:
+            with open(filename, "rb") as f:
+                data = f.read()
+                self.from_json(data)
+
     def num_terms(self):
         """Return the number of terms."""
         return len(self.terms)
@@ -110,14 +148,36 @@ class Record(BaseModel):
         """Return the number of tokens."""
         return len(self.content)
 
-    def save(self):
-        """Serialise the record to disk."""
-        with open(self.filename, "wb") as f:
-            pickle.dump(self, f)
+    def save(self, format: str = "pickle", **kwargs):
+        """Serialise the record to disk.
+
+        Args:
+            format: The format to use ("pickle" or "json") for serialisation.
+        """
+        if format == "pickle":
+            with open(self.filename, "wb") as f:
+                pickle.dump(self, f)
+        else:
+            with open(self.filename, "wb") as f:
+                f.write(self.to_json(**kwargs))
 
     def set(self, k, v):
         """Set a record property."""
         setattr(self, k, v)
+
+    def to_json(self, **kwargs):
+        """Serialise the record to JSON.
+
+        Note:
+            Takes any keyword arguments accepted by Pydantic's `model_dump_json` method:
+            https://docs.pydantic.dev/latest/api/base_model/#pydantic.main.BaseModel.model_dump_json
+        """
+        record = self.model_dump_json(exclude="content", **kwargs)
+        underscore = None
+        if self.content.user_data != {}:
+            underscore = list(set([k[1] for k, _ in self.content.user_data.items()]))
+        record["content"] = self.content.to_json(underscore=underscore)
+        return json.dumps(record)
 
 
 class Corpus(BaseModel):
@@ -325,7 +385,7 @@ class Corpus(BaseModel):
         Returns:
             pd.DataFrame: A pandas dataframe containing the table.
         """
-        reduced = {k: v for k, v in self.dict().items() if k not in drop}
+        reduced = {k: v for k, v in self.model_dump().items() if k not in drop}
         df = pd.DataFrame.from_dict(reduced, orient="index", columns=["Corpus"])
         df.sort_index(axis=0, inplace=True)
         return df
@@ -379,7 +439,7 @@ class Corpus(BaseModel):
         self.num_tokens = self.num_tokens - record.num_tokens()
         self.num_terms = self.num_terms - record.num_terms()
         # Save the Corpus metadata
-        srsly.write_json(f"{self.corpus_dir}/corpus_meta.json", self.dict())
+        srsly.write_json(f"{self.corpus_dir}/corpus_meta.json", self.model_dump())
 
     def remove_records(self, ids: List[int]):
         """Remove multiple records from the corpus.
@@ -428,7 +488,7 @@ class Corpus(BaseModel):
             record (object): A Record doc.
         """
         # Update corpus records table
-        meta = record.dict()
+        meta = record.model_dump()
         del meta["content"]
         meta["num_tokens"] = record.num_tokens()
         meta["num_terms"] = record.num_terms()

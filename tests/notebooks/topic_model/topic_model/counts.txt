@@ -1,0 +1,489 @@
+0 English 4:1 11:1
+1 procuress 4:1
+2 keeper 4:1
+3 18th 4:1
+4 century 4:1 2:1 13:1
+5 bawd 4:1
+6 plate 4:1
+7 series 4:1 11:1
+8 satirical 4:1
+9 etchings 4:1
+10 notorious 4:1
+11 time 8:2 4:1 2:1 7:1 3:1 10:1
+12 little 4:1 14:1
+13 life 2:3 4:1
+14 genuine 4:1
+15 portraits 4:1
+16 survive 4:1
+17 house 4:1
+18 exclusive 4:1
+19 customers 4:1
+20 highest 4:1
+21 strata 4:1
+22 fashionable 4:1
+23 society 4:1
+24 moral 4:1
+25 reformers 4:1
+26 day 8:2 4:1
+27 result 4:1
+28 severe 4:1
+29 treatment 4:1
+30 pillory 4:1
+31 equipartition 1:6
+32 theorem 1:5
+33 formula 1:1
+34 statistical 1:1
+35 mechanics 1:1
+36 temperature 1:2
+37 system 1:4 14:3
+38 average 1:5 7:1
+39 energies 1:2
+40 original 1:1 10:1
+41 idea 1:1
+42 thermal 1:2
+43 equilibrium 1:2
+44 energy 1:4
+45 forms 1:1
+46 example 1:1
+47 kinetic 1:3
+48 translational 1:1
+49 motion 1:2
+50 molecule 1:1
+51 rotational 1:1
+52 virial 1:1
+53 total 1:1
+54 potential 1:1
+55 heat 1:2
+56 capacity 1:1
+57 values 1:1
+58 individual 1:1
+59 components 1:1
+60 classical 1:2
+61 complicated 1:1
+62 ideal 1:1
+63 gas 1:1
+64 law 1:2 2:1 9:1
+65 Dulongâ€“Petit 1:1
+66 specific 1:1
+67 capacities 1:1
+68 solids 1:1
+69 properties 1:1
+70 stars 1:2
+71 white 1:1
+72 dwarfs 1:1
+73 neutron 1:1
+74 relativistic 1:1
+75 effects 1:2
+76 accurate 1:1
+77 predictions 1:1
+78 certain 1:1
+79 conditions 1:1
+80 inaccurate 1:1
+81 quantum 1:1
+82 significant 1:1
+83 low 1:1
+84 temperatures 1:1
+85 Gunnhild 2:1
+86 konungamóðir 2:1
+87 mother 2:1 11:1
+88 kings 2:1
+89 Gormsdóttir[1 2:1
+90 wife 2:1
+91 king 2:3
+92 948–49 2:1
+93 prominent 2:1
+94 figure 2:1 15:1
+95 sagas 2:1
+96 Saga 2:2
+97 details 2:2
+98 parentage 2:1
+99 great 2:1
+100 change 2:1
+101 father 2:1 10:1
+102 rule 2:1
+103 death 2:1 9:1 15:1
+104 husband 2:2
+105 rest 2:1 8:1
+106 exile 2:1
+107 number 14:2 2:1
+108 children 2:1
+109 co 2:1 11:1
+110 rulers 2:1 10:1
+111 late 2:1 9:1
+112 tenth 2:1
+113 Icelandic 2:1
+114 sources 2:1
+115 hostile 2:1
+116 scholars 2:1
+117 episodes 2:1
+118 suspect 2:1
+119 second 9:1 8:1
+120 dissolution 9:1
+121 party 9:1
+122 outbreak 9:1
+123 supporter 9:1
+124 doctrine 9:1
+125 armed 9:1
+126 neutrality 9:2
+127 brigade 9:1
+128 commissary 9:1
+129 general 9:2 13:1
+130 Confederate 9:2 8:2
+131 governor 9:1
+132 government 9:1 15:1
+133 inauguration 9:1
+134 ceremony 9:2
+135 forces 9:1 8:1
+136 invasion 9:1
+137 war 9:1
+138 home 9:1
+139 oath 9:1
+140 allegiance 9:1
+141 practice 9:1
+142 Australian 7:3 13:1
+143 cricketer 7:1
+144 Test 7:4
+145 matches 7:1
+146 specialist 7:1
+147 batsman 7:2
+148 team 7:1 11:1
+149 prolific 7:1
+150 run 7:1 10:1
+151 scorer 7:1
+152 runs 7:2
+153 cricket 7:4 11:1
+154 world 7:1
+155 record 7:2 13:1
+156 retirement 7:1
+157 innings 7:2
+158 centuries 7:1
+159 calendar 7:1
+160 year 7:1 11:1
+161 feat 7:1
+162 years 15:3 7:2 3:1 13:1 14:1
+163 career 7:2 15:1
+164 controversy 7:1
+165 brawl 7:1
+166 administrator 7:1
+167 fellow 7:1
+168 selector 7:1
+169 group 7:1
+170 cricketers 7:1
+171 players 7:1
+172 right 7:1
+173 tour 7:1
+174 manager 7:1
+175 boycott 7:1
+176 horse 7:1
+177 racing 7:1
+178 industry 7:1
+179 stipendiary 7:1
+180 steward 7:1
+181 handicapper 7:1
+182 races 7:1
+183 major 8:1
+184 battle 8:4
+185 southwestern 8:1
+186 surprise 8:1
+187 attack 8:1
+188 close 8:1
+189 army 8:1
+190 intention 8:1
+191 defenders 8:1
+192 swamps 8:1
+193 west 8:1
+194 lines 8:1
+195 confused 8:1
+196 fierce 8:1
+197 fighting 8:2
+198 men 8:2
+199 direction 8:1
+200 northeast 8:1
+201 position 8:2
+202 sunken 8:1
+203 road 8:1
+204 Nest 8:1
+205 Gens 8:1
+206 divisions 8:1
+207 critical 8:1 11:1
+208 line 8:2
+209 protection 8:1 15:1
+210 numerous 8:1 14:1 15:1
+211 artillery 8:1
+212 batteries 8:1
+213 command 8:1
+214 final 8:1
+215 night 8:1
+216 Reinforcements 8:1
+217 evening 8:1 3:1
+218 tide 8:1
+219 morning 8:1
+220 counterattack 8:1
+221 entire 8:1
+222 bloodiest 8:1
+223 history 8:1
+224 hopes 8:1
+225 advance 8:1
+226 northern 8:1
+227 provincial 3:1
+228 newspaper 3:2
+229 areas 3:1 15:1
+230 platform 3:1
+231 Radical 3:1
+232 views 3:1
+233 partners 3:1
+234 local 3:1
+235 daily 3:1
+236 paper 3:3
+237 inaugural 3:1
+238 edition 3:1
+239 copies 3:1
+240 halfpenny 3:1
+241 intense 3:1
+242 competition 3:1
+243 early 3:1 13:1
+244 depression 3:1
+245 1930s 3:1
+246 building 3:1
+247 undamaged 3:1
+248 competitor 3:1
+249 wartime 3:1
+250 rules 3:1
+251 format 3:1
+252 broadsheet 3:1
+253 current 3:1
+254 tabloid 3:1
+255 layout 3:1
+256 national 15:2 3:1
+257 newsprint 3:1
+258 shortages 3:1
+259 operatic 10:1
+260 extravaganza 10:1
+261 collaboration 10:1
+262 dramatist 10:1
+263 composer 10:1
+264 music 10:1
+265 famous 10:1
+266 successful 10:1
+267 partnerships 10:1
+268 string 10:1
+269 comic 10:1
+270 opera 10:1
+271 hits 10:1
+272 popular 10:1
+273 productions 10:1 11:1
+274 theatre 10:1
+275 broad 10:1
+276 burlesque 10:1
+277 style 10:1
+278 different 10:1
+279 works 10:1
+280 modest 10:1
+281 success 10:1 11:1
+282 entertainment 10:1
+283 performances 10:1 11:1
+284 Acts 10:1
+285 story 10:1
+286 troupe 10:1
+287 legendary 10:1
+288 Greek 10:1
+289 drama 10:1 11:1
+290 places 10:1
+291 gods 10:2
+292 elderly 10:1
+293 actors 10:2
+294 inept 10:1
+295 mayhem 10:1
+296 angry 10:1
+297 eminent 10:1
+298 tragedians 10:1
+299 cynocephalus 13:1
+300 dog 13:1
+301 pouched 13:1
+302 largest 13:1
+303 carnivorous 13:1
+304 marsupial 13:2
+305 modern 13:1 15:1 11:1
+306 times 13:1
+307 Native 13:1
+308 extinct 13:3
+309 20th 13:1
+310 extant 13:1
+311 member 13:1
+312 genus 13:1
+313 species 13:2
+314 fossil 13:1
+315 mainland 13:1
+316 thousands 13:1
+317 European 13:1
+318 settlement 13:1
+319 continent 13:1
+320 island 13:1
+321 endemic 13:1
+322 Intensive 13:1
+323 hunting 13:1
+324 bounties 13:1
+325 extinction 13:1
+326 contributory 13:1
+327 factors 13:1
+328 disease 13:1
+329 introduction 13:1
+330 dogs 13:1
+331 human 13:1
+332 encroachment 13:1
+333 habitat 13:1
+334 sightings 13:1
+335 tigers 13:1
+336 wolves 13:1
+337 common 13:1
+338 names 13:1
+339 apex 13:1
+340 predator 13:1
+341 placental 13:1
+342 mammals 13:1
+343 convergent 13:1
+344 evolution 13:1
+345 form 13:1
+346 adaptations 13:1
+347 closest 13:1
+348 living 13:1
+349 relative 13:1 14:1
+350 marsupials 13:1
+351 pouch 13:2
+352 sexes 13:1
+353 male 13:2
+354 protective 13:1
+355 sheath 13:1
+356 external 13:1
+357 reproductive 13:1
+358 organs 13:1
+359 thick 13:1
+360 brush 13:1
+361 rings 14:10
+362 additional 14:1
+363 spacecraft 14:1
+364 outer 14:1
+365 faint 14:1
+366 dust 14:3
+367 bands 14:1
+368 incomplete 14:1
+369 arcs 14:1
+370 main 14:1
+371 dark 14:2
+372 albedo 14:1
+373 particles 14:2
+374 composed 14:1
+375 water 14:1
+376 ice 14:1
+377 addition 14:1 11:1
+378 radiation 14:1
+379 organics 14:1
+380 majority 14:1
+381 opaque 14:1
+382 kilometres 14:1
+383 wide 14:1
+384 ring 14:3
+385 overall 14:1
+386 large 14:1
+387 bodies 14:1
+388 diameter 14:1
+389 lack 14:1
+390 aerodynamic 14:1
+391 drag 14:1
+392 extended 14:1
+393 young 14:1
+394 mechanism 14:1
+395 narrow 14:2
+396 collisional 14:1
+397 fragmentation 14:1
+398 moons 14:2
+399 planet 14:1
+400 dense 14:1
+401 zones 14:1
+402 maximum 14:1
+403 stability 14:1
+404 American 15:1
+405 writer 15:1
+406 journalist 15:2
+407 activist 15:1
+408 editor 15:1
+409 publisher 15:1
+410 friend 15:1
+411 need 15:1
+412 independent 15:1 11:1
+413 park 15:2
+414 agency 15:1
+415 publications 15:1
+416 movement 15:2
+417 legislative 15:1
+418 support 15:1
+419 head 15:1
+420 conception 15:1
+421 tension 15:1
+422 non 15:1
+423 initiatives 15:1
+424 executive 15:1
+425 secretary 15:1
+426 parks 15:1
+427 use 15:1
+428 high 15:1
+429 standards 15:2
+430 aesthetic 15:1
+431 ideals 15:1
+432 selection 15:1
+433 commercialism 15:1
+434 industrialization 15:1
+435 masterpieces 15:1
+436 discord 15:1
+437 peers 15:1
+438 relationship 15:1
+439 involved 15:1
+440 wilderness 15:2
+441 members 15:1
+442 president 15:1
+443 Yard 15:1
+444 important 15:1
+445 Indian 11:3
+446 film 11:3
+447 actress 11:2
+448 films 11:2
+449 language 11:1
+450 movies 11:1
+451 degree 11:1
+452 criminal 11:1
+453 psychology 11:1
+454 debut 11:1
+455 role 11:3
+456 teenage 11:1
+457 single 11:1
+458 variety 11:1
+459 character 11:1
+460 types 11:1
+461 image 11:1
+462 heroine 11:1
+463 performance 11:1
+464 lead 11:1
+465 female 11:1
+466 consecutive 11:1
+467 annual 11:1
+468 science 11:1
+469 fiction 11:1
+470 biggest 11:1
+471 commercial 11:1
+472 star 11:1
+473 romance 11:1
+474 acclaim 11:1
+475 portrayal 11:1
+476 women 11:1
+477 overseas 11:1
+478 markets 11:1
+479 accomplishments 11:1
+480 cinema 11:1
+481 movie 11:1
+482 acting 11:1
+483 columns 11:1
+484 regular 11:1
+485 stage 11:1
+486 performer 11:1
+487 boyfriend 11:1
+488 owner 11:1

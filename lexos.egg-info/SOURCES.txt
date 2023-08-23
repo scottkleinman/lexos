@@ -1,0 +1,9 @@
+LICENSE
+README.md
+pyproject.toml
+lexos.egg-info/PKG-INFO
+lexos.egg-info/SOURCES.txt
+lexos.egg-info/dependency_links.txt
+lexos.egg-info/requires.txt
+lexos.egg-info/top_level.txt
+tests/test_lexos.py

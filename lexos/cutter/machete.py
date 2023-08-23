@@ -6,7 +6,8 @@ To do:
 import re
 from typing import Callable, List, Optional, Union
 
-from pydantic import BaseModel, ValidationError, validator
+# Deprecated: from pydantic import BaseModel, ValidationError, validator
+from pydantic import BaseModel
 
 from lexos.cutter import registry
 from lexos.exceptions import LexosException
@@ -229,7 +230,6 @@ class Machete:
         # Process the texts into segments
         all_segments = []
         for text in model.texts:
-
             # Tokenise the text
             tokens = self._tokenize(text, tokenizer=model.tokenizer)
 

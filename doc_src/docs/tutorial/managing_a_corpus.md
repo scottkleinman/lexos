@@ -13,6 +13,9 @@ If you wished to analyse the documents, you would get them from the `Corpus` and
 
 From this workflow, you should be able to see that you can skip the `Corpus` entirely. The `Corpus` simply allows you to attach metadata to the documents, such as a name, description, or classification label, and to save them to and retrieve them from disk easily. One of the important metadata categories is whether or not a document is active. A `Corpus` allows you to retrieve subsets of your documents based on this and other metadata categories.
 
+!!! Note
+    The `Corpus` module is designed to work without a database and without necessarily storing all documents in memory. This provides maximum flexibility and ease of use at the expense of performance and efficiency. If using Lexos in a production environment, you may wish to use it as a jumping off point for designing your own corpus manager, or replace it entirely, especially if you are using a database. It should be emphasised again that none of the other Lexos modules require you to use `Corpus`.
+
 ## Creating a Corpus
 
 Begin by importing the `Corpus` module:
@@ -51,22 +54,22 @@ Call these functions with code like `Corpus.num_tokens`. You can also get a Pyth
 These attributes should all be empty or 0 when the corpus is first created.
 
 !!! note
-    The `Corpus` class is constructed using <a href="https://pydantic-docs.helpmanual.io/usage/models/" target="_blank">Pydantic's `BaseModel` class</a>. This means that it has access to any of Pydantic's attributes and methods, such as `dict()` and `json()`.
+    The `Corpus` class is constructed using <a href="https://pydantic-docs.helpmanual.io/usage/models/" target="_blank">Pydantic's `BaseModel` class</a>. This means that it has access to any of Pydantic's attributes and methods, such as `model_dump()` and `model_dump_json()`.
 
 ## Corpus Records
 
 The basic unit of storage in a `Corpus` is a `Record` object. This is a Python object that provides access to the record's content and its metadata. Constructing a `Record` is simple. You just have to feed it some `content` and, in most cases, give it a name:
 
-```
+```python
 record = Record(content=mydoc, name="greeting")
 ```
 
 Behind the scenes, the `Record` class will give the record a default `id` of 1 (unless you specify a different integer) and set the `is_active` property to `True` (unless you set instantiate the object with it set to `False`). See [lexos.corpus.Record][lexos.corpus.Record] for other arguments that can be passed to the `Record` class.
 
-You can also create a `Record` from a dict using Pydantic's `parse_obj()` method:
+You can also create a `Record` from a dict using Pydantic's `model_validate()` method:
 
 ```python
-record = Record.parse_obj({"content": mydoc, "name": "greeting"})
+record = Record.model_validate({"content": mydoc, "name": "greeting"})
 ```
 
 See the <a href="https://pydantic-docs.helpmanual.io/usage/models/#helper-functions" target="_blank">Pydantic documentation</a> for helper functions for parsing json or file content into objects.
@@ -84,18 +87,6 @@ Once instantiated, a record provides access to the following information:
     Term counts do not collapse upper- and lower-case words, so, if this is important, you must get the tokens, convert to lower case, and then generate the list of terms yourself. Alternatively, you may use `Scrubber` to preprocess your data before creating the `Record` object.
 
 `Record.set()` allows you to set arbitrary `Record` attributes (such as author or date), and `Record.save()` allows you to save the file to disk.
-
-!!! important
-    When a `Record` object is saved to disk, it is serialized as a binary pickle file, which is not human readable. To restore it, you use a normal Python method of reading a binary file:
-
-    ```python
-    with open(filename, "rb") as f:
-        record = pickle.load(f)
-    ```
-
-    The pickle format is not considered secure, so never unpickle a file you do not trust.
-
-    In the latest version of spaCy, it is possible to serialize to JSON, but these methods have not yet been integrated in the Lexos API.
 
 The `Record` class accepts content only in the form of a pre-tokenized spaCy doc. However, it is possible to store an untokenized text by creating a blank spaCy language model and feeding it the [lexos.corpus.NullTokenizer][lexos.corpus.NullTokenizer] class. This simply returns a spaCy doc with the text as a single token.
 
@@ -125,10 +116,49 @@ record = Record(content=doc, name="greeting", is_parsed=True)
 
 The `is_parsed` attribute allows `Corpus` to know that it is dealing with a tokenized document. You can still access the full text by calling `record.text`, but you can also access individual tokens by calling `record.content[0]` (to get the first token).
 
-If you want a dictionary with a record's full metadata, probably the easiest method is `metadata = record.dict().remove("content")`.
+### Serialising Records
 
-!!! note "Why serialize records with `pickle`?"
-    A Lexos `Record` is a Python object which contains a spaCy `Doc` object which contains spaCy `Token` objects. This complex structure creates a scenario which cannot be handled by other serialization formats without some serious hacks. There are some concerns about whether serialization and de-serialization will be fast enough when working with many records in a corpus (and lesser concerns about the security of the format), but for the moment it is the easiest and most straightforward format to work with. This is something to be revisited at a future date, especially now that spaCy has added a <code><a href="https://spacy.io/api/doc#to_json" target="_blank">Doc.to_json()</a></code> method.
+Since a `Record` is a Pydantic object, it can theoretically be serialised to json format with Pydantic's `model_dump_json()` method. However, this is unreliable because the `content` attribute contains a spaCy doc. If all you need is access to the record's metadata, perhaps the easiest method is `Record.model_dump_json(exclude="content")` (you can also use `model_dump()` if you want a dictionary). To serialise the content, you must invoke spaCy's <code><a href="https://spacy.io/api/doc#to_json" target="_blank">Doc.to_json()</a></code>. For inconvenience, the `Record` class wraps this in its own `to_json()` method. Use it as follows:
+
+```python
+json_str = record.to_json()
+```
+
+You can pass it any of the keywords accepted by Pydantic's <code><a href="https://docs.pydantic.dev/latest/api/base_model/#pydantic.main.BaseModel.model_dump_json" target="_blank">model_dump_json()</a></code> if you wish to format the results.
+
+To deserialise from json, instantiate an empty record and use `Record.from_json(json_str)`.
+
+The `Record` class also has a `save()` method to serialise records to disk, if provided with a filename:
+
+```python
+record.save(filename="my_record")
+```
+
+By default, the file will be saved as a binary pickle file. However, you can use `format="json"` to serialise the record in json format. The `Record.save()` will call `Record.to_json()`, so you can pass it any formatting arguments you would use with the latter method.
+
+When a `Record` object is saved to disk as a binary pickle file, it will not human readable. To restore it, you can use a normal Python method of reading a binary file:
+
+```python
+with open(filename, "rb") as f:
+    record = pickle.load(f)
+```
+
+You can also instantiate an empty record and use the `load()` method:
+
+```python
+record = Record()
+record.load(filename="my_file", format="pickle")
+```
+
+!!! important
+    The pickle format is not considered secure, so never unpickle a file you do not trust.
+
+If you have serialised the file to json, use
+
+```python
+record = Record()
+record.load(filename="my_file.json", format="json")
+```
 
 ## Adding Records to a Corpus
 
@@ -146,6 +176,9 @@ By default, the record's content is not cached in memory; instead, the entire re
 
 !!! note
     At present the `docs` property in the `Corpus` class is the only place where a clear distinction between a "record" and a "document" is made.
+
+!!! important
+    Currently all records in a corpus are serialised to disk as binary pickle files. There are some concerns about the security and speed of this method, which will be addressed in the future.
 
 ## Adding Documents to a Corpus
 
