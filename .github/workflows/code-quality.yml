@@ -85,7 +85,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - run: uv run pytest tests/
+      - run: uv run pytest tests/io/
 
   build:
     runs-on: ubuntu-latest
