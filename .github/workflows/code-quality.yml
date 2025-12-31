@@ -3,9 +3,11 @@ on:
   push:
     paths-ignore:
       - 'doc_src/docs/tutorials/**'
+      - 'docs/**'
   pull_request:
     paths-ignore:
       - 'doc_src/docs/tutorials/**'
+      - 'docs/**'
 
 jobs:
   # ============================================
@@ -23,7 +25,7 @@ jobs:
         run: pip install pre-commit
       - name: Check YAML files
         run: |
-          find . \( -name "*.yml" -o -name "*.yaml" \) -not -path "./doc_src/docs/tutorials/*" | xargs pre-commit run check-yaml --files
+          find . \( -name "*.yml" -o -name "*.yaml" \) -not -path "./doc_src/docs/tutorials/*" -not -path "./docs/*" | xargs pre-commit run check-yaml --files
 
   check_file_formatting:
     runs-on: ubuntu-latest
@@ -37,10 +39,10 @@ jobs:
         run: pip install pre-commit
       - name: Check end of file fixers
         run: |
-          git ls-files | grep -v '^doc_src/docs/' | grep -v '\.code-workspace$' | grep -v '^uv\.lock$' | grep -v '\.DS_Store$' | grep -v '\.log$' | grep -v '\.env$' | xargs pre-commit run end-of-file-fixer --files
+          git ls-files | grep -v '^doc_src/docs/tutorials/' | grep -v '^docs/' | grep -v '\.code-workspace$' | grep -v '^uv\.lock$' | grep -v '\.DS_Store$' | grep -v '\.log$' | grep -v '\.env$' | xargs pre-commit run end-of-file-fixer --files
       - name: Check trailing whitespace
         run: |
-          git ls-files | grep -v '^doc_src/docs/' | grep -v '\.code-workspace$' | grep -v '^uv\.lock$' | grep -v '\.DS_Store$' | grep -v '\.log$' | grep -v '\.env$' | xargs pre-commit run trailing-whitespace --files
+          git ls-files | grep -v '^doc_src/docs/tutorials/' | grep -v '^docs/' | grep -v '\.code-workspace$' | grep -v '^uv\.lock$' | grep -v '\.DS_Store$' | grep -v '\.log$' | grep -v '\.env$' | xargs pre-commit run trailing-whitespace --files
 
   # ============================================
   # Python Code Quality (run after file checks)
