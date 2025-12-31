@@ -31,7 +31,6 @@ profile_default/
 ipython_config.py
 
 # mkdocs documentation
-/docs
 /z_src
 /doc_src/llms
 

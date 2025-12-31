@@ -1,0 +1,5346 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://lexos.github.io/en/latest/user_guide/cluster/hierarchical-agglomerative-clustering/">
+      
+      
+        <link rel="prev" href="../../clustering/">
+      
+      
+        <link rel="next" href="../k-means/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Hierarchical Agglomerative Clustering - Lexos Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-S7XYDZ16KZ"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-S7XYDZ16KZ",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-S7XYDZ16KZ",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#hierarchical-agglomerative-clustering" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Lexos Documentation" class="md-header__button md-logo" aria-label="Lexos Documentation" data-md-component="logo">
+      
+  
+  <svg id="lexos-dragon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245.59 217.84"><defs><style>.circle{fill:#e3e3e3;}.base{fill:#fff;}.shadow{fill:#909090;}.lines{fill:none;stroke:#505050;stroke-miterlimit:10;stroke-width:6px;}.iris{fill:#47bcff;}</style></defs><g id="circle"><circle class="circle" cx="114.34" cy="108.92" r="108.92"></circle></g><g id="base"><path class="base" d="M18.22,71.24S25,76.48,54.38,65c-.59-8.7-1.73-31.14-1.73-34.15,6.77,0,26,19.57,36.25,25.95,12,1.09,46.16,2,64.91,4.59,9.58,1,45.8,21,51.72,30.09s10,19,16.18,25.41,17.08,18,20.95,23.6,7.89,18.49,3.11,21.72S231,172.29,231,172.29l1.87-6.92-7.19-.75L215,170s1.6-5.85,1.2-9.6c-4-3-11.92-9.25-14.12-10.62s-6.69,12.09-6.25,14.79c.34,2.11,15,22.4,18,24.68,2-1.88,4.11-6.56,4.11-6.56s1.29,5.68-1.34,9.75c-6,9.33-12.5,10.71-15.92,10.56s-10.63,1-15.11-2.35-25.74-14-40.87-25.28c-11.4-8.49-19.18-15.74-19.18-15.74s-33.95,6.6-40.56,9.07-32.35,11.61-32.35,11.61a74,74,0,0,0-1.78-20.6c.57-1.05-17.28,15.62-17.28,15.62S10,148.77,11.09,107.2C11.7,84.17,18.22,71.24,18.22,71.24Z" transform="translate(-5.97 -0.51)"></path></g><g id="shadow"><path class="shadow" d="M125.92,133.44c0-4.87-46.64-12.73-58.75-15.06-12-2.3-37.58-5.19-48.44-6.37-.35,0,17.14,11.38,25.93,25.37a63.82,63.82,0,0,1,9.69,29.21S84.24,159.82,125.92,133.44Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M217.52,139.28c-.46,2.91,1.44,5.56,3,7.16s5.5,6.43,8.54,4.46c2.28-1.49-.78-4.62-1.77-6.16C225.77,142.41,218.12,135.4,217.52,139.28Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M174.72,142.19c-3.07,2.28-8.46,4.56-9.34,11.55s4,10.86,6.15,14.73a57.17,57.17,0,0,0,6.34,8.49,61.6,61.6,0,0,0,5.13,5.11c3.08,2.73,7.78,6.15,9,6.38a39.8,39.8,0,0,0,12-1.87c-.37,3-.3,4.48-.41,6.61,3,.63,11.42-2.66,10.57-3.45-2.41-2.23-7.33-8.68-8.59-10.5s-8.74-11.48-9.41-14.17c-.54-2.16,3.31-12.84,5.17-14.53S174.72,142.19,174.72,142.19Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M127.26,107.61c-.56,4.3-101.15-6.45-101.15-6.45S42.93,90.52,48.94,81.42a45.67,45.67,0,0,0,7-33.93S127.9,102.73,127.26,107.61Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M154.48,62.57c-1.6-2.2-5.36-5.24-16-19-15.42-19.92-19-28.08-19.85-23.13s2.32,39.7,2.32,39.7A229.63,229.63,0,0,1,154.48,62.57Z" transform="translate(-5.97 -0.51)"></path></g><g id="lines"><path class="lines" d="M150.41,84.12s-11.85,3.42-26-3.19S85.25,55.64,74.77,47.21A228,228,0,0,0,51.53,31.26s-2,2.68,0,8.14,5,22.74,4,27.21c0,0-26.79,5.83-38,6.64" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M231.3,172.77c4.52.91,8.5-5.42,8.5-5.42a39.46,39.46,0,0,0,7.91-9.39c2.73-5-2-12.7-2-12.7s-5.47-9.34-10.48-13.35-12.76-13.31-17.32-20.37S206.54,94,201.07,86.93s-17.77-12.07-23.7-15l-23.24-10a305.76,305.76,0,0,1-20.5-27.34c-8.21-12.53-15-14.13-15-14.13L122,59.19s-.06,1.17-5,.86c-8.93-.57-24.75.42-24.75.42" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M202.44,192.2c2.28-2.51,3.9-7.81,3.9-7.81S197,189.24,191.5,189l-10.94-8.2c-5.92-6.16-8.65-11.17-12.76-17.32s-4.1-13,0-17.54,7.75-5.93,9.57-4.33,18.23,5.69,25.07,8.65l14.12,10.62c0,5.56-3.39,10.71-3.39,10.71s12.49-3.29,12.82-6.5" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M125.92,133.44c-4.63-6.33-34.22-11.65-57-14.61s-44.84-3.48-50.52-5.92" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M224.24,141c2.28,1.59,7.29,8.55,6.38,9.69s-4.41,1.15-6-.44" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M211.55,200.4a11.76,11.76,0,0,1-5.92,3.19c-7.82,1.76-18.23,0-18.23,0L164.73,189s-19.26-12.08-26.09-18.16a121.25,121.25,0,0,0-12.76-10c-9.57,1-45.57,9.05-53.77,11.86S53,180.81,53,180.81s-3.58-3.14,0-9.18-3.71-25.8-9.22-34.25c-6.16-9.43-14.89-16.75-22.37-22.33-4.75-3.54-7.51-4.72-11.41-10.37,0,0,4.41-3.82,8.76-4.67s13.09-1.7,20.6-8.79S48,82.7,48,82.7" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M217.06,182.4s-1.93,5.47-5.12,7.69l-6.84-9s-8.11-12.45-10.36-15.81c-.62-.93,1.57-10.16,5.58-15.35" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M14.35,108.56" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M52.93,159.72s-13.63,4.74-19.34,15.62" transform="translate(-5.97 -0.51)"></path></g><g id="iris" style="opacity: 1;"><path class="iris" d="M172.94,103.12c3.17,2.4,7.91,12.46,7.91,12.46a30.43,30.43,0,0,1-14.18-1.9c-7.72-3.53-9-12-9-12S167,98.79,172.94,103.12Z" transform="translate(-5.97 -0.51)"></path></g><g id="eye" style="opacity: 1;"><path class="lines" d="M170.15,114.64c5.93,1.14,13.65.16,13.65.16a140.92,140.92,0,0,0-9.21-12.8c-4.11-4.79-17.19-3.11-17.19-3.11" transform="translate(-5.97 -0.51)"></path></g><g id="eye-2" style="opacity: 0;"><polyline class="lines" points="176.53 116.69 169.13 99.84 151.42 98.37"></polyline></g></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Lexos Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Hierarchical Agglomerative Clustering
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="purple"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="lime"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/scottkleinman/lexos" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Lexos Documentation" class="md-nav__button md-logo" aria-label="Lexos Documentation" data-md-component="logo">
+      
+  
+  <svg id="lexos-dragon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245.59 217.84"><defs><style>.circle{fill:#e3e3e3;}.base{fill:#fff;}.shadow{fill:#909090;}.lines{fill:none;stroke:#505050;stroke-miterlimit:10;stroke-width:6px;}.iris{fill:#47bcff;}</style></defs><g id="circle"><circle class="circle" cx="114.34" cy="108.92" r="108.92"></circle></g><g id="base"><path class="base" d="M18.22,71.24S25,76.48,54.38,65c-.59-8.7-1.73-31.14-1.73-34.15,6.77,0,26,19.57,36.25,25.95,12,1.09,46.16,2,64.91,4.59,9.58,1,45.8,21,51.72,30.09s10,19,16.18,25.41,17.08,18,20.95,23.6,7.89,18.49,3.11,21.72S231,172.29,231,172.29l1.87-6.92-7.19-.75L215,170s1.6-5.85,1.2-9.6c-4-3-11.92-9.25-14.12-10.62s-6.69,12.09-6.25,14.79c.34,2.11,15,22.4,18,24.68,2-1.88,4.11-6.56,4.11-6.56s1.29,5.68-1.34,9.75c-6,9.33-12.5,10.71-15.92,10.56s-10.63,1-15.11-2.35-25.74-14-40.87-25.28c-11.4-8.49-19.18-15.74-19.18-15.74s-33.95,6.6-40.56,9.07-32.35,11.61-32.35,11.61a74,74,0,0,0-1.78-20.6c.57-1.05-17.28,15.62-17.28,15.62S10,148.77,11.09,107.2C11.7,84.17,18.22,71.24,18.22,71.24Z" transform="translate(-5.97 -0.51)"></path></g><g id="shadow"><path class="shadow" d="M125.92,133.44c0-4.87-46.64-12.73-58.75-15.06-12-2.3-37.58-5.19-48.44-6.37-.35,0,17.14,11.38,25.93,25.37a63.82,63.82,0,0,1,9.69,29.21S84.24,159.82,125.92,133.44Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M217.52,139.28c-.46,2.91,1.44,5.56,3,7.16s5.5,6.43,8.54,4.46c2.28-1.49-.78-4.62-1.77-6.16C225.77,142.41,218.12,135.4,217.52,139.28Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M174.72,142.19c-3.07,2.28-8.46,4.56-9.34,11.55s4,10.86,6.15,14.73a57.17,57.17,0,0,0,6.34,8.49,61.6,61.6,0,0,0,5.13,5.11c3.08,2.73,7.78,6.15,9,6.38a39.8,39.8,0,0,0,12-1.87c-.37,3-.3,4.48-.41,6.61,3,.63,11.42-2.66,10.57-3.45-2.41-2.23-7.33-8.68-8.59-10.5s-8.74-11.48-9.41-14.17c-.54-2.16,3.31-12.84,5.17-14.53S174.72,142.19,174.72,142.19Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M127.26,107.61c-.56,4.3-101.15-6.45-101.15-6.45S42.93,90.52,48.94,81.42a45.67,45.67,0,0,0,7-33.93S127.9,102.73,127.26,107.61Z" transform="translate(-5.97 -0.51)"></path><path class="shadow" d="M154.48,62.57c-1.6-2.2-5.36-5.24-16-19-15.42-19.92-19-28.08-19.85-23.13s2.32,39.7,2.32,39.7A229.63,229.63,0,0,1,154.48,62.57Z" transform="translate(-5.97 -0.51)"></path></g><g id="lines"><path class="lines" d="M150.41,84.12s-11.85,3.42-26-3.19S85.25,55.64,74.77,47.21A228,228,0,0,0,51.53,31.26s-2,2.68,0,8.14,5,22.74,4,27.21c0,0-26.79,5.83-38,6.64" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M231.3,172.77c4.52.91,8.5-5.42,8.5-5.42a39.46,39.46,0,0,0,7.91-9.39c2.73-5-2-12.7-2-12.7s-5.47-9.34-10.48-13.35-12.76-13.31-17.32-20.37S206.54,94,201.07,86.93s-17.77-12.07-23.7-15l-23.24-10a305.76,305.76,0,0,1-20.5-27.34c-8.21-12.53-15-14.13-15-14.13L122,59.19s-.06,1.17-5,.86c-8.93-.57-24.75.42-24.75.42" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M202.44,192.2c2.28-2.51,3.9-7.81,3.9-7.81S197,189.24,191.5,189l-10.94-8.2c-5.92-6.16-8.65-11.17-12.76-17.32s-4.1-13,0-17.54,7.75-5.93,9.57-4.33,18.23,5.69,25.07,8.65l14.12,10.62c0,5.56-3.39,10.71-3.39,10.71s12.49-3.29,12.82-6.5" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M125.92,133.44c-4.63-6.33-34.22-11.65-57-14.61s-44.84-3.48-50.52-5.92" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M224.24,141c2.28,1.59,7.29,8.55,6.38,9.69s-4.41,1.15-6-.44" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M211.55,200.4a11.76,11.76,0,0,1-5.92,3.19c-7.82,1.76-18.23,0-18.23,0L164.73,189s-19.26-12.08-26.09-18.16a121.25,121.25,0,0,0-12.76-10c-9.57,1-45.57,9.05-53.77,11.86S53,180.81,53,180.81s-3.58-3.14,0-9.18-3.71-25.8-9.22-34.25c-6.16-9.43-14.89-16.75-22.37-22.33-4.75-3.54-7.51-4.72-11.41-10.37,0,0,4.41-3.82,8.76-4.67s13.09-1.7,20.6-8.79S48,82.7,48,82.7" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M217.06,182.4s-1.93,5.47-5.12,7.69l-6.84-9s-8.11-12.45-10.36-15.81c-.62-.93,1.57-10.16,5.58-15.35" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M14.35,108.56" transform="translate(-5.97 -0.51)"></path><path class="lines" d="M52.93,159.72s-13.63,4.74-19.34,15.62" transform="translate(-5.97 -0.51)"></path></g><g id="iris" style="opacity: 1;"><path class="iris" d="M172.94,103.12c3.17,2.4,7.91,12.46,7.91,12.46a30.43,30.43,0,0,1-14.18-1.9c-7.72-3.53-9-12-9-12S167,98.79,172.94,103.12Z" transform="translate(-5.97 -0.51)"></path></g><g id="eye" style="opacity: 1;"><path class="lines" d="M170.15,114.64c5.93,1.14,13.65.16,13.65.16a140.92,140.92,0,0,0-9.21-12.8c-4.11-4.79-17.19-3.11-17.19-3.11" transform="translate(-5.97 -0.51)"></path></g><g id="eye-2" style="opacity: 0;"><polyline class="lines" points="176.53 116.69 169.13 99.84 151.42 98.37"></polyline></g></svg>
+
+    </a>
+    Lexos Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/scottkleinman/lexos" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guide
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../loading_texts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Loading Texts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Proprocessing Steps
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Proprocessing Steps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../preprocessing_steps/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4_2" id="__nav_3_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scrubbing Texts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Scrubbing Texts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../scrubbing_texts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scrubber Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../scrubber/normalize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Normalize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../scrubber/remove/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Remove
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../scrubber/replace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Replace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../scrubber/tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../scrubber/internal_components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Internal Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tokenizing_texts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tokenizing Texts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cutting_documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cutting Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../filtering_documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Filtering Documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../using_milestones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using Milestones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../the_document_term_matrix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Document-Term Matrix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visualization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../corpus/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Managing a Corpus
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_8" id="__nav_3_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Managing a Corpus
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../corpus/working_with_records/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Working with Records
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_9" id="__nav_3_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analyzing Documents
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_9_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Analyzing Documents
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analyzing_documents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_9_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_9_2" id="__nav_3_9_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clustering
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_9_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_9_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Clustering
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../clustering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hierarchical Agglomerative Clustering
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hierarchical Agglomerative Clustering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-perform-hierarchical-agglomerative-clustering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to Perform Hierarchical Agglomerative Clustering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How to Perform Hierarchical Agglomerative Clustering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dendrogram-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dendrogram Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plotting-dendrograms-with-plotly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plotting Dendrograms with Plotly
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-a-distance-metric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing a Distance Metric
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-a-linkage-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing a Linkage Method
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intepreting-dendrograms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intepreting Dendrograms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intepreting Dendrograms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#choosing-where-to-cut-the-dendrogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing Where to Cut the Dendrogram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cluster-robustness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster Robustness
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clustermaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clustermaps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Clustermaps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-seaborn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Seaborn¤
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-plotly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Plotly¤
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bootstrap-consensus-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bootstrap Consensus Trees
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bootstrap Consensus Trees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plotting-bootstrap-consensus-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plotting Bootstrap Consensus Trees
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k-means/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K-Means Cluster Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rolling_windows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rolling Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../topwords/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topwords
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kwic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Keywords in Context (KWIC)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_10" id="__nav_3_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topic Modelling
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Topic Modelling
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../topic_modeling/mallet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Topic Modeling with MALLET
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../topic_modeling/dfr_browser2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exploring MALLET Topic Models with DFR Browser 2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../tutorials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/cluster/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cluster
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    cluster
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/cluster/bootstrap_consensus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bootstrap_consensus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/cluster/clustermap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    clustermap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/cluster/dendrogram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dendrogram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/cluster/kmeans/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kmeans
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/cluster/plotly_dendrogram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    plotly_dendrogram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/cluster/sync_script/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sync_script.md
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/constants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    constants
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/corpus/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    corpus
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    corpus
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/corpus/corpus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    corpus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/corpus/corpus_analysis_report/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    corpus_analysis_report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/corpus/corpus_stats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    corpus_stats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/corpus/record/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    record
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/corpus/utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/corpus/sqlite/database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sqlite.database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/corpus/sqlite/integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sqlite.integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/cutter/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cutter
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    cutter
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/cutter/spacy_attrs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    spacy_attrs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/cutter/text_cutter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    text_cutter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/cutter/token_cutter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    token_cutter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/dtm/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dtm
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    dtm
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/dtm/dtm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dtm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    exceptions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/filter/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    filter
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_8" id="__nav_5_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    filter
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/filter/filter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    filters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/io/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    io
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_9" id="__nav_5_9_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    io
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/io/base_loader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    base_loader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/io/data_loader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    data_loader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/io/loader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    loader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/io/parallel_loader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    parallel_loader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/kwic/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    kwic
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_11" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/milestones/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    milestones
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_11" id="__nav_5_11_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    milestones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/milestones/span_milestones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    span_milestones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/milestones/string_milestones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    string_milestones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/milestones/token_milestones/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    token_milestones
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/milestones/util/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    util
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_12" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/rolling_windows/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rolling_windows
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_12" id="__nav_5_12_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    rolling_windows
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/rolling_windows/rolling_windows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rolling_windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_12_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/rolling_windows/calculators/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    calculators
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_12_3" id="__nav_5_12_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_12_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_12_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    calculators
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/rolling_windows/calculators/averages/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    averages
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/rolling_windows/calculators/base_calculator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    base_calculator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/rolling_windows/calculators/counts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    counts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/rolling_windows/calculators/ratios/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ratios
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_12_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/rolling_windows/plotters/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    plotters
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_12_4" id="__nav_5_12_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_12_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_12_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    plotters
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/rolling_windows/plotters/base_plotter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    base_plotter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/rolling_windows/plotters/plotly_plotter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    plotly_plotter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/rolling_windows/plotters/simple_plotter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    simple_plotter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_13" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/scrubber/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    scrubber
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_13" id="__nav_5_13_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    scrubber
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/scrubber/normalize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    normalize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/scrubber/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/scrubber/registry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/scrubber/remove/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    remove
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/scrubber/replace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    replace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/scrubber/resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    resources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/scrubber/scrubber/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    scrubber
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/scrubber/tags/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/scrubber/utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/tokenizer/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tokenizer
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_14" id="__nav_5_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    tokenizer
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/tokenizer/tokenizer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tokenizer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/tokenizer/ngrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ngrams
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/tokenizer/whitespace_counter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    whitespace_counter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_15" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/topic_modeling/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    topic_modeling
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_15" id="__nav_5_15_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    topic_modeling
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/topic_modeling/mallet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mallet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/topic_modeling/dfr_browser2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dfr_browser2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/util/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    util
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_17" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../api/visualization/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    visualization
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_17" id="__nav_5_17_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_17">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    visualization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/visualization/bubbleviz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    bubbleviz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/visualization/cloud/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    cloud
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/visualization/processors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    processors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../development/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Development
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/code-conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/creating-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Creating Features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../development/documentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../credits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Credits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-perform-hierarchical-agglomerative-clustering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to Perform Hierarchical Agglomerative Clustering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How to Perform Hierarchical Agglomerative Clustering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dendrogram-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dendrogram Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plotting-dendrograms-with-plotly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plotting Dendrograms with Plotly
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-a-distance-metric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing a Distance Metric
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-a-linkage-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing a Linkage Method
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#intepreting-dendrograms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intepreting Dendrograms
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intepreting Dendrograms">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#choosing-where-to-cut-the-dendrogram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing Where to Cut the Dendrogram
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cluster-robustness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cluster Robustness
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clustermaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clustermaps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Clustermaps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-seaborn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Seaborn¤
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-plotly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Plotly¤
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bootstrap-consensus-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bootstrap Consensus Trees
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bootstrap Consensus Trees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plotting-bootstrap-consensus-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plotting Bootstrap Consensus Trees
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="hierarchical-agglomerative-clustering">Hierarchical Agglomerative Clustering<a class="headerlink" href="#hierarchical-agglomerative-clustering" title="Permanent link">¤</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¤</a></h2>
+<p>Hierarchical cluster analysis is a method grouping similar data points into a hierarchy of nested clusters. It builds a tree-like structure that shows the relationships between clusters, where closer clusters are more similar. This approach helps reveal patterns and relationships within datasets, especially complex ones, by visualizing data groupings at multiple levels of similarity.</p>
+<p>Hierarchical clustering may be agglomerative or divisive. Agglomerative clustering starts with each data point (typically a single document in Lexos) as a separate cluster and then merges them into larger clusters called <strong>clades</strong>. Divisive clustering takes the opposite approach, starting with all the data points in one cluster and splitting it. Currently, Lexos only provides an agglomerative algorithm.</p>
+<p>The the results of hierarchical cluster analysis produced by this approach are typically represented visually as a <strong>dendrogram</strong>, which shows the hierarchical relationshops between clusters and the distance (similarity) between them.</p>
+<p>In order to group documents into clusters, the algorithm relies on two important settings, a distance metric and a linkage criterion.</p>
+<p>The <strong>distance metric</strong> metric is a measure used to quantify the similarity or dissimilarity between data points or clusters. A simple way to understand this is that a term occurring once in document A and twice in document B will have a distance of 1 between the two documents (based on that term alone). Of course, there are more numerous different ways in which we could calculate difference, and these will be discussed in more detail below.</p>
+<p>The <strong>linkage criterion</strong> determines how the distance between clusters is calculated when merging. A simple way to think of this is to imagine two circles with dots in them representing the terms. The dots closest to the outer edge of the first circle will be closest to the dots closest to the outer edge of the second circle (in the direction where the circles are closest). We could use the short distance of these circles to select both to be merged into a single cluster at the next level of the hierarchy. But, equally, we could base our decision whether the merge them on the position of the dots in the centre. We have several other option to choose from, and these will be discussed in more detail below.</p>
+<p>With this knowledge, we can describe the clustering algorithm.</p>
+<ol>
+<li>We start with each document as its own cluster, or "leaf".</li>
+<li>We identify the two closest clusters based on our chosen distance metric and linkage criterion.</li>
+<li>We merge the two closest clusters into a single cluster. We then repeat steps 2 and 3 until all documen are in one cluster (the root of the tree).</li>
+<li>We plot a dendrogram to represent this hierarchical structure.</li>
+</ol>
+<p>An advantage of hierarchical clustering is that we do not need to choose the number of clusters in advance, and we can explore our clusters at different levels of granularity. However, our results can be sensitive to the choice of distance metric and linkage criterion. Further, the diagram represents a single cluster at the root level and a number of clusters equal to the number of documents at the leaf level. There may be more meaningful clusters on between hierarchy between these two extremes, but there is no clear method of determining a cut-off point (known as "cutting the dendrogram"). The discussion below will provide some guidance in dealing with these issues.</p>
+<h2 id="how-to-perform-hierarchical-agglomerative-clustering">How to Perform Hierarchical Agglomerative Clustering<a class="headerlink" href="#how-to-perform-hierarchical-agglomerative-clustering" title="Permanent link">¤</a></h2>
+<p>To perform cluster analysis and generate a dendrogram, you will need document-term matrix produced by the DTM module. Then you simply import the Dendrogram class and feed it your DTM. You will also need a list of labels for the documents in your DTM object. In the example below, we will use the default settings for the distance metric and linkage criterion.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Import the Dendrogram class</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span> <span class="nn">lexos.cluster</span> <span class="kn">import</span> <span class="n">Dendrogram</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Create an instance of the Dendrogram object (feel free to change the parameters)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">dendrogram</span> <span class="o">=</span> <span class="n">Dendrogram</span><span class="p">(</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">dtm</span><span class="o">=</span><span class="n">dtm</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">,</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="p">,</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="c1"># color_threshold=1.5, # Uncomment to color branches</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My First Dendrogram&quot;</span><span class="p">,</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">show</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">)</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="c1"># Show the dendrogram</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="n">dendrogram</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></code></pre></div>
+<figure>
+  <img src="../../cluster/dendrogram.png" alt="Sample dendrogram">
+  <figcaption>Sample dendrogram</figcaption>
+</figure>
+
+<h3 id="dendrogram-settings">Dendrogram Settings<a class="headerlink" href="#dendrogram-settings" title="Permanent link">¤</a></h3>
+<p>When we create the <code>Dendrogram</code>, we need to tell it how to measure document similarity and how to connect those similarities into a tree. Here are the key parameters you can adjust:</p>
+<ul>
+<li><code>dtm</code>: This is our "linguistic spreadsheet" (<code>dtm</code>). See the notes below for the possible formats.</li>
+<li><code>metric</code>: This sets the distance metric, which tells the dendrogram how to measure the "distance" or dissimilarity between your documents. Shorter distances mean more similar documents. Options include <code>euclidean</code> (the default), <code>cosine</code>, and <code>cityblock</code>. For other options, see <a href="#choosing-a-distance-metric">Choosing a Distance Metric</a> below.</li>
+<li><code>method</code>: This sets the linkage criterion, which determines how individual documents (or existing clusters of documents) are joined together to form larger branches and clusters in the tree. Option <code>average</code> (the default), <code>single</code>, <code>complete</code>, and <code>ward</code>. For further information, see <a href="#choosing-a-linkage-method">Choosing a Linkage Method</a> below.</li>
+<li><code>labels</code>: This is simply the list of descriptive names for your documents (e.g., "Poe", "Lippard") that we defined earlier. These will appear as the leaves (endpoints) on your tree.</li>
+<li><code>orientation</code>: Controls the direction of the dendrogram. The default <code>"top"</code> orients the branches so that they extend downwards from root at the top. Other options are <code>"bottom"</code>, <code>"left"</code>, and <code>"right"</code>.</li>
+<li><code>color_threshold</code>: If set, branches with a distance below this threshold will be colored differently from those above it. This helps visualize clusters at a certain distance level. You can try a number like <code>1.0</code> or <code>1.5</code> to see its effect.</li>
+<li><code>show</code>: Controls whether the generated tree figure is displayed automatically. If <code>False</code>, the tree will not be displayed, but you display it later by calling <code>dendrogram.showfig()</code>. There are also methods that enable you to save it to a variable or file.</li>
+<li><code>title</code>: Adds a title to your dendrogram plot.</li>
+<li><code>figsize</code>: A tuple <code>(width, height)</code> in inches to set the size of the overall figure. For example, <code>(12, 8)</code> for a wider and taller plot.</li>
+</ul>
+<p>The easiest way to format your data for plotting is to generate a Lexos <code>DTM</code> instance and pass it to the <code>Dendrogram</code> class. However, <code>Dendrogram</code> also accepts two other formats:</p>
+<ol>
+<li>A Pandas DataFrame with document labels as row indexes and terms as column indexes (this is the equivalent of <code>DTM.to_df(transpose=True)</code>).</li>
+<li>A list of documents in which each document is a sublist containing the term counts. You can also pass equivalent numpy arrays. If you use data in this format, you will probably want to include a list of document labels using the <code>labels</code> keyword.</li>
+</ol>
+<h3 id="plotting-dendrograms-with-plotly">Plotting Dendrograms with Plotly<a class="headerlink" href="#plotting-dendrograms-with-plotly" title="Permanent link">¤</a></h3>
+<p>The <code>Dendrogram</code> class uses Python's matplotlib library to produce static images. However, in very large dendrograms, there is a danger of leaf labels overlapping, making the plot unreadable. In this case, you can use the Plotly plotter, which provides the ability to pan and zoom around the dendrogram, making it more readable. The Plotly plotter is also ideal if you are including the dendrogram in a web app.</p>
+<p>To use the Plotly plotter, import the <code>PlotlyDendrogram</code> class, create an instance, and use it as above.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Import the PlotlyDendrogram class</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span> <span class="nn">lexos.cluster</span> <span class="kn">import</span> <span class="n">PlotlyDendrogram</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Create an instance of the PlotlyDendrogram object</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">dendrogram</span> <span class="o">=</span> <span class="n">PlotlyDendrogram</span><span class="p">(</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">dtm</span><span class="o">=</span><span class="n">dtm</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">,</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Document Similarity Dendrogram&quot;</span><span class="p">,</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="p">)</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1"># Show the dendrogram using Plotly</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="n">dendrogram</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></code></pre></div>
+<figure>
+  <img src="../../cluster/plotly_dendrogram.png" alt="Sample Plotlydendrogram">
+  <figcaption>Sample Plotly dendrogram</figcaption>
+</figure>
+
+<p>Note that the image above is a static representation and does not demonstrate Plotly's interactive features.</p>
+<p>Data should be passed to <code>PlotlyDendrogram</code> either as a Lexos <code>DTM</code> instance or using one of the other datatypes described for the <code>Dendrogram</code> class above.</p>
+<h2 id="choosing-a-distance-metric">Choosing a Distance Metric<a class="headerlink" href="#choosing-a-distance-metric" title="Permanent link">¤</a></h2>
+<p>One of the most important (and least well-documented) aspects of the hierarchical clustering method is the distance metric. Since we are representing texts as document vectors, it makes sense to define document similarity by comparing the vectors. One way to do this is to measure the distance between each pair of vectors. For example, if two vectors are visualized as lines in a triangle, the hypotenuse between these lines can be used as a measure of the distance between the two documents. This method of measuring how far apart two documents are is known as <strong>Euclidean distance</strong>. This is the default setting used by Lexos. It is good for general comparisons but can be sensitive to the overall length of documents (longer documents might naturally have larger term counts, increasing their "distance").</p>
+<p>Another common metric is <strong>cosine similarity</strong>. Imagine each document as an arrow pointing in a specific linguistic "direction." Cosine similarity measures how much these arrows point in the same direction. If the angle at which they point is almost identical, the documents are very similar, even if one document is much longer than another. This is often an excellent choice for text analysis as it focuses on stylistic or thematic <em>direction</em> rather than raw word counts.</p>
+<p><strong>Cityblock distance</strong> also called Manhattan distance is another common metric. Imagine moving on a city grid where you can only go along streets (no diagonal shortcuts). This distance is the sum of the absolute differences for each term between two documents. This metric is useful when the individual differences in term counts are important.</p>
+<p>Many other metrics are available (e.g., "jaccard", "chebyshev") from the Python scipy package, which Lexos runs under the hood. You can find a full list in the <code><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html" target="_blank">SciPy documentation</a></code>.</p>
+<p>The table below provides some additional guidance on how to choose a distance metric.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Small Number of terms per segment</th>
+<th>Large Number of terms per segment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Small Vocabulary</strong></td>
+<td>Bray-Curtis, Hamming    (e.g. character dialogue)</td>
+<td>Euclidean, Chebyshev, Standardized Euclidean (e.g. chapters of books)</td>
+</tr>
+<tr>
+<td><strong>Large Vocabulary</strong></td>
+<td>Correlation, Jaccard, Squared Euclidean (e.g. non-epic poetry)</td>
+<td>Cosine, Manhattan, Canberra (e.g. comparing entire corpora)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="choosing-a-linkage-method">Choosing a Linkage Method<a class="headerlink" href="#choosing-a-linkage-method" title="Permanent link">¤</a></h2>
+<p>At each stage of the clustering process, a choice must be made about whether two clusters should be joined (and recall that a single document itself forms a cluster at the lowest level of the hierarchy). "Average" is the default, but you may choose other linkage methods by clicking the button.</p>
+<ul>
+<li>Average: This method is a compromise between single and complete linkage. It takes the average distance of the points in each cluster and uses the shortest average distance for deciding which cluster should be joined to the current one. When combining two clusters, this method considers the average distance between <em>all</em> pairs of documents in the two clusters. It tends to produce well-balanced clusters.</li>
+<li>Single: An intuitive means for doing this is to join the cluster containing a point (e.g. a term frequency) closest to the current cluster. This is known as single linkage, which joins clusters based on only a single point. In other words, clusters are joined based on the <em>closest</em> pair of documents between them. Single linkage does not take into account the rest of the points in the cluster, and the resulting dendrograms tend to have spread out clusters. This process is called "chaining". When this happens, where documents connect one after another, forming long, straggly branches.</li>
+<li>Complete: Complete linkage uses the opposite approach. It takes the two points furthest apart between the current cluster and the others. The cluster with the shortest distance to the current cluster is joined to it. Complete linkage thus takes into account all the points on the vector that come before the one with the maximum distance. It tends to produce compact, evenly distributed clusters, ensuring all documents within a cluster are relatively similar to each other.</li>
+<li>Weighted: The weighted average linkage performs the average linkage calculation but weights the distances based on the number of terms in the cluster. It, therefore, may be a good option when there is significant variation in the size of the documents under examination.</li>
+<li>Ward: This method aims to minimize the increase in "variance" (or spread) within clusters when they are merged. It tries to make clusters that are as "tight" and internally similar as possible. It often produces intuitive and well-structured clusters.</li>
+</ul>
+<p>Which linkage criterion you choose depends greatly on the variability of your data and your expectations of its likely cluster structure. The fact that it is very difficult to predict this in advance may explain why the "compromise" of average linkage is the best default.</p>
+<h2 id="intepreting-dendrograms">Intepreting Dendrograms<a class="headerlink" href="#intepreting-dendrograms" title="Permanent link">¤</a></h2>
+<h3 id="choosing-where-to-cut-the-dendrogram">Choosing Where to Cut the Dendrogram<a class="headerlink" href="#choosing-where-to-cut-the-dendrogram" title="Permanent link">¤</a></h3>
+<p>Hierarchical clustering is an exploratory technique, so it's often helpful to try different cut-off points and evaluate the resulting clusters. The height of the cut determines the number of clusters. A higher cut will result in fewer, larger clusters, while a lower cut will result in more, smaller clusters.</p>
+<p>The best way to cut a dendrogram will always depend on the specific dataset and the goals of the analysis. There's no single "right" way to do it. To determine where to cut a dendrogram for clustering, you can use visual cues like the longest vertical distance between nodes, or consider numerical criteria like the Silhouette score or Dunn's index, or even trial and error. The choice of cut-off point depends on how many clusters you want and the desired level of similarity within each cluster.</p>
+<p>Here is a procedure to use as a starting point:</p>
+<ol>
+<li>Identify the longest vertical distance: Look for the longest vertical line (distance) between merging nodes on the dendrogram. Cutting at this point often reveals a natural separation between clusters.</li>
+<li>Consider the overall structure: Observe how the data points are grouped at different height levels. You might choose a cut that separates well-defined, compact clusters or one that creates a few large clusters.</li>
+</ol>
+<p>Lexos does not offer any numerical criteria for evaluating the quality of hierarchical clusters. However, you can count the number of leaves at your cutoff point and use that as the <em>k</em> value in a k-means clustering analysis to provide comparative evidence.</p>
+<p>In addition, Lexos does not offer a method of drawing the dendrogram showing the cut. SciPy provides the <code>fcluster</code> method for cutting dendrograms, and we will hopefully implement it in the future. This <a href="https://stackoverflow.com/questions/70801281/how-can-i-plot-a-truncated-dendrogram-plot-using-plotly" target="_blank">Stack Overflow discussion</a> provides information on how to add truncate mode.</p>
+<h3 id="cluster-robustness">Cluster Robustness<a class="headerlink" href="#cluster-robustness" title="Permanent link">¤</a></h3>
+<p>By cutting trying different distance metrics and linkage methods, as well as by cutting the dendrogram at different heights, you can evaluate the <strong>robustness</strong> of individual clusters. A "robust" cluster is one that persists, regardless of the setup criteria. If the cluster is sensitive to changes in the setup criteria, it is more likely to be a statistical artefact of those criteria, rather than a meaningful pattern. This, however, is a guideline, and its usefulness will depend on your data.</p>
+<div class="admonition note">
+<p class="admonition-title">Measuring Robustness with Bootstrap Consensus Trees</p>
+<p>One way to automate the process of assessing cluster robustness is to implement Bootstrap Consensus Trees, which perform clustering with multiple settings and record the most-consistent clusters. See the section on <a href="#bootstrap-consensus-trees">Bootstrap Consensus Trees</a> below.</p>
+</div>
+<h2 id="clustermaps">Clustermaps<a class="headerlink" href="#clustermaps" title="Permanent link">¤</a></h2>
+<p>A clustermap is a dendrogram attached to a heatmap, showing the relative similarity of documents using a colour scale. A clustermap combines the best of two worlds: hierarchical clustering (dendrograms) and pairwise similarity representation (heatmap).</p>
+<p>The dendrogram on the top shows the hierarchical clustering of your documents based on their content (the rows of your DTM). The dendrogram on the left shows the same clustering, but rotated. As with standalone dendrograms, shorter branches mean documents (or clusters) are more similar. The order of documents along the heatmap axes is determined by these dendrograms, grouping similar documents together.</p>
+<p>The heatmap grid visually represents the <strong>pairwise distances</strong> between your documents. Each cell at the intersection of a row and a column represents the distance between two documents. The color intensity on the heatmap will represent the distance between documents: typically, darker/different colors show greater distance (less similarity), while lighter/similar colors show shorter distance (more similarity). The diagonal of the heatmap will always be the same color, usually representing zero distance, as a document has zero distance from itself.</p>
+<p>Clustermaps can be useful for observing the following:</p>
+<ul>
+<li><strong>Stylistic Groupings:</strong> Does the heatmap show a strong block of similarity among authors from the same literary period or movement?</li>
+<li><strong>Thematic Cohesion:</strong> If your DTM focused on specific themes, do documents discussing similar themes cluster together?</li>
+<li><strong>Influence or Divergence:</strong> You might see how a text aligns with or diverges from others, giving insights into authorship, genre, or evolution of style.</li>
+</ul>
+<p>Lexos can generate static clustermap images using the Python Seaborn library or dynamic images using Plotly.</p>
+<h3 id="using-seaborn">Using Seaborn¤<a class="headerlink" href="#using-seaborn" title="Permanent link">¤</a></h3>
+<p>The Python Seaborn visualization library has a clustermap function, which has somewhat limited functionality. Lexos wraps the Seaborn function in the <code>Clustermap</code> class to provide additional convenience features, such as the inclusion of titles. To generate a clustermap with Seaborn, use the following code:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Import the ClusterMap class</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span> <span class="nn">lexos.cluster</span> <span class="kn">import</span> <span class="n">Clustermap</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Create a ClusterMap object</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">cm</span> <span class="o">=</span> <span class="n">Clustermap</span><span class="p">(</span><span class="n">dtm</span><span class="o">=</span><span class="n">dtm</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Clustermap&quot;</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">cm</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></code></pre></div>
+<figure>
+  <img src="../../cluster/clustermap_example.png" alt="Sample clustermap">
+  <figcaption>Sample clustermap</figcaption>
+</figure>
+
+<p>The <code>dtm</code> can be a Lexos <code>DTM</code> instance, a compatible Pandas DataFrame, or a list of lists of tokens. For the clustering parameters, see the advice in <a href="#choosing-a-distance-metric">Choosing a Distance Metric</a> and <a href="#choosing-a-linkage-method">Choosing a Linkage Method</a> above.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Unlike <code>Dendrogram</code> and <code>PlotlyDendrogram</code>, <code>Clustermap</code> accepts a Pandas DataFrame formatted with documents as columns and terms as rows. This is the equivalent of <code>DTM.to_df()</code>.</p>
+</div>
+<p>In addition to the <code>title</code>, <code>metric</code>, and <code>method</code> keywords, <code>Clustermap</code> takes the following parameters:</p>
+<ul>
+<li><code>labels</code>: A list of descriptive names for your documents. These will appear as the leaves (endpoints) on your tree. If not supplied, the labels from your Lexos <code>DTM</code> or Pandas DataFrame will be used.</li>
+<li><code>z_score</code>: Standardizes the values within each row (documents) or column (terms). If the value is set to <code>None</code>, the heatmap shows raw frequencies (or whatever your DTM contains). The setting <code>0</code> standardizes each row (document) by subtracting its mean and dividing by its standard deviation. This highlights how <em>terms vary within a single document</em> relative to that document's average term frequency. Useful for comparing patterns across documents regardless of their length. The setting <code>1</code> standardizes each column (term) by subtracting its mean and dividing by its standard deviation. This highlights how <em>a single term's frequency varies across different documents</em> relative to that term's average frequency. Useful for seeing which documents use a term more or less than average.</li>
+<li><code>standard_scale</code>: Similar to <code>z_score</code>, but scales to a specific range (usually 0 to 1). The setting <code>0</code> scales each row (document) so its minimum value is 0 and its maximum is 1. The setting <code>1</code> scales each column (term) so its minimum is 0 and its maximum is 1.</li>
+<li><code>cmap</code>: Sets the color scheme (colormap) for the heatmap. It determines which colors represent low values and which represent high values. The default setting "vlag" is a diverging colormap (red/blue), which is good for showing values around a center point (especially after <code>z_score</code> scaling). Other good general-purpose colormaps are "viridis" and "coolwarm". You can find listings of other <code><a href="https://matplotlib.org/stable/gallery/color/colormap_reference.html" target="_blank">matplotlib</a></code> and <code><a href="https://seaborn.pydata.org/tutorial/color_palettes.html" target="_blank">seaborn</a></code> colormaps online.</li>
+<li><code>hide_upper</code>: Setting the value to <code>True</code> removes the dendrogram above the heatmap. Useful if you are not interested in the clustering of columns/terms.</li>
+<li><code>hide_side</code>: Setting the value to <code>True</code> removes the dendrogram to the left of the heatmap. Useful if you are not interested in the clustering of rows/documents.</li>
+<li><code>row_cluster</code>: Perform clustering on rows (documents). Default is <code>True</code>. Along with <code>col_cluster</code>, this setting is useful if you have a specific ordering in mind for comparison, or if you've pre-computed a linkage.</li>
+<li><code>col_cluster</code>: Perform clustering on columns (terms). Default is <code>False</code>. If <code>False</code>, items will be displayed in their original order.</li>
+<li><code>row_colors</code>: Allows you to add colored strips alongside the rows, which can be used to visually group or categorize your documents. Provide a list of colors (e.g., <code>['red', 'blue', 'green']</code>). The list should match the number of documents/terms. You can also use a named <code>seaborn</code> palette (e.g., <code>"husl"</code>). Setting the value to "default" will use <code>seaborn.husl_palette(8, s=0.45)</code>. This setting is great for adding metadata! For example, if you have two categories of documents (e.g., "male authors" vs. "female authors"), you could assign a color to each category to see if your clustering aligns with these external factors.</li>
+<li><code>col_colors</code>:Allows you to add colored strips alongside the columns, which can be used to visually group or categorize your terms. Setting values are the same as for <code>row_colors</code>.</li>
+<li><code>title</code>: Adds a title to your dendrogram plot.</li>
+<li><code>figsize</code>: A tuple <code>(width, height)</code> in inches to set the size of the overall figure. For example, <code>(12, 8)</code> for a wider and taller plot.</li>
+</ul>
+<p>The <code>Clustermap</code> instance can be further customized with any  <code><a href="https://seaborn.pydata.org/generated/seaborn.clustermap.html" target="_blank">Seaborn.clustermap</a></code> parameter.</p>
+<p>After you've generated your clustermap, you'll likely want to save it as an image for reports or presentations. The <code>save()</code> method lets you do this easily. Just provide a file path, and it'll save the image. You can specify different file formats by changing the extension (e.g., <code>.png</code>, <code>.jpg</code>, <code>.pdf</code>, <code>.svg</code>). The <code>save()</code> method wraps the <code>matplotlib</code> <code><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html" target="_blank">savefig</a></code> function and accepts any of its keywords.</p>
+<h3 id="using-plotly">Using Plotly¤<a class="headerlink" href="#using-plotly" title="Permanent link">¤</a></h3>
+<p>Plotly clustermaps are somewhat experimental and may or may not render plots that are as informative as Seaborn clustermaps. One advantage they have is that, instead of providing labels for each document at the bottom of the graph, they provide the document labels on the x- and y-axes, as well as the z (distance) score in the hovertext. This allows you to mouse over individual sections of the heatmap to see which documents are represented by that particular section, as well as the exact distance values.</p>
+<p>Plotly clustermaps are constructed in the same manner to Seaborn clustermaps with the same settings, so far as is possible in the Plotly library:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Import the PlotlyClustermap class</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span> <span class="nn">lexos.cluster</span> <span class="kn">import</span> <span class="n">PlotlyClustermap</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Create a PlotlyClustermap object</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">cm</span> <span class="o">=</span> <span class="n">PlotlyClustermap</span><span class="p">(</span><span class="n">dtm</span><span class="o">=</span><span class="n">dtm</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Clustermap&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<figure>
+  <img src="../../cluster/plotly_clustermap_example.png" alt="Sample Plotly clustermap">
+  <figcaption>Sample Plotly clustermap</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that the image above is a static representation and does not demonstrate Plotly's hover effects.</p>
+</div>
+<p>All the options for Plotly dendrograms are available with the following differences:</p>
+<ul>
+<li><code>figsize</code> is measured in pixels.</li>
+<li><code>colorscale</code> is the name of a built-in <a href="https://plotly.com/python/builtin-colorscales/" target="_blank">Plotly colorscale</a>. This is applied to the heatmap and converted internally to a list of colours to apply to the dendrograms.</li>
+</ul>
+<p>Two additional parameters, <code>hide_upper</code> and <code>hide_side</code> allow you to hide the individual dendrograms.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Note that panning and zooming can cause the heatmap and dendrograms to become unsynced. There is currently no way to maintain the syncing in pure Python. If you need to zoom in on particular sections of the plot, you may be able to achieve the effect you are looking for by saving the plot as an HTML file with the <em>experimental</em> <code>include_sync</code> parameter:</p>
+</div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">html</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">include_sync</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;filename.html&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Open the HTML file in a web browser, and you may get the behaviour you need. See below for other options for saving your Plotly clustermaps.</p>
+<p>You have several option for saving your Plotly clustermaps. In the Plotly toolbar, there is a "Download plot as png" option to save the plot as a static <code>.png</code> file. You can also save the the image to a static file programmatically by calling <code>PlotlyClustermap.write_image()</code>. Just provide a file name (including the extension), and it will save the image. You can choose different file formats by changing the extension (e.g., <code>.png</code>, <code>.jpg</code>, <code>.pdf</code>, <code>.svg</code>). This is a wrapper around Plotly's <code><a href="https://plotly.github.io/plotly.py-docs/generated/plotly.io.write_image.html" target="_blank">write_image()</a></code> function and accepts all the same arguments.</p>
+<p>Plotly figures are highly interactive when saved as HTML, allowing you to zoom, pan, and hover over data points in your saved file. If you wish to save your diagram as an HTML file, call <code>PlotlyClustermap.write_html()</code>. This is a wrapper around Plotly's <code><a href="https://plotly.github.io/plotly.py-docs/generated/plotly.io.write_html.html" target="_blank">write_html()</a></code> function and accepts all the same arguments.</p>
+<p>Note that <code>write_image()</code> and <code>write_html()</code> have parallel <code>to_image()</code> and <code>to_html()</code> methods that allow you to assign the results to a variable, rather than saving to a file.</p>
+<h2 id="bootstrap-consensus-trees">Bootstrap Consensus Trees<a class="headerlink" href="#bootstrap-consensus-trees" title="Permanent link">¤</a></h2>
+<p>A <strong>Bootstrap Consensus Tree</strong> is particularly robust because it doesn't just build one tree. Instead, it builds many, many trees by randomly sampling portions of your DTM. It then finds the "consensus": the most consistently appearing relationships across all those individual trees.</p>
+<p>Generating bootrap consensus dendrograms involves submitting the same distance metric and linkage method parameters as regular dendrogram. However, there are a few additional parameters to set:</p>
+<ul>
+<li><code>dtm</code>: Unlike the other clustering modules, the <code>BCT</code> class accepts only an instance of a Lexos <code>DTM</code>.</li>
+<li><code>cutoff</code>: This is a confidence threshold. As mentioned, the BCT is built from many individual "bootstrap" trees. A <code>cutoff</code> of <code>0.5</code> (which means 50%) means that a specific grouping of documents (a branch on the tree) must appear in at least 50% of all the trees generated during the <code>iterations</code> to be considered reliable enough to show up in the final consensus tree. Higher <code>cutoff</code> values (e.g., 0.7 or 0.8) will result in a "sparser" tree, showing only the most robust and consistent relationships. Lower <code>cutoff</code> values (e.g., 0.3) will show more relationships, but some of these might be less statistically reliable.</li>
+<li><code>iterations</code>: This is the number of "bootstrap resampling" rounds. In each round, Lexos takes a random 80% sample of the terms (columns) from your DTM and builds a tree from that sample. More iterations (e.g., 100, 1000) makes the consensus tree more statistically reliable and representative of the underlying relationships in your texts, as it averages out more variations. However, it will take longer to compute. Fewer iterations (e.g., 10, 20) are good for quick testing or initial explorations. For final research results, <code>100</code> (the default in the <code>BCT</code> class) or higher is often recommended if computation time allows.</li>
+<li><code>replace</code>: This relates to how the terms are sampled during each iteration. Setting the value to "with" means a term column can be selected multiple times within a single 80% sample (allows for more randomness). The value "without" means each term column can only be selected once per 80% sample (more stable). This setting is generally suitable for DTMs as it ensures each unique term contributes uniquely within a sample.</li>
+<li><code>doc_labels</code>: This is simply the list of descriptive names for your documents (e.g., "Poe", "Lippard") that we defined earlier. These will appear as the leaves (endpoints) on your tree.</li>
+<li><code>text_color</code>: Sets the color for all text on the plot (axis labels, branch lengths, and document labels). You can use "rgb(R, G, B)" format. For example: <code>"rgb(0, 0, 0)"</code> (black) or <code>"rgb(255, 0, 0)"</code> (red).</li>
+<li><code>layout</code>: Sets the layout of the dendrogram, either "rectangular" (the default) or "fan".</li>
+</ul>
+<h3 id="plotting-bootstrap-consensus-trees">Plotting Bootstrap Consensus Trees<a class="headerlink" href="#plotting-bootstrap-consensus-trees" title="Permanent link">¤</a></h3>
+<p>To create a bootstrap consensus tree with rectangular layout, use the following code, setting the parameters describe above as required:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Import the BCT class for Bootstrap Consensus Tree</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span> <span class="nn">lexos.cluster</span> <span class="kn">import</span> <span class="n">BCT</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Create an instance of the BCT object (feel free to adjust parameters)</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">bct</span> <span class="o">=</span> <span class="n">BCT</span><span class="p">(</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">dtm</span><span class="o">=</span><span class="n">dtm</span><span class="p">,</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;euclidean&quot;</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">,</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="n">cutoff</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="n">iterations</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="n">replace</span><span class="o">=</span><span class="s2">&quot;without&quot;</span><span class="p">,</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>    <span class="n">text_color</span><span class="o">=</span><span class="s2">&quot;rgb(0, 0, 0)&quot;</span><span class="p">,</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>    <span class="n">layout</span><span class="o">=</span><span class="s2">&quot;rectangular&quot;</span><span class="p">,</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Bootstrap Consensus Tree (Rectangular Layout)&quot;</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="p">)</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="c1"># Show the figure</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="n">bct</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></code></pre></div>
+<figure>
+  <img src="../../cluster/bootstrap_consensus_rectangular.png" alt="Sample Bootstrap Consensus Tree rectangular layout">
+  <figcaption>Sample Bootstrap Consensus Tree rectangular layout</figcaption>
+</figure>
+
+<p>To generate a diagram with a fan layout, set <code>layout="fan"</code> (and adjust the <code>title</code> set above).</p>
+<figure>
+  <img src="../../cluster/bootstrap_consensus_fan.png" alt="Sample Bootstrap Consensus Tree fan layout">
+  <figcaption>Sample Bootstrap Consensus Tree fan layout</figcaption>
+</figure>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="December 31, 2025 00:44:38 UTC">December 31, 2025</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2022- <a href="https://wheatoncollege.edu/academics/special-projects-initiatives/lexomics/" target="_blank">The Lexomics Project</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="http://lexos.wheatoncollege.edu/" target="_blank" rel="noopener" title="lexos.wheatoncollege.edu" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M351.9 280H161c2.9 64.5 17.2 123.9 37.5 167.4 11.4 24.5 23.7 41.8 35.1 52.4 11.2 10.5 18.9 12.2 22.9 12.2s11.7-1.7 22.9-12.2c11.4-10.6 23.7-28 35.1-52.4 20.3-43.5 34.6-102.9 37.5-167.4zm-191-48h190.9c-2.8-64.5-17.1-123.9-37.4-167.4-11.4-24.4-23.7-41.8-35.1-52.4C268.1 1.7 260.4 0 256.4 0s-11.7 1.7-22.9 12.2c-11.4 10.6-23.7 28-35.1 52.4-20.3 43.5-34.6 102.9-37.5 167.4m-48 0c3.5-85.6 25.6-165.1 57.9-217.3C78.7 47.3 10.9 131.2 1.5 232zM1.5 280c9.4 100.8 77.2 184.7 169.3 217.3-32.3-52.2-54.4-131.7-57.9-217.3zm398.4 0c-3.5 85.6-25.6 165.1-57.9 217.3 92.1-32.7 159.9-116.5 169.3-217.3zm111.4-48C501.9 131.2 434.1 47.3 342 14.7c32.3 52.2 54.4 131.7 57.9 217.3z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/scottkleinman/uv_lexos/" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.top", "navigation.indexes", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>
