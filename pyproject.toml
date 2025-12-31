@@ -1,8 +1,9 @@
 [project]
 name = "lexos"
 version = "0.1.0b1"
-description = "Add your description here"
+description = "The Lexos Python library reproduces and extends most of the text analysis tools in the Lexos web app. Lexos is designed to implement many common text analysis procedures in a way that saves the user having to re-invent the wheel or figure out how to combine multiple Python packages to achieve a given result. It is intended to be used as a library in other projects to build backend functions for applications, but it can be used in standalone scripts or in Jupyter notebooks. As with the original web app, it is designed to accessible to entry-level users whilst offering power functionality for students and researchers, particularly in the Humanities. It is also designed to be as language-agnostic as possible so that it can be used for a wide variety of historical and under-resourced languages."
 readme = "README.md"
+license = "MIT"
 authors = [
     { name = "Scott Kleinman", email = "scott.kleinman@csun.edu" }
 ]
