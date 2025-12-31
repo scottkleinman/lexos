@@ -730,8 +730,10 @@ class TestParallelLoaderWorkerStrategy:
 
         temp_dir.cleanup()
 
-        # Should have high worker count for I/O-bound text files
-        assert loader.max_workers >= 20
+        # Should allocate max workers for I/O-bound text files
+        cpu_count = os.cpu_count() or 1
+        expected_max = min(32, cpu_count * 4)
+        assert loader.max_workers == expected_max
 
     def test_io_bound_strategy(self):
         """Test io_bound strategy allocates more workers."""
