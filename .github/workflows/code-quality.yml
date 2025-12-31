@@ -3,9 +3,9 @@ on:
   push:
     paths-ignore:
       - 'doc_src/docs/tutorials/**'
-  # pull_request:
-  #   paths-ignore:
-  #     - 'doc_src/docs/tutorials/**'
+  pull_request:
+    paths-ignore:
+      - 'doc_src/docs/tutorials/**'
 
 jobs:
   # ============================================
