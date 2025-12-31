@@ -1,7 +1,7 @@
 [project]
 name = "lexos"
 version = "0.1.0b1"
-description = "The Lexos Python library reproduces and extends most of the text analysis tools in the Lexos web app for text analysis so that the user having to re-invent the wheel or figure out how to combine multiple Python packages to achieve a given result. It is designed to offer powerful and accessible functionality to entry-level students and researchers, particularly in the Humanities. It is also designed to be as language-agnostic as possible so that it can be used for a wide variety of historical and under-resourced languages."
+description = "A Python library that reproduces and extends text analysis tools from the Lexos web app. Designed for entry-level students and researchers in the Humanities, with language-agnostic support for historical and under-resourced languages."
 readme = "README.md"
 license = "MIT"
 authors = [
