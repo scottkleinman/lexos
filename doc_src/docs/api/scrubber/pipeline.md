@@ -1,8 +1,11 @@
 # Pipeline
 
-The `pipeline` component of `Scrubber` is used
-    to manage an ordered application of `Scrubber` component
-    functions to text.
+Allows the user to customize a "pipeline," an order in which to perform different scrubbing operations. For example: removing all digits before replacing all phone numbers would have a very different effect than replacing all phone numbers before removing all digits.
+
+### ::: lexos.scrubber.pipeline.pipe
+    rendering:
+      show_root_heading: true
+      heading_level: 3
 
 ### ::: lexos.scrubber.pipeline.make_pipeline
     rendering:
@@ -10,16 +13,6 @@ The `pipeline` component of `Scrubber` is used
       heading_level: 3
 
 ### ::: lexos.scrubber.pipeline.make_pipeline_from_tuple
-    rendering:
-      show_root_heading: true
-      heading_level: 3
-
-!!! note
-
-    `lexos.scrubber.pipeline.make_pipeline_from_tuple` is deprecated.
-    It should not be necessary if you are using `lexos.scrubber.registry`.
-
-### ::: lexos.scrubber.pipeline.pipe
     rendering:
       show_root_heading: true
       heading_level: 3

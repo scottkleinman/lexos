@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "title": "Automatically link across pages in MkDocs.",
+  "oneOf": [
+    {
+      "markdownDescription": "https://mkdocstrings.github.io/autorefs/",
+      "enum": [
+        "autorefs"
+      ]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "autorefs": {
+          "markdownDescription": "https://mkdocstrings.github.io/autorefs/",
+          "type": "object",
+          "properties": {
+            "resolve_closest": {
+              "title": "Whether to try to alleviate warnings in cases where you cannot use Markdown anchors, for example because you inject the same generated contents in multiple locations (for example mkdocstrings' API documentation).",
+              "markdownDescription": "https://mkdocstrings.github.io/autorefs/#non-unique-headings",
+              "type": "boolean",
+              "default": "python"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

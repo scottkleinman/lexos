@@ -1,6 +1,6 @@
 # Remove
 
-The `remove` component of `Scrubber` contains a set of functions for removing strings and patterns from text.
+A set of functions for removing strings and patterns from text.
 
 ### ::: lexos.scrubber.remove.accents
     rendering:
@@ -46,6 +46,3 @@ The `remove` component of `Scrubber` contains a set of functions for removing st
     rendering:
       show_root_heading: true
       heading_level: 3
-
-!!! note
-  Tag handling has been ported over from the Lexos web app, which uses `BeautifulSoup` and `lxml` to parse the tree. It will be good to watch the development of <a href="https://github.com/rushter/selectolax" target="_blank">selectolax</a>, which claims to be more efficient, at least for HTML. An implementation with spaCy is available in the <a href="https://github.com/pmbaumgartner/spacy-html-tokenizer" target="_blank">spacy-html-tokenizer</a>, though it may not be right for integration into Lexos since the output is a doc in which tokens are sentences.

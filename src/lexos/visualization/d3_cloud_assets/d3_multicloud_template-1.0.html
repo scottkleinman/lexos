@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<!-- D3MultiCloud Responsive Visualization Template 1.0 -->
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{ overall_title }}</title>
+    <style>
+        /* HTML body styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Title styles */
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        /* Button styles */
+        .controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+            margin-bottom: 0;
+        }
+
+        .save-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            margin: 0 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.3s;
+        }
+
+        .save-btn:hover {
+            background: #0056b3;
+        }
+
+        .save-btn:active {
+            transform: translateY(1px);
+        }
+
+        .multi-cloud-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            width: 100%;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tooltip {
+            position: fixed;
+            text-align: center;
+            width: auto;
+            height: auto;
+            padding: 8px 12px;
+            font: 12px sans-serif;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border: 0px;
+            border-radius: 4px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .word-cloud text {
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .word-cloud text:hover {
+            opacity: 0.7;
+        }
+
+        /* Responsive SVG container */
+        #multicloud-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* #chart {
+            border: 1px solid #ddd; Optional: shows the SVG boundary
+        } */
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .save-btn {
+                padding: 4px 10px;
+                margin: 0 4px;
+                font-size: 11px;
+            }
+
+            .multi-cloud-container {
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+
+            .save-btn {
+                padding: 3px 8px;
+                margin: 0 3px;
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% if title %}
+    <h1>{{title}}</h1>
+    {% endif %}
+
+    <div class="controls">
+        <button id="save-svg" class="save-btn">Save as SVG</button>
+        <button id="save-png" class="save-btn">Save as PNG</button>
+    </div>
+
+    <!-- Multi-cloud container -->
+    <div class="multi-cloud-container">
+        <div id="multicloud-container">
+            <svg id="chart"></svg>
+        </div>
+    </div>
+
+    <script id="d3"></script>
+    <script id="d3cloud"></script>
+
+    <script>
+        const originalSettings = {
+            cloudData: {{ cloud_data }},
+            font: "{{ font }}",
+            spiral: "{{ spiral }}",
+            scale: "{{ scale }}",
+            angleCount: {{ angleCount }},
+            angleFrom: {{ angleFrom }},
+            angleTo: {{ angleTo }},
+            colorscale: {{ colorscale }},
+            originalColumns: calculateColumnsFromData({{ cloud_data }}),
+            cloudWidth: {{ cloud_data }}[0] ? {{ cloud_data }}[0].width : 300,
+            cloudHeight: {{ cloud_data }}[0] ? {{ cloud_data }}[0].height : 300,
+            cloudSpacing: 20
+        };
+
+        // Calculate original columns from the data layout
+        function calculateColumnsFromData(cloudData) {
+            if (cloudData.length === 0) return 1;
+
+            const firstRowY = cloudData[0].y;
+            let columns = 0;
+            for (let cloud of cloudData) {
+                if (cloud.y === firstRowY) {
+                    columns++;
+                } else {
+                    break;
+                }
+            }
+            return columns;
+        }
+
+        // Responsive grid recalculation
+        function calculateResponsiveLayout() {
+            const availableWidth = window.innerWidth - 80; // Account for padding and margins
+            const availableHeight = window.innerHeight * 0.8;
+
+            const originalColumns = originalSettings.originalColumns;
+            const cloudWidth = originalSettings.cloudWidth;
+            const cloudHeight = originalSettings.cloudHeight;
+            const spacing = originalSettings.cloudSpacing;
+
+            // Determine how many columns can fit based on screen width
+            let responsiveColumns = originalColumns;
+
+            if (availableWidth < 480) {
+                responsiveColumns = 1; // Stack vertically on very small screens
+            } else if (availableWidth < 768) {
+                responsiveColumns = Math.min(2, originalColumns); // Max 2 columns on tablets
+            } else if (availableWidth < 1024) {
+                responsiveColumns = Math.min(3, originalColumns); // Max 3 columns on small desktops
+            }
+
+            // Calculate new layout
+            const rows = Math.ceil(originalSettings.cloudData.length / responsiveColumns);
+            const totalWidth = (cloudWidth * responsiveColumns) + (spacing * (responsiveColumns - 1));
+            const totalHeight = (cloudHeight * rows) + (spacing * (rows - 1)) + 100; // +100 for title
+
+            // Recalculate positions
+            const newCloudData = originalSettings.cloudData.map((cloud, index) => {
+                const row = Math.floor(index / responsiveColumns);
+                const col = index % responsiveColumns;
+                return {
+                    ...cloud,
+                    x: col * (cloudWidth + spacing),
+                    y: row * (cloudHeight + spacing),
+                    width: cloudWidth,
+                    height: cloudHeight
+                };
+            });
+
+            return {
+                cloudData: newCloudData,
+                totalWidth: totalWidth,
+                totalHeight: totalHeight,
+                columns: responsiveColumns
+            };
+        }
+
+        // Create tooltip
+        const tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip");
+
+        // Color scale
+        const color = {{ colorscale }}();
+
+        // Font size scale
+        const fontSize = d3.scale[originalSettings.scale]().range([8, 30]);
+
+        // Rotation function
+        function getRotation() {
+            const step = (originalSettings.angleTo - originalSettings.angleFrom) / Math.max(1, originalSettings.angleCount - 1);
+            const angles = [];
+            for (let i = 0; i < originalSettings.angleCount; i++) {
+                angles.push(originalSettings.angleFrom + i * step);
+            }
+            return angles[Math.floor(Math.random() * angles.length)];
+        }
+
+        // Generate the visualization
+        function generateVisualization() {
+            // Clear existing content
+            d3.select("#chart").selectAll("*").remove();
+
+            // Get responsive layout
+            const layout = calculateResponsiveLayout();
+
+            // Create SVG with new dimensions
+            const svg = d3.select("#chart")
+                .attr("width", layout.totalWidth)
+                .attr("height", layout.totalHeight);
+
+            // Generate each cloud with new positions
+            layout.cloudData.forEach((cloudConfig, index) => {
+                // Create group for this cloud
+                const cloudGroup = svg.append("g")
+                    .attr("transform", `translate(${cloudConfig.x}, ${cloudConfig.y + 60})`);
+
+                // Add individual cloud title
+                svg.append("text")
+                    .attr("x", cloudConfig.x + cloudConfig.width / 2)
+                    .attr("y", cloudConfig.y + 55)
+                    .attr("text-anchor", "middle")
+                    .style("font-size", "14px")
+                    .style("font-weight", "bold")
+                    .text(cloudConfig.title);
+
+                // Prepare word data
+                const words = Object.entries(cloudConfig.termCounts)
+                    .map(([key, value]) => ({ key, value }))
+                    .sort((a, b) => b.value - a.value);
+
+                if (words.length === 0) return;
+
+                // Set font size domain
+                fontSize.domain([words[words.length - 1].value || 1, words[0].value]);
+
+                // Create word cloud layout
+                const wordCloudLayout = d3.layout.cloud()
+                    .size([cloudConfig.width, cloudConfig.height])
+                    .words(words)
+                    .padding(2)
+                    .rotate(getRotation)
+                    .font(originalSettings.font)
+                    .fontSize(d => fontSize(d.value))
+                    .spiral(originalSettings.spiral)
+                    .on("end", function(layoutWords) {
+                        const textGroup = cloudGroup.append("g")
+                            .attr("class", "word-cloud")
+                            .attr("transform", `translate(${cloudConfig.width/2}, ${cloudConfig.height/2})`);
+
+                        const totalWords = Object.values(cloudConfig.termCounts).reduce((sum, count) => sum + count, 0);
+
+                        textGroup.selectAll("text")
+                            .data(layoutWords)
+                            .enter().append("text")
+                            .style("font-size", d => d.size + "px")
+                            .style("font-family", originalSettings.font)
+                            .style("fill", d => color(d.text ? d.text.toLowerCase() : d.key.toLowerCase()))
+                            .attr("text-anchor", "middle")
+                            .attr("transform", d => `translate(${d.x},${d.y})rotate(${d.rotate})`)
+                            .text(d => d.text || d.key)
+                            .on("mouseover", function(d) {
+                                tooltip.transition()
+                                    .duration(200)
+                                    .style("opacity", .9);
+
+                                const percentage = ((d.value / totalWords) * 100).toFixed(1);
+                                tooltip.html(`<strong>${d.text || d.key}</strong><br/>Count: ${d.value}<br/>Percentage: ${percentage}%`);
+
+                                const mouseX = d3.event.clientX;
+                                const mouseY = d3.event.clientY;
+                                const tooltipWidth = tooltip.node().offsetWidth;
+                                const tooltipHeight = tooltip.node().offsetHeight;
+
+                                let leftPos = mouseX - 10;
+                                let topPos = mouseY - tooltipHeight - 10;
+
+                                if (leftPos + tooltipWidth > window.innerWidth) {
+                                    leftPos = mouseX - tooltipWidth - 10;
+                                }
+                                if (topPos < 0) {
+                                    topPos = mouseY + 15;
+                                }
+
+                                tooltip.style("left", leftPos + "px")
+                                    .style("top", topPos + "px");
+                            })
+                            .on("mousemove", function(d) {
+                                const mouseX = d3.event.clientX;
+                                const mouseY = d3.event.clientY;
+                                const tooltipWidth = tooltip.node().offsetWidth;
+                                const tooltipHeight = tooltip.node().offsetHeight;
+
+                                let leftPos = mouseX - 10;
+                                let topPos = mouseY - tooltipHeight - 10;
+
+                                if (leftPos + tooltipWidth > window.innerWidth) {
+                                    leftPos = mouseX - tooltipWidth - 10;
+                                }
+                                if (topPos < 0) {
+                                    topPos = mouseY + 15;
+                                }
+
+                                tooltip.style("left", leftPos + "px")
+                                    .style("top", topPos + "px");
+                            })
+                            .on("mouseout", function(d) {
+                                tooltip.transition()
+                                    .duration(500)
+                                    .style("opacity", 0);
+                            });
+                    });
+
+                wordCloudLayout.start();
+            });
+        }
+
+        // Initial generation
+        generateVisualization();
+
+        // Responsive resize handler with debouncing
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(generateVisualization, 300);
+        });
+
+        // Download functionality
+        d3.select("#save-svg").on("click", function() {
+            if (d3.event) d3.event.preventDefault();
+
+            // Clone the SVG to avoid modifying the original
+            var svgElement = document.querySelector("svg");
+            var svgClone = svgElement.cloneNode(true);
+
+            // Get the title from the h1 element
+            var titleElement = document.querySelector("h1");
+            var titleText = titleElement ? titleElement.textContent : "Technology Word Clouds";
+
+            // Increase SVG height to accommodate title
+            var titleHeight = 50;
+            var originalWidth = svgElement.width.baseVal.value;
+            var originalHeight = svgElement.height.baseVal.value;
+
+            svgClone.setAttribute("width", originalWidth);
+            svgClone.setAttribute("height", originalHeight + titleHeight);
+            svgClone.setAttribute("viewBox", `0 0 ${originalWidth} ${originalHeight + titleHeight}`);
+
+            // Add title to the SVG
+            var svgTitle = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            svgTitle.setAttribute("x", originalWidth / 2);
+            svgTitle.setAttribute("y", 30);
+            svgTitle.setAttribute("text-anchor", "middle");
+            svgTitle.setAttribute("font-family", "Arial, sans-serif");
+            svgTitle.setAttribute("font-size", "24");
+            svgTitle.setAttribute("font-weight", "normal");
+            svgTitle.setAttribute("fill", "#333");
+            svgTitle.textContent = titleText;
+            svgClone.insertBefore(svgTitle, svgClone.firstChild);
+
+            // Move all existing content down to make room for title
+            var mainGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            mainGroup.setAttribute("transform", `translate(0, ${titleHeight})`);
+
+            // Move all existing children (except the title) into the main group
+            var existingChildren = Array.from(svgClone.children).filter(child => child !== svgTitle);
+            existingChildren.forEach(child => {
+                mainGroup.appendChild(child);
+            });
+            svgClone.appendChild(mainGroup);
+
+            // Add SVG namespace and version
+            svgClone.setAttribute("version", "1.1");
+            svgClone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+
+            var svgData = new XMLSerializer().serializeToString(svgClone);
+            var blob = new Blob([svgData], {type: "image/svg+xml"});
+            var url = URL.createObjectURL(blob);
+
+            var link = document.createElement("a");
+            link.href = url;
+            link.download = "multicloud.svg";
+            link.click();
+
+            URL.revokeObjectURL(url);
+        });
+
+        d3.select("#save-png").on("click", function() {
+            if (d3.event) d3.event.preventDefault();
+
+            // Clone the SVG to avoid modifying the original
+            var svgElement = document.querySelector("svg");
+            var svgClone = svgElement.cloneNode(true);
+
+            // Get the title from the h1 element
+            var titleElement = document.querySelector("h1");
+            var titleText = titleElement ? titleElement.textContent : "Technology Word Clouds";
+
+            // Increase SVG height to accommodate title
+            var titleHeight = 50;
+            var originalWidth = svgElement.width.baseVal.value;
+            var originalHeight = svgElement.height.baseVal.value;
+
+            svgClone.setAttribute("width", originalWidth);
+            svgClone.setAttribute("height", originalHeight + titleHeight);
+            svgClone.setAttribute("viewBox", `0 0 ${originalWidth} ${originalHeight + titleHeight}`);
+
+            // Add title to the SVG
+            var svgTitle = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            svgTitle.setAttribute("x", originalWidth / 2);
+            svgTitle.setAttribute("y", 30);
+            svgTitle.setAttribute("text-anchor", "middle");
+            svgTitle.setAttribute("font-family", "Arial, sans-serif");
+            svgTitle.setAttribute("font-size", "24");
+            svgTitle.setAttribute("font-weight", "normal");
+            svgTitle.setAttribute("fill", "#333");
+            svgTitle.textContent = titleText;
+            svgClone.insertBefore(svgTitle, svgClone.firstChild);
+
+            // Move all existing content down to make room for title
+            var mainGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            mainGroup.setAttribute("transform", `translate(0, ${titleHeight})`);
+
+            // Move all existing children (except the title) into the main group
+            var existingChildren = Array.from(svgClone.children).filter(child => child !== svgTitle);
+            existingChildren.forEach(child => {
+                mainGroup.appendChild(child);
+            });
+            svgClone.appendChild(mainGroup);
+
+            // Add SVG namespace
+            svgClone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+
+            var svgData = new XMLSerializer().serializeToString(svgClone);
+            var data = `data:image/svg+xml;base64,${btoa(svgData)}`;
+            var img = new Image();
+            img.src = data;
+            img.onload = () => {
+                var canvas = document.createElement("canvas");
+                canvas.width = originalWidth;
+                canvas.height = originalHeight + titleHeight;
+                var ctx = canvas.getContext("2d");
+
+                var backgroundColor = "white";
+                ctx.fillStyle = backgroundColor;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.imageSmoothingQuality = "high";
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                var a = document.createElement("a");
+                a.href = canvas.toDataURL("image/png");
+                a.download = "multicloud.png";
+                a.click();
+            }
+        });
+    </script>
+</body>
+</html>

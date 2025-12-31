@@ -1,11 +1,9 @@
 # Cutter
 
-`Cutter` is a module that divides files, texts, or documents into segments using separate classes (with cute codenames).
+The `cutter` module provides methods of cutting (splitting) and merging documents.
 
-- `Ginsu` splits pre-tokenized documents into shorter segments.
-- `Machete` splits raw text strings into shorter segments.
-- `Filesplit` splits binary files into shorter files.
+## Cutting Character Strings
 
-`Ginsu` acts as a more precise cutter, using language-based tokenization, which provides greater accuracy in exchange for longer processing times. `Machete`, on the other hand, allows for faster processing in exchange for precision. `Filesplit` (aka "Chainsaw") allows files to be split before they are loaded, but potentially in the middle of linguistically significant units.
+Tools for cutting strings of characters are implemented in [`text_cutter`](text_cutter.md). Tools for cutting on token boundaries are found in [`token_cutter`](token_cutter.md)
 
-A separate `Milestones` class is used to populate pre-tokenized texts with milestones for cutting.
+The [`spacy_attrs`](spacy_attrs.md) module provides helpers for handling <a href="https://spacy.io/api/token#attributes" target="_blank">spaCy Token attributes</a>.

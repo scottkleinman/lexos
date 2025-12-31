@@ -1,9 +1,6 @@
 # Replace
 
-The `replace` component of `Scrubber` contains a set of functions for replacing strings and patterns in text.
-
-!!! important
-  Some functions have the same names as functions in the `remove` component. To distinguish them in the registry, `replace` functions with the same names are prefixed with `re_`. When loaded into a script, they can be given any name the user desires.
+A set of functions for replacing strings and patterns in text.
 
 ### ::: lexos.scrubber.replace.currency_symbols
     rendering:
@@ -40,22 +37,12 @@ The `replace` component of `Scrubber` contains a set of functions for replacing 
       show_root_heading: true
       heading_level: 3
 
-### ::: lexos.scrubber.replace.process_tag_replace_options
-    rendering:
-      show_root_heading: true
-      heading_level: 3
-
 ### ::: lexos.scrubber.replace.punctuation
     rendering:
       show_root_heading: true
       heading_level: 3
 
 ### ::: lexos.scrubber.replace.special_characters
-    rendering:
-      show_root_heading: true
-      heading_level: 3
-
-### ::: lexos.scrubber.replace.tag_map
     rendering:
       show_root_heading: true
       heading_level: 3

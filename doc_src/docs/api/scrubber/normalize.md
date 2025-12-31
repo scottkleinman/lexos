@@ -1,6 +1,6 @@
 # Normalize
 
-The `normalize` component of `Scrubber` contains functions to perform a variety of text manipulations. The functions are frequently applied at the beginning of a scrubbing pipeline.
+The collection of "Normalize" functions take notations which are not standardized (such as - or * or ~ for a bullet point) and replaces them all with the same, normalized notation.
 
 ### ::: lexos.scrubber.normalize.bullet_points
     rendering:

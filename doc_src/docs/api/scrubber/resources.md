@@ -1,42 +1,53 @@
 # Resources
 
-The `resources` component of `Scrubber` contains a set of functions for replacing strings and patterns in text.
+Mappings for removing or transforming character patterns.
 
 ### ::: lexos.scrubber.resources.HTMLTextExtractor
     rendering:
       show_root_heading: true
       heading_level: 3
 
-### ::: lexos.scrubber.resources._get_punct_translation_table
+### ::: lexos.scrubber.resources.RE_LINEBREAK
     rendering:
       show_root_heading: true
       heading_level: 3
 
-### ::: lexos.scrubber.resources.__getattr__
+### ::: lexos.scrubber.resources.RE_NONBREAKING_SPACE
     rendering:
       show_root_heading: true
       heading_level: 3
 
-### Constants
+### ::: lexos.scrubber.resources.RE_ZWSP
+    rendering:
+      show_root_heading: true
+      heading_level: 3
 
-There are also a number of constants:
+### ::: lexos.scrubber.resources.RE_TAB
+    rendering:
+      show_root_heading: true
+      heading_level: 3
 
-- `QUOTE_TRANSLATION_TABLE`
-- `RE_BRACKETS_CURLY`
-- `RE_BRACKETS_ROUND`
-- `RE_BRACKETS_SQUARE`
-- `RE_BULLET_POINTS`
-- `RE_CURRENCY_SYMBOL`
-- `RE_EMAIL`
-- `RE_EMOJI`
-- `RE_HASHTAG`
-- `RE_HYPHENATED_WORD`
-- `RE_LINEBREAK`
-- `RE_NONBREAKING_SPACE`
-- `RE_NUMBER`
-- `RE_PHONE_NUMBER`
-- `RE_SHORT_URL`
-- `RE_TAB`
-- `RE_URL`
-- `RE_USER_HANDLE`
-- `RE_ZWSP`
+### ::: lexos.scrubber.resources.RE_BRACKETS_CURLY
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
+### ::: lexos.scrubber.resources.RE_BRACKETS_ROUND
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
+### ::: lexos.scrubber.resources.RE_BRACKETS_SQUARE
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
+### ::: lexos.scrubber.resources.RE_BULLET_POINTS
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
+### ::: lexos.scrubber.resources.RE_URL
+    rendering:
+      show_root_heading: true
+      heading_level: 3
