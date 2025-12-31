@@ -37,10 +37,10 @@ jobs:
         run: pip install pre-commit
       - name: Check end of file fixers
         run: |
-          git ls-files | grep -v '^doc_src/docs/tutorials/' | grep -v '\.code-workspace$' | grep -v '^uv\.lock$' | grep -v '\.DS_Store$' | grep -v '\.log$' | xargs pre-commit run end-of-file-fixer --files
+          git ls-files | grep -v '^doc_src/docs/tutorials/' | grep -v '\.code-workspace$' | grep -v '^uv\.lock$' | grep -v '\.DS_Store$' | grep -v '\.log$' | grep -v '\.env$' | xargs pre-commit run end-of-file-fixer --files
       - name: Check trailing whitespace
         run: |
-          git ls-files | grep -v '^doc_src/docs/tutorials/' | grep -v '\.code-workspace$' | grep -v '^uv\.lock$' | grep -v '\.DS_Store$' | grep -v '\.log$' | xargs pre-commit run trailing-whitespace --files
+          git ls-files | grep -v '^doc_src/docs/tutorials/' | grep -v '\.code-workspace$' | grep -v '^uv\.lock$' | grep -v '\.DS_Store$' | grep -v '\.log$' | grep -v '\.env$' | xargs pre-commit run trailing-whitespace --files
 
   # ============================================
   # Python Code Quality (run after file checks)
