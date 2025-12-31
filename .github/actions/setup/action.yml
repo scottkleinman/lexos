@@ -1,0 +1,7 @@
+runs:
+  using: composite
+  steps:
+    - name: "Install UV"
+      shell: bash
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh

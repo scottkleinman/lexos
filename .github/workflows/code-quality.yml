@@ -1,0 +1,96 @@
+name: Code Quality
+on:
+  push:
+    paths-ignore:
+      - 'doc_src/docs/tutorials/**'
+  # pull_request:
+  #   paths-ignore:
+  #     - 'doc_src/docs/tutorials/**'
+
+jobs:
+  # ============================================
+  # File Quality Checks (run first)
+  # ============================================
+  check_yaml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install pre-commit
+        run: pip install pre-commit
+      - name: Check YAML files
+        run: |
+          find . \( -name "*.yml" -o -name "*.yaml" \) -not -path "./doc_src/docs/tutorials/*" | xargs pre-commit run check-yaml --files
+
+  check_file_formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install pre-commit
+        run: pip install pre-commit
+      - name: Check end of file fixers
+        run: |
+          git ls-files | grep -v '^doc_src/docs/tutorials/' | grep -v '\.code-workspace$' | grep -v '^uv\.lock$' | grep -v '\.DS_Store$' | grep -v '\.log$' | xargs pre-commit run end-of-file-fixer --files
+      - name: Check trailing whitespace
+        run: |
+          git ls-files | grep -v '^doc_src/docs/tutorials/' | grep -v '\.code-workspace$' | grep -v '^uv\.lock$' | grep -v '\.DS_Store$' | grep -v '\.log$' | xargs pre-commit run trailing-whitespace --files
+
+  # ============================================
+  # Python Code Quality (run after file checks)
+  # ============================================
+  lock_file:
+    runs-on: ubuntu-latest
+    needs: [check_yaml, check_file_formatting]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: uv lock --locked
+
+  linting:
+    runs-on: ubuntu-latest
+    needs: [lock_file]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: uvx ruff check "./src/lexos"
+
+  formatting:
+    runs-on: ubuntu-latest
+    needs: [lock_file]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: uvx ruff format --check "./src/lexos"
+
+  header_validation:
+    runs-on: ubuntu-latest
+    needs: [lock_file]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Validate Python file headers
+        run: |
+          find src tests -name "*.py" -type f | xargs uv run python .validate_headers.py
+
+  tests:
+    runs-on: ubuntu-latest
+    needs: [lock_file]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: uv run pytest tests/
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [linting, formatting, header_validation, tests]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: uv build

@@ -1,0 +1,3 @@
+# IO
+
+The `io` module manages input and output functions. It contains three main loader modules: [`loader`](loader.md), [`parallel_loader`](parallel_loader.md), and [`data_loader`](data_loader.md). The `loader` provides an interface for loading texts in a variety of formats, whether from local files or from urls. The `parallel_loader` module provides an optimized loader for large data sets using parallel I/O operations. The `data_loader` module provides method for loading or downloading large numbers of texts that are generally stored in a single file. All three modules inherit from a [`BaseLoader`](base_loader.md) class, which provides common functionality for loading texts.

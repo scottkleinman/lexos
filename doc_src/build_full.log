@@ -1,0 +1,116 @@
+INFO    -  [macros] - No default module `main` found
+INFO    -  [macros] - Config variables: ['extra', 'config', 'environment', 'plugin', 'git', 'social', 'analytics', 'macros', 'filters', 'filters_builtin']
+INFO    -  [macros] - Config macros: ['context', 'macros_info', 'now', 'fix_url']
+INFO    -  [macros] - Config filters: ['pretty', 'relative_url']
+INFO    -  Cleaning site directory
+INFO    -  Building documentation to directory: /home/scott/projects/uv_lexos/docs
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'normalize/#lexos.scrubber.normalize.bullet_points', it was left as is. Did you mean 'normalize.md#lexos.scrubber.normalize.bullet_points'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'normalize/#lexos.scrubber.normalize.hyphenated_words', it was left as is. Did you mean 'normalize.md#lexos.scrubber.normalize.hyphenated_words'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'normalize/#lexos.scrubber.normalize.lower_case', it was left as is. Did you mean 'normalize.md#lexos.scrubber.normalize.lower_case'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'normalize/#lexos.scrubber.normalize.quotation_marks', it was left as is. Did you mean 'normalize.md#lexos.scrubber.normalize.quotation_marks'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'normalize/#lexos.scrubber.normalize.repeated_chars', it was left as is. Did you mean 'normalize.md#lexos.scrubber.normalize.repeated_chars'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'normalize/#lexos.scrubber.normalize.unicode', it was left as is. Did you mean 'normalize.md#lexos.scrubber.normalize.unicode'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'normalize/#lexos.scrubber.normalize.whitespace', it was left as is. Did you mean 'normalize.md#lexos.scrubber.normalize.whitespace'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'registry/#lexos.scrubber.registry.get_component', it was left as is. Did you mean 'registry.md#lexos.scrubber.registry.get_component'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'registry/#lexos.scrubber.registry.get_component', it was left as is. Did you mean 'registry.md#lexos.scrubber.registry.get_component'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'remove/#lexos.scrubber.remove.accents', it was left as is. Did you mean 'remove.md#lexos.scrubber.remove.accents'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'remove/#lexos.scrubber.remove.brackets', it was left as is. Did you mean 'remove.md#lexos.scrubber.remove.brackets'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'remove/#lexos.scrubber.remove.digits', it was left as is. Did you mean 'remove.md#lexos.scrubber.remove.digits'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'remove/#lexos.scrubber.remove.newlines', it was left as is. Did you mean 'remove.md#lexos.scrubber.remove.newlines'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'remove/#lexos.scrubber.remove.patterns', it was left as is. Did you mean 'remove.md#lexos.scrubber.remove.patterns'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'remove/#lexos.scrubber.remove.project_gutenberg_headers', it was left as is. Did you mean 'remove.md#lexos.scrubber.remove.project_gutenberg_headers'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'remove/#lexos.scrubber.remove.punctuation', it was left as is. Did you mean 'remove.md#lexos.scrubber.remove.punctuation'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'remove/#lexos.scrubber.remove.tabs', it was left as is. Did you mean 'remove.md#lexos.scrubber.remove.tabs'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'remove/#lexos.scrubber.remove.tags', it was left as is. Did you mean 'remove.md#lexos.scrubber.remove.tags'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'replace/#lexos.scrubber.replace.currency_symbols', it was left as is. Did you mean 'replace.md#lexos.scrubber.replace.currency_symbols'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'replace/#lexos.scrubber.replace.digits', it was left as is. Did you mean 'replace.md#lexos.scrubber.replace.digits'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'replace/#lexos.scrubber.replace.emails', it was left as is. Did you mean 'replace.md#lexos.scrubber.replace.emails'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'replace/#lexos.scrubber.replace.emojis', it was left as is. Did you mean 'replace.md#lexos.scrubber.replace.emojis'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'replace/#lexos.scrubber.replace.hashtags', it was left as is. Did you mean 'replace.md#lexos.scrubber.replace.hashtags'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'replace/#lexos.scrubber.replace.pattern', it was left as is. Did you mean 'replace.md#lexos.scrubber.replace.pattern'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'replace/#lexos.scrubber.replace.phone_numbers', it was left as is. Did you mean 'replace.md#lexos.scrubber.replace.phone_numbers'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'replace/#lexos.scrubber.replace.punctuation', it was left as is. Did you mean 'replace.md#lexos.scrubber.replace.punctuation'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'replace/#lexos.scrubber.replace.special_characters', it was left as is. Did you mean 'replace.md#lexos.scrubber.replace.special_characters'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'replace/#lexos.scrubber.replace.urls', it was left as is. Did you mean 'replace.md#lexos.scrubber.replace.urls'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'replace/#lexos.scrubber.replace.user_handles', it was left as is. Did you mean 'replace.md#lexos.scrubber.replace.user_handles'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'resources/#lexos.scrubber.resources.HTMLTextExtractor', it was left as is. Did you mean 'resources.md#lexos.scrubber.resources.HTMLTextExtractor'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'scrubber/#lexos.scrubber.scrubber.Pipe', it was left as is. Did you mean 'scrubber.md#lexos.scrubber.scrubber.Pipe'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'scrubber/#lexos.scrubber.scrubber.Scrubber', it was left as is. Did you mean 'scrubber.md#lexos.scrubber.scrubber.Scrubber'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'scrubber/#lexos.scrubber.scrubber.Scrubber.add_pipe', it was left as is. Did you mean 'scrubber.md#lexos.scrubber.scrubber.Scrubber.add_pipe'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'scrubber/#lexos.scrubber.scrubber.Scrubber.pipe', it was left as is. Did you mean 'scrubber.md#lexos.scrubber.scrubber.Scrubber.pipe'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'scrubber/#lexos.scrubber.scrubber.Scrubber.remove_pipe', it was left as is. Did you mean 'scrubber.md#lexos.scrubber.scrubber.Scrubber.remove_pipe'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'scrubber/#lexos.scrubber.scrubber.Scrubber.reset', it was left as is. Did you mean 'scrubber.md#lexos.scrubber.scrubber.Scrubber.reset'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'scrubber/#lexos.scrubber.scrubber.Scrubber.scrub', it was left as is. Did you mean 'scrubber.md#lexos.scrubber.scrubber.Scrubber.scrub'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'scrubber/#lexos.scrubber.scrubber.Scrubber.pipes', it was left as is. Did you mean 'scrubber.md#lexos.scrubber.scrubber.Scrubber.pipes'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'scrubber/#lexos.scrubber.scrubber.scrub', it was left as is. Did you mean 'scrubber.md#lexos.scrubber.scrubber.scrub'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'tags/#lexos.scrubber.tags.remove_attribute', it was left as is. Did you mean 'tags.md#lexos.scrubber.tags.remove_attribute'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'tags/#lexos.scrubber.tags.remove_comments', it was left as is. Did you mean 'tags.md#lexos.scrubber.tags.remove_comments'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'tags/#lexos.scrubber.tags.remove_doctype', it was left as is. Did you mean 'tags.md#lexos.scrubber.tags.remove_doctype'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'tags/#lexos.scrubber.tags.remove_element', it was left as is. Did you mean 'tags.md#lexos.scrubber.tags.remove_element'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'tags/#lexos.scrubber.tags.remove_tag', it was left as is. Did you mean 'tags.md#lexos.scrubber.tags.remove_tag'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'tags/#lexos.scrubber.tags.replace_attribute', it was left as is. Did you mean 'tags.md#lexos.scrubber.tags.replace_attribute'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'tags/#lexos.scrubber.tags.replace_tag', it was left as is. Did you mean 'tags.md#lexos.scrubber.tags.replace_tag'?
+INFO    -  Doc file 'api/scrubber/index.md' contains an unrecognized relative link 'utils/#lexos.scrubber.utils.get_tags', it was left as is. Did you mean 'utils.md#lexos.scrubber.utils.get_tags'?
+INFO    -  Doc file 'api/tokenizer/index.md' contains an unrecognized relative link 'tokenizer/#lexos.tokenizer.SliceTokenizer', it was left as is. Did you mean 'tokenizer.md#lexos.tokenizer.SliceTokenizer'?
+INFO    -  Doc file 'api/tokenizer/index.md' contains an unrecognized relative link 'tokenizer/#lexos.tokenizer.Tokenizer', it was left as is. Did you mean 'tokenizer.md#lexos.tokenizer.Tokenizer'?
+INFO    -  Doc file 'api/tokenizer/index.md' contains an unrecognized relative link 'tokenizer/#lexos.tokenizer.WhitespaceTokenizer', it was left as is. Did you mean 'tokenizer.md#lexos.tokenizer.WhitespaceTokenizer'?
+INFO    -  Doc file 'api/tokenizer/index.md' contains an unrecognized relative link 'ngrams/#lexos.tokenizer.ngrams.Ngrams', it was left as is. Did you mean 'ngrams.md#lexos.tokenizer.ngrams.Ngrams'?
+WARNING -  Doc file 'api/topic_modeling/index.md' contains a link 'mallet/mallet.md', but the target 'api/topic_modeling/mallet/mallet.md' is not found among documentation files.
+WARNING -  Doc file 'api/topic_modeling/index.md' contains a link 'dfr_browser/dfr_browser2.md', but the target 'api/topic_modeling/dfr_browser/dfr_browser2.md' is not found among documentation files.
+INFO    -  Doc file 'development/index.md' contains an unrecognized relative link 'lexos/tests', it was left as is.
+WARNING -  Doc file 'development/index.md' contains a link 'lexos/tests.md', but the target 'development/lexos/tests.md' is not found among documentation files.
+INFO    -  Doc file 'development/index.md' contains an unrecognized relative link 'lexs/tests/tokenizer', it was left as is.
+WARNING -  Doc file 'development/code-conventions.md' contains a link 'contributing.md#code-conventions', but the target 'development/contributing.md' is not found among documentation files.
+INFO    -  Doc file 'development/documentation.md' contains an unrecognized relative link 'doc_src/docs', it was left as is.
+INFO    -  Doc file 'development/documentation.md' contains an unrecognized relative link 'base_loader/#lexos.io.base_loader.BaseLoader.data', it was left as is.
+INFO    -  Doc file 'development/documentation.md' contains an unrecognized relative link 'base_loader/#lexos.io.base_loader.BaseLoader.load_dataset', it was left as is.
+INFO    -  Doc file 'development/tests.md' contains an unrecognized relative link 'tokenizer', it was left as is.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/cluster/dendrogram_tutorial.ipynb', but the target '../tutorials/cluster/dendrogram_tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/cluster/data.zip', but the target '../tutorials/cluster/data.zip' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/cluster/clustermap_tutorial.ipynb', but the target '../tutorials/cluster/clustermap_tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/cluster/data.zip', but the target '../tutorials/cluster/data.zip' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/cluster/bct_tutorial.ipynb', but the target '../tutorials/cluster/bct_tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/cluster/FilesToUse.zip', but the target '../tutorials/cluster/FilesToUse.zip' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/cluster/kmeans_tutorial.ipynb', but the target '../tutorials/cluster/kmeans_tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/cluster/FilesToUse.zip', but the target '../tutorials/cluster/FilesToUse.zip' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/corpus/corpus_tutorial.ipynb', but the target '../tutorials/corpus/corpus_tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/corpus/sqlite_tutorial.ipynb', but the target '../tutorials/corpus/sqlite_tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/cutter/tutorial.ipynb', but the target '../tutorials/cutter/tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/cutter/Austen_Pride.txt', but the target '../tutorials/cutter/Austen_Pride.txt' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/dtm/tutorial.ipynb', but the target '../tutorials/dtm/tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/dtm/txt_files.zip', but the target '../tutorials/dtm/txt_files.zip' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/io/tutorial.ipynb', but the target '../tutorials/io/tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/io/sample_files.zip', but the target '../tutorials/io/sample_files.zip' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/kwic/tutorial.ipynb', but the target '../tutorials/kwic/tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/milestones/tutorial.ipynb', but the target '../tutorials/milestones/tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/rolling_windows/rolling_windows_tutorial.ipynb', but the target '../tutorials/rolling_windows/rolling_windows_tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/rolling_windows/A_Scandal_in_Bohemia.txt', but the target '../tutorials/rolling_windows/A_Scandal_in_Bohemia.txt' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/scrubber/scrubber_tutorial.ipynb', but the target '../tutorials/scrubber/scrubber_tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/scrubber/tags_tutorial.ipynb', but the target '../tutorials/scrubber/tags_tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/tokenizer/tutorial.ipynb', but the target '../tutorials/tokenizer/tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/topic_modeling/mallet_tutorial.ipynb', but the target '../tutorials/topic_modeling/mallet_tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/topic_modeling/sample_data.zip', but the target '../tutorials/topic_modeling/sample_data.zip' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/topwords/tutorial.ipynb', but the target '../tutorials/topwords/tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/topwords/mann_whitney_tutorial.ipynb', but the target '../tutorials/topwords/mann_whitney_tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'tutorials/index.md' contains a link '../../tutorials/visualization/tutorial.ipynb', but the target '../tutorials/visualization/tutorial.ipynb' is not found among documentation files.
+WARNING -  Doc file 'user_guide/index.md' contains a link 'installation.md', but the target 'user_guide/installation.md' is not found among documentation files.
+INFO    -  Doc file 'user_guide/getting_started.md' contains an unrecognized relative link '../../tutorials', it was left as is. Did you mean '../tutorials/index.md'?
+INFO    -  Doc file 'user_guide/getting_started.md' contains an unrecognized relative link '../../api', it was left as is. Did you mean '../api/index.md'?
+WARNING -  Doc file 'user_guide/scrubbing_texts.md' contains a link 'user_guide/tokenizing_texts.md', but the target 'user_guide/user_guide/tokenizing_texts.md' is not found among documentation files.
+INFO    -  Doc file 'user_guide/the_document_term_matrix.md' contains an unrecognized relative link '../visualization/', it was left as is. Did you mean 'visualization.md'?
+INFO    -  Doc file 'user_guide/tokenizing_texts.md' contains an unrecognized relative link '../../api/tokenizer/', it was left as is. Did you mean '../api/tokenizer/index.md'?
+INFO    -  Doc file 'user_guide/tokenizing_texts.md' contains an unrecognized relative link '../the_document_term_matrix/#advanced-usage-with-scikit-learn-vectorizers', it was left as is. Did you mean 'the_document_term_matrix.md#advanced-usage-with-scikit-learn-vectorizers'?
+WARNING -  Doc file 'user_guide/tokenizing_texts.md' contains a link '../user_guide/cutting_texts.md', but the target 'user_guide/cutting_texts.md' is not found among documentation files.
+INFO    -  Doc file 'user_guide/tokenizing_texts.md' contains an unrecognized relative link '../../api/tokenizer/ngrams/#lexos.tokenizer.ngrams.Ngrams.from_doc', it was left as is. Did you mean '../api/tokenizer/ngrams.md#lexos.tokenizer.ngrams.Ngrams.from_doc'?
+INFO    -  Doc file 'user_guide/tokenizing_texts.md' contains an unrecognized relative link '../api/tokenizer/ngrams/', it was left as is. Did you mean '../api/tokenizer/ngrams.md'?
+INFO    -  Doc file 'user_guide/scrubber/internal_components.md' contains an absolute link '/api/scrubber/normalize/', it was left as is. Did you mean '../../api/scrubber/normalize.md'?
+INFO    -  Doc file 'user_guide/scrubber/normalize.md' contains an unrecognized relative link 'api/scrubber/normalize/', it was left as is.
+INFO    -  Doc file 'user_guide/scrubber/remove.md' contains an unrecognized relative link 'api/scrubber/remove/', it was left as is.
+WARNING -  Doc file 'user_guide/scrubber/remove.md' contains a link 'tokenizing_texts.md', but the target 'user_guide/scrubber/tokenizing_texts.md' is not found among documentation files.
+INFO    -  Doc file 'user_guide/scrubber/remove.md' contains an unrecognized relative link 'api/scrubber/remove/', it was left as is.
+INFO    -  Doc file 'user_guide/scrubber/replace.md' contains an unrecognized relative link 'api/scrubber/remove/', it was left as is.
+INFO    -  Doc file 'user_guide/scrubber/replace.md' contains an unrecognized relative link 'api/scrubber/remove/', it was left as is.
+INFO    -  Doc file 'user_guide/scrubber/tags.md' contains an unrecognized relative link 'api/scrubber/tags/', it was left as is.
+INFO    -  Doc file 'user_guide/scrubber/tags.md' contains an unrecognized relative link 'api/scrubber/tags/', it was left as is.
+WARNING -  mkdocs_autorefs: Multiple primary URLs found for 'lexos.milestones.token_milestones.TokenMilestones': ['api/milestones/#lexos.milestones.token_milestones.TokenMilestones', 'api/milestones/token_milestones/#lexos.milestones.token_milestones.TokenMilestones']. Make sure to use unique headings, identifiers, or Markdown anchors (see our docs).
+INFO    -  Documentation built in 13.10 seconds

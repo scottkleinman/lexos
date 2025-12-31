@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<!-- D3WordCloud Visualization Template 1.0 -->
+<head>
+<meta charset="utf-8" />
+<title>{{title | safe}}</title>
+  <style>
+    /* HTML body styles */
+    body {
+      font-family: "Arial", sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Title styles */
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    /* Button styles */
+    .controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 100;
+      margin-bottom: 0;
+    }
+
+    .save-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      margin: 0 5px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background-color 0.3s;
+    }
+
+    .save-btn:hover {
+      background: #0056b3;
+    }
+
+    .save-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Chart styles */
+    #chart {
+      width: {{width}}px;
+      height: {{height}}px;
+      margin: auto;
+      background-color:white;
+    }
+
+    /* Tooltip styles */
+    .tooltip {
+      position: fixed;
+      text-align: center;
+      width: auto;
+      height: auto;
+      padding: 8px 12px;
+      font: 12px sans-serif;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border: 0px;
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 1000;
+    }
+
+    /* Word hover effect */
+    .word-cloud text {
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .word-cloud text:hover {
+      opacity: 0.7;
+    }
+  </style>
+</head>
+
+<body>
+    <div class="container">
+      {% if title %}
+      <h1>{{title}}</h1>
+      {% endif %}
+
+      <div class="controls">
+        <button id="save-svg" class="save-btn">Save as SVG</button>
+        <button id="save-png" class="save-btn">Save as PNG</button>
+      </div>
+
+      <div id="chart"></div>
+    </div>
+
+  </body>
+
+<script>
+// Canvas dimensions
+var width = {{width}};
+var height = {{height}};
+
+// Global variables
+var progress = 0, total = 0, totalWordCount = 0;
+</script>
+
+<!-- D3 scripts -->
+<script id="d3"></script>
+<script id="d3cloud"></script>
+
+<!-- Code for generating the wordcloud -->
+<script>
+// Set colour scheme
+var color = {{colorscale}}();
+
+// Create tooltip
+var tooltip = d3.select("#chart").append("div")
+    .attr("class", "tooltip")
+    .style("position", "fixed");
+
+// Create SVG
+var svg = d3.select("#chart").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var background = svg.append("g");
+var vis = svg.append("g")
+    .attr("class", "word-cloud")
+    .attr("transform", "translate(" + [width >> 1, height >> 1] + ")");
+
+// Font size scale
+var fontSize = d3.scale["{{scale}}"]().range([10, 100]);
+
+// Rotation function
+function getRotation() {
+  var step = ({{angleTo}} - {{angleFrom}}) / Math.max(1, {{angleCount}} - 1);
+  var angles = [];
+  for (var i = 0; i < {{angleCount}}; i++) {
+    angles.push({{angleFrom}} + i * step);
+  }
+  return angles[Math.floor(Math.random() * angles.length)];
+}
+
+// Convert word data to array format
+function prepareWordData() {
+  var words = [];
+  totalWordCount = 0;
+
+  for (var word in {{termCounts}}) {
+    var count = {{termCounts}}[word];
+    words.push({key: word, value: count});
+    totalWordCount += count;
+  }
+
+  // Sort by count (descending)
+  words.sort(function(a, b) {
+    return b.value - a.value;
+  });
+
+  return words;
+}
+
+// Word cloud configuration
+var wordCloud = d3.layout.cloud()
+    .timeInterval(10)
+    .size([width, height])
+    .fontSize(function(d) { return fontSize(+d.value); })
+    .text(function(d) { return d.key; })
+    .font("{{font}}")
+    .spiral("{{spiral}}")
+    .rotate(getRotation)
+    .on("word", function(d) {
+      var statusEl = d3.select("#status");
+      if (statusEl.node()) {
+        statusEl.text(++progress + "/" + total);
+      }
+    })
+    .on("end", function(words, bounds) {
+      var statusEl = d3.select("#status");
+      if (statusEl.node()) {
+        statusEl.style("display", "none");
+      }
+
+      var scale = bounds ? Math.min(
+        width / Math.abs(bounds[1].x - width / 2),
+        width / Math.abs(bounds[0].x - width / 2),
+        height / Math.abs(bounds[1].y - height / 2),
+        height / Math.abs(bounds[0].y - height / 2)
+      ) / 2 : 1;
+
+      words = words || [];
+
+      var text = vis.selectAll("text")
+          .data(words, function(d) { return (d.text || d.key).toLowerCase(); });
+
+      text.transition()
+          .duration(1000)
+          .attr("transform", function(d) { return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"; })
+          .style("font-size", function(d) { return d.size + "px"; });
+
+      var enterText = text.enter().append("text")
+          .attr("text-anchor", "middle")
+          .attr("transform", function(d) { return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"; })
+          .style("font-size", "1px")
+          .transition()
+          .duration(1000)
+          .style("font-size", function(d) { return d.size + "px"; });
+
+      // Add tooltip functionality to all text elements
+      vis.selectAll("text")
+          .style("font-family", function(d) { return d.font; })
+          .style("fill", function(d) {
+              var text = d.text || d.key;
+              return color(text.toLowerCase());
+          })
+          .text(function(d) { return d.text || d.key; })
+          .on("mouseover", function(d) {
+              tooltip.transition()
+                  .duration(200)
+                  .style("opacity", .9);
+
+              var count = d.value;
+              var percentage = totalWordCount > 0 ? ((count / totalWordCount) * 100).toFixed(1) : 0;
+              var displayText = d.text || d.key;
+
+              tooltip.html("<strong>" + displayText + "</strong><br/>" +
+                          "Count: " + count + "<br/>" +
+                          "Percentage: " + percentage + "%");
+
+            var mouseX = d3.event.clientX;
+            var mouseY = d3.event.clientY;
+
+            var tooltipWidth = tooltip.node().offsetWidth;
+            var tooltipHeight = tooltip.node().offsetHeight;
+
+            var leftPos = mouseX - 10;
+            var topPos = mouseY - tooltipHeight - 10;
+
+            if (leftPos + tooltipWidth > window.innerWidth) {
+              leftPos = mouseX - tooltipWidth - 10;
+            }
+            if (topPos < 0) {
+              topPos = mouseY + 15;
+            }
+
+            tooltip.style("left", leftPos + "px")
+                .style("top", topPos + "px");
+          })
+          .on("mousemove", function(d) {
+            var mouseX = d3.event.clientX;
+            var mouseY = d3.event.clientY;
+
+            var tooltipWidth = tooltip.node().offsetWidth;
+            var tooltipHeight = tooltip.node().offsetHeight;
+
+            var leftPos = mouseX - 10;
+            var topPos = mouseY - tooltipHeight - 10;
+
+            if (leftPos + tooltipWidth > window.innerWidth) {
+              leftPos = mouseX - tooltipWidth - 10;
+            }
+            if (topPos < 0) {
+              topPos = mouseY + 15;
+            }
+
+            tooltip.style("left", leftPos + "px")
+                .style("top", topPos + "px");
+          })
+          .on("mouseout", function(d) {
+            tooltip.transition()
+                .duration(500)
+                .style("opacity", 0);
+          });
+
+      var exitGroup = background.append("g")
+          .attr("transform", vis.attr("transform"));
+      var exitGroupNode = exitGroup.node();
+
+      text.exit().each(function() {
+        exitGroupNode.appendChild(this);
+      });
+
+      exitGroup.transition()
+          .duration(1000)
+          .style("opacity", 1e-6)
+          .remove();
+
+      vis.transition()
+          .delay(1000)
+          .duration(750)
+          .attr("transform", "translate(" + [width >> 1, height >> 1] + ")scale(" + scale + ")");
+    });
+
+// Generate word cloud
+function generate() {
+  var wordList = prepareWordData();
+
+  if (wordList.length) {
+    fontSize.domain([+wordList[wordList.length - 1].value || 1, +wordList[0].value]);
+  }
+
+  progress = 0;
+  total = wordList.length;
+
+  var statusEl = d3.select("#status");
+  if (statusEl.node()) {
+    statusEl.style("display", null);
+  }
+
+  wordCloud.stop()
+      .words(wordList)
+      .start();
+}
+
+// Download functionality
+d3.select("#save-svg").on("click", function() {
+  if (d3.event) d3.event.preventDefault();
+
+  // Clone the SVG to avoid modifying the original
+  var svgElement = document.querySelector("svg");
+  var svgClone = svgElement.cloneNode(true);
+
+  // Get the title from the h1 element
+  var titleElement = document.querySelector("h1");
+  var titleText = titleElement ? titleElement.textContent : "Word Cloud Visualization";
+
+  // Increase SVG height to accommodate title
+  var titleHeight = 50;
+  var originalWidth = svgElement.width.baseVal.value;
+  var originalHeight = svgElement.height.baseVal.value;
+
+  svgClone.setAttribute("width", originalWidth);
+  svgClone.setAttribute("height", originalHeight + titleHeight);
+  svgClone.setAttribute("viewBox", `0 0 ${originalWidth} ${originalHeight + titleHeight}`);
+
+  // Add title to the SVG
+  var svgTitle = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  svgTitle.setAttribute("x", originalWidth / 2);
+  svgTitle.setAttribute("y", 30);
+  svgTitle.setAttribute("text-anchor", "middle");
+  svgTitle.setAttribute("font-family", "Arial, sans-serif");
+  svgTitle.setAttribute("font-size", "24");
+  svgTitle.setAttribute("font-weight", "normal");
+  svgTitle.setAttribute("fill", "#333");
+  svgTitle.textContent = titleText;
+  svgClone.insertBefore(svgTitle, svgClone.firstChild);
+
+  // Move all existing content down to make room for title
+  var mainGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  mainGroup.setAttribute("transform", `translate(0, ${titleHeight})`);
+
+  // Move all existing children (except the title) into the main group
+  var existingChildren = Array.from(svgClone.children).filter(child => child !== svgTitle);
+  existingChildren.forEach(child => {
+    mainGroup.appendChild(child);
+  });
+  svgClone.appendChild(mainGroup);
+
+  // Add SVG namespace and version
+  svgClone.setAttribute("version", "1.1");
+  svgClone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+
+  var svgData = new XMLSerializer().serializeToString(svgClone);
+  var blob = new Blob([svgData], {type: "image/svg+xml"});
+  var url = URL.createObjectURL(blob);
+
+  var link = document.createElement("a");
+  link.href = url;
+  link.download = "wordcloud.svg";
+  link.click();
+
+  URL.revokeObjectURL(url);
+});
+
+d3.select("#save-png").on("click", function() {
+  if (d3.event) d3.event.preventDefault();
+
+  // Clone the SVG to avoid modifying the original
+  var svgElement = document.querySelector("svg");
+  var svgClone = svgElement.cloneNode(true);
+
+  // Get the title from the h1 element
+  var titleElement = document.querySelector("h1");
+  var titleText = titleElement ? titleElement.textContent : "Word Cloud Visualization";
+
+  // Increase SVG height to accommodate title
+  var titleHeight = 50;
+  var originalWidth = svgElement.width.baseVal.value;
+  var originalHeight = svgElement.height.baseVal.value;
+
+  svgClone.setAttribute("width", originalWidth);
+  svgClone.setAttribute("height", originalHeight + titleHeight);
+  svgClone.setAttribute("viewBox", `0 0 ${originalWidth} ${originalHeight + titleHeight}`);
+
+  // Add title to the SVG
+  var svgTitle = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  svgTitle.setAttribute("x", originalWidth / 2);
+  svgTitle.setAttribute("y", 30);
+  svgTitle.setAttribute("text-anchor", "middle");
+  svgTitle.setAttribute("font-family", "Arial, sans-serif");
+  svgTitle.setAttribute("font-size", "24");
+  svgTitle.setAttribute("font-weight", "normal");
+  svgTitle.setAttribute("fill", "#333");
+  svgTitle.textContent = titleText;
+  svgClone.insertBefore(svgTitle, svgClone.firstChild);
+
+  // Move all existing content down to make room for title
+  var mainGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  mainGroup.setAttribute("transform", `translate(0, ${titleHeight})`);
+
+  // Move all existing children (except the title) into the main group
+  var existingChildren = Array.from(svgClone.children).filter(child => child !== svgTitle);
+  existingChildren.forEach(child => {
+    mainGroup.appendChild(child);
+  });
+  svgClone.appendChild(mainGroup);
+
+  // Add SVG namespace
+  svgClone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+
+  var data = `data:image/svg+xml;base64,${btoa(new XMLSerializer().serializeToString(svgClone))}`;
+  var img = new Image();
+  img.src = data;
+  img.onload = () => {
+    var canvas = document.createElement("canvas");
+    canvas.width = originalWidth;
+    canvas.height = originalHeight + titleHeight;
+    var ctx = canvas.getContext("2d");
+    var backgroundColor = d3.color(d3.select("#chart").style("background-color")).formatHex();
+    ctx.fillStyle = backgroundColor || "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    var a = document.createElement("a");
+    a.href = canvas.toDataURL("image/png");
+    a.download = "wordcloud.png";
+    a.click();
+  }
+});
+
+// Start generation when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  generate();
+});
+
+if (document.readyState !== 'loading') {
+  generate();
+}
+</script>
+</html>

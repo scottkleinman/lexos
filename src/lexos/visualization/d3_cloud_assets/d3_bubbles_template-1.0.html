@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<!-- D3BubbleChart Visualization Template 1.0 -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    {% if include_d3js %}
+    <script>{{ d3_js_script }}</script>
+    {% else %}
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    {% endif %}
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        position: relative;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+      }
+
+      .controls {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 100;
+        margin-bottom: 0;
+      }
+
+      .save-btn {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        margin: 0 5px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: background-color 0.3s;
+      }
+
+      .save-btn:hover {
+        background: #0056b3;
+      }
+
+      .save-btn:active {
+        transform: translateY(1px);
+      }
+
+      .tooltip {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 1000;
+      }
+
+      .circle-text {
+        font-size: 12px;
+        text-anchor: middle;
+        dominant-baseline: central;
+        pointer-events: none;
+        fill: white;
+        font-weight: bold;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+      }
+
+      .circle {
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .circle:hover {
+        stroke: #333;
+        stroke-width: 2px;
+        filter: brightness(1.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      {% if title %}
+      <h1>{{title}}</h1>
+      {% endif %}
+
+      <div class="controls">
+        <button class="save-btn" onclick="saveSVG()">Save as SVG</button>
+        <button class="save-btn" onclick="savePNG()">Save as PNG</button>
+      </div>
+
+      <div id="chart"></div>
+    </div>
+
+    <div class="tooltip"></div>
+
+    <script>
+      // Data passed from Python
+      const termCounts = {{ term_counts | tojson }};
+      const title = {{ title | tojson }};
+
+      // Configuration passed from Python
+      const width = {{ width }};
+      const height = {{ height }};
+      const margin = {{ margin | tojson }};
+
+      // Color scale - can be a scheme name or array of colors
+      {% if color is string %}
+      const color = d3.scaleOrdinal(d3.{{ color }});
+      {% else %}
+      const color = d3.scaleOrdinal({{ color | tojson }});
+      {% endif %}
+
+      // Create SVG
+      const svg = d3
+        .select("#chart")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .style("max-width", "100%")
+        .style("height", "auto")
+        .attr("xmlns", "http://www.w3.org/2000/svg");
+
+      // Create tooltip
+      const tooltip = d3.select(".tooltip");
+
+      // Transform data for D3 hierarchy
+      function prepareData(termCounts) {
+        const children = Object.entries(termCounts).map(([term, count]) => ({
+          id: term,
+          term: term,
+          count: count,
+          value: count,
+        }));
+
+        return {
+          id: "root",
+          children: children,
+        };
+      }
+
+      // Create the pack layout
+      function createPackedCircles(data) {
+        const root = d3
+          .hierarchy(data)
+          .sum((d) => d.value)
+          .sort((a, b) => b.value - a.value);
+
+        const pack = d3
+          .pack()
+          .size([
+            width - margin.left - margin.right,
+            height - margin.top - margin.bottom,
+          ])
+          .padding(3);
+
+        pack(root);
+
+        // Create groups for circles
+        const node = svg
+          .selectAll(".node")
+          .data(root.leaves())
+          .enter()
+          .append("g")
+          .attr("class", "node")
+          .attr(
+            "transform",
+            (d) => `translate(${d.x + margin.left},${d.y + margin.top})`
+          );
+
+        // Add circles
+        node
+          .append("circle")
+          .attr("class", "circle")
+          .attr("r", (d) => d.r)
+          .style("fill", (d, i) => color(i))
+          .style("opacity", 0.8)
+          .on("mouseover", function (event, d) {
+            // Show tooltip
+            tooltip
+              .style("opacity", 1)
+              .html(
+                `<strong>${d.data.term}</strong><br/>Count: ${d.data.count}`
+              )
+              .style("left", event.pageX + 10 + "px")
+              .style("top", event.pageY - 10 + "px");
+
+            // Highlight circle
+            d3.select(this).style("opacity", 1);
+          })
+          .on("mousemove", function (event, d) {
+            tooltip
+              .style("left", event.pageX + 10 + "px")
+              .style("top", event.pageY - 10 + "px");
+          })
+          .on("mouseout", function (event, d) {
+            // Hide tooltip
+            tooltip.style("opacity", 0);
+
+            // Reset circle
+            d3.select(this).style("opacity", 0.8);
+          });
+
+        // Add text labels
+        node
+          .append("text")
+          .attr("class", "circle-text")
+          .style("font-size", (d) => Math.min(d.r / 3, 14) + "px")
+          .text((d) => {
+            // Only show text if circle is large enough
+            if (d.r > 15) {
+              return d.data.term.length > 8
+                ? d.data.term.substring(0, 8) + "..."
+                : d.data.term;
+            }
+            return "";
+          })
+          .each(function (d) {
+            // Wrap text if necessary
+            const text = d3.select(this);
+            const terms = d.data.term.split(/\s+/);
+            if (terms.length > 1 && d.r > 25) {
+              text.text(null);
+              terms.forEach((term, i) => {
+                text
+                  .append("tspan")
+                  .attr("x", 0)
+                  .attr("dy", i === 0 ? 0 : "1.1em")
+                  .text(term);
+              });
+            }
+          });
+
+        // Add animation
+        node
+          .selectAll("circle")
+          .style("opacity", 0)
+          .transition()
+          .duration(1000)
+          .delay((d, i) => i * 50)
+          .style("opacity", 0.8);
+
+        node
+          .selectAll("text")
+          .style("opacity", 0)
+          .transition()
+          .duration(1000)
+          .delay((d, i) => i * 50 + 300)
+          .style("opacity", 1);
+      }
+
+      // Function to save as SVG
+      function saveSVG() {
+        const svgElement = document.querySelector("#chart svg");
+
+        // Clone the SVG to avoid modifying the original
+        const svgClone = svgElement.cloneNode(true);
+
+        // Increase SVG height to accommodate title
+        const titleHeight = 50;
+        svgClone.setAttribute("height", height + titleHeight);
+        svgClone.setAttribute(
+          "viewBox",
+          `0 0 ${width} ${height + titleHeight}`
+        );
+
+        // Add title to the SVG
+        const titleElement = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "text"
+        );
+        titleElement.setAttribute("x", width / 2);
+        titleElement.setAttribute("y", 30);
+        titleElement.setAttribute("text-anchor", "middle");
+        titleElement.setAttribute("font-family", "Arial, sans-serif");
+        titleElement.setAttribute("font-size", "24");
+        titleElement.setAttribute("font-weight", "normal");
+        titleElement.setAttribute("fill", "#333");
+        titleElement.textContent = title;
+        svgClone.insertBefore(titleElement, svgClone.firstChild);
+
+        // Move all existing content down to make room for title
+        const mainGroup = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "g"
+        );
+        mainGroup.setAttribute("transform", `translate(0, ${titleHeight})`);
+
+        // Move all existing children (except the title) into the main group
+        const existingChildren = Array.from(svgClone.children).filter(
+          (child) => child !== titleElement
+        );
+        existingChildren.forEach((child) => {
+          mainGroup.appendChild(child);
+        });
+        svgClone.appendChild(mainGroup);
+
+        // Embed CSS styles directly in the SVG
+        const style = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "style"
+        );
+        style.textContent = `
+        .circle-text {
+            font-size: 12px;
+            text-anchor: middle;
+            dominant-baseline: central;
+            pointer-events: none;
+            fill: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        }
+        .circle {
+            cursor: pointer;
+        }
+    `;
+        svgClone.insertBefore(style, titleElement);
+
+        const svgData = new XMLSerializer().serializeToString(svgClone);
+
+        // Create SVG blob with proper styling
+        const svgBlob = new Blob([svgData], {
+          type: "image/svg+xml;charset=utf-8",
+        });
+
+        // Create download link
+        const downloadLink = document.createElement("a");
+        downloadLink.href = URL.createObjectURL(svgBlob);
+        downloadLink.download = `${title.toLowerCase().replace(/\s+/g, '-')}.svg`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(downloadLink.href);
+      }
+
+      // Function to save as PNG
+      function savePNG() {
+        const svgElement = document.querySelector("#chart svg");
+
+        // Clone the SVG to avoid modifying the original
+        const svgClone = svgElement.cloneNode(true);
+
+        // Increase SVG height to accommodate title
+        const titleHeight = 50;
+        svgClone.setAttribute("height", height + titleHeight);
+        svgClone.setAttribute(
+          "viewBox",
+          `0 0 ${width} ${height + titleHeight}`
+        );
+
+        // Add title to the SVG
+        const titleElement = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "text"
+        );
+        titleElement.setAttribute("x", width / 2);
+        titleElement.setAttribute("y", 30);
+        titleElement.setAttribute("text-anchor", "middle");
+        titleElement.setAttribute("font-family", "Arial, sans-serif");
+        titleElement.setAttribute("font-size", "24");
+        titleElement.setAttribute("font-weight", "normal");
+        titleElement.setAttribute("fill", "#333");
+        titleElement.textContent = title;
+        svgClone.insertBefore(titleElement, svgClone.firstChild);
+
+        // Move all existing content down to make room for title
+        const mainGroup = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "g"
+        );
+        mainGroup.setAttribute("transform", `translate(0, ${titleHeight})`);
+
+        // Move all existing children (except the title) into the main group
+        const existingChildren = Array.from(svgClone.children).filter(
+          (child) => child !== titleElement
+        );
+        existingChildren.forEach((child) => {
+          mainGroup.appendChild(child);
+        });
+        svgClone.appendChild(mainGroup);
+
+        // Embed CSS styles directly in the SVG
+        const style = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "style"
+        );
+        style.textContent = `
+        .circle-text {
+            font-size: 12px;
+            text-anchor: middle;
+            dominant-baseline: central;
+            pointer-events: none;
+            fill: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        }
+        .circle {
+            cursor: pointer;
+        }
+    `;
+        svgClone.insertBefore(style, titleElement);
+
+        const svgData = new XMLSerializer().serializeToString(svgClone);
+
+        // Create a canvas element
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        // Set canvas size to match the new SVG dimensions
+        canvas.width = width;
+        canvas.height = height + titleHeight;
+
+        // Create an image element
+        const img = new Image();
+
+        img.onload = function () {
+          // Draw the image on canvas
+          ctx.fillStyle = "white"; // Set background color
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0);
+
+          // Convert canvas to blob and download
+          canvas.toBlob(function (blob) {
+            const downloadLink = document.createElement("a");
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = `${title.toLowerCase().replace(/\s+/g, '-')}.png`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(downloadLink.href);
+          }, "image/png");
+        };
+
+        // Convert SVG to data URL
+        const svgBlob = new Blob([svgData], {
+          type: "image/svg+xml;charset=utf-8",
+        });
+        const url = URL.createObjectURL(svgBlob);
+        img.src = url;
+      }
+
+      // Initialize the visualization
+      const hierarchyData = prepareData(termCounts);
+      createPackedCircles(hierarchyData);
+    </script>
+  </body>
+</html>

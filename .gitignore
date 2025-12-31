@@ -1,0 +1,53 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Local environment variables
+.env
+
+# Unit test / coverage reports
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.pytest_cache/
+htmlcov/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# mkdocs documentation
+/docs
+/z_src
+/doc_src/llms
+
+# Vscode config files
+.vscode.json
+.vscode/
+
+# Private development files
+deprecated/
+dev_files/
+
+#test
+src/lexos/cutter/token_chunks/*.txt
+
+# test coverage
+htmlcov/
+
+# Just File
+.justfile
