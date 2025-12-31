@@ -8,15 +8,19 @@ Here is a list of the currently available tutorials, organised by module:
 
 ## Cluster
 
-- Dendrograms (Hierarchical Agglomerative Clustering): [📓 Notebook](cluster/dendrogram_tutorial.ipynb) | [🗄️ Data](cluster/data.zip)
-- Clustermaps (Hierarchical Agglomerative Clustering): [📓 Notebook](cluster/clustermap_tutorial.ipynb) | [🗄️ Data](cluster/data.zip)
-- Bootstrap Consenus Trees (Hierarchical Agglomerative Clustering): [📓 Notebook](cluster/bct_tutorial.ipynb) | [🗄️ Data](cluster/FilesToUse.zip)
-- K-Means Clustering: [📓 Notebook](cluster/kmeans_tutorial.ipynb) | [🗄️ Data](cluster/FilesToUse.zip)
+<ul>
+<li>Dendrograms (Hierarchical Agglomerative Clustering): <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/dendrogram_tutorial.ipynb">📓 Notebook</a> | <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/data.zip">🗄️ Data</a></li>
+<li>Clustermaps (Hierarchical Agglomerative Clustering): <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/clustermap_tutorial.ipynb">📓 Notebook</a> | <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/data.zip">🗄️ Data</a></li>
+<li>Bootstrap Consenus Trees (Hierarchical Agglomerative Clustering): <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/bct_tutorial.ipynb">📓 Notebook</a> | <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/FilesToUse.zip">🗄️ Data</a></li>
+<li>K-Means Clustering: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/kmeans_tutorial.ipynb">📓 Notebook</a> | <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/FilesToUse.zip">🗄️ Data</a></li>
+</ul>
 
 ## Corpus
 
-- Corpus Tutorial: [📓 Notebook](corpus/corpus_tutorial.ipynb)
-- SQLite Tutorial: [📓 Notebook](corpus/sqlite_tutorial.ipynb)
+<ul>
+<li>Corpus Tutorial: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/corpus/corpus_tutorial.ipynb">📓 Notebook</a></li>
+<li>SQLite Tutorial: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/corpus/sqlite_tutorial.ipynb">📓 Notebook</a></li>
+</ul>
 
 ## Cutter
 
