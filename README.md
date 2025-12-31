@@ -45,8 +45,6 @@ uv add lexos
 
 Lexos uses <a href="https://spacy.io/" target="_blank">spaCy</a> language models to obtain language-specific information about texts. By default, it comes with spaCy's multi-language model `xx_sent_ud_sm` and its small English-language `en_core_web_sm`.
 
-Before using Lexos, you will want to install its default language model:
-
 If you are working in another language or need a larger language model, you can download instructions for additional models from the <a href="https://spacy.io/models" target="_blank">spaCy models</a> page. Use the following command:
 
 ```bash
