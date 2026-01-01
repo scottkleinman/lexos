@@ -43,4 +43,4 @@ This project is licensed under the MIT License - see the <a href="https://github
 
 ## Citation Information
 
-Kleinman, S., (2025). Lexos. v0.1.0b3 https://github.com/scottkleinman/lexos. <a href="https://doi.org/10.5281/zenodo.18112380" target="_blank">doi:10.5281/zenodo.1403869</a>.
+Kleinman, S., (2026). Lexos. v0.1.0b3 https://github.com/scottkleinman/lexos. <a href="https://doi.org/10.5281/zenodo.18112380" target="_blank">doi:10.5281/zenodo.1403869</a>.
