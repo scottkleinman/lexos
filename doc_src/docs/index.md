@@ -36,3 +36,11 @@ If are looking for help using Lexos, please post you question on the <a href="ht
 ## Contributing
 
 Lexos is an open-source project, and contributions from the public are welcome. If you are interested in contributing or have a bug to report, see the [Development](development/index.md) pages for information on how to get started.
+
+## License
+
+This project is licensed under the MIT License - see the <a href="https://github.com/scottkleinman/lexos/blob/main/LICENSE" target="_blank">LICENSE</a> file for details.
+
+## Citation Information
+
+Kleinman, S., (2025). Lexos. v0.1.0b3 https://github.com/scottkleinman/lexos. <a href="https://doi.org/10.5281/zenodo.18112380" target="_blank">doi:10.5281/zenodo.1403869</a>.

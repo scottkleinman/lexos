@@ -62,3 +62,11 @@ I will continue to fix bugs and improve the documentation as issues arise, but n
 - If are looking for help using Lexos, please post you question on the <a href="https://github.com/scottkleinman/lexos/discussions" target="_blank">GitHub Discussions board</a>.
 - Bug reports and feature requests: Please use [GitHub issues](https://github.com/scottkleinman/lexos/issues).
 - For other types of contributions see the <a href="https://scottkleinman.github.io/lexos/development/" target="_blank">Documentation website</a>.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📝 Citation Information
+
+Kleinman, S., (2025). Lexos. v0.1.0b3 https://github.com/scottkleinman/lexos. <a href="https://doi.org/10.5281/zenodo.18112380" target="_blank">doi:10.5281/zenodo.1403869</a>.
