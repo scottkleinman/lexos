@@ -5,6 +5,10 @@ This page provides a general overview of code conventions used in the Lexos proj
 !!! note
     Some discussion and examples in this coding guide are reproduced from spaCy's very well-documented <a href="https://github.com/explosion/spaCy/blob/master/extra/DEVELOPER_DOCS/Code%20Conventions.md" target="_blank">code conventions</a>, which we consider an excellent guide to best practices. Adjustments have been made where Lexos differs from or adds to spaCy's guidelines.
 
+## Policy on AI-Assisted Contributions
+
+See the separate [Policy on AI-Assisted Contributions](ai-policy.md) page for information on the use of AI tools in contributing to this repository.
+
 ## Code Compatibility and Consistency
 
 Lexos supports **Python 3.12** and above, so all code should be written compatible with 3.12.

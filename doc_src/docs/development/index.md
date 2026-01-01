@@ -72,6 +72,10 @@ Contributions for all three are welcome. If you design a new feature or module, 
 
 📖 **For instructions on how to edit, build, and run the <a href="https://scottkleinman.github.io/lexos/" target="_blank">documentation website</a> locally see the [Lexos Documentation](documentation.md) page.**
 
+### Policy on AI-Assisted Contributions
+
+See the separate [Policy on AI-Assisted Contributions](ai-policy.md) page for information on the use of AI tools in contributing to this repository.
+
 ### Submitting Your Contribution
 
 Before committing your changes, make sure to read the [Code Conventions](code-conventions.md) and the [Code Style Workflow](code-conventions.md#code-style-workflow) section on that page.
