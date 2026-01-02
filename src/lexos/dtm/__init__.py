@@ -1,6 +1,6 @@
 """__init__.py.
 
-Last Update: December 7, 2025
+Last Update: January 2, 2026
 Last Tested: November 10, 2025
 
 # WARNING: The sorted_terms_list and sorted_term_counts properties only work if the DTM has been built with a vectorizer that has compatible `terms_list` and `vocabulary_terms` attributes.
@@ -73,26 +73,22 @@ class DTM(BaseModel):
 
     docs: Optional[list[list[str] | Doc]] = Field(
         default=None,
-        json_schema_extra={
-            "description": "A list of spaCy docs or a list of token lists."
-        },
+        description="A list of spaCy docs or a list of token lists."
     )
     labels: Optional[list[str]] = Field(
         default=None,
-        json_schema_extra={"description": "A list of labels for the documents."},
+        description="A list of labels for the documents."
     )
     vectorizer: Optional[Callable] = Field(
         default=TextacyVectorizer,
-        json_schema_extra={
-            "description": "A callable Vectorizer. Must have a fit_transform() method."
-        },
+        description="A callable Vectorizer. Must have a fit_transform() method."
     )
     alg: Optional[ns] = Field(
         default=ns.LOCALE,
-        json_schema_extra={"description": "The sorting algorithm to use."},
+        description="The sorting algorithm to use."
     )
     doc_term_matrix: Optional[sp.spmatrix] = Field(
-        default=None, json_schema_extra={"description": "The document-term matrix."}
+        default=None, description="The document-term matrix."
     )
 
     model_config = validation_config
