@@ -2,6 +2,9 @@ site_name: Lexos Documentation
 site_dir: "../docs"
 site_url: https://lexos.github.io/en/latest/
 
+not_in_nav: |
+  development/ai-policy.md
+
 nav:
   - Home: index.md
   - Installation: installation.md
