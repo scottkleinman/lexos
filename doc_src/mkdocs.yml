@@ -217,7 +217,7 @@ extra:
       link: https://github.com/scottkleinman/uv_lexos/
   analytics:
     provider: google
-    property: G-S7XYDZ16KZ
+    property: G-CCV9P9432L
 
 plugins:
   - search
