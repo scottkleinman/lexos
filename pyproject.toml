@@ -1,6 +1,6 @@
 [project]
 name = "lexos"
-version = "0.1.0b3"
+version = "0.1.0b31"
 description = "A Python library that reproduces and extends text analysis tools from the Lexos web app. Designed for entry-level students and researchers in the Humanities, with language-agnostic support for historical and under-resourced languages."
 readme = "README.md"
 license = "MIT"
