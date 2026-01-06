@@ -8,17 +8,25 @@ Lexos requires Python 3.12 or greater. Our development environment is <code><a h
 
 ## Installing the Lexos Package
 
-If using uv, run
+You can install Lexos using pip:
+
+```bash
+pip install lexos
+```
+
+If you are using `uv`, run
 
 ```bash
 uv add lexos
 ```
 
-Otherwise, you can install Lexos using pip:
+!!! note
+    Lexos depends on a pre-release version of the Python `puremagic` library. In some cases, `uv` may prevent installation. If you encounter this problem, try `uv add lexos --prerelease=allow`. If you are using Lexos as a dependency in your project, add the following to your `pyproject.toml` file:
 
-```bash
-pip install lexos
-```
+    ```toml
+    [tool.uv]
+    prerelease = "allow"
+    ```
 
 This will install the Lexos API and all of its dependencies.
 

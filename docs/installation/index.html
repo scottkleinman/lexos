@@ -4879,15 +4879,22 @@
 <h2 id="installing-python">Installing Python<a class="headerlink" href="#installing-python" title="Permanent link">¤</a></h2>
 <p>Lexos requires Python 3.12 or greater. Our development environment is <code><a href="https://docs.astral.sh/uv/" target="blank">uv</a></code>, and Lexos should work in a Python virtual environment created using that tool. If you are using a different Python environment, you can install Lexos using <code>pip</code>.</p>
 <h2 id="installing-the-lexos-package">Installing the Lexos Package<a class="headerlink" href="#installing-the-lexos-package" title="Permanent link">¤</a></h2>
-<p>If using uv, run</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>uv<span class="w"> </span>add<span class="w"> </span>lexos
+<p>You can install Lexos using pip:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>lexos
 </span></code></pre></div>
-<p>Otherwise, you can install Lexos using pip:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>lexos
+<p>If you are using <code>uv</code>, run</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>uv<span class="w"> </span>add<span class="w"> </span>lexos
 </span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Lexos depends on a pre-release version of the Python <code>puremagic</code> library. In some cases, <code>uv</code> may prevent installation. If you encounter this problem, try <code>uv add lexos --prerelease=allow</code>. If you are using Lexos as a dependency in your project, add the following to your <code>pyproject.toml</code> file:</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">[tool.uv]</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">prerelease</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;allow&quot;</span>
+</span></code></pre></div>
+</div>
 <p>This will install the Lexos API and all of its dependencies.</p>
 <p>By default, <code>uv</code> installs the latest version of Lexos. To update to the latest version with <code>pip</code>, use</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>lexos
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>lexos
 </span></code></pre></div>
 <h2 id="downloading-language-models">Downloading Language Models<a class="headerlink" href="#downloading-language-models" title="Permanent link">¤</a></h2>
 <p>Many features of Lexos use language models created for the Python <a href="https://spacy.io/" target="_blank">spaCy</a> natural language processing library. When you install Lexos, spaCy's multi-language model <code><a href="https://spacy.io/models/xx#xx_sent_ud_sm" target="_blank">xx_sent_ud_sm</a></code> and small English model <code><a href="https://spacy.io/models/en#en_core_web_sm" target="_blank">en_core_web_sm</a></code> are installed. For information on how Lexos uses language models, see <a href="../user_guide/tokenizing_texts/">Tokenizing Texts</a>.</p>
@@ -4895,22 +4902,22 @@
 <p>The <code>xx_sent_ud_sm</code> model is a minimal model that can be used for sentence and token segmentation in a variety of languages, while the <code>en_core_web_sm</code> model is specifically for English text. If you are working in another language or need a larger language, you may need to download additional language models. You can find information on available models on the <a href="https://spacy.io/models" target="_blank">spaCy models</a> page.</p>
 <p>To download a model (for instance, the small Chinese model <code>zh_core_web_sm</code>), you can run the following commands in your terminal.</p>
 <p>If you are using <code>uv</code>, run:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>spacy<span class="w"> </span>download<span class="w"> </span>zh_core_web_sm
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>spacy<span class="w"> </span>download<span class="w"> </span>zh_core_web_sm
 </span></code></pre></div>
 <p>or, if you are not using <code>uv</code>, you can run:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python<span class="w"> </span>-m<span class="w"> </span>spacy<span class="w"> </span>download<span class="w"> </span>zh_core_web_sm
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>python<span class="w"> </span>-m<span class="w"> </span>spacy<span class="w"> </span>download<span class="w"> </span>zh_core_web_sm
 </span></code></pre></div>
 <h2 id="verify-installation">Verify Installation<a class="headerlink" href="#verify-installation" title="Permanent link">¤</a></h2>
 <p>To verify that Lexos is installed correctly, you can run the following command in your terminal:</p>
 <p>If you are using <code>uv</code>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>lexos<span class="w"> </span>--version
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>lexos<span class="w"> </span>--version
 </span></code></pre></div>
 <p>or, if you are not using <code>uv</code>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>python<span class="w"> </span>-m<span class="w"> </span>lexos<span class="w"> </span>--version
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>python<span class="w"> </span>-m<span class="w"> </span>lexos<span class="w"> </span>--version
 </span></code></pre></div>
 <p>If you are using a Jupyter notebook, you can also check the installation by running the following code in a cell:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">import</span> <span class="nn">lexos</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">lexos</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">import</span> <span class="nn">lexos</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">lexos</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </span></code></pre></div>
 <p>This should display the version of Lexos that is installed. If you see an error, please check your installation steps or refer to the <a href="#troubleshooting">Troubleshooting</a> section below.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¤</a></h2>
@@ -4919,7 +4926,7 @@
 <p><strong>Issue:</strong> You see an error like <code>ModuleNotFoundError</code> or <code>SyntaxError</code> when installing or running Lexos.</p>
 <p><strong>Solution:</strong>
 Lexos requires Python 3.12 or greater. Check your Python version with:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>python<span class="w"> </span>--version
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python<span class="w"> </span>--version
 </span></code></pre></div>
 <p>If your version is lower than 3.12, please install a compatible version and create a new virtual environment.</p>
 <h3 id="2-uv-or-pip-not-found">2. <code>uv</code> or <code>pip</code> Not Found<a class="headerlink" href="#2-uv-or-pip-not-found" title="Permanent link">¤</a></h3>
@@ -4934,9 +4941,9 @@ Always use a virtual environment for Lexos. If you must install globally, you ma
 <p><strong>Issue:</strong> You see an error like <code>OSError: [E050] Can't find model 'en_core_web_sm'</code> or similar when running Lexos features that use spaCy.</p>
 <p><strong>Solution:</strong>
 Install the required spaCy model using one of the following commands:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>spacy<span class="w"> </span>download<span class="w"> </span>en_core_web_sm
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># or, if not using uv:</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>python<span class="w"> </span>-m<span class="w"> </span>spacy<span class="w"> </span>download<span class="w"> </span>en_core_web_sm
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>spacy<span class="w"> </span>download<span class="w"> </span>en_core_web_sm
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="c1"># or, if not using uv:</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>python<span class="w"> </span>-m<span class="w"> </span>spacy<span class="w"> </span>download<span class="w"> </span>en_core_web_sm
 </span></code></pre></div>
 <h3 id="5-lexos-not-found-after-installation">5. Lexos Not Found After Installation<a class="headerlink" href="#5-lexos-not-found-after-installation" title="Permanent link">¤</a></h3>
 <p><strong>Issue:</strong> Running <code>python -m lexos --version</code> or <code>import lexos</code> fails with <code>ModuleNotFoundError</code>.</p>
@@ -4946,9 +4953,9 @@ Ensure you are in the correct virtual environment where Lexos was installed. Act
 <p><strong>Issue:</strong> Installation fails with errors about incompatible or missing dependencies.</p>
 <p><strong>Solution:</strong>
 Update your package manager:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="c1"># or</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>uv
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="c1"># or</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>uv
 </span></code></pre></div>
 <p>If you encounter any other problems not covered here, please consider reaching out to the Lexos community Discussion forum on GitHub or checking the <a href="https://github.com/scottkleinman/lexos/issues" target="_blank">GitHub Issues page</a> for assistance.</p>
 
