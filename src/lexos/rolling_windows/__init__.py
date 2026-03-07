@@ -138,7 +138,6 @@ class Windows(BaseModel):
             length = len(input.text)
         else:
             length = len(input)
-        length = len(input)
         boundaries = [(i, i + self.n) for i in range(length) if i + self.n <= length]
         for start, end in boundaries:
             if self.alignment_mode == "strict":
