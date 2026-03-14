@@ -1,7 +1,7 @@
 """record.py.
 
-Last updated: December 4, 2025
-Last tested: November 20, 2025
+Last updated: March 14, 2026
+Last tested: March 14, 2026
 
 
 Wrapping texts and spaCy Docs in a Pydantic model provides a lot of extra functionality, particularly through the model_dump() and model_dump_json() methods. See the Pydantic documentation for more information.
@@ -343,7 +343,7 @@ class Record(BaseModel):
 
         # Update the record with the loaded data
         for k, v in data.items():
-            if k in self.model_fields:
+            if k in self.__class__.model_fields:
                 if k != "content":
                     setattr(self, k, v)
 
@@ -496,7 +496,9 @@ class Record(BaseModel):
         # they might trigger evaluation and raise `LexosException` for
         # unparsed `Record` objects. The saved content is handled below,
         # and `id` is stringified to ensure JSON compatibility.
-        data = self.model_dump(exclude=["terms", "text", "tokens"])
+        # NOTE: `is_parsed` is intentionally included so deserialization can
+        # properly reconstruct parsed content.
+        data = self.model_dump(exclude=["preview", "terms", "text", "tokens"])
 
         # Make UUID serialisable
         data["id"] = str(data["id"])
