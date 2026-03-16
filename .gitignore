@@ -3,6 +3,9 @@ __pycache__/
 *.py[oc]
 build/
 dist/
+# keep just this one dist/ directory
+!src/lexos/topic_modeling/dfr_browser2/dist/
+!src/lexos/topic_modeling/dfr_browser2/dist/**
 wheels/
 *.egg-info
 

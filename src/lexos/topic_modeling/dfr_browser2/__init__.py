@@ -1,6 +1,6 @@
 """__init__.py.
 
-Last Updated: December 25, 2025
+Last Updated: March 15, 2026
 Last Tested: December 25, 2025
 """
 
@@ -63,7 +63,7 @@ class Browser(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
     # Version of the browser distribution this class is creating/serving
-    BROWSER_VERSION: ClassVar[str] = "0.2.3"
+    BROWSER_VERSION: ClassVar[str] = "0.2.5"
 
     # Class-level constants for required files
     REQUIRED_FILES: ClassVar[set[str]] = {

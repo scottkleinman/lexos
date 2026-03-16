@@ -1,0 +1,10 @@
+/* Custom Sort Modal: Make modal-body scrollable if content overflows */
+#customSortModal .modal-body {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* Ensure JSON-CSL info section is always visible when scrolled to */
+#customSortModal #json-csl-info {
+  scroll-margin-top: 16px;
+}
