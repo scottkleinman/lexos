@@ -842,6 +842,86 @@ def test_get_topic_term_probabilities(tmp_model_dir):
     assert isinstance(s, str)
 
 
+def test_plot_termite_builds_components_and_maps_highlights(tmp_model_dir):
+    """Ensure plot_termite passes a correctly shaped components DataFrame to textacy."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+
+    fake_distributions = {
+        0: {"apple": 0.6, "banana": 0.4},
+        1: {"apple": 0.2, "carrot": 0.8},
+    }
+    expected_save = str(tmp_model_dir / "termite.png")
+    captured = {}
+
+    def fake_plotter(**kwargs):
+        captured.update(kwargs)
+        return "fake-axis"
+
+    with patch(
+        "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_distributions,
+    ):
+        with patch("textacy.viz.termite.termite_df_plot", side_effect=fake_plotter):
+            axis = m.plot_termite(
+                topics=[1, 0],
+                highlight_topics=[1],
+                n_terms=15,
+                output_path=expected_save,
+            )
+
+    assert axis == "fake-axis"
+    assert list(captured["components"].columns) == ["Topic 1", "Topic 0"]
+    assert captured["components"].loc["banana", "Topic 1"] == 0.0
+    assert captured["highlight_topics"] == ["Topic 1"]
+    assert captured["n_terms"] == 15
+    assert captured["save"] == expected_save
+
+
+def test_plot_termite_rejects_unknown_topics(tmp_model_dir):
+    """Invalid topic selections should raise ValueError before plotting."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+
+    with patch(
+        "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
+        return_value={0: {"apple": 1.0}},
+    ):
+        with pytest.raises(ValueError):
+            m.plot_termite(topics=[2])
+
+
+def test_plot_termite_plotly_builds_figure(tmp_model_dir):
+    """Ensure plot_termite_plotly returns a Plotly figure with non-zero topic-term points."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    fake_distributions = {
+        0: {"apple": 0.6, "banana": 0.4},
+        1: {"apple": 0.0, "carrot": 0.8},
+    }
+
+    with patch(
+        "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_distributions,
+    ):
+        fig = m.plot_termite_plotly(topics=[0, 1], n_terms=3, marker_scale=10)
+
+    assert len(fig.data) == 1
+    assert fig.data[0].mode == "markers"
+    # zero-probability entries should be filtered out
+    assert ("Topic 1", "apple") not in list(zip(fig.data[0].x, fig.data[0].y))
+    assert all(size > 0 for size in fig.data[0].marker.size)
+
+
+def test_plot_termite_plotly_invalid_rank_metric_raises(tmp_model_dir):
+    """Invalid rank_terms_by should raise ValueError."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+
+    with patch(
+        "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
+        return_value={0: {"apple": 1.0}},
+    ):
+        with pytest.raises(ValueError):
+            m.plot_termite_plotly(rank_terms_by="median")
+
+
 def test_import_docs_method_writes_training_data(tmp_model_dir, monkeypatch):
     """Ensure `Mallet.import_docs` writes the training file and records its path in metadata."""
     m = Mallet(model_dir=str(tmp_model_dir))

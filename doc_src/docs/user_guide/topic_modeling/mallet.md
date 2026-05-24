@@ -280,6 +280,67 @@ mallet_model.get_topic_term_probabilities(topics=[0, 1], n=10, as_df=True)
 
 ---
 
+## Visualizing Topic-Term Weights with a Termite Plot
+
+The `plot_termite()` method creates a termite plot using MALLET topic-term weights and the `textacy` visualization API. This view is especially useful for comparing important terms across multiple topics at once. For more information on termite plots, see Chuang, Jason, Christopher D. Manning, and Jeffrey Heer. “Termite: Visualization techniques for assessing textual topic models.” *Proceedings of the International Working Conference on Advanced Visual Interfaces*. ACM, 2012.
+
+The method takes the following parameters:
+
+- `topics`: Topic index or list of indices to include. If `None`, all topics are used.
+- `highlight_topics`: Topic index, label, or list of topic indices/labels to visually emphasize.
+- `n_terms`: Number of top terms to include in the plot.
+- `rank_terms_by`: How terms are ranked before selection (for example, `"max"`, `"mean"`, `"var"`).
+- `sort_terms_by`: How selected terms are ordered in the display (for example, `"seriation"`, `"weight"`, `"index"`, `"alphabetical"`).
+- `output_path`: Optional path for saving the figure.
+- `rc_params`: Optional matplotlib style overrides passed to `textacy`.
+
+```python
+ax = mallet_model.plot_termite(
+    topics=[0, 1, 2, 3],
+    highlight_topics=[1],
+    n_terms=20,
+    sort_terms_by="seriation",
+    output_path="termite_plot.png"
+)
+```
+
+If `output_path` is omitted, the method returns the matplotlib axis so you can customize or display the figure in your notebook environment.
+
+---
+
+## Visualizing Topic-Term Weights with an Interactive Plotly Termite Plot
+
+The `plot_termite_plotly()` method creates an interactive termite plot as a Plotly figure. This is useful when you want hover details, easy zooming, and shareable HTML output.
+
+The method takes the following parameters:
+
+- `topics`: Topic index or list of indices to include. If `None`, all topics are used.
+- `n_terms`: Number of terms to include in the plot.
+- `rank_terms_by`: Metric used to select terms (`"max"`, `"mean"`, or `"var"`).
+- `sort_terms_by`: How selected terms are ordered (`"weight"`, `"alphabetical"`, or `"index"`).
+- `marker_scale`: Multiplier that controls marker size relative to term probability.
+- `colorscale`: Plotly colorscale name for marker colors.
+- `title`: Plot title.
+- `output_path`: Optional path to save the interactive figure as an HTML file.
+
+```python
+fig = mallet_model.plot_termite_plotly(
+    topics=[0, 1, 2],
+    n_terms=20,
+    rank_terms_by="max",
+    sort_terms_by="weight",
+    marker_scale=50,
+    output_path="termite_plotly.html"
+)
+
+# In notebooks, display inline
+fig.show()
+```
+
+If `output_path` is provided, Lexos saves an interactive HTML file you can open in a browser.
+
+---
+
 ## Visualizing Topic Probabilities by Category with Boxplots
 
 The `plot_categories_by_topic_boxplots()` method lets you visualize how topic probabilities are distributed across different categories (e.g., genres, labels, or other groupings). This is useful for understanding which topics are most associated with which categories in your data.

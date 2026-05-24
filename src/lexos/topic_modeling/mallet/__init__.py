@@ -869,6 +869,236 @@ class Mallet(BaseModel):
         return result
 
     @validate_call(config=model_config)
+    def plot_termite(
+        self,
+        topics: Optional[int | list[int]] = None,
+        highlight_topics: Optional[int | str | list[int | str]] = None,
+        n_terms: int = 25,
+        rank_terms_by: str = "max",
+        sort_terms_by: str = "seriation",
+        output_path: Optional[str] = None,
+        rc_params: Optional[dict[str, Any]] = None,
+    ) -> Any:
+        """Plot a termite chart from MALLET topic-term outputs using textacy.
+
+        Args:
+            topics (Optional[int | list[int]]): Topic index or indices to include.
+                If None, all available topics are used.
+            highlight_topics (Optional[int | str | list[int | str]]): Topic labels
+                or indices to highlight in the plot.
+            n_terms (int): Number of top terms to include in the plot.
+            rank_terms_by (str): Metric used by textacy to rank terms.
+            sort_terms_by (str): Method used by textacy to sort selected terms.
+            output_path (Optional[str]): If provided, save the figure to this path.
+            rc_params (Optional[dict[str, Any]]): Matplotlib rc params passed to
+                textacy's plotting helper.
+
+        Returns:
+            Any: A matplotlib axis containing the termite plot.
+
+        Raises:
+            LexosException: If textacy isn't installed or topic-term data is unavailable.
+            ValueError: If requested topics or highlighted topics are invalid.
+        """
+        try:
+            from textacy.viz.termite import termite_df_plot
+        except Exception as e:
+            raise LexosException(
+                "textacy is required for termite plots. Please install textacy and try again."
+            ) from e
+
+        topic_term_probability_dict = self.load_topic_term_distributions()
+        components = pd.DataFrame.from_dict(
+            topic_term_probability_dict, orient="columns"
+        ).fillna(0.0)
+
+        if components.empty:
+            raise LexosException("No topic-term probabilities are available to plot.")
+
+        if isinstance(topics, int):
+            topics = [topics]
+
+        available_topics = list(components.columns)
+        selected_topics = topics if topics is not None else sorted(available_topics)
+        missing_topics = [
+            topic for topic in selected_topics if topic not in available_topics
+        ]
+        if missing_topics:
+            raise ValueError(
+                f"Requested topics {missing_topics} are not available. "
+                f"Available topics: {sorted(available_topics)}"
+            )
+
+        components = components.loc[:, selected_topics]
+        components.columns = [f"Topic {int(topic)}" for topic in components.columns]
+
+        highlight_labels = None
+        if highlight_topics is not None:
+            highlight_labels = []
+            for topic in ensure_list(highlight_topics):
+                if isinstance(topic, int):
+                    highlight_labels.append(f"Topic {topic}")
+                else:
+                    highlight_labels.append(topic)
+
+            missing_highlights = [
+                topic for topic in highlight_labels if topic not in components.columns
+            ]
+            if missing_highlights:
+                raise ValueError(
+                    f"Highlighted topics {missing_highlights} are not available in the selected data. "
+                    f"Available topics: {list(components.columns)}"
+                )
+
+        axis = termite_df_plot(
+            components=components,
+            highlight_topics=highlight_labels,
+            n_terms=n_terms,
+            rank_terms_by=rank_terms_by,
+            sort_terms_by=sort_terms_by,
+            save=output_path or False,
+            rc_params=rc_params,
+        )
+
+        return axis
+
+    @validate_call(config=model_config)
+    def plot_termite_plotly(
+        self,
+        topics: Optional[int | list[int]] = None,
+        n_terms: int = 25,
+        rank_terms_by: str = "max",
+        sort_terms_by: str = "weight",
+        marker_scale: float = 50.0,
+        colorscale: str = "Viridis",
+        title: str = "Termite Plot of Topic Models",
+        output_path: Optional[str] = None,
+    ) -> Any:
+        """Create an interactive termite plot with Plotly.
+
+        Args:
+            topics (Optional[int | list[int]]): Topic index or indices to include.
+                If None, all available topics are used.
+            n_terms (int): Number of terms to include in the plot.
+            rank_terms_by (str): Metric used to select top terms. Supported
+                values are "max", "mean", and "var".
+            sort_terms_by (str): Method used to order selected terms on the y-axis.
+                Supported values are "weight", "alphabetical", and "index".
+            marker_scale (float): Multiplier used to map probabilities to marker size.
+            colorscale (str): Plotly colorscale name for marker colors.
+            title (str): Figure title.
+            output_path (Optional[str]): If provided, save the plot to this path.
+
+        Returns:
+            Any: A Plotly Figure object containing the termite plot.
+
+        Raises:
+            LexosException: If plotly isn't installed or no topic-term data is available.
+            ValueError: If inputs are invalid.
+        """
+        try:
+            import plotly.graph_objects as go
+        except Exception as e:
+            raise LexosException(
+                "plotly is required for interactive termite plots. Please install plotly and try again."
+            ) from e
+
+        if n_terms <= 0:
+            raise ValueError("`n_terms` must be greater than 0.")
+        if marker_scale <= 0:
+            raise ValueError("`marker_scale` must be greater than 0.")
+
+        rank_terms_by = rank_terms_by.lower()
+        sort_terms_by = sort_terms_by.lower()
+        if rank_terms_by not in {"max", "mean", "var"}:
+            raise ValueError("`rank_terms_by` must be one of: 'max', 'mean', 'var'.")
+        if sort_terms_by not in {"weight", "alphabetical", "index"}:
+            raise ValueError(
+                "`sort_terms_by` must be one of: 'weight', 'alphabetical', 'index'."
+            )
+
+        topic_term_probability_dict = self.load_topic_term_distributions()
+        components = pd.DataFrame.from_dict(
+            topic_term_probability_dict, orient="columns"
+        ).fillna(0.0)
+
+        if components.empty:
+            raise LexosException("No topic-term probabilities are available to plot.")
+
+        if isinstance(topics, int):
+            topics = [topics]
+
+        available_topics = list(components.columns)
+        selected_topics = topics if topics is not None else sorted(available_topics)
+        missing_topics = [
+            topic for topic in selected_topics if topic not in available_topics
+        ]
+        if missing_topics:
+            raise ValueError(
+                f"Requested topics {missing_topics} are not available. "
+                f"Available topics: {sorted(available_topics)}"
+            )
+
+        components = components.loc[:, selected_topics]
+        components.columns = [f"Topic {int(topic)}" for topic in components.columns]
+
+        # Select top terms according to the requested ranking metric.
+        scores = components.agg(rank_terms_by, axis=1)
+        top_terms = scores.nlargest(n_terms).index
+        components = components.loc[top_terms]
+
+        if sort_terms_by == "alphabetical":
+            components = components.sort_index()
+        elif sort_terms_by == "index":
+            components = components.sort_index(kind="stable")
+        else:  # weight
+            components = components.loc[
+                components.max(axis=1).sort_values(ascending=False).index
+            ]
+
+        df_melted = components.reset_index().melt(
+            id_vars="index", var_name="Topic", value_name="Probability"
+        )
+        df_melted = df_melted.rename(columns={"index": "Term"})
+        df_melted = df_melted[df_melted["Probability"] > 0]
+
+        fig = go.Figure()
+        fig.add_trace(
+            go.Scatter(
+                x=df_melted["Topic"],
+                y=df_melted["Term"],
+                mode="markers",
+                marker={
+                    "size": df_melted["Probability"] * marker_scale,
+                    "color": df_melted["Probability"],
+                    "colorscale": colorscale,
+                    "showscale": True,
+                    "line": {"color": "DarkSlateGrey", "width": 1},
+                    "sizemin": 2,
+                },
+                customdata=df_melted["Probability"],
+                hovertemplate="Topic: %{x}<br>Term: %{y}<br>Probability: %{customdata:.4f}<extra></extra>",
+            )
+        )
+
+        fig.update_layout(
+            title=title,
+            xaxis_title="Latent Topics",
+            yaxis_title="Keywords",
+            xaxis_tickangle=-45,
+            paper_bgcolor="white",
+            plot_bgcolor="rgba(240, 240, 240, 0.95)",
+            height=600,
+            margin={"l": 100, "r": 50, "t": 100, "b": 100},
+        )
+        fig.update_yaxes(autorange="reversed")
+
+        if output_path:
+            fig.write_html(output_path)
+
+        return fig
+
+    @validate_call(config=model_config)
     def import_dir(
         self,
         data_source: str | list[str],
