@@ -63,7 +63,7 @@ class Browser(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
     # Version of the browser distribution this class is creating/serving
-    BROWSER_VERSION: ClassVar[str] = "0.2.5"
+    BROWSER_VERSION: ClassVar[str] = "0.2.6"
 
     # Class-level constants for required files
     REQUIRED_FILES: ClassVar[set[str]] = {

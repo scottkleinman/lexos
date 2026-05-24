@@ -8,11 +8,33 @@ import CacheManager from './cache-manager.js';
 const CachedDataLoader = {
 
   /**
-   * Get file metadata (size, last modified) for cache versioning
+   * Return a stable model ID for the current deployment.
+   * Uses the base path (i.e. the sub-directory the app is served from) so
+   * that different model deployments always have distinct cache keys even
+   * when running on the same origin.
+   */
+  getModelId() {
+    // window.dfrBasePath is set by the inline script in index.html
+    const base = (window.dfrBasePath || window.location.pathname).replace(/\/$/, '');
+    return base || 'default';
+  },
+
+  /**
+   * Build a model-scoped cache key so that data from different models is
+   * never mixed together in IndexedDB.
+   */
+  buildCacheKey(url) {
+    return `${this.getModelId()}::${url}`;
+  },
+
+  /**
+   * Get file metadata (size, last modified) for cache versioning.
+   * cache: 'no-store' ensures the browser never returns stale headers from
+   * its own HTTP cache — the server always answers the HEAD request.
    */
   async getFileInfo(url) {
     try {
-      const response = await fetch(url, { method: 'HEAD' });
+      const response = await fetch(url, { method: 'HEAD', cache: 'no-store' });
       if (!response.ok) return null;
 
       const size = response.headers.get('Content-Length') || '0';
@@ -33,7 +55,7 @@ const CachedDataLoader = {
    * Load metadata with caching
    */
   async loadMetadata(url, parser) {
-    const cacheKey = url;
+    const cacheKey = this.buildCacheKey(url);
     const fileInfo = await this.getFileInfo(url);
     const version = fileInfo ? fileInfo.version : null;
 
@@ -48,9 +70,9 @@ const CachedDataLoader = {
       console.warn('[CachedLoader] Cache retrieval failed:', err);
     }
 
-    // Load from file
+    // Load from file (bypass browser HTTP cache so we always get fresh data)
     console.log('[CachedLoader] Loading metadata from file');
-    const response = await fetch(url);
+    const response = await fetch(url, { cache: 'no-store' });
     const text = await response.text();
     const data = parser(text);
 
@@ -75,7 +97,7 @@ const CachedDataLoader = {
    * Load topic keys with caching
    */
   async loadTopicKeys(url, parser) {
-    const cacheKey = url;
+    const cacheKey = this.buildCacheKey(url);
     const fileInfo = await this.getFileInfo(url);
     const version = fileInfo ? fileInfo.version : null;
 
@@ -92,7 +114,7 @@ const CachedDataLoader = {
 
     // Load from file
     console.log('[CachedLoader] Loading topic keys from file');
-    const response = await fetch(url);
+    const response = await fetch(url, { cache: 'no-store' });
     const text = await response.text();
     const data = parser(text);
 
@@ -117,7 +139,7 @@ const CachedDataLoader = {
    * Load doc-topics with caching
    */
   async loadDocTopics(url, parser) {
-    const cacheKey = url;
+    const cacheKey = this.buildCacheKey(url);
     const fileInfo = await this.getFileInfo(url);
     const version = fileInfo ? fileInfo.version : null;
 
@@ -134,7 +156,7 @@ const CachedDataLoader = {
 
     // Load from file
     console.log('[CachedLoader] Loading doc-topics from file');
-    const response = await fetch(url);
+    const response = await fetch(url, { cache: 'no-store' });
     const text = await response.text();
     const data = parser(text);
 
@@ -159,7 +181,7 @@ const CachedDataLoader = {
    * Generic cached file loader
    */
   async loadFile(url, storeName, parser = null) {
-    const cacheKey = url;
+    const cacheKey = this.buildCacheKey(url);
     const fileInfo = await this.getFileInfo(url);
     const version = fileInfo ? fileInfo.version : null;
 
@@ -176,7 +198,7 @@ const CachedDataLoader = {
 
     // Load from file
     console.log(`[CachedLoader] Loading from file: ${url}`);
-    const response = await fetch(url);
+    const response = await fetch(url, { cache: 'no-store' });
     const text = await response.text();
     const data = parser ? parser(text) : text;
 
@@ -212,7 +234,7 @@ const CachedDataLoader = {
       console.warn('[CachedLoader] Could not load config for state file path');
     }
 
-    const cacheKey = 'full-vocabulary';
+    const cacheKey = this.buildCacheKey('full-vocabulary');
     const fileInfo = await this.getFileInfo(stateFileUrl);
     const version = fileInfo ? fileInfo.version : null;
 
