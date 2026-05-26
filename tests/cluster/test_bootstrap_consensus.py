@@ -70,6 +70,7 @@ class TestBCT:
             assert bct.text_color == "rgb(0, 0, 0)"
             assert bct.title == "Bootstrap Consensus Tree Result"
             assert bct.layout == "rectangular"
+            assert bct.figsize == (10, 10)
             assert bct.fig is not None
 
     def test_bct_initialization_with_custom_parameters(
@@ -90,6 +91,7 @@ class TestBCT:
                 text_color="rgb(255, 0, 0)",
                 title="Custom Tree",
                 layout="fan",
+                figsize=(10, 8),
             )
 
             assert bct.metric == "manhattan"
@@ -101,6 +103,17 @@ class TestBCT:
             assert bct.text_color == "rgb(255, 0, 0)"
             assert bct.title == "Custom Tree"
             assert bct.layout == "fan"
+            assert bct.figsize == (10, 8)
+
+    def test_validate_figsize_invalid(self, sample_dtm):
+        """Test figsize validation with invalid values."""
+        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
+            mock_fig.return_value = Mock(spec=Figure)
+
+            with pytest.raises(
+                LexosException, match="figsize values must be greater than 0"
+            ):
+                BCT(dtm=sample_dtm, figsize=(0, 10))
 
     def test_doc_term_matrix_property(self, sample_dtm):
         """Test _doc_term_matrix property."""
@@ -527,11 +540,66 @@ class TestBCT:
             mock_gca_obj.tick_params.assert_called_once_with(colors=normalized_color)
 
             # Verify figure sizing and layout
-            expected_height = len(bct._document_label_map) * 0.3 + 1
-            mock_gcf_obj.set_size_inches.assert_called_once_with(
-                w=9.5, h=expected_height
-            )
+            mock_gcf_obj.set_size_inches.assert_called_once_with(w=10, h=10)
             mock_gcf_obj.tight_layout.assert_called_once()
+
+    @patch("matplotlib.pyplot.subplots")
+    @patch("matplotlib.pyplot.xlabel")
+    @patch("matplotlib.pyplot.ylabel")
+    @patch("matplotlib.pyplot.gca")
+    @patch("matplotlib.pyplot.axis")
+    @patch("matplotlib.pyplot.gcf")
+    @patch("matplotlib.pyplot.title")
+    @patch("lexos.cluster.bootstrap_consensus.Phylo.draw")
+    def test_draw_rectangular_tree_custom_figsize(
+        self,
+        mock_phylo_draw,
+        mock_title,
+        mock_gcf,
+        mock_axis,
+        mock_gca,
+        mock_ylabel,
+        mock_xlabel,
+        mock_subplots,
+        sample_dtm,
+    ):
+        """Test _draw_rectangular_tree uses custom figsize when configured."""
+        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
+            mock_fig_method.return_value = Mock(spec=Figure)
+
+            bct = BCT(
+                dtm=sample_dtm,
+                labels=["doc1", "doc2", "doc3", "doc4", "doc5"],
+                figsize=(11, 7),
+            )
+
+            mock_fig_obj = Mock(spec=Figure)
+            mock_ax = Mock()
+            mock_subplots.return_value = (mock_fig_obj, mock_ax)
+
+            mock_gca_obj = Mock()
+            mock_gca_obj.spines = {
+                "top": Mock(),
+                "right": Mock(),
+                "bottom": Mock(),
+                "left": Mock(),
+            }
+            mock_gca_obj.texts = []
+            mock_gca.return_value = mock_gca_obj
+
+            mock_gcf_obj = Mock()
+            mock_gcf_obj.set_size_inches = Mock()
+            mock_gcf_obj.tight_layout = Mock()
+            mock_gcf.return_value = mock_gcf_obj
+
+            mock_axis.return_value = (0, 10, 0, 5)
+
+            mock_tree = Mock()
+            normalized_color = (1.0, 0.5, 0.25)
+
+            bct._draw_rectangular_tree(mock_tree, normalized_color)
+
+            mock_gcf_obj.set_size_inches.assert_called_once_with(w=11, h=7)
 
     @patch("matplotlib.pyplot.subplots")
     @patch("matplotlib.pyplot.title")
@@ -628,7 +696,7 @@ class TestBCT:
 
             # Verify the result and that key functions were called
             assert result == mock_fig_obj
-            mock_subplots.assert_called_once_with(figsize=(12, 12))
+            mock_subplots.assert_called_once_with(figsize=(10, 10))
             mock_ax.set_aspect.assert_called_once_with("equal")
             mock_title.assert_called_once_with(
                 bct.title, color=normalized_color, pad=30, fontsize=16, weight="bold"
@@ -649,6 +717,83 @@ class TestBCT:
             # Verify spines were hidden
             for spine in mock_ax.spines.values():
                 spine.set_visible.assert_called_once_with(False)
+
+    @patch("matplotlib.pyplot.subplots")
+    @patch("matplotlib.pyplot.title")
+    @patch("matplotlib.pyplot.tight_layout")
+    @patch("lexos.cluster.bootstrap_consensus.colorsys.hsv_to_rgb")
+    @patch("lexos.cluster.bootstrap_consensus.mcolors.rgb2hex")
+    def test_draw_fan_tree_custom_figsize(
+        self,
+        mock_rgb2hex,
+        mock_hsv_to_rgb,
+        mock_tight_layout,
+        mock_title,
+        mock_subplots,
+        sample_dtm,
+    ):
+        """Test _draw_fan_tree uses custom figsize when configured."""
+        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
+            mock_fig_method.return_value = Mock(spec=Figure)
+
+            bct = BCT(
+                dtm=sample_dtm,
+                labels=["doc1", "doc2", "doc3", "doc4", "doc5"],
+                figsize=(9, 9),
+            )
+
+            mock_fig_obj = Mock(spec=Figure)
+            mock_ax = Mock()
+            mock_subplots.return_value = (mock_fig_obj, mock_ax)
+
+            mock_hsv_to_rgb.return_value = (0.5, 0.8, 0.9)
+            mock_rgb2hex.return_value = "#1f77b4"
+
+            mock_tree = Mock()
+
+            mock_terminal1 = Mock()
+            mock_terminal1.name = "doc1"
+            mock_terminal1.is_terminal.return_value = True
+            mock_terminal1.clades = []
+
+            mock_terminal2 = Mock()
+            mock_terminal2.name = "doc2"
+            mock_terminal2.is_terminal.return_value = True
+            mock_terminal2.clades = []
+
+            mock_internal = Mock()
+            mock_internal.is_terminal.return_value = False
+            mock_internal.clades = [mock_terminal1, mock_terminal2]
+            mock_internal.name = None
+
+            mock_root = Mock()
+            mock_root.is_terminal.return_value = False
+            mock_root.clades = [mock_internal]
+            mock_root.name = "root"
+
+            mock_tree.get_terminals.return_value = [mock_terminal1, mock_terminal2]
+            mock_tree.root = mock_root
+
+            mock_ax.set_aspect = Mock()
+            mock_ax.plot = Mock()
+            mock_ax.text = Mock()
+            mock_ax.set_xlim = Mock()
+            mock_ax.set_ylim = Mock()
+            mock_ax.set_xticks = Mock()
+            mock_ax.set_yticks = Mock()
+            mock_ax.spines = {
+                "top": Mock(),
+                "right": Mock(),
+                "bottom": Mock(),
+                "left": Mock(),
+            }
+            for spine in mock_ax.spines.values():
+                spine.set_visible = Mock()
+
+            normalized_color = (1.0, 0.5, 0.25)
+            bct._draw_fan_tree(mock_tree, normalized_color, "fan")
+
+            mock_subplots.assert_called_once_with(figsize=(9, 9))
 
     # def test_draw_fan_tree_no_terminals(self, sample_dtm):
     #     """Test _draw_fan_tree with no terminal nodes."""
