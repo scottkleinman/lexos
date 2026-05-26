@@ -30,7 +30,7 @@ print(normalized_text)
 
 ## Example Using in a Pipeline
 
-The example below shows how the components can used in a Scrubber pipeline.
+The example below shows how the components can be used in a Scrubber pipeline.
 
 ```python
 from lexos.scrubber import Scrubber
