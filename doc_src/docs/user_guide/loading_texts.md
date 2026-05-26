@@ -8,7 +8,7 @@ This module contains three main components:
 2. `ParallelLoader`: An optimized version of `Loader` for loading large numbers of files using concurrent processing.
 3. `DataLoader`: A specialized loader for structured data files such as CSVs, JSON, or Excel files.
 
-All loaders inherit from a common `BaseLoader` class that provides a bluepring and common features for other classes. It includes methods for loading files, processing text, and handling errors. If neither of the provided classes can accommodate the content you are trying to load, you can build a custom loader that derives from this class.
+All loaders inherit from a common `BaseLoader` class that provides a blueprint and common features for other classes. It includes methods for loading files, processing text, and handling errors. If neither of the provided classes can accommodate the content you are trying to load, you can build a custom loader that derives from this class.
 
 All loaders built on `BaseLoader` have the following attributes for storing loaded data:
 
