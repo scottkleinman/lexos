@@ -1,7 +1,7 @@
 """This is a model to produce bootstrap consensus tree of the dtm.
 
-Last update: July 25, 2025
-Last tested: December 5, 2025
+Last update: May 26, 2026
+Last tested: May 26, 2026
 
 # TODO:
 - Datatype for `dtm` should match those allowable for the `Dendrogram` class.
@@ -53,6 +53,10 @@ class BCT(BaseModel):
     layout: Optional[str] = Field(
         "rectangular", description="Tree visualization layout: 'rectangular' or 'fan'."
     )
+    figsize: Optional[tuple[float, float]] = Field(
+        (10, 10),
+        description="Optional figure size as (width, height) in inches.",
+    )
     fig: Optional[Figure] = Field(None, description="The figure for the dendrogram.")
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
@@ -99,10 +103,43 @@ class BCT(BaseModel):
     @field_validator("text_color", mode="after")
     @classmethod
     def _validate_text_color(cls, value):
+        """Validate that the text color is a valid color string.
+
+        Args:
+            value (str): The text color string.
+
+        Returns:
+            str: The validated text color string.
+
+        Raises:
+            LexosException: If the text color is not a valid color string.
+        """
         if not is_valid_colour(value):
             raise LexosException(
                 "Value is not a valid colour: string not recognised as a valid colour."
             )
+        return value
+
+    @field_validator("figsize", mode="after")
+    @classmethod
+    def _validate_figsize(cls, value):
+        """Validate that the figure size is a tuple of two positive numbers.
+
+        Args:
+            value (tuple[float, float]): The figure size as (width, height).
+
+        Returns:
+            tuple[float, float]: The validated figure size.
+
+        Raises:
+            LexosException: If the figure size is not valid.
+        """
+        if value is None:
+            return value
+        if len(value) != 2:
+            raise LexosException("figsize must contain exactly two numeric values.")
+        if value[0] <= 0 or value[1] <= 0:
+            raise LexosException("figsize values must be greater than 0.")
         return value
 
     @staticmethod
@@ -247,8 +284,18 @@ class BCT(BaseModel):
         else:
             raise ValueError(f"Unknown layout: {layout}. Use 'rectangular' or 'fan'.")
 
-    def _draw_rectangular_tree(self, tree, normalized_color) -> Figure:
-        """Draw traditional rectangular tree layout."""
+    def _draw_rectangular_tree(
+        self, tree: Phylo, normalized_color: tuple[float, float, float]
+    ) -> Figure:
+        """Draw traditional rectangular tree layout.
+
+        Args:
+            tree (Phylo): The tree to draw.
+            normalized_color (tuple[float, float, float]): The base color for the tree in RGB normalized to [0, 1].
+
+        Returns:
+            Figure: The matplotlib figure containing the rectangular tree visualization.
+        """
         fig, ax = plt.subplots()
 
         Phylo.draw(
@@ -278,7 +325,12 @@ class BCT(BaseModel):
         plt.axis((x_left, x_right * 1.25, y_low, y_high))
 
         # Set the graph size, title, and tight layout
-        plt.gcf().set_size_inches(w=9.5, h=(len(self._document_label_map) * 0.3 + 1))
+        if self.figsize is not None:
+            width, height = self.figsize
+        else:
+            width = 9.5
+            height = len(self._document_label_map) * 0.3 + 1
+        plt.gcf().set_size_inches(w=width, h=height)
         plt.title(self.title, color=normalized_color)
         plt.gcf().tight_layout()
 
@@ -289,10 +341,21 @@ class BCT(BaseModel):
 
         return fig
 
-    def _draw_fan_tree(self, tree, normalized_color, style: str) -> Figure:
-        """Draw fan-style (circular) tree layout with color-coded labels by clade."""
+    def _draw_fan_tree(
+        self, tree: Phylo, normalized_color: tuple[float, float, float]
+    ) -> Figure:
+        """Draw fan-style (circular) tree layout with color-coded labels by clade.
+
+        Args:
+            tree (Phylo): The tree to draw.
+            normalized_color (tuple[float, float, float]): The base color for the tree in RGB normalized to [0, 1].
+
+        Returns:
+            Figure: The matplotlib figure containing the fan-style tree visualization.
+        """
         # Create figure with equal aspect ratio for circular plot
-        fig, ax = plt.subplots(figsize=(12, 12))
+        figsize = self.figsize if self.figsize is not None else (10, 10)
+        fig, ax = plt.subplots(figsize=figsize)
         ax.set_aspect("equal")
 
         # Get all terminal nodes and calculate their positions
@@ -319,8 +382,13 @@ class BCT(BaseModel):
         node_depths = {}
         max_depth = 0
 
-        def calculate_depths(node, depth=0):
-            """Calculate depth from root for each node."""
+        def calculate_depths(node: ClusterNode, depth: int = 0):
+            """Calculate depth from root for each node.
+
+            Args:
+                node (ClusterNode): The current node being processed.
+                depth (int): The depth of the current node from the root.
+            """
             nonlocal max_depth
             node_depths[node] = depth
             max_depth = max(max_depth, depth)
@@ -332,8 +400,15 @@ class BCT(BaseModel):
         calculate_depths(tree.root)
 
         # Generate color palette
-        def generate_colors(n):
-            """Generate n distinct colors."""
+        def generate_colors(n: int) -> list[str]:
+            """Generate n distinct colors.
+
+            Args:
+                n (int): The number of distinct colors to generate.
+
+            Returns:
+                list[str]: A list of n distinct colors.
+            """
             if n <= 10:
                 # Use predefined colors for small numbers
                 colors = [
@@ -366,7 +441,7 @@ class BCT(BaseModel):
             color_palette = generate_colors(10)
             color_index = 0
 
-            def find_terminal_descendants(node):
+            def find_terminal_descendants(node: ClusterNode) -> list[ClusterNode]:
                 """Get all terminal nodes that descend from this node."""
                 if node.is_terminal():
                     return [node]
@@ -376,8 +451,13 @@ class BCT(BaseModel):
                     descendants.extend(find_terminal_descendants(child))
                 return descendants
 
-            def assign_colors_recursive(node, current_depth=0):
-                """Recursively assign colors based on tree structure."""
+            def assign_colors_recursive(node: ClusterNode, current_depth: int = 0):
+                """Recursively assign colors based on tree structure.
+
+                Args:
+                    node (ClusterNode): The current node being processed.
+                    current_depth (int): The depth of the current node from the root.
+                """
                 nonlocal color_index
 
                 if node.is_terminal():
@@ -411,8 +491,15 @@ class BCT(BaseModel):
         node_positions = {}
         terminal_parent_map = {}  # Store parent-child relationships for terminals
 
-        def calculate_positions(node):
-            """Calculate x, y positions for all nodes."""
+        def calculate_positions(node: ClusterNode) -> tuple[float, float, float]:
+            """Calculate x, y positions for all nodes.
+
+            Args:
+                node (ClusterNode): The current node being processed.
+
+            Returns:
+                tuple[float, float, float]: The angle and distance from the center for this node.
+            """
             if node.is_terminal():
                 # Terminal nodes: place directly on circumference
                 angle = terminal_angles[node]
@@ -459,8 +546,12 @@ class BCT(BaseModel):
         calculate_positions(tree.root)
 
         # Draw the tree with proper branching structure
-        def draw_branches(node):
-            """Draw branches connecting nodes with proper tree structure."""
+        def draw_branches(node: ClusterNode):
+            """Draw branches connecting nodes with proper tree structure.
+
+            Args:
+                node (ClusterNode): The current node being processed.
+            """
             if node not in node_positions:
                 return
 
@@ -638,6 +729,9 @@ class BCT(BaseModel):
 
         This is a helper method. You can also reference the figure using `BCT.fig`.
         This will generally display in a Jupyter notebook.
+
+        Returns:
+            Figure: The matplotlib figure containing the tree visualization.
         """
         if self.fig is None:
             raise LexosException(
