@@ -275,6 +275,7 @@ Generating bootrap consensus dendrograms involves submitting the same distance m
 - `doc_labels`: This is simply the list of descriptive names for your documents (e.g., "Poe", "Lippard") that we defined earlier. These will appear as the leaves (endpoints) on your tree.
 - `text_color`: Sets the color for all text on the plot (axis labels, branch lengths, and document labels). You can use "rgb(R, G, B)" format. For example: `"rgb(0, 0, 0)"` (black) or `"rgb(255, 0, 0)"` (red).
 - `layout`: Sets the layout of the dendrogram, either "rectangular" (the default) or "fan".
+- `figsize`: Optional figure size as (width, height) in inches. The default is `(10, 10)`.
 
 ### Plotting Bootstrap Consensus Trees
 
