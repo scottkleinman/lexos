@@ -1,0 +1,760 @@
+"""__init__.py.
+
+Light wrapper around spaCy's training workflow for fine-tuning language models
+on custom corpora. Handles directory setup, config generation (including
+fine-tuning via component sourcing), data conversion, training, and evaluation
+without requiring the user to edit config files or use the command line.
+"""
+
+import sys
+from pathlib import Path
+from time import time
+from typing import Optional, Union
+
+from smart_open import open as smart_open
+from spacy.cli import convert
+from spacy.cli import debug_config as spacy_debug_config
+from spacy.cli import debug_data as spacy_debug_data
+from spacy.cli import debug_model as spacy_debug_model
+from spacy.cli import evaluate as spacy_evaluate
+from spacy.cli import package as spacy_package
+from spacy.cli._util import import_code, setup_gpu, show_validation_error
+from spacy.cli.init_config import fill_config as spacy_fill_config
+from spacy.cli.init_config import init_config
+from spacy.schemas import ConfigSchemaTraining
+from spacy.training.initialize import init_nlp
+from spacy.training.loop import train as spacy_train
+from spacy.util import load_config, load_model_from_config, registry
+from thinc.api import Config, fix_random_seed, set_gpu_allocator
+from wasabi import Printer
+
+# The five-component Universal Dependencies pipeline used for full linguistic
+# annotation (POS, morphology, lemmas, dependency structure).
+FULL_UD_PIPELINE: list[str] = [
+    "tok2vec",
+    "tagger",
+    "morphologizer",
+    "trainable_lemmatizer",
+    "parser",
+]
+
+_RECIPES_DIR = Path(__file__).parent / "recipes"
+
+
+# ---------------------------------------------------------------------------
+# Internal utilities
+# ---------------------------------------------------------------------------
+
+
+class _Timer:
+    """Measure elapsed wall-clock time during training."""
+
+    def __init__(self) -> None:
+        self._start = time()
+
+    def elapsed(self) -> str:
+        """Return elapsed time formatted as HH:MM:SS."""
+        m, s = divmod(time() - self._start, 60)
+        h, m = divmod(m, 60)
+        return "%02d:%02d:%02d" % (h, m, s)
+
+
+# ---------------------------------------------------------------------------
+# Standalone utility: split_conllu
+# ---------------------------------------------------------------------------
+
+
+def split_conllu(
+    input_path: Union[str, Path],
+    output_dir: Union[str, Path],
+    train_ratio: float = 0.8,
+    dev_ratio: float = 0.1,
+    seed: int = 42,
+    shuffle: bool = True,
+    include_test: bool = True,
+) -> dict[str, Path]:
+    """Split a single CONLL-U file into train / dev / (optionally) test files.
+
+    Sentences are the unit of splitting — sentence boundaries are blank lines
+    in the CONLL-U format.
+
+    Args:
+        input_path: Path to the source CONLL-U file.
+        output_dir: Directory where split files will be written.
+        train_ratio: Fraction of sentences for the training split (default 0.8).
+        dev_ratio: Fraction for the dev split (default 0.1).  The test split
+            receives whatever remains (1 - train_ratio - dev_ratio).
+        seed: Random seed for reproducible shuffling (default 42).
+        shuffle: Whether to shuffle sentences before splitting.  Set to False
+            to preserve document order (e.g. split by act / chapter).
+        include_test: Whether to write a test file.  Set to False for workflows
+            that evaluate manually or with an external test set.
+
+    Returns:
+        Dict with keys ``"train"``, ``"dev"``, and (if include_test) ``"test"``
+        mapping to the Path of each written file.  The return value is designed
+        to be unpacked directly into :meth:`LanguageModel.copy_assets`::
+
+            splits = split_conllu("corpus.conllu", "model/assets/en/")
+            model.copy_assets(**splits)
+    """
+    import random
+
+    input_path = Path(input_path)
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    text = input_path.read_text(encoding="utf-8")
+    sentences = [s.strip() for s in text.split("\n\n") if s.strip()]
+
+    if shuffle:
+        rng = random.Random(seed)
+        rng.shuffle(sentences)
+
+    n = len(sentences)
+    n_train = int(n * train_ratio)
+    n_dev = int(n * dev_ratio)
+
+    stem = input_path.stem
+    splits: dict[str, list[str]] = {
+        "train": sentences[:n_train],
+        "dev": sentences[n_train : n_train + n_dev],
+    }
+    if include_test:
+        splits["test"] = sentences[n_train + n_dev :]
+
+    msg = Printer()
+    paths: dict[str, Path] = {}
+    for name, data in splits.items():
+        out = output_dir / f"{stem}-{name}.conllu"
+        out.write_text("\n\n".join(data) + "\n\n", encoding="utf-8")
+        paths[name] = out
+        msg.good(f"  {name:5s}: {len(data):4d} sentences  →  {out}")
+
+    return paths
+
+
+# ---------------------------------------------------------------------------
+# LanguageModel class
+# ---------------------------------------------------------------------------
+
+
+class LanguageModel:
+    """Manage the full lifecycle of a spaCy fine-tuning workflow.
+
+    Creates and maintains a self-contained model directory with the following
+    structure::
+
+        model_dir/
+        ├── config.cfg          spaCy training configuration
+        ├── assets/{lang}/      raw input data (CONLL-U files)
+        ├── corpus/{lang}/      converted spaCy binary (.spacy) files
+        ├── training/{lang}/    trained model checkpoints
+        └── metrics/{lang}/     evaluation output (JSON)
+
+    The config is generated automatically unless a ``recipe`` path is supplied.
+    When ``base_model`` is provided the config uses spaCy's component-sourcing
+    mechanism to warm-start from existing model weights instead of training from
+    random initialisation.
+    """
+
+    def __init__(
+        self,
+        model_dir: str,
+        lang: str = "en",
+        gpu: int = -1,
+        components: Optional[list[str]] = None,
+        base_model: Union[str, dict, None] = None,
+        recipe: Optional[str] = None,
+        force: bool = False,
+    ) -> None:
+        """Initialise the LanguageModel and create its directory structure.
+
+        Args:
+            model_dir: Root folder for all model artefacts.
+            lang: BCP-47 language code (default ``"en"``).  Use ``"xx"`` for
+                a language-agnostic multilingual model.
+            gpu: GPU device ID, or ``-1`` to use CPU (default ``-1``).
+            components: spaCy pipeline components to train.  Defaults to the
+                full Universal Dependencies pipeline
+                ``["tok2vec", "tagger", "morphologizer",
+                "trainable_lemmatizer", "parser"]``.
+            base_model: Starting point for fine-tuning.  Three forms are
+                accepted:
+
+                - ``None`` — train from random initialisation (scratch).
+                - ``str`` — source every component from this model
+                  (installed name like ``"en_core_web_sm"`` or a local path).
+                - ``dict[str, str]`` — map each component name to its own
+                  source model, e.g.
+                  ``{"tok2vec": "en_core_web_sm", "tagger": "en_core_web_sm",
+                  "morphologizer": "training/UD_English-EWT/model-best", ...}``.
+                  Components absent from the dict are initialised from scratch.
+
+                .. note::
+                    If ``tok2vec`` is sourced, all other components must also
+                    be sourced (because factory-defined components reference
+                    tok2vec's width via a config variable that no longer exists
+                    once tok2vec is sourced).  Use a custom ``recipe`` for
+                    mixed architectures.
+
+            recipe: Path to a ``.cfg`` file.  When provided, the file is
+                loaded as-is and ``base_model`` / ``components`` are ignored
+                for config generation (though they still control which GPU is
+                used and where artefacts are stored).
+            force: Overwrite an existing ``config.cfg`` if one already exists.
+        """
+        self.model_dir = Path(model_dir)
+        self.lang = lang
+        self.gpu = gpu
+        self.components = components if components is not None else FULL_UD_PIPELINE.copy()
+        self.base_model = base_model
+        self.config: Optional[Config] = None
+
+        self._config_path = self.model_dir / "config.cfg"
+        self._assets_dir = self.model_dir / "assets" / lang
+        self._corpus_dir = self.model_dir / "corpus" / lang
+        self._metrics_dir = self.model_dir / "metrics" / lang
+        self._training_dir = self.model_dir / "training" / lang
+
+        msg = Printer()
+        for d in [self._assets_dir, self._corpus_dir, self._metrics_dir, self._training_dir]:
+            d.mkdir(parents=True, exist_ok=True)
+
+        if self._config_path.exists() and not force:
+            msg.warn(
+                f"{self._config_path} already exists. "
+                "Pass force=True to regenerate it."
+            )
+            self.config = Config().from_disk(self._config_path)
+            return
+
+        # --- Generate or load config ---
+        if recipe is not None:
+            self._load_recipe(recipe, msg)
+        elif base_model is not None:
+            sources = self._resolve_sources(base_model)
+            self.config = self._generate_finetune_config(sources)
+        else:
+            self.config = init_config(
+                lang=self.lang,
+                pipeline=self.components,
+                optimize="efficiency",
+                gpu=gpu >= 0,
+            )
+
+        self._apply_config_defaults()
+        self.config.to_disk(self._config_path)
+        msg.good(f"Config saved to {self._config_path}")
+        msg.text("Next: copy_assets() → convert_assets() → train()")
+
+    # ------------------------------------------------------------------
+    # Internal helpers
+    # ------------------------------------------------------------------
+
+    def _load_recipe(self, recipe: str, msg: Printer) -> None:
+        """Load a config from a recipe file path."""
+        recipe_path = Path(recipe)
+        if not recipe_path.exists():
+            recipe_path = _RECIPES_DIR / recipe
+        if not recipe_path.exists():
+            raise FileNotFoundError(
+                f"Recipe not found: {recipe}\n"
+                f"Checked: {Path(recipe).resolve()} and {_RECIPES_DIR / recipe}"
+            )
+        self.config = Config().from_disk(recipe_path)
+        msg.good(f"Loaded recipe: {recipe_path}")
+
+    def _resolve_sources(self, base_model: Union[str, dict]) -> dict[str, str]:
+        """Normalise base_model to a component→source mapping."""
+        if isinstance(base_model, str):
+            return {comp: base_model for comp in self.components}
+        # dict form — validate tok2vec constraint
+        if "tok2vec" in base_model:
+            missing = [c for c in self.components if c not in base_model and c != "tok2vec"]
+            # tok2vec-listeners in non-sourced components reference
+            # ${components.tok2vec.model.encode.width} which no longer exists
+            # once tok2vec is sourced.
+            if missing:
+                raise ValueError(
+                    "When tok2vec is sourced, all other pipeline components "
+                    "must also have a source (because factory-defined components "
+                    "reference tok2vec's width via a config variable that "
+                    "doesn't exist once tok2vec is sourced).\n"
+                    f"Components without a source: {missing}\n"
+                    "Either add sources for all components, or use a custom "
+                    "recipe= for mixed factory/source configurations."
+                )
+        return base_model
+
+    def _generate_finetune_config(self, sources: dict[str, str]) -> Config:
+        """Build a Thinc Config that sources each component from an existing model.
+
+        Loads default_ud.cfg as the structural base (providing corpora,
+        training, and initialize sections), then replaces each component block
+        with a single ``source = "..."`` entry.
+        """
+        base = Config().from_disk(_RECIPES_DIR / "default_ud.cfg")
+
+        # Update pipeline metadata
+        base["nlp"]["lang"] = self.lang
+        base["nlp"]["pipeline"] = self.components
+
+        # Replace component factory definitions with source entries
+        for comp in self.components:
+            source = sources.get(comp)
+            if source is not None:
+                base["components"][comp] = {"source": source}
+
+        return base
+
+    def _apply_config_defaults(self) -> None:
+        """Set values that spaCy's config generator leaves unset or unusable.
+
+        Specifically:
+        - ``corpora.train.max_length = 2000`` prevents runaway memory use on
+          very long documents during training.
+        - ``training.score_weights`` assigns equal weight to each active
+          component's accuracy metric so the best-model checkpoint reflects
+          overall pipeline quality.
+        """
+        if self.config is None:
+            return
+
+        # Cap document length during training
+        try:
+            self.config["corpora"]["train"]["max_length"] = 2000
+        except KeyError:
+            pass
+
+        # Build score_weights from whichever components are in the pipeline
+        _component_metrics: dict[str, list[str]] = {
+            "tagger": ["tag_acc"],
+            "morphologizer": ["pos_acc", "morph_acc"],
+            "trainable_lemmatizer": ["lemma_acc"],
+            "parser": ["dep_uas", "dep_las"],
+        }
+        active_metrics: list[str] = []
+        for comp in self.components:
+            active_metrics.extend(_component_metrics.get(comp, []))
+
+        weights: dict = {
+            "morph_per_feat": None,
+            "dep_las_per_type": None,
+            "sents_p": None,
+            "sents_r": None,
+            "sents_f": 0.0,
+        }
+        if active_metrics:
+            per = round(1.0 / len(active_metrics), 4)
+            for key in active_metrics:
+                weights[key] = per
+
+        try:
+            self.config["training"]["score_weights"] = weights
+        except KeyError:
+            pass
+
+    # ------------------------------------------------------------------
+    # Public config interface
+    # ------------------------------------------------------------------
+
+    @property
+    def config_path(self) -> Path:
+        """Path to the config.cfg file on disk."""
+        return self._config_path
+
+    def save_config(self, filepath: Optional[Union[str, Path]] = None) -> None:
+        """Write the in-memory config to disk.
+
+        Args:
+            filepath: Destination path.  Defaults to the model's config.cfg.
+        """
+        path = Path(filepath) if filepath else self._config_path
+        self.config.to_disk(path)
+
+    def load_config(self, filepath: Optional[Union[str, Path]] = None) -> None:
+        """Replace the current config by loading from a file.
+
+        Args:
+            filepath: Source path.  Defaults to the model's config.cfg.
+        """
+        path = Path(filepath) if filepath else self._config_path
+        self.config = Config().from_disk(path)
+        if path != self._config_path:
+            self.config.to_disk(self._config_path)
+
+    # ------------------------------------------------------------------
+    # Workflow methods
+    # ------------------------------------------------------------------
+
+    def copy_assets(
+        self,
+        train: Optional[Union[str, Path]] = None,
+        dev: Optional[Union[str, Path]] = None,
+        test: Optional[Union[str, Path]] = None,
+    ) -> None:
+        """Copy CONLL-U data files into the model's assets folder.
+
+        Accepts local paths or URLs (via ``smart_open``).  Also updates
+        ``config["paths"]["train"]`` and ``config["paths"]["dev"]`` to point
+        at the expected post-conversion ``.spacy`` files so that ``train()``
+        can find them automatically.
+
+        The return value of :func:`split_conllu` can be unpacked directly::
+
+            splits = split_conllu("corpus.conllu", "model/assets/en/")
+            model.copy_assets(**splits)
+
+        Args:
+            train: Path or URL to the training CONLL-U file.
+            dev: Path or URL to the development CONLL-U file.
+            test: Path or URL to the test CONLL-U file.
+        """
+        msg = Printer()
+        path_overrides: dict[str, str] = {}
+
+        for label, filepath in [("train", train), ("dev", dev), ("test", test)]:
+            if filepath is None:
+                continue
+            filepath = str(filepath)
+            try:
+                with smart_open(filepath, "rb") as f:
+                    content = f.read()
+            except IOError as e:
+                raise IOError(f"Could not read {label} file: {filepath}") from e
+
+            dest = self._assets_dir / Path(filepath).name
+            with open(dest, "wb") as f:
+                f.write(content)
+
+            # Record the expected post-conversion .spacy path for train and dev.
+            # Test path is discovered automatically at evaluate() time.
+            if label in ("train", "dev"):
+                spacy_path = str(
+                    (self._corpus_dir / Path(filepath).with_suffix(".spacy").name).resolve()
+                )
+                # Set both [paths] and [corpora.*.path] directly. Thinc serialises
+                # the resolved value of ${paths.train} (null at first save), so the
+                # variable reference is lost — corpora paths must be set explicitly.
+                path_overrides[f"paths.{label}"] = spacy_path
+                path_overrides[f"corpora.{label}.path"] = spacy_path
+
+        # Reload config with path overrides and save — more reliable than
+        # mutating the nested Thinc Config dict in place.
+        if path_overrides:
+            self.config = load_config(self._config_path, overrides=path_overrides)
+            self.config.to_disk(self._config_path)
+
+        msg.good(f"Assets copied to {self._assets_dir}")
+
+    def convert_assets(self, n_sents: int = 10, merge_subtokens: bool = True) -> None:
+        """Convert CONLL-U files in assets/ to spaCy's binary format in corpus/.
+
+        Groups every ``n_sents`` sentences into a single spaCy Doc.  Larger
+        groups give the model more context during training but use more memory.
+
+        Args:
+            n_sents: Sentences per Doc (0 to keep each sentence as its own Doc).
+            merge_subtokens: Merge CONLL-U multi-word tokens into single tokens.
+        """
+        msg = Printer()
+        success = True
+        files = list(self._assets_dir.glob("*.conllu"))
+        if not files:
+            msg.warn(f"No .conllu files found in {self._assets_dir}")
+            return
+        for filepath in files:
+            try:
+                convert(
+                    input_path=filepath,
+                    output_dir=self._corpus_dir,
+                    file_type="spacy",
+                    converter="conllu",
+                    n_sents=n_sents,
+                    merge_subtokens=merge_subtokens,
+                )
+            except Exception as e:
+                success = False
+                msg.fail(f"Error converting {filepath.name}: {e}")
+        if success:
+            msg.good(f"Assets converted and saved to {self._corpus_dir}")
+        else:
+            msg.fail("One or more assets failed to convert. Check CONLL-U formatting.")
+
+    def train(self) -> None:
+        """Train the model using the current config.
+
+        Reads ``config.cfg`` from disk (so any manual edits to that file are
+        respected), initialises the spaCy pipeline, and runs the training loop.
+        Progress is logged to stdout every ``eval_frequency`` steps.
+
+        The trained model is saved to ``training/{lang}/model-best`` (best dev
+        score) and ``training/{lang}/model-last`` (final step).
+        """
+        timer = _Timer()
+        config = load_config(self._config_path)
+        nlp = init_nlp(config, use_gpu=self.gpu)
+        spacy_train(
+            nlp=nlp,
+            output_path=self._training_dir,
+            use_gpu=self.gpu,
+            stdout=sys.stdout,
+            stderr=sys.stderr,
+        )
+        msg = Printer()
+        msg.text(f"Training complete. Time elapsed: {timer.elapsed()}")
+
+    def evaluate(
+        self,
+        model: Optional[str] = None,
+        test_file: Optional[Union[str, Path]] = None,
+        silent: bool = False,
+    ) -> None:
+        """Evaluate a trained model against a test set.
+
+        Results are printed to stdout and saved as JSON to
+        ``metrics/{lang}/{lang}.json``.
+
+        Args:
+            model: Path to a trained model directory.  Defaults to
+                ``training/{lang}/model-best``.
+            test_file: Path to the test ``.spacy`` file.  If omitted,
+                searches ``corpus/{lang}/`` for a file matching ``*test*.spacy``.
+            silent: Suppress console output (results are still saved to disk).
+        """
+        if model is None:
+            model = str(self._training_dir / "model-best")
+
+        if test_file is None:
+            candidates = sorted(self._corpus_dir.glob("*test*.spacy"))
+            if not candidates:
+                raise FileNotFoundError(
+                    f"No test .spacy file found in {self._corpus_dir}. "
+                    "Pass test_file= explicitly."
+                )
+            test_file = candidates[0]
+
+        output = self._metrics_dir / f"{self.lang}.json"
+        spacy_evaluate(
+            model=model,
+            data_path=Path(test_file),
+            output=output,
+            use_gpu=self.gpu,
+            gold_preproc=False,
+            displacy_path=None,
+            displacy_limit=25,
+            silent=silent,
+        )
+
+    def package(
+        self,
+        input_dir: Union[str, Path],
+        output_dir: Union[str, Path],
+        name: str,
+        version: str,
+        force: bool = False,
+        silent: bool = False,
+    ) -> None:
+        """Package a trained model as a pip-installable distribution.
+
+        Creates a source distribution (``.tar.gz``) that can be installed with
+        ``pip install`` or loaded directly with ``spacy.load(path)``.
+
+        Args:
+            input_dir: Path to a trained model directory (e.g.
+                ``training/en/model-best``).
+            output_dir: Directory where the package will be written.
+            name: Short name for the package (e.g. ``"shakespeare_sm"``).
+            version: Semantic version string (e.g. ``"1.0.0"``).
+            force: Overwrite an existing package with the same name/version.
+            silent: Suppress console output.
+        """
+        in_path = Path(input_dir)
+        out_path = Path(output_dir)
+        out_path.mkdir(parents=True, exist_ok=True)
+        spacy_package(
+            input_dir=in_path,
+            output_dir=out_path,
+            name=name,
+            version=version,
+            create_meta=False,
+            create_sdist=True,
+            create_wheel=False,
+            force=force,
+            silent=silent,
+        )
+        msg = Printer()
+        tarfile = f"{self.lang}_{name}-{version}.tar.gz"
+        msg.good(
+            f"Model packaged.\n"
+            f"  Load with spacy.load():  {out_path}/{self.lang}_{name}-{version}\n"
+            f"  Install with pip:        {out_path}/{self.lang}_{name}-{version}/dist/{tarfile}"
+        )
+
+
+# ---------------------------------------------------------------------------
+# Module-level debugging utilities (no LanguageModel instance required)
+# ---------------------------------------------------------------------------
+
+
+def debug_config(
+    config_path: Union[str, Path],
+    overrides: dict = {},
+    code_path: Optional[Union[str, Path]] = None,
+    show_funcs: bool = False,
+    show_vars: bool = False,
+) -> None:
+    """Validate a spaCy config file and report any errors.
+
+    Creates all registered objects described by the config and checks that
+    every function reference is resolvable.  Note: some validation errors are
+    blocking — you may need to fix errors one round at a time.
+
+    Args:
+        config_path: Path to the ``.cfg`` file to validate.
+        overrides: Dict of config key overrides to test (e.g.
+            ``{"training.max_steps": 100}``).
+        code_path: Path to a Python file containing custom registered functions.
+        show_funcs: Print all registered functions used by the config.
+        show_vars: Print all config variables and their resolved values.
+    """
+    config_path = Path(config_path)
+    if isinstance(code_path, str):
+        code_path = Path(code_path)
+    import_code(code_path)
+    spacy_debug_config(
+        config_path, overrides=overrides, show_funcs=show_funcs, show_vars=show_vars
+    )
+
+
+def debug_data(
+    config_path: Union[str, Path],
+    overrides: dict = {},
+    code_path: Optional[Union[str, Path]] = None,
+    ignore_warnings: bool = False,
+    verbose: bool = False,
+    no_format: bool = False,
+) -> None:
+    """Analyse and validate training and dev data, reporting stats and issues.
+
+    Useful for catching problems like missing labels, data imbalance, or
+    invalid annotations before a long training run.
+
+    .. warning::
+        If at least one error is found, spaCy will call ``sys.exit(1)``
+        after the report.  This is spaCy's behaviour and cannot be suppressed
+        from within the wrapper.
+
+    Args:
+        config_path: Path to the ``.cfg`` file that references the data.
+        overrides: Dict of config key overrides.
+        code_path: Path to a Python file with custom registered functions.
+        ignore_warnings: Show only errors, not warnings.
+        verbose: Print additional explanations alongside stats.
+        no_format: Plain-text output without colour formatting.
+    """
+    msg = Printer()
+    msg.info(
+        "Note: if any errors are found, the script will exit with SystemExit: 1."
+    )
+    config_path = Path(config_path)
+    if isinstance(code_path, str):
+        code_path = Path(code_path)
+    import_code(code_path)
+    spacy_debug_data(
+        config_path,
+        config_overrides=overrides,
+        ignore_warnings=ignore_warnings,
+        verbose=verbose,
+        no_format=no_format,
+        silent=False,
+    )
+
+
+def debug_model(
+    config_path: Union[str, Path],
+    config_overrides: dict = {},
+    component: str = "tagger",
+    layers: list[int] = [],
+    dimensions: bool = False,
+    parameters: bool = False,
+    gradients: bool = False,
+    attributes: bool = False,
+    P0: bool = False,
+    P1: bool = False,
+    P2: bool = False,
+    P3: bool = False,
+    use_gpu: int = -1,
+) -> None:
+    """Inspect a trained model's internal layer structure and weights.
+
+    Args:
+        config_path: Path to the ``.cfg`` file.
+        config_overrides: Dict of config key overrides.
+        component: Pipeline component to inspect (default ``"tagger"``).
+        layers: Layer IDs to examine in detail.
+        dimensions: Print layer dimensions.
+        parameters: Print parameter counts.
+        gradients: Print gradient information.
+        attributes: Print component attributes.
+        P0: Print model state before training.
+        P1: Print model state after initialisation.
+        P2: Print model state after training.
+        P3: Print final predictions.
+        use_gpu: GPU device ID or ``-1`` for CPU.
+    """
+    config_path = Path(config_path)
+    setup_gpu(use_gpu)
+    print_settings = {
+        "dimensions": dimensions,
+        "parameters": parameters,
+        "gradients": gradients,
+        "attributes": attributes,
+        "layers": [int(x) for x in layers],
+        "print_before_training": P0,
+        "print_after_init": P1,
+        "print_after_training": P2,
+        "print_prediction": P3,
+    }
+    with show_validation_error(config_path):
+        raw_config = load_config(config_path, overrides=config_overrides, interpolate=False)
+    config = raw_config.interpolate()
+    allocator = config["training"]["gpu_allocator"]
+    if use_gpu >= 0 and allocator:
+        set_gpu_allocator(allocator)
+    with show_validation_error(config_path):
+        nlp = load_model_from_config(raw_config)
+        config = nlp.config.interpolate()
+        T = registry.resolve(config["training"], schema=ConfigSchemaTraining)
+    seed = T["seed"]
+    if seed is not None:
+        fix_random_seed(seed)
+    pipe = nlp.get_pipe(component)
+    spacy_debug_model(config, T, nlp, pipe, print_settings=print_settings)
+
+
+def fill_config(
+    config_path: Union[str, Path],
+    output_file: Union[str, Path],
+    pretraining: bool = False,
+    diff: bool = False,
+    code_path: Optional[Union[str, Path]] = None,
+) -> None:
+    """Fill a partial config file with spaCy defaults and save it.
+
+    Useful for debugging or understanding what a minimal config expands to.
+
+    Args:
+        config_path: Path to the partial ``.cfg`` file to fill.
+        output_file: Path where the filled config will be written.
+        pretraining: Include pretraining config section.
+        diff: Print a visual diff of changes made.
+        code_path: Path to a Python file with custom registered functions.
+    """
+    config_path = Path(config_path)
+    output_file = Path(output_file)
+    if isinstance(code_path, str):
+        code_path = Path(code_path)
+    import_code(code_path)
+    spacy_fill_config(output_file, config_path, pretraining=pretraining, diff=diff)
