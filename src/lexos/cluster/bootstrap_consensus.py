@@ -279,7 +279,7 @@ class BCT(BaseModel):
 
         if layout == "rectangular":
             return self._draw_rectangular_tree(tree, normalized_color)
-        elif layout in ["fan"]:
+        elif layout == "fan":
             return self._draw_fan_tree(tree, normalized_color, layout)
         else:
             raise ValueError(f"Unknown layout: {layout}. Use 'rectangular' or 'fan'.")
