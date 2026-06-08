@@ -72,20 +72,17 @@ class DTM(BaseModel):
     """Class for a document-term matrix."""
 
     docs: Optional[list[list[str] | Doc]] = Field(
-        default=None,
-        description="A list of spaCy docs or a list of token lists."
+        default=None, description="A list of spaCy docs or a list of token lists."
     )
     labels: Optional[list[str]] = Field(
-        default=None,
-        description="A list of labels for the documents."
+        default=None, description="A list of labels for the documents."
     )
     vectorizer: Optional[Callable] = Field(
         default=TextacyVectorizer,
-        description="A callable Vectorizer. Must have a fit_transform() method."
+        description="A callable Vectorizer. Must have a fit_transform() method.",
     )
     alg: Optional[ns] = Field(
-        default=ns.LOCALE,
-        description="The sorting algorithm to use."
+        default=ns.LOCALE, description="The sorting algorithm to use."
     )
     doc_term_matrix: Optional[sp.spmatrix] = Field(
         default=None, description="The document-term matrix."
