@@ -339,7 +339,7 @@ Code prepared for the Lexos project should undergo linting and formatting to det
 Lexos uses two tools for checking for linting and formatting errors:
 
 - <code><a href="https://docs.astral.sh/ruff/" target="_blank">ruff</a></code>: an opinionated linter and formatter
-- code><a href="https://pre-commit.com/" target="_blank">pre-commit</a></code>: a tool for running tests and fixing errors before code is committed to the project repository
+- <code><a href="https://pre-commit.com/" target="_blank">pre-commit</a></code>: a tool for running tests and fixing errors before code is committed to the project repository
 
 Code you write should be compatible with our the default `ruff` rules and the Lexos `pre-commit` hooks. It should not cause any errors or warnings.
 
@@ -391,7 +391,7 @@ As a further check, you should run <code><a href="https://pre-commit.com/" targe
 Start by installing the Lexos `pre-commit` hooks in your environment with
 
 ```bash
-uv run pre-commit install`
+uv run pre-commit install
 ```
 
 Lexos pre-commit hooks include:
