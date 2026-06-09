@@ -302,9 +302,11 @@ class BCT(BaseModel):
             tree,
             axes=ax,
             do_show=False,
-            branch_labels=lambda clade: f"{clade.branch_length:.{PRECISION}f}\n"
-            if clade.branch_length is not None
-            else "",
+            branch_labels=lambda clade: (
+                f"{clade.branch_length:.{PRECISION}f}\n"
+                if clade.branch_length is not None
+                else ""
+            ),
         )
 
         # Set labels for the plot
@@ -342,13 +344,17 @@ class BCT(BaseModel):
         return fig
 
     def _draw_fan_tree(
-        self, tree: Phylo, normalized_color: tuple[float, float, float]
+        self,
+        tree: Phylo,
+        normalized_color: tuple[float, float, float],
+        layout: str = "fan",
     ) -> Figure:
         """Draw fan-style (circular) tree layout with color-coded labels by clade.
 
         Args:
             tree (Phylo): The tree to draw.
             normalized_color (tuple[float, float, float]): The base color for the tree in RGB normalized to [0, 1].
+            layout (str): The tree layout style.
 
         Returns:
             Figure: The matplotlib figure containing the fan-style tree visualization.
