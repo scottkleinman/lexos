@@ -1,7 +1,7 @@
 """__init__.py.
 
-Last Update: 8 September, 2025
-Last Tested: 9 September, 2025
+Last Update: 6 June, 2026
+Last Tested: 6 June, 2026
 
 Credits:
 
@@ -25,6 +25,7 @@ Tokenized = Doc | Span | list[Span | Token]
 validation_config = ConfigDict(
     arbitrary_types_allowed=True, json_schema_extra=doc_schema
 )
+_UNSET = object()
 
 
 class Windows(BaseModel):
@@ -76,10 +77,7 @@ class Windows(BaseModel):
             None,
             description="The type of window to generate: `characters`, `spans`, or `tokens`.",
         ),
-        alignment_mode: Optional[str] = Field(
-            None,
-            description="The alignment mode for the window.",
-        ),
+        alignment_mode: Optional[str] | object = _UNSET,
         output: Optional[str] = Field(
             None,
             description="The output type for the windows.",
@@ -90,12 +88,17 @@ class Windows(BaseModel):
             input=input,
             n=n,
             window_type=window_type,
-            alignment_mode=alignment_mode,
             output=output,
             windows=None,
         )
+        if alignment_mode is not _UNSET:
+            self.alignment_mode = alignment_mode
         if self.window_type not in ["characters", "spans", "tokens"]:
             raise LexosException("Window type must be 'characters' or 'tokens'.")
+        if self.alignment_mode not in [None, "strict", "contract", "expand"]:
+            raise LexosException(
+                "Alignment mode must be None, 'strict', 'contract', or 'expand'."
+            )
         if self.output not in ["spans", "strings", "tokens"]:
             raise LexosException("Output must be 'spans', 'strings' or 'tokens'.")
         if isinstance(self.input, str):
@@ -135,15 +138,43 @@ class Windows(BaseModel):
         if isinstance(input, Span):
             input = input.as_doc()
         if self.window_type == "characters":
-            length = len(input.text)
-        else:
-            length = len(input)
+            text = input.text
+            length = len(text)
+            boundaries = [
+                (i, i + self.n) for i in range(length) if i + self.n <= length
+            ]
+
+            # Strict mode means true character windows.
+            if self.alignment_mode == "strict":
+                if self.output != "strings":
+                    raise LexosException(
+                        "Character windows with strict alignment only support output='strings'."
+                    )
+                for start, end in boundaries:
+                    yield text[start:end]
+                return
+
+            # None means snap to token boundaries.
+            mode = "expand" if self.alignment_mode is None else self.alignment_mode
+            for start, end in boundaries:
+                span = input.char_span(start, end, alignment_mode=mode)
+                if span is not None:
+                    if self.output == "strings":
+                        if span.text != "":
+                            yield span.text
+                    elif self.output == "tokens":
+                        yield [token for token in span if token.text != ""]
+                    else:
+                        yield span
+            return
+
+        length = len(input)
         boundaries = [(i, i + self.n) for i in range(length) if i + self.n <= length]
         for start, end in boundaries:
-            if self.alignment_mode == "strict":
+            if self.alignment_mode in [None, "strict"]:
                 span = input[start:end]
             else:
-                span = input.char_span(start, end, self.alignment_mode)
+                span = input.char_span(start, end, alignment_mode=self.alignment_mode)
             if span is not None:
                 if self.output == "strings":
                     if span.text != "":
