@@ -115,7 +115,7 @@ For test functions, only a "Summary" line is required. The other sections can be
 
 ### Inline Code Comments
 
-Code comments do not need to be extensive. However, if your code includes complex logic or aspects that may be unintuitive at first glance (or even included a subtle bug that you ended up fixing), you should leave a comment that provides more context. Comments should preferably begin with a capital letter. This enforced at the [pre-commit stage](#using-pre-commit).
+Code comments do not need to be extensive. However, if your code includes complex logic or aspects that may be unintuitive at first glance (or even included a subtle bug that you ended up fixing), you should leave a comment that provides more context. Comments should preferably begin with a capital letter. This is enforced at the [pre-commit stage](#using-pre-commit).
 
 ```diff
 token_index = indices[value]
