@@ -6,12 +6,6 @@ repos:
     args: ['--unsafe']
   - id: end-of-file-fixer
   - id: trailing-whitespace
-  - id: comment-capitalization
-    name: Enforce capitalization of inline comments (py/js)
-    entry: uv run python tools/check_comment_caps.py
-    language: system
-    files: \.(py)$
-    pass_filenames: true
 - repo: https://github.com/astral-sh/uv-pre-commit
   rev: 0.11.19
   hooks:
@@ -26,6 +20,12 @@ repos:
       types_or: [ python ] # Add jupyter to run on notebooks
 - repo: local
   hooks:
+    - id: comment-capitalization
+      name: Enforce capitalization of inline comments (py/js)
+      entry: uv run python tools/check_comment_caps.py
+      language: system
+      files: \.(py)$
+      pass_filenames: true
     - id: validate-python-headers
       name: Validate Python file headers
       entry: uv run python .validate_headers.py
