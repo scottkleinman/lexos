@@ -26,6 +26,7 @@ repos:
       language: system
       files: \.(py)$
       pass_filenames: true
+      always_run: true
     - id: validate-python-headers
       name: Validate Python file headers
       entry: uv run python .validate_headers.py
