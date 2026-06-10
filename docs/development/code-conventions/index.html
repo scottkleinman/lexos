@@ -5377,7 +5377,10 @@
 <p>For test functions, only a "Summary" line is required. The other sections can be provided optionally if they help to explain the function's behaviour.</p>
 <h2 id="comments">Comments<a class="headerlink" href="#comments" title="Permanent link">¤</a></h2>
 <h3 id="inline-code-comments">Inline Code Comments<a class="headerlink" href="#inline-code-comments" title="Permanent link">¤</a></h3>
-<p>Code comments do not need to be extensive. However, if your code includes complex logic or aspects that may be unintuitive at first glance (or even included a subtle bug that you ended up fixing), you should leave a comment that provides more context. Comments should preferably begin with a capital letter.</p>
+<p>Code comments do not need to be extensive. However, if your code includes complex logic or aspects that may be unintuitive at first glance (or even included a subtle bug that you ended up fixing), you should leave a comment that provides more context. Comments should preferably begin with a capital letter. This enforced at the
+  <a href="#using-pre-commit" class="md-nav__link">
+    <span class="md-ellipsis">pre-commit stage</span>
+  </a>.</p>
 <div class="language-diff highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>token_index = indices[value]
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="gi">+ # Index describes Token.i of last token but Span indices are inclusive</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>span = doc[prev_token_index:token_index + 1]
