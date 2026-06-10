@@ -207,9 +207,9 @@ class Windows(BaseModel):
                 if slice is not None:
                     if self.output == "strings":
                         yield [token.text for token in slice]
-                    elif self.output == "tokens":  # assuming self.output == "tokens"
+                    elif self.output == "tokens":  # Assuming self.output == "tokens"
                         yield [token for token in slice]
-                    # appears to be unreachable code as output must be 'strings' or 'tokens'
+                    # Appears to be unreachable code as output must be 'strings' or 'tokens'
                     else:
                         yield slice
         else:
