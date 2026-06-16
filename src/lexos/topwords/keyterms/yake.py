@@ -14,6 +14,7 @@ from lexos.topwords.keyterms.yake import yake
 keyterms = yake(doc=doc)
 """
 
+import keyterms_util
 import collections
 import math
 import re
@@ -31,6 +32,9 @@ from textacy.extract.utils import get_filtered_topn_terms
 from textacy.utils import to_set
 
 from lexos.topwords import TopWords
+from lexos.topwords.keyterms.keyterms_util import (
+    is_unicode_punctuation,
+)
 
 validation_config = ConfigDict(
     arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
@@ -748,13 +752,3 @@ def _pos_allowed(term: TermLike, include_pos: Optional[set[str]]) -> bool:
     return pos_val in include_pos
 
 
-def is_unicode_punctuation(ch: str) -> bool:
-    """Return True if `ch` is a Unicode punctuation character.
-
-    Args:
-        ch (str): A single character string.
-
-    Returns:
-        bool: True if `ch` is a Unicode punctuation character, False otherwise.
-    """
-    return bool(ch) and all(unicodedata.category(char).startswith("P") for char in ch)
