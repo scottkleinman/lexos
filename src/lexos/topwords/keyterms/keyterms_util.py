@@ -14,22 +14,10 @@ from lexos.topwords.keyterms.keyterms_util import (
 
 """
 
-import collections
-import heapq
-import itertools
 import re
 import unicodedata
-from operator import itemgetter
-from typing import Callable, Collection, Iterable, Literal, Optional, Sequence
-
-from pydantic import ConfigDict, Field
-from spacy.schemas import DocJSONSchema
+from typing import Callable, Iterable
 from spacy.tokens import Doc, Span, Token
-from textacy.extract.utils import get_filtered_topn_terms
-from textacy.representations import network
-from textacy.utils import to_set
-import networkx as nx
-import pandas as pd
 
 def terms_to_strings(
     terms: Iterable[Span | Token | str],
