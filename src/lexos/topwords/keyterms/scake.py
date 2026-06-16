@@ -68,7 +68,7 @@ class SCake(TopWords):
         """Initialize the SCake object and extract keyterms."""
 
         super().__init__(**kwargs)
-        #extract keyterms and put them in field
+        # Extract keyterms and put them in field
         self.keyterms = scake(
             doc=self.doc,
             normalize=self.normalize,
@@ -124,31 +124,31 @@ def scake(
     """
     include_pos_set, topn = _validate_scake_args(include_pos, topn)
 
-    # convert str input to term sequence 
+    # Convert str input to term sequence 
     terms = _to_term_sequence(doc)
     if not terms:
         return []
 
-    # build normalized str sequence aligned with terms
+    # Build normalized str sequence aligned with terms
     normalized_terms = list(terms_to_strings(terms, normalize))
 
-    # build co-occurrence matrix over sentence segments(or the whole doc if plain-string input, which has no sentence boundaries)
+    # Build co-occurrence matrix over sentence segments(or the whole doc if plain-string input, which has no sentence boundaries)
     cooc_mat = _build_cooc_matrix(doc, terms, normalized_terms, include_pos_set)
     if not cooc_mat:
         return []
 
-    # build the word graph from the co-occurrence matrix
+    # Build the word graph from the co-occurrence matrix
     graph = nx.Graph()
     graph.add_edges_from(
         (w1, w2, {"weight": weight}) for (w1, w2), weight in cooc_mat.items()
     )
 
-    # compute the scores
+    # Compute the scores
     word_scores = _compute_word_scores(terms, normalized_terms, graph, cooc_mat)
     if not word_scores:
         return []
 
-    # get candidate phrases and resolve topn
+    # Get candidate phrases and resolve topn
     candidates = _get_candidates(terms, normalized_terms, include_pos_set)
     topn = _resolve_topn(topn, len(candidates))
 
@@ -191,7 +191,7 @@ def _build_cooc_matrix(
     normalized_terms: list[str],
     include_pos: Optional[set[str]],
 ) -> collections.Counter[tuple[str, str]]:
-    """builds a co-occurrence counter over sentence windows.
+    """Builds a co-occurrence counter over sentence windows.
 
     For spaCy docs, inputs the algorithm over adjacent sentence pairs
     For plain-string inputs/ normal docs(which have no sentence boundaries) the entire 
@@ -211,8 +211,8 @@ def _build_cooc_matrix(
     cooc_mat: collections.Counter[tuple[str, str]] = collections.Counter()
 
     if isinstance(doc, Doc):
-        # builds a mapping from token index to normalized string so we can look
-        # up the correct form for each sentence span
+        # Builds a mapping from token index to normalized string so we can look
+        # Up the correct form for each sentence span
         idx_to_norm: dict[int, str] = {
             tok.i: norm for tok, norm in zip(terms, normalized_terms)
         }
@@ -221,7 +221,7 @@ def _build_cooc_matrix(
         n_sents = len(sentences)
 
         for i in range(n_sents):
-            # window covers the current sentence and the next one if it exists
+            # Window covers the current sentence and the next one if it exists
             window = list(sentences[i])
             if i + 1 < n_sents:
                 window += list(sentences[i + 1])
@@ -237,7 +237,7 @@ def _build_cooc_matrix(
                 if w1_w2[0] != w1_w2[1]
             )
     else:
-        # plain-string/normal doc path: one global window over all valid tokens
+        # Plain-string/normal doc path: one global window over all valid tokens
         window_words = [
             norm
             for tok, norm in zip(terms, normalized_terms)
@@ -284,7 +284,7 @@ def _is_valid_tok_str(tok: str) -> bool:
     return not (is_unicode_punctuation(tok) or tok.isspace())
 
 
-def _compute_word_scores(
+def _compute_word_scores( 
     terms: list[Token | str],
     normalized_terms: list[str],
     graph: nx.Graph,
@@ -303,18 +303,18 @@ def _compute_word_scores(
         cooc_mat: Co-occurrence counter used to build `graph`.
 
     Returns:
-        dict mapping normalized word strings to their sCAKE scores
+        Dict mapping normalized word strings to their sCAKE scores
     """
     word_strs: list[str] = list(graph.nodes())
 
-    # (k-truss decomposition) - - - - - - - - - - - - - - - - - - - -
+    # K-truss decomposition - - - - - - - - - - - - - - - - - - - -
     max_truss_levels = _compute_node_truss_levels(graph)
     max_truss_level = max(max_truss_levels.values(), default=0)
-    # if all words are isolated nodes, the scores would be zero or undefined
+    # If all words are isolated nodes, the scores would be zero or undefined
     if not max_truss_level:
         return {}
 
-    # semantic strength component - - - - - - - - - - - - - - - - -
+    # Semantic strength component - - - - - - - - - - - - - - - - -
     sem_strengths: dict[str, int] = {}
     for w in word_strs:
         total = 0
@@ -323,7 +323,7 @@ def _compute_word_scores(
             total += cooc_mat[pair] * max_truss_levels[nbr]
         sem_strengths[w] = total
 
-    # semantic connectivity component - - - - - - - - - - - - - -
+    # Semantic connectivity component - - - - - - - - - - - - - -
     sem_connectivities: dict[str, float] = {}
     for w in word_strs:
         neighbour_levels = set()
@@ -331,15 +331,15 @@ def _compute_word_scores(
             neighbour_levels.add(max_truss_levels[nbr])
         sem_connectivities[w] = len(neighbour_levels) / max_truss_level
 
-    # positional weight component - - - - - - - - - - - - - - - - -
-    # for spaCy Token sequences we use the index (tok.i)
-    # plain strings just use sequential position.
+    # Positional weight component - - - - - - - - - - - - - - - - -
+    # For spaCy Token sequences we use the index (tok.i)
+    # Plain strings just use sequential position.
     word_pos: DefaultDict[str, float] = collections.defaultdict(float)
     for idx, (tok, norm) in enumerate(zip(terms, normalized_terms)):
         pos = tok.i if isinstance(tok, Token) else idx
         word_pos[norm] += 1.0 / (pos + 1)
 
-    # score the fuckers all together - - - - - - - - - - -
+    # Score all the components together - - - - - - - - - - - - - - -
     word_scores: dict[str, float] = {}
     for w in word_strs:
         word_scores[w] = (
@@ -403,7 +403,7 @@ def _compute_node_truss_levels(graph: nx.Graph) -> dict[str, int]:
         graph: Undirected word co-occurrence graph.
 
     Returns:
-        dict mapping each node name to its maximum k-truss level
+        Dict mapping each node name to its maximum k-truss level
     """
     max_edge_ks: dict[tuple, int] = {}
     is_removed: collections.defaultdict[tuple, int] = collections.defaultdict(int)
@@ -441,7 +441,7 @@ def _compute_node_truss_levels(graph: nx.Graph) -> dict[str, int]:
             break
         k += 1
 
-    # a nodes truss level is the maximum over the k values of its edges
+    # A nodes truss level is the maximum over the k values of its edges
     max_node_ks: dict[str, int] = {}
     for node in graph.nodes():
         node_edge_ks = []
