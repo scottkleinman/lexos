@@ -8,7 +8,7 @@ The module expects training data in **CONLL-U format** — the standard used by 
 
 CONLL-U files are plain text: one token per line, 10 tab-separated fields, blank lines between sentences.
 
-```
+```text
 # sent_id = ewt-train-1
 # text = From the AP comes this story.
 1   From    from    ADP    IN    _              3   case    _   _
@@ -23,6 +23,7 @@ CONLL-U files are plain text: one token per line, 10 tab-separated fields, blank
 **The 10 fields:** ID · FORM (word) · LEMMA · UPOS (universal POS) · XPOS (language POS) · FEATS (morphological features) · HEAD (dependency head) · DEPREL (dependency relation) · DEPS · MISC
 
 The module trains all five pipeline components from these fields:
+
 - UPOS → morphologizer (also trains POS via tagger using XPOS)
 - FEATS → morphologizer
 - LEMMA → trainable_lemmatizer
@@ -76,7 +77,7 @@ If no treebank exists for your language, historical period, or domain, you will 
 | [Prodigy](https://prodi.gy/) | Commercial tool from Explosion (creators of spaCy); tight spaCy integration; can auto-annotate with your model, display predictions for correction, and export training data; designed for fast keyboard-driven correction; requires a licence — SpaCy offers many helpful tools like this worth checking out, though most aren't free-use |
 | [brat](https://brat.nlplab.org/) | Simpler and general-purpose; good for getting started; requires some setup for UD |
 
-For new UD annotation projects, **INCEpTION** or **Arborator Grew** are the recommended free tools — both support the UD annotation guidelines natively. **Prodigy** is especially useful if you are running the iterative bootstrap-and-correct workflow described in [Building a Specialized Model: Iterative Workflow](advanced_workflow.md) — it wraps the auto-annotate-and-correct loop into a single UI built for speed.
+For new UD annotation projects, **INCEpTION** or **Arborator Grew** are the recommended free tools — both support the UD annotation guidelines natively. **Prodigy** is especially useful if you are running the iterative bootstrap-and-correct workflow described in [Building a Specialized Model: Iterative Workflow](advanced_workflow.ipynb) — it wraps the auto-annotate-and-correct loop into a single UI built for speed.
 
 ### UD annotation guidelines
 
@@ -109,7 +110,7 @@ If hand annotation from scratch is too slow, use the model to accelerate the pro
 3. Add the corrected sentences to your training set and retrain
 4. Repeat — each round improves accuracy and speeds up correction
 
-For full instructions on running this workflow — including how to export annotations from your model, how to correct CONLL-U data, and how to combine rounds — see [Building a Specialized Model: Iterative Workflow](advanced_workflow.md).
+For full instructions on running this workflow — including how to export annotations from your model, how to correct CONLL-U data, and how to combine rounds — see [Building a Specialized Model: Iterative Workflow](advanced_workflow.ipynb).
 
 ---
 

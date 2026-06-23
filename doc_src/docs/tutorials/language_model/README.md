@@ -20,7 +20,7 @@ Supplementary guides for specific setup tasks:
 
 - **[Getting Training Data](training_data.md)** — where to find CONLL-U treebanks, how to annotate your own data, and the iterative bootstrap method
 - **[Choosing and Setting Up Base Models](base_models.md)** — how to find or train a suitable source model for your language and annotation scheme
-- **[Building a Specialized Model: Iterative Workflow](advanced_workflow.md)** — for users with no existing training data, or who want to improve a model they have already trained
+- **[Building a Specialized Model: Iterative Workflow](advanced_workflow.ipynb)** — for users with no existing training data, or who want to improve a model they have already trained
 
 ---
 

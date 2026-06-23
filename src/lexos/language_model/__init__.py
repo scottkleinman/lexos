@@ -5,7 +5,7 @@ on custom corpora. Handles directory setup, config generation (including
 fine-tuning via component sourcing), data conversion, training, and evaluation
 without requiring the user to edit config files or use the command line.
 
-Last Updated: 2026-06-11
+Last Updated: 2026-06-23
 Last Tested: 2026-06-11
 """
 
@@ -16,6 +16,8 @@ import warnings
 from pathlib import Path
 from time import time
 from typing import Any
+
+import spacy
 
 from lexos.exceptions import LexosException
 from smart_open import open as smart_open
@@ -230,6 +232,81 @@ def split_conllu(
         msg.good(f"  {name:5s}: {len(data):4d} sentences  →  {out}")
 
     return paths
+
+
+def export_to_conllu(
+    model_path: str | Path,
+    texts: list[str],
+    output_path: str | Path,
+) -> Path:
+    """Run a trained model on texts and write predictions to a CONLL-U file.
+
+    Each element of ``texts`` can be a single sentence or a longer passage;
+    the model's sentence segmenter splits passages into individual sentences
+    automatically.
+
+    Args:
+        model_path: Path to a trained spaCy model directory, or an installed
+            model name (e.g. ``"en_core_web_sm"``).
+        texts: List of strings to annotate.  Each element may contain multiple
+            sentences — the model's sentence segmenter handles splitting.
+        output_path: Path where the CONLL-U output file will be written.
+
+    Returns:
+        Path to the written output file.
+    """
+    nlp = spacy.load(Path(model_path))
+    output_path = Path(output_path)
+    msg = Printer()
+    sent_id = 0
+    with output_path.open("w", encoding="utf-8") as f:
+        for text in texts:
+            doc = nlp(text)
+            for sent in doc.sents:
+                sent_id += 1
+                f.write(f"# sent_id = auto-{sent_id}\n")
+                f.write(f"# text = {sent.text}\n")
+                for j, token in enumerate(sent, 1):
+                    head = token.head.i - sent.start + 1 if token.head != token else 0
+                    feats = str(token.morph) if token.morph else "_"
+                    lemma = token.lemma_ if token.lemma_ else "_"
+                    f.write(
+                        f"{j}\t{token.text}\t{lemma}\t{token.pos_}\t"
+                        f"{token.tag_}\t{feats}\t{head}\t{token.dep_}\t_\t_\n"
+                    )
+                f.write("\n")
+    msg.good(f"{sent_id} sentences written to {output_path}")
+    return output_path
+
+
+def combine_conllu(
+    round_files: list[str | Path],
+    output_path: str | Path,
+) -> Path:
+    """Concatenate multiple CONLL-U files into a single training file.
+
+    Training on the full accumulated corpus each round (not just the latest
+    batch) produces more stable models.  Use this before each fine-tuning
+    round to merge all corrected annotation batches.
+
+    Args:
+        round_files: List of paths to corrected CONLL-U files, in the order
+            they should be concatenated.
+        output_path: Path where the combined output file will be written.
+
+    Returns:
+        Path to the written output file.
+    """
+    output_path = Path(output_path)
+    msg = Printer()
+    with output_path.open("w", encoding="utf-8") as out:
+        for filepath in round_files:
+            text = Path(filepath).read_text(encoding="utf-8")
+            out.write(text)
+            if not text.endswith("\n\n"):
+                out.write("\n")
+    msg.good(f"Combined {len(round_files)} file(s) → {output_path}")
+    return output_path
 
 
 # ---------------------------------------------------------------------------

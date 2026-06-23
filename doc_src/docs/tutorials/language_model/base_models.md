@@ -50,6 +50,7 @@ spaCy provides models for 70+ languages. These are the easiest starting point an
 **Find models:** [https://spacy.io/models](https://spacy.io/models)
 
 **Install:**
+
 ```bash
 python -m spacy download en_core_web_sm   # English, small
 python -m spacy download de_core_news_sm  # German, small
@@ -65,7 +66,7 @@ python -m spacy download de_core_news_sm  # German, small
 | trainable_lemmatizer | No | Uses rule-based lemmatizer instead |
 | parser | Yes, but OntoNotes labels | Mismatch with UD data — use UD-trained model |
 
-**For non-English languages — check UD coverage first.** Many non-English spaCy models include UD-trained parsers and morphologizers in addition to tok2vec and tagger. Before looking at Options 2 or 3, check your language's model page at [https://spacy.io/models](https://spacy.io/models) and look at the component list to see whats available and sources to see what type of data its trained on (UD or OntoNotes). 
+**For non-English languages — check UD coverage first.** Many non-English spaCy models include UD-trained parsers and morphologizers in addition to tok2vec and tagger. Before looking at Options 2 or 3, check your language's model page at [https://spacy.io/models](https://spacy.io/models) and look at the component list to see whats available and sources to see what type of data its trained on (UD or OntoNotes).
 
 SpaCy models generally don't offer all 5 specifcally trainable lemmatizers. If the model only covers `tok2vec` and `tagger` (as the English models do), use it for those two and a UD-trained model (Options 2 or 3 below) for `morphologizer`, `trainable_lemmatizer`, and `parser`.
 
@@ -106,7 +107,6 @@ The two-step process:
 
 After training, the `model-best` directory is your base model. Pass its path as `base_model` when you run the main tutorial again on your specific data.
 
-**Don't have specific UD data yet?** Use the trained base model to bootstrap your own domain-specific annotations: the model pre-annotates new text, you correct the output, and you iterate. See [Building a Specialized Model: Iterative Workflow](advanced_workflow.md) for the full process.
+**Don't have specific UD data yet?** Use the trained base model to bootstrap your own domain-specific annotations: the model pre-annotates new text, you correct the output, and you iterate. See [Building a Specialized Model: Iterative Workflow](advanced_workflow.ipynb) for the full process.
 
 **Multilingual fallback:** if no spaCy model exists for your language at all, use `lang="xx"` (spaCy's multilingual code). Results will depend on the quantity and quality of your training data.
-
