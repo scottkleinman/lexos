@@ -4,13 +4,20 @@ Light wrapper around spaCy's training workflow for fine-tuning language models
 on custom corpora. Handles directory setup, config generation (including
 fine-tuning via component sourcing), data conversion, training, and evaluation
 without requiring the user to edit config files or use the command line.
+
+Last Updated: 2026-06-11
+Last Tested: 2026-06-11
 """
 
+import shutil
+import subprocess
 import sys
+import warnings
 from pathlib import Path
 from time import time
-from typing import Optional, Union
+from typing import Any
 
+from lexos.exceptions import LexosException
 from smart_open import open as smart_open
 from spacy.cli import convert
 from spacy.cli import debug_config as spacy_debug_config
@@ -59,14 +66,105 @@ class _Timer:
         return "%02d:%02d:%02d" % (h, m, s)
 
 
+def _has_nvidia_gpu() -> bool:
+    """Return True if an NVIDIA GPU driver and nvidia-smi are accessible."""
+    if shutil.which("nvidia-smi") is None:
+        return False
+    try:
+        result = subprocess.run(
+            ["nvidia-smi", "-L"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        return result.returncode == 0 and "NVIDIA" in result.stdout
+    except Exception:
+        return False
+
+
+def _get_tok2vec_width(source: str) -> int:
+    """Read tok2vec output width from a model's config.cfg without loading weights.
+
+    Supports both local directory paths and installed spaCy package names.
+
+    Args:
+        source: An installed spaCy model name (e.g. ``"en_core_web_sm"``) or a
+            local path to a model directory containing ``config.cfg``.
+
+    Returns:
+        The integer width of the tok2vec encoder's output.
+
+    Raises:
+        LexosException: If the config.cfg cannot be located or the width key
+            is missing.
+    """
+    source_path = Path(source)
+    if source_path.exists():
+        cfg_path = source_path / "config.cfg"
+        if not cfg_path.exists():
+            raise LexosException(f"No config.cfg found at {source_path}")
+    else:
+        import spacy.util as _spacy_util
+        try:
+            pkg_path = _spacy_util.get_package_path(source)
+            candidates = sorted(pkg_path.glob("*/config.cfg"))
+            if not candidates:
+                raise LexosException(
+                    f"No config.cfg found in installed package '{source}'"
+                )
+            cfg_path = candidates[0]
+        except LexosException:
+            raise
+        except Exception as e:
+            raise LexosException(
+                f"Could not locate config.cfg for source model '{source}': {e}\n"
+                "Use recipe= with an explicit width instead."
+            ) from e
+
+    raw = Config().from_disk(cfg_path)
+    width = (
+        raw.get("components", {})
+           .get("tok2vec", {})
+           .get("model", {})
+           .get("encode", {})
+           .get("width")
+    )
+    if width is None:
+        raise LexosException(
+            f"Source model '{source}' has no tok2vec component or its width is "
+            "not at components.tok2vec.model.encode.width."
+        )
+    return width
+
+
+def _patch_tok2vec_width(component_cfg: dict[str, Any], width: int) -> None:
+    """Replace the tok2vec width variable reference with a concrete integer.
+
+    Thinc stores ``${components.tok2vec.model.encode.width}`` as a literal
+    string until interpolation.  When tok2vec is sourced that config path
+    disappears, so we walk the component dict and substitute the integer.
+
+    Args:
+        component_cfg: A single component's config sub-dict (mutated in place).
+        width: The integer width to substitute for the variable reference.
+    """
+    _VAR = "${components.tok2vec.model.encode.width}"
+    for key, value in component_cfg.items():
+        if value == _VAR:
+            component_cfg[key] = width
+        elif isinstance(value, dict):
+            _patch_tok2vec_width(value, width)
+
+
 # ---------------------------------------------------------------------------
 # Standalone utility: split_conllu
 # ---------------------------------------------------------------------------
 
 
 def split_conllu(
-    input_path: Union[str, Path],
-    output_dir: Union[str, Path],
+    input_path: str | Path,
+    output_dir: str | Path,
+    *,
     train_ratio: float = 0.8,
     dev_ratio: float = 0.1,
     seed: int = 42,
@@ -161,11 +259,12 @@ class LanguageModel:
     def __init__(
         self,
         model_dir: str,
+        *,
         lang: str = "en",
-        gpu: int = -1,
-        components: Optional[list[str]] = None,
-        base_model: Union[str, dict, None] = None,
-        recipe: Optional[str] = None,
+        gpu: bool = False,
+        components: list[str] | None = None,
+        base_model: str | dict | None = None,
+        recipe: str | None = None,
         force: bool = False,
     ) -> None:
         """Initialise the LanguageModel and create its directory structure.
@@ -174,7 +273,11 @@ class LanguageModel:
             model_dir: Root folder for all model artefacts.
             lang: BCP-47 language code (default ``"en"``).  Use ``"xx"`` for
                 a language-agnostic multilingual model.
-            gpu: GPU device ID, or ``-1`` to use CPU (default ``-1``).
+            gpu: Use GPU for training (default ``False`` — CPU).  Set to
+                ``True`` to enable GPU (device 0).  Requires cupy and the CUDA
+                libraries; see README.md for setup instructions.  If
+                ``gpu=True`` but no NVIDIA GPU is detected, falls back to CPU
+                with a warning.
             components: spaCy pipeline components to train.  Defaults to the
                 full Universal Dependencies pipeline
                 ``["tok2vec", "tagger", "morphologizer",
@@ -190,26 +293,48 @@ class LanguageModel:
                   ``{"tok2vec": "en_core_web_sm", "tagger": "en_core_web_sm",
                   "morphologizer": "training/UD_English-EWT/model-best", ...}``.
                   Components absent from the dict are initialised from scratch.
-
-                .. note::
-                    If ``tok2vec`` is sourced, all other components must also
-                    be sourced (because factory-defined components reference
-                    tok2vec's width via a config variable that no longer exists
-                    once tok2vec is sourced).  Use a custom ``recipe`` for
-                    mixed architectures.
+                  Mixed factory/source configurations are supported even when
+                  ``tok2vec`` is sourced — the module reads the tok2vec output
+                  width from the source model's ``config.cfg`` and patches it
+                  into factory-defined component configs automatically.
 
             recipe: Path to a ``.cfg`` file.  When provided, the file is
                 loaded as-is and ``base_model`` / ``components`` are ignored
-                for config generation (though they still control which GPU is
-                used and where artefacts are stored).
+                for config generation (though they still control GPU and where
+                artefacts are stored).
             force: Overwrite an existing ``config.cfg`` if one already exists.
         """
         self.model_dir = Path(model_dir)
         self.lang = lang
-        self.gpu = gpu
-        self.components = components if components is not None else FULL_UD_PIPELINE.copy()
         self.base_model = base_model
-        self.config: Optional[Config] = None
+        self.components = components if components is not None else FULL_UD_PIPELINE.copy()
+        self.config: Config | None = None
+
+        # --- GPU setup ---
+        if gpu and not _has_nvidia_gpu():
+            warnings.warn(
+                "gpu=True was requested but no NVIDIA GPU was detected "
+                "(nvidia-smi not found or returned no NVIDIA devices). "
+                "Falling back to CPU. To enable GPU install the extras: "
+                "pip install .[gpu]",
+                UserWarning,
+                stacklevel=2,
+            )
+            self.gpu = False
+        else:
+            self.gpu = gpu
+        self._use_gpu: int = 0 if self.gpu else -1  # spaCy's device-id convention
+
+        # --- Non-English warning ---
+        if lang not in ("en", "xx"):
+            warnings.warn(
+                f"lang='{lang}': the default base_model entries (en_core_web_sm "
+                "and the bundled UD English model) are English-specific. "
+                f"Make sure your base_model entries point to models trained for '{lang}'. "
+                "See README.md for guidance on finding models for other languages.",
+                UserWarning,
+                stacklevel=2,
+            )
 
         self._config_path = self.model_dir / "config.cfg"
         self._assets_dir = self.model_dir / "assets" / lang
@@ -240,7 +365,7 @@ class LanguageModel:
                 lang=self.lang,
                 pipeline=self.components,
                 optimize="efficiency",
-                gpu=gpu >= 0,
+                gpu=self.gpu,
             )
 
         self._apply_config_defaults()
@@ -258,33 +383,17 @@ class LanguageModel:
         if not recipe_path.exists():
             recipe_path = _RECIPES_DIR / recipe
         if not recipe_path.exists():
-            raise FileNotFoundError(
+            raise LexosException(
                 f"Recipe not found: {recipe}\n"
                 f"Checked: {Path(recipe).resolve()} and {_RECIPES_DIR / recipe}"
             )
         self.config = Config().from_disk(recipe_path)
         msg.good(f"Loaded recipe: {recipe_path}")
 
-    def _resolve_sources(self, base_model: Union[str, dict]) -> dict[str, str]:
+    def _resolve_sources(self, base_model: str | dict) -> dict[str, str]:
         """Normalise base_model to a component→source mapping."""
         if isinstance(base_model, str):
             return {comp: base_model for comp in self.components}
-        # dict form — validate tok2vec constraint
-        if "tok2vec" in base_model:
-            missing = [c for c in self.components if c not in base_model and c != "tok2vec"]
-            # tok2vec-listeners in non-sourced components reference
-            # ${components.tok2vec.model.encode.width} which no longer exists
-            # once tok2vec is sourced.
-            if missing:
-                raise ValueError(
-                    "When tok2vec is sourced, all other pipeline components "
-                    "must also have a source (because factory-defined components "
-                    "reference tok2vec's width via a config variable that "
-                    "doesn't exist once tok2vec is sourced).\n"
-                    f"Components without a source: {missing}\n"
-                    "Either add sources for all components, or use a custom "
-                    "recipe= for mixed factory/source configurations."
-                )
         return base_model
 
     def _generate_finetune_config(self, sources: dict[str, str]) -> Config:
@@ -292,19 +401,29 @@ class LanguageModel:
 
         Loads default_ud.cfg as the structural base (providing corpora,
         training, and initialize sections), then replaces each component block
-        with a single ``source = "..."`` entry.
+        with a ``source = "..."`` entry.  For factory-defined components
+        alongside a sourced tok2vec, the broken
+        ``${components.tok2vec.model.encode.width}`` variable reference is
+        replaced with the actual integer read from the source model's config.
         """
         base = Config().from_disk(_RECIPES_DIR / "default_ud.cfg")
 
-        # Update pipeline metadata
         base["nlp"]["lang"] = self.lang
         base["nlp"]["pipeline"] = self.components
 
-        # Replace component factory definitions with source entries
+        # Read tok2vec width once if tok2vec is sourced, so factory-defined
+        # listener components can have the variable reference patched in.
+        tok2vec_source = sources.get("tok2vec")
+        tok2vec_width = _get_tok2vec_width(tok2vec_source) if tok2vec_source else None
+
         for comp in self.components:
             source = sources.get(comp)
             if source is not None:
                 base["components"][comp] = {"source": source}
+            elif tok2vec_width is not None:
+                # Factory-defined component with sourced tok2vec: patch the
+                # width variable so config interpolation doesn't break.
+                _patch_tok2vec_width(base["components"][comp], tok2vec_width)
 
         return base
 
@@ -314,6 +433,8 @@ class LanguageModel:
         Specifically:
         - ``corpora.train.max_length = 2000`` prevents runaway memory use on
           very long documents during training.
+        - ``training.before_update = null`` silences spaCy's debug warning
+          about the missing key.
         - ``training.score_weights`` assigns equal weight to each active
           component's accuracy metric so the best-model checkpoint reflects
           overall pipeline quality.
@@ -321,13 +442,9 @@ class LanguageModel:
         if self.config is None:
             return
 
-        # Cap document length during training
-        try:
+        if "corpora" in self.config and "train" in self.config["corpora"]:
             self.config["corpora"]["train"]["max_length"] = 2000
-        except KeyError:
-            pass
 
-        # Build score_weights from whichever components are in the pipeline
         _component_metrics: dict[str, list[str]] = {
             "tagger": ["tag_acc"],
             "morphologizer": ["pos_acc", "morph_acc"],
@@ -338,7 +455,7 @@ class LanguageModel:
         for comp in self.components:
             active_metrics.extend(_component_metrics.get(comp, []))
 
-        weights: dict = {
+        weights: dict[str, Any] = {
             "morph_per_feat": None,
             "dep_las_per_type": None,
             "sents_p": None,
@@ -350,10 +467,9 @@ class LanguageModel:
             for key in active_metrics:
                 weights[key] = per
 
-        try:
+        if "training" in self.config:
+            self.config["training"]["before_update"] = None
             self.config["training"]["score_weights"] = weights
-        except KeyError:
-            pass
 
     # ------------------------------------------------------------------
     # Public config interface
@@ -364,7 +480,7 @@ class LanguageModel:
         """Path to the config.cfg file on disk."""
         return self._config_path
 
-    def save_config(self, filepath: Optional[Union[str, Path]] = None) -> None:
+    def save_config(self, *, filepath: str | Path | None = None) -> None:
         """Write the in-memory config to disk.
 
         Args:
@@ -373,7 +489,7 @@ class LanguageModel:
         path = Path(filepath) if filepath else self._config_path
         self.config.to_disk(path)
 
-    def load_config(self, filepath: Optional[Union[str, Path]] = None) -> None:
+    def load_config(self, *, filepath: str | Path | None = None) -> None:
         """Replace the current config by loading from a file.
 
         Args:
@@ -390,9 +506,10 @@ class LanguageModel:
 
     def copy_assets(
         self,
-        train: Optional[Union[str, Path]] = None,
-        dev: Optional[Union[str, Path]] = None,
-        test: Optional[Union[str, Path]] = None,
+        *,
+        train: str | Path | None = None,
+        dev: str | Path | None = None,
+        test: str | Path | None = None,
     ) -> None:
         """Copy CONLL-U data files into the model's assets folder.
 
@@ -421,8 +538,8 @@ class LanguageModel:
             try:
                 with smart_open(filepath, "rb") as f:
                     content = f.read()
-            except IOError as e:
-                raise IOError(f"Could not read {label} file: {filepath}") from e
+            except Exception as e:
+                raise LexosException(f"Could not read {label} file: {filepath}") from e
 
             dest = self._assets_dir / Path(filepath).name
             with open(dest, "wb") as f:
@@ -440,15 +557,13 @@ class LanguageModel:
                 path_overrides[f"paths.{label}"] = spacy_path
                 path_overrides[f"corpora.{label}.path"] = spacy_path
 
-        # Reload config with path overrides and save — more reliable than
-        # mutating the nested Thinc Config dict in place.
         if path_overrides:
             self.config = load_config(self._config_path, overrides=path_overrides)
             self.config.to_disk(self._config_path)
 
         msg.good(f"Assets copied to {self._assets_dir}")
 
-    def convert_assets(self, n_sents: int = 10, merge_subtokens: bool = True) -> None:
+    def convert_assets(self, *, n_sents: int = 10, merge_subtokens: bool = True) -> None:
         """Convert CONLL-U files in assets/ to spaCy's binary format in corpus/.
 
         Groups every ``n_sents`` sentences into a single spaCy Doc.  Larger
@@ -482,23 +597,105 @@ class LanguageModel:
         else:
             msg.fail("One or more assets failed to convert. Check CONLL-U formatting.")
 
-    def train(self) -> None:
+    def validate(self) -> None:
+        """Run pre-training preflight checks and print a summary.
+
+        Verifies that:
+
+        - Assets exist in ``assets/{lang}/`` and are non-empty.
+        - Converted ``.spacy`` corpus files are present (warns if missing, since
+          ``convert_assets()`` may not have been called yet).
+        - The config file exists and passes spaCy's ``debug_config`` check.
+        - Training data passes spaCy's ``debug_data`` check (if corpus exists).
+
+        Raises:
+            LexosException: If any check fails.  All failures are reported
+                before raising so the user can fix them in one round.
+        """
+        msg = Printer()
+        errors: list[str] = []
+
+        assets = list(self._assets_dir.glob("*.conllu"))
+        if not assets:
+            errors.append(
+                f"No .conllu files found in {self._assets_dir}. "
+                "Run copy_assets() first."
+            )
+        else:
+            for f in assets:
+                if f.stat().st_size == 0:
+                    errors.append(f"Asset file is empty: {f}")
+
+        spacy_files = list(self._corpus_dir.glob("*.spacy"))
+        if not spacy_files:
+            msg.warn(
+                f"No .spacy files found in {self._corpus_dir}. "
+                "Run convert_assets() before train()."
+            )
+        else:
+            for f in spacy_files:
+                if f.stat().st_size == 0:
+                    errors.append(f"Corpus file is empty: {f}")
+
+        if not self._config_path.exists():
+            errors.append(f"Config not found: {self._config_path}")
+        else:
+            try:
+                debug_config(self._config_path)
+            except Exception as e:
+                errors.append(f"Config validation failed: {e}")
+            if spacy_files:
+                try:
+                    debug_data(self._config_path)
+                except LexosException as e:
+                    errors.append(str(e))
+
+        if self.lang not in ("en", "xx"):
+            msg.warn(
+                f"lang='{self.lang}': confirm your base_model components are "
+                "appropriate for this language."
+            )
+
+        if errors:
+            for err in errors:
+                msg.fail(err)
+            raise LexosException(
+                f"Validation failed with {len(errors)} issue(s). See output above."
+            )
+
+        msg.good("All checks passed.")
+        msg.info(f"  Language:   {self.lang}")
+        msg.info(f"  Pipeline:   {self.components}")
+        msg.info(f"  Device:     {'GPU (device 0)' if self.gpu else 'CPU'}")
+        msg.info(f"  Base model: {self.base_model}")
+        msg.info(f"  Assets:     {[f.name for f in assets]}")
+        msg.info(f"  Output:     {self._training_dir}")
+
+    def train(self, *, skip_validation: bool = False) -> None:
         """Train the model using the current config.
 
         Reads ``config.cfg`` from disk (so any manual edits to that file are
-        respected), initialises the spaCy pipeline, and runs the training loop.
-        Progress is logged to stdout every ``eval_frequency`` steps.
+        respected), runs a preflight check via :meth:`validate` (unless
+        ``skip_validation=True``), then initialises the spaCy pipeline and
+        runs the training loop.  Progress is logged to stdout.
 
         The trained model is saved to ``training/{lang}/model-best`` (best dev
         score) and ``training/{lang}/model-last`` (final step).
+
+        Args:
+            skip_validation: Skip the pre-training preflight check (default
+                ``False``).  Set to ``True`` to skip validation and go straight
+                to training.
         """
+        if not skip_validation:
+            self.validate()
         timer = _Timer()
         config = load_config(self._config_path)
-        nlp = init_nlp(config, use_gpu=self.gpu)
+        nlp = init_nlp(config, use_gpu=self._use_gpu)
         spacy_train(
             nlp=nlp,
             output_path=self._training_dir,
-            use_gpu=self.gpu,
+            use_gpu=self._use_gpu,
             stdout=sys.stdout,
             stderr=sys.stderr,
         )
@@ -507,11 +704,17 @@ class LanguageModel:
 
     def evaluate(
         self,
-        model: Optional[str] = None,
-        test_file: Optional[Union[str, Path]] = None,
+        *,
+        model: str | None = None,
+        test_file: str | Path | None = None,
+        gpu: bool = False,
         silent: bool = False,
     ) -> None:
         """Evaluate a trained model against a test set.
+
+        Defaults to CPU (``gpu=False``).  Pass ``gpu=True`` to use GPU if
+        available — evaluation is fast and rarely needs it, but the option
+        is there.
 
         Results are printed to stdout and saved as JSON to
         ``metrics/{lang}/{lang}.json``.
@@ -521,6 +724,7 @@ class LanguageModel:
                 ``training/{lang}/model-best``.
             test_file: Path to the test ``.spacy`` file.  If omitted,
                 searches ``corpus/{lang}/`` for a file matching ``*test*.spacy``.
+            gpu: Use GPU for evaluation (default ``False`` — CPU).
             silent: Suppress console output (results are still saved to disk).
         """
         if model is None:
@@ -529,7 +733,7 @@ class LanguageModel:
         if test_file is None:
             candidates = sorted(self._corpus_dir.glob("*test*.spacy"))
             if not candidates:
-                raise FileNotFoundError(
+                raise LexosException(
                     f"No test .spacy file found in {self._corpus_dir}. "
                     "Pass test_file= explicitly."
                 )
@@ -540,7 +744,7 @@ class LanguageModel:
             model=model,
             data_path=Path(test_file),
             output=output,
-            use_gpu=self.gpu,
+            use_gpu=0 if gpu else -1,
             gold_preproc=False,
             displacy_path=None,
             displacy_limit=25,
@@ -549,17 +753,18 @@ class LanguageModel:
 
     def package(
         self,
-        input_dir: Union[str, Path],
-        output_dir: Union[str, Path],
+        input_dir: str | Path,
+        output_dir: str | Path,
         name: str,
         version: str,
+        *,
         force: bool = False,
         silent: bool = False,
     ) -> None:
         """Package a trained model as a pip-installable distribution.
 
         Creates a source distribution (``.tar.gz``) that can be installed with
-        ``pip install`` or loaded directly with ``spacy.load(path)``.
+        ``pip install`` and then loaded by package name with ``spacy.load()``.
 
         Args:
             input_dir: Path to a trained model directory (e.g.
@@ -573,23 +778,32 @@ class LanguageModel:
         in_path = Path(input_dir)
         out_path = Path(output_dir)
         out_path.mkdir(parents=True, exist_ok=True)
-        spacy_package(
-            input_dir=in_path,
-            output_dir=out_path,
-            name=name,
-            version=version,
-            create_meta=False,
-            create_sdist=True,
-            create_wheel=False,
-            force=force,
-            silent=silent,
-        )
+        try:
+            spacy_package(
+                input_dir=in_path,
+                output_dir=out_path,
+                name=name,
+                version=version,
+                create_meta=False,
+                create_sdist=True,
+                create_wheel=False,
+                force=force,
+                silent=silent,
+            )
+        except SystemExit as e:
+            if e.code != 0:
+                raise LexosException(
+                    "Packaging failed (see output above). "
+                    "The most common cause is a missing 'build' package: "
+                    "pip install build"
+                ) from e
         msg = Printer()
         tarfile = f"{self.lang}_{name}-{version}.tar.gz"
+        dist = out_path / f"{self.lang}_{name}-{version}" / "dist" / tarfile
         msg.good(
             f"Model packaged.\n"
-            f"  Load with spacy.load():  {out_path}/{self.lang}_{name}-{version}\n"
-            f"  Install with pip:        {out_path}/{self.lang}_{name}-{version}/dist/{tarfile}"
+            f"  Install: pip install {dist}\n"
+            f"  Load:    spacy.load('{self.lang}_{name}')"
         )
 
 
@@ -599,9 +813,10 @@ class LanguageModel:
 
 
 def debug_config(
-    config_path: Union[str, Path],
-    overrides: dict = {},
-    code_path: Optional[Union[str, Path]] = None,
+    config_path: str | Path,
+    *,
+    overrides: dict[str, Any] | None = None,
+    code_path: str | Path | None = None,
     show_funcs: bool = False,
     show_vars: bool = False,
 ) -> None:
@@ -619,19 +834,29 @@ def debug_config(
         show_funcs: Print all registered functions used by the config.
         show_vars: Print all config variables and their resolved values.
     """
+    if overrides is None:
+        overrides = {}
     config_path = Path(config_path)
     if isinstance(code_path, str):
         code_path = Path(code_path)
     import_code(code_path)
-    spacy_debug_config(
-        config_path, overrides=overrides, show_funcs=show_funcs, show_vars=show_vars
-    )
+    try:
+        spacy_debug_config(
+            config_path, overrides=overrides, show_funcs=show_funcs, show_vars=show_vars
+        )
+    except SystemExit as e:
+        if e.code != 0:
+            raise LexosException(
+                "debug_config found errors in your config (see output above). "
+                "Fix them before training."
+            ) from e
 
 
 def debug_data(
-    config_path: Union[str, Path],
-    overrides: dict = {},
-    code_path: Optional[Union[str, Path]] = None,
+    config_path: str | Path,
+    *,
+    overrides: dict[str, Any] | None = None,
+    code_path: str | Path | None = None,
     ignore_warnings: bool = False,
     verbose: bool = False,
     no_format: bool = False,
@@ -639,12 +864,8 @@ def debug_data(
     """Analyse and validate training and dev data, reporting stats and issues.
 
     Useful for catching problems like missing labels, data imbalance, or
-    invalid annotations before a long training run.
-
-    .. warning::
-        If at least one error is found, spaCy will call ``sys.exit(1)``
-        after the report.  This is spaCy's behaviour and cannot be suppressed
-        from within the wrapper.
+    invalid annotations before a long training run.  Raises ``LexosException``
+    if spaCy's data checker finds errors.
 
     Args:
         config_path: Path to the ``.cfg`` file that references the data.
@@ -654,29 +875,35 @@ def debug_data(
         verbose: Print additional explanations alongside stats.
         no_format: Plain-text output without colour formatting.
     """
-    msg = Printer()
-    msg.info(
-        "Note: if any errors are found, the script will exit with SystemExit: 1."
-    )
+    if overrides is None:
+        overrides = {}
     config_path = Path(config_path)
     if isinstance(code_path, str):
         code_path = Path(code_path)
     import_code(code_path)
-    spacy_debug_data(
-        config_path,
-        config_overrides=overrides,
-        ignore_warnings=ignore_warnings,
-        verbose=verbose,
-        no_format=no_format,
-        silent=False,
-    )
+    try:
+        spacy_debug_data(
+            config_path,
+            config_overrides=overrides,
+            ignore_warnings=ignore_warnings,
+            verbose=verbose,
+            no_format=no_format,
+            silent=False,
+        )
+    except SystemExit as e:
+        if e.code != 0:
+            raise LexosException(
+                "debug_data found errors in your training data (see output above). "
+                "Fix them before training."
+            ) from e
 
 
 def debug_model(
-    config_path: Union[str, Path],
-    config_overrides: dict = {},
+    config_path: str | Path,
+    *,
+    config_overrides: dict[str, Any] | None = None,
     component: str = "tagger",
-    layers: list[int] = [],
+    layers: list[int] | None = None,
     dimensions: bool = False,
     parameters: bool = False,
     gradients: bool = False,
@@ -704,6 +931,10 @@ def debug_model(
         P3: Print final predictions.
         use_gpu: GPU device ID or ``-1`` for CPU.
     """
+    if config_overrides is None:
+        config_overrides = {}
+    if layers is None:
+        layers = []
     config_path = Path(config_path)
     setup_gpu(use_gpu)
     print_settings = {
@@ -735,11 +966,12 @@ def debug_model(
 
 
 def fill_config(
-    config_path: Union[str, Path],
-    output_file: Union[str, Path],
+    config_path: str | Path,
+    output_file: str | Path,
+    *,
     pretraining: bool = False,
     diff: bool = False,
-    code_path: Optional[Union[str, Path]] = None,
+    code_path: str | Path | None = None,
 ) -> None:
     """Fill a partial config file with spaCy defaults and save it.
 
