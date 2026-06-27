@@ -1,7 +1,7 @@
 """loader.py.
 
-Last Update: 2025-09-13
-Tested: 2025-09-13
+Last Update: 2026-06-27
+Tested: 2026-06-27
 """
 
 import mimetypes
@@ -173,8 +173,8 @@ class Loader(BaseLoader):
         paths = ensure_list(paths)
         for path in paths:
             if Path(path).is_dir():
-                paths = [p for p in Path(path).rglob("*")]
-                self.load(paths)
+                self.load([p for p in Path(path).rglob("*")])
+                continue
             # Get the mime type of the file
             try:
                 with open(path, "rb") as f:
