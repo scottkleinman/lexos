@@ -2,8 +2,8 @@
 
 This file contains the main logic for the Scrubber class.
 
-Last Update: 2025-12-04
-Tested: 2025-01-20
+Last Update: 2026-06-26
+Tested: 2026-06-26
 """
 
 from functools import partial
@@ -37,7 +37,7 @@ class Pipe:
 
     name: str = Field(..., description="The name of the component.")
     opts: Optional[dict[str, Any]] = Field(
-        default={}, description="Options to pass to the component."
+        default_factory=dict, description="Options to pass to the component."
     )
     factory: Optional[catalogue.Registry] = Field(
         default_factory=lambda: scrubber_components,
@@ -183,8 +183,8 @@ class Scrubber:
         self,
         texts: Iterable[str],
         *,
-        disable: Optional[list[str]] = [],
-        component_cfg: Optional[dict[str, dict[str, Any]]] = {},
+        disable: Optional[list[str]] = None,
+        component_cfg: Optional[dict[str, dict[str, Any]]] = None,
     ) -> Iterable[str]:
         """Scrub a list of texts with the current pipeline.
 
@@ -197,14 +197,18 @@ class Scrubber:
             Iterable: An iterator of scrubbed texts.
         """
         pipes = []
+        if disable is None:
+            disable = []
+        if component_cfg is None:
+            component_cfg = {}
         for pipe in self._components:
             if pipe.name in disable:
                 continue
-            kwargs = component_cfg.get(pipe.name, None)
-            # Allow component_cfg to overwrite the pipe options.
+            kwargs = component_cfg.get(pipe.name)
             if kwargs is not None:
-                pipe.opts = kwargs
-            pipes.append(pipe)
+                pipes.append(Pipe(name=pipe.name, opts=kwargs, factory=pipe.factory))
+            else:
+                pipes.append(pipe)
         for text in texts:
             for pipe in pipes:
                 text = pipe(text)

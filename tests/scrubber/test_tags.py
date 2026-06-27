@@ -1,8 +1,8 @@
 """test_tags.py.
 
-Coverage: 99%. Missing: 447
+Coverage: 100%.
 
-Last Tested: June 8, 2025
+Last Tested: 2026-06-26
 
 Test suite for lexos.scrubber.tags module.
 
@@ -14,13 +14,17 @@ Although 'xml' with 'html.parser' might work for basic XML, 'lxml' is more robus
 This suite provides a good starting point for testing your `tags.py` module. You can expand it with more specific edge cases or different combinations of parameters as needed.
 """
 
+import importlib.util
+
 import pytest
 from bs4 import BeautifulSoup
 
 from lexos.exceptions import LexosException
 from lexos.scrubber.tags import (
+    _filter_elements_by_attribute,
     _match_elements,
     _match_value,
+    _parse_document,
     remove_attribute,
     remove_comments,
     remove_doctype,
@@ -764,6 +768,76 @@ class TestMatchValue:
         assert _match_value(["item-001"], r"item-\d{3}") is False
 
 
+class TestPrivateHelpers:
+    """Tests for internal helper functions."""
+
+    def test_filter_elements_by_attribute_none(self):
+        """Ensures no filtering happens when attribute_name is None."""
+        soup = BeautifulSoup("<div class='x'></div><span></span>", "html.parser")
+        elements = [soup.div, soup.span]
+        result = _filter_elements_by_attribute(elements, None, None, "exact")
+        assert result == elements
+
+    def test_filter_elements_by_attribute_exact(self):
+        """Ensures exact attribute filtering works."""
+        soup = BeautifulSoup("<div class='x'></div><span></span>", "html.parser")
+        elements = [soup.div, soup.span]
+        result = _filter_elements_by_attribute(elements, "class", "x", "exact")
+        assert result == [soup.div]
+
+    def test_filter_elements_by_attribute_regex(self):
+        """Ensures regex attribute filtering works."""
+        soup = BeautifulSoup(
+            "<div class='first'></div><span class='second'></span>", "html.parser"
+        )
+        elements = [soup.div, soup.span]
+        result = _filter_elements_by_attribute(elements, "class", r"^sec", "regex")
+        assert result == [soup.span]
+
+    def test_parse_document_falls_back_from_lxml_xml(self, monkeypatch):
+        """Ensures _parse_document falls back to xml when lxml-xml parsing fails."""
+        import lexos.scrubber.tags as tags_module
+
+        call_count = {"calls": 0}
+
+        def fake_get_parser(mode: str) -> str:
+            return "lxml-xml"
+
+        class DummySoup:
+            def __init__(self, text: str, parser: str):
+                call_count["calls"] += 1
+                if call_count["calls"] == 1:
+                    raise ValueError("simulated lxml failure")
+                self.text = text
+
+            def __str__(self) -> str:
+                return self.text
+
+        monkeypatch.setattr(tags_module, "_get_parser", fake_get_parser)
+        monkeypatch.setattr(tags_module, "BeautifulSoup", DummySoup)
+
+        soup = tags_module._parse_document("<root></root>", "xml")
+        assert str(soup) == "<root></root>"
+        assert call_count["calls"] == 2
+
+    def test_parse_document_raises_when_parser_fails(self, monkeypatch):
+        """Ensures _parse_document raises when parser initialization fails without fallback."""
+        import lexos.scrubber.tags as tags_module
+
+        def fake_get_parser(mode: str) -> str:
+            return "html.parser"
+
+        class DummySoup:
+            def __init__(self, text: str, parser: str):
+                raise ValueError("simulated parser failure")
+
+        monkeypatch.setattr(tags_module, "_get_parser", fake_get_parser)
+        monkeypatch.setattr(tags_module, "BeautifulSoup", DummySoup)
+
+        with pytest.raises(ValueError, match="simulated parser failure"):
+            tags_module._parse_document("<html></html>", "html")
+
+
 # --- Test Data for _match_elements ---
 HTML_FOR_MATCH = """
 <html>
@@ -994,6 +1068,18 @@ class TestMatchElements:
 
         assert len(elements) == 1
 
+    def test_match_all_elements_with_empty_selector(self):
+        """Tests that an empty selector returns all elements."""
+        soup, elements = _match_elements("", HTML_FOR_MATCH, mode="html")
+        assert len(elements) == len(soup.find_all())
+
+    def test_parser_fallback_without_lxml(self, monkeypatch):
+        """Tests that XML parsing falls back when lxml is unavailable."""
+        from lexos.scrubber.tags import _get_parser
+
+        monkeypatch.setattr(importlib.util, "find_spec", lambda name: None)
+        assert _get_parser("xml") == "xml"
+
     def test_invalid_matcher_type_raises_exception(self):
         """Tests that an exception is raised if matcher_type is None."""
         # `matcher_type` is None, so `_match_value` should use "exact"
@@ -1098,6 +1184,22 @@ def test_replace_attribute_contains_string_replacement():
         matcher_type="contains",
     )
     expected = '<p class="happy italic">Test</p>'
+    assert result == expected
+
+
+def test_replace_attribute_single_character_replace_value():
+    """Ensures the single-character replace_value branch is exercised."""
+    text = '<p class="bold">Test</p>'
+    result = replace_attribute(
+        text,
+        selector="p",
+        old_attribute="class",
+        new_attribute="class",
+        attribute_value="bold",
+        replace_value="x",
+        matcher_type="exact",
+    )
+    expected = '<p class="x">Test</p>'
     assert result == expected
 
 

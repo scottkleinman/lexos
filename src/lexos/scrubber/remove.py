@@ -1,13 +1,14 @@
 """remove.py.
 
-Last Update: 2025-01-15
-Tested: 2025-01-15
+Last Update: 2026-06-26
+Tested: 2026-06-26
 """
 
 import os
 import re
 import sys
 import unicodedata
+from functools import lru_cache
 from typing import Collection, Optional
 
 from pydantic import ConfigDict, validate_call
@@ -16,6 +17,86 @@ from lexos.scrubber import resources
 from lexos.util import ensure_list, to_collection
 
 validation_config = ConfigDict(arbitrary_types_allowed=True)
+
+try:
+    from lxml import etree, html
+
+    _HAS_LXML = True
+except ImportError:
+    _HAS_LXML = False
+
+from lexos.exceptions import LexosException
+
+# Pre-compile the regex for performance (faster when called repeatedly). \s matches all whitespace characters.
+_WHITESPACE_RE = re.compile(r"\s+", re.UNICODE)
+
+# Pre-compute unicode digit character class and punctuation translation tables once per import
+_UNICODE_DIGITS = "".join(
+    chr(i)
+    for i in range(sys.maxunicode)
+    if unicodedata.category(chr(i)).startswith("N")
+)
+
+_DIGITS_PATTERN = re.compile(
+    r"([+-]?(?:["
+    + re.escape(_UNICODE_DIGITS)
+    + r"]+))|((?<="
+    + re.escape(_UNICODE_DIGITS)
+    + r")[\u0027\u002C\u002E\u00B7\u02D9\u066B\u066C\u2396]["
+    + re.escape(_UNICODE_DIGITS)
+    + r"]+)",
+    re.UNICODE,
+)
+
+_PUNCTUATION_TABLE = dict.fromkeys(
+    (i for i in range(sys.maxunicode) if unicodedata.category(chr(i)).startswith("P")),
+    "",
+)
+
+
+@lru_cache(maxsize=64)
+def _get_punctuation_translation_table(exclude: tuple[str, ...]) -> dict[int, str]:
+    if not exclude:
+        return _PUNCTUATION_TABLE
+
+    exclude_set = set(exclude)
+    return dict.fromkeys(
+        (
+            i
+            for i in range(sys.maxunicode)
+            if unicodedata.category(chr(i)).startswith("P")
+            and chr(i) not in exclude_set
+        ),
+        "",
+    )
+
+
+@lru_cache(maxsize=128)
+def _compile_pattern(pattern: str) -> re.Pattern[str]:
+    return re.compile(pattern)
+
+
+# Security constants similar to Django's strip_tags
+_LONG_OPEN_TAG_RE = re.compile(r"<[a-zA-Z][^>]{1000,}")
+MAX_TAGS_DEPTH = 50
+
+# Pre-compiled marker regexes for Gutenberg header/footer detection
+_TEXT_START_RE = re.compile(
+    r"^(?:" + "|".join(re.escape(token) for token in resources.TEXT_START_MARKERS) + ")"
+)
+_TEXT_END_RE = re.compile(
+    r"^(?:" + "|".join(re.escape(token) for token in resources.TEXT_END_MARKERS) + ")"
+)
+_LEGALESE_START_RE = re.compile(
+    r"^(?:"
+    + "|".join(re.escape(token) for token in resources.LEGALESE_START_MARKERS)
+    + ")"
+)
+_LEGALESE_END_RE = re.compile(
+    r"^(?:"
+    + "|".join(re.escape(token) for token in resources.LEGALESE_END_MARKERS)
+    + ")"
+)
 
 
 @validate_call(config=validation_config)
@@ -131,9 +212,9 @@ def digits(text: str, *, only: Optional[str | Collection[str]] = None) -> str:
     """
     if only:
         if isinstance(only, list):
-            pattern = re.compile(f"[{''.join(only)}]")
+            pat = _compile_pattern(f"[{''.join(only)}]")
         else:
-            pattern = re.compile(only)
+            pat = _compile_pattern(only)
     else:
         # Using "." to represent any unicode character used to indicate
         # a decimal number, and "***" to represent any sequence of
@@ -144,16 +225,8 @@ def digits(text: str, *, only: Optional[str | Collection[str]] = None) -> str:
         for i in range(sys.maxunicode):
             if unicodedata.category(chr(i)).startswith("N"):
                 unicode_digits = unicode_digits + chr(i)
-        pattern = re.compile(
-            r"([+-]?["
-            + re.escape(unicode_digits)
-            + r"])|((?<="
-            + re.escape(unicode_digits)
-            + r")[\u0027|\u002C|\u002E|\u00B7|"
-            r"\u02D9|\u066B|\u066C|\u2396][" + re.escape(unicode_digits) + r"]+)",
-            re.UNICODE,
-        )
-    return str(re.sub(pattern, r"", text))
+        pat = _DIGITS_PATTERN
+    return str(re.sub(pat, r"", text))
 
 
 def project_gutenberg_headers(text: str) -> str:
@@ -183,7 +256,7 @@ def project_gutenberg_headers(text: str) -> str:
 
         if i <= 600:
             # Check if the header ends here
-            if any(line.startswith(token) for token in resources.TEXT_START_MARKERS):
+            if _TEXT_START_RE.match(line):
                 reset = True
 
             # If it's the end of the header, delete the output produced so far.
@@ -195,17 +268,17 @@ def project_gutenberg_headers(text: str) -> str:
 
         if i >= 100:
             # Check if the footer begins here
-            if any(line.startswith(token) for token in resources.TEXT_END_MARKERS):
+            if _TEXT_END_RE.match(line):
                 footer_found = True
 
             # If it's the beginning of the footer, stop output
             if footer_found:
                 break
 
-        if any(line.startswith(token) for token in resources.LEGALESE_START_MARKERS):
+        if _LEGALESE_START_RE.match(line):
             ignore_section = True
             continue
-        elif any(line.startswith(token) for token in resources.LEGALESE_END_MARKERS):
+        elif _LEGALESE_END_RE.match(line):
             ignore_section = False
             continue
 
@@ -222,28 +295,74 @@ def tags(
     """Remove tags from `text`.
 
     Args:
-        text (str): The text from which tags will be removed.
-        sep (Optional[str]): A string to insert between tags and text found between them.
-        remove_whitespace (Optional[bool]): If True, remove extra whitespace between text
-            after tags are removed.
+        text (str): The markup (XML or HTML) to process.
+        sep (Optional[str]): String to insert between extracted text segments.
+        remove_whitespace (Optional[bool]): If True, collapses multiple whitespace characters into a single separator.
 
     Returns:
-        str: A string containing just the text found between tags and other non-data elements.
+        str: A string containing just the text found between tags.
 
-    Note:
-        - If you want to perfom selective removal of tags,
-            use `replace.tag_map` instead.
-        - This function relies on the stdlib `html.parser.HTMLParser`.
-            It appears to work for stripping tags from both html and xml.
-            Using `lxml` or BeautifulSoup might be faster, but this is untested.
-        - This function preserves text in comments, as well as tags
+    Notes:
+    - If you want to perfom selective removal of tags, use `replace.tag_map` instead.
+    - Uses lxml for speed with a fallback to BeautifulSoup.
     """
-    parser = resources.HTMLTextExtractor()
-    parser.feed(text)
-    text = parser.get_text(sep=sep)
+    if not text or not text.strip():
+        return ""
+
+    # Security check: detect potential DoS from large unclosed tags or excessive nesting
+    # Similar to Django's security fix (CVE-2024-53907)
+    for long_open_tag in _LONG_OPEN_TAG_RE.finditer(text):
+        if long_open_tag.group().count("<") >= MAX_TAGS_DEPTH:
+            raise LexosException(
+                "Potential security risk: excessive nested or unclosed tags detected."
+            )
+
+    sep_clean = sep if sep is not None else ""
+    plaintext = None
+
+    # Try using lxml for speed
+    if _HAS_LXML:
+        try:
+            # lxml.html.fromstring is extremely fast and very forgiving of both HTML fragments and full documents
+            tree = html.fromstring(text)
+
+            # tree.itertext() is a fast C-level generator. joining with the separator effectively between tag boundaries
+            # Good for large documents, as it avoids building a large intermediate list
+            plaintext = sep_clean.join(tree.itertext())
+        except Exception:
+            # If the HTML parser fails, try the recovery XML parser for strict XML
+            try:
+                # recover=True allows processing of slightly malformed XML
+                # etree.fromstring handles encoding declarations best when given bytes
+                parser = etree.XMLParser(recover=True, no_network=True)
+                tree = etree.fromstring(text.encode("utf-8"), parser=parser)
+                plaintext = sep_clean.join(tree.itertext())
+            except Exception:
+                # Proceed to BeautifulSoup if lxml fails completely
+                pass
+
+    # Fallback to BeautifulSoup
+    if plaintext is None:
+        try:
+            from bs4 import BeautifulSoup
+
+            # Use lxml as the internal engine for speed if available
+            feature = "lxml" if _HAS_LXML else "html.parser"
+            soup = BeautifulSoup(text, feature)
+            plaintext = soup.get_text(separator=sep_clean)
+        except Exception:
+            # Last resort: return text as-is if no parser can handle it
+            plaintext = text
+
     if remove_whitespace:
-        text = re.sub(r"[\n\s\t\v ]+", sep, text, re.UNICODE)
-    return text
+        # For very large strings, regex (re.sub) is often a bottleneck; string.split() and string
+        # join() is significantly faster when the separator is a single space
+        if sep_clean == " ":
+            plaintext = " ".join(plaintext.split())
+        else:
+            plaintext = _WHITESPACE_RE.sub(sep_clean, plaintext).strip()
+
+    return plaintext
 
 
 def new_lines(text: str) -> str:
@@ -272,7 +391,9 @@ def pattern(text: str, *, pattern: Optional[str | Collection[str]]) -> str:
     """
     if isinstance(pattern, list):
         pattern = "|".join(pattern)
-    pat = re.compile(pattern)
+    if pattern is None:
+        return text
+    pat = _compile_pattern(pattern)
     return re.sub(pat, "", text)
 
 
@@ -309,17 +430,8 @@ def punctuation(
             exclude = ensure_list(exclude)
         else:
             exclude = []
-        # Note: We can't use the cached translation table because it replaces
-        # the punctuation with whitespace, so we have to build a new one.
-        translation_table = dict.fromkeys(
-            (
-                i
-                for i in range(sys.maxunicode)
-                if unicodedata.category(chr(i)).startswith("P")
-                and chr(i) not in exclude
-            ),
-            "",
-        )
+        exclude_key = tuple(sorted(exclude))
+        translation_table = _get_punctuation_translation_table(exclude_key)
         return text.translate(translation_table)
 
 

@@ -1,11 +1,12 @@
 """normalize.py.
 
-Last Update: 2025-01-15
-Tested: 2025-01-15
+Last Update: 2026-06-26
+Tested: 2026-06-26
 """
 
 import re
 import unicodedata
+from functools import lru_cache
 from typing import Literal, Optional
 
 from pydantic import ConfigDict, validate_call
@@ -13,6 +14,11 @@ from pydantic import ConfigDict, validate_call
 import lexos.scrubber.resources as resources
 
 validation_config = ConfigDict(arbitrary_types_allowed=True)
+
+
+@lru_cache(maxsize=128)
+def _compile_repeating_chars(chars: str, maxn: int) -> re.Pattern[str]:
+    return re.compile(r"({}){{{},}}".format(re.escape(chars), maxn + 1))
 
 
 @validate_call(config=validation_config)
@@ -97,7 +103,10 @@ def repeating_chars(text: str, *, chars: Optional[str], maxn: Optional[int] = 1)
     Returns:
         str: str
     """
-    return re.sub(r"({}){{{},}}".format(re.escape(chars), maxn + 1), chars * maxn, text)
+    if chars is None:
+        return text
+    pattern = _compile_repeating_chars(chars, maxn)
+    return pattern.sub(chars * maxn, text)
 
 
 @validate_call(config=validation_config)

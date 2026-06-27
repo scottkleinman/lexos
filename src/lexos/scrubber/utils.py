@@ -1,10 +1,9 @@
 """utils.py.
 
-Last Update: 2025-01-15
-Tested: 2025-01-15
+Last Update: 2026-06-26
+Tested: 2026-06-26
 """
 
-import json
 import re
 from xml.etree import ElementTree
 
@@ -28,26 +27,40 @@ def get_tags(text: str) -> dict:
     """
     tags = []
     attributes = []
+    seen_tags: set[str] = set()
+
+    def normalize_tag_name(tag_name: str) -> str:
+        return re.sub(r"{.+}", "", tag_name)
+
+    def normalize_attribs(attribs: dict) -> dict:
+        return {key: attribs[key] for key in sorted(attribs)}
 
     try:
         root = ElementTree.fromstring(text)
         for element in root.iter():
-            if re.sub("{.+}", "", element.tag) not in tags:
-                tags.append(re.sub("{.+}", "", element.tag))
-            if element.attrib != {}:
-                attributes.append({re.sub("{.+}", "", element.tag): element.attrib})
+            tag_name = normalize_tag_name(element.tag)
+            if tag_name not in seen_tags:
+                seen_tags.add(tag_name)
+                tags.append(tag_name)
+            if element.attrib:
+                attributes.append({tag_name: normalize_attribs(element.attrib)})
         tags = humansorted(tags)
-        attributes = json.loads(json.dumps(attributes, sort_keys=True))
+        attributes = [
+            {k: normalize_attribs(v)} for item in attributes for k, v in item.items()
+        ]
     except ElementTree.ParseError:
         import bs4
         from bs4 import BeautifulSoup
 
         soup = BeautifulSoup(text, "xml")
-        for e in soup:
+        for e in list(soup):
             if isinstance(e, bs4.element.ProcessingInstruction):
                 e.extract()
-        [tags.append(tag.name) for tag in soup.find_all()]
-        [attributes.append({tag.name: tag.attrs}) for tag in soup.find_all()]
+        for tag in soup.find_all():
+            tags.append(tag.name)
+            attributes.append({tag.name: normalize_attribs(tag.attrs)})
         tags = humansorted(tags)
-        attributes = json.loads(json.dumps(attributes, sort_keys=True))
+        attributes = [
+            {k: normalize_attribs(v)} for item in attributes for k, v in item.items()
+        ]
     return {"tags": tags, "attributes": attributes}

@@ -1,7 +1,7 @@
 """test_replace.py.
 
 Coverage: 100%
-Last Update: 2025-12-10.
+Last Update: 2026-06-26.
 """
 
 import pytest
@@ -64,11 +64,34 @@ def test_pattern():
     assert pattern(text, pattern=pattern_dict) == expected
 
 
+def test_pattern_reuse_caches_compilation():
+    """Test pattern replacement with the cached regex compiler."""
+    text = "foo bar foo"
+    pattern_dict = {"foo": "baz"}
+    expected = "baz bar baz"
+    assert pattern(text, pattern=pattern_dict) == expected
+    assert pattern(text, pattern=pattern_dict) == expected
+
+
+def test_punctuation_exclude_cache():
+    """Test punctuation exclude path with translation table cache."""
+    text = "Hello, world!"
+    assert punctuation(text, exclude=[",", "!"]) == "Hello, world!"
+    assert punctuation(text, exclude=[",", "!"]) == "Hello, world!"
+
+
 def test_phone_numbers():
     """Test replacing phone numbers."""
     text = "Call me at 123-456-7890 or 1.123.456.7890."
     expected = "Call me at _PHONE_ or _PHONE_."
     assert phone_numbers(text) == expected
+
+
+def test_phone_numbers_wrapped():
+    """Test phone_numbers wrapped function for line coverage."""
+    text = "Call me at 123-456-7890."
+    expected = "Call me at _PHONE_."
+    assert phone_numbers.__wrapped__(text, "_PHONE_") == expected
 
 
 def test_punctuation():

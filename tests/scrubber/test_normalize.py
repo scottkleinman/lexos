@@ -1,7 +1,7 @@
 """test_normalize.py.
 
 Coverage: 100%
-Last Update: 2025-01-14.
+Last Update: 2026-06-26.
 """
 
 import pytest
@@ -51,6 +51,12 @@ def test_repeating_chars():
     assert repeating_chars(text, chars="o", maxn=1) == "TTTThis is so col!!!"
     assert repeating_chars(text, chars="!", maxn=1) == "TTTThis is sooo cool!"
     assert repeating_chars(text, chars="T", maxn=2) == "TThis is sooo cool!!!"
+
+
+def test_repeating_chars_none():
+    """Test repeating_chars returns unchanged text when chars is None."""
+    text = "No repetition here..."
+    assert repeating_chars(text, chars=None, maxn=2) == text
 
 
 def test_unicode():
