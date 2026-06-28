@@ -263,11 +263,24 @@ def export_to_conllu(
         for text in texts:
             doc = nlp(text)
             for sent in doc.sents:
+                # Collect only printable tokens; whitespace-only tokens
+                # (newlines, tabs spaCy preserves as tokens) break tab-separated rows.
+                tokens = [t for t in sent if t.text.strip()]
+                if not tokens:
+                    continue
                 sent_id += 1
+                # Normalise whitespace in the comment so newlines in the source
+                # text don't split the # text = line across multiple file lines.
+                text_comment = " ".join(sent.text.split())
                 f.write(f"# sent_id = auto-{sent_id}\n")
-                f.write(f"# text = {sent.text}\n")
-                for j, token in enumerate(sent, 1):
-                    head = token.head.i - sent.start + 1 if token.head != token else 0
+                f.write(f"# text = {text_comment}\n")
+                # Build spaCy-index → output-row-number map for correct head refs.
+                index_map: dict[int, int] = {t.i: row for row, t in enumerate(tokens, 1)}
+                for j, token in enumerate(tokens, 1):
+                    if token.head == token:
+                        head = 0
+                    else:
+                        head = index_map.get(token.head.i, 0)
                     feats = str(token.morph) if token.morph else "_"
                     lemma = token.lemma_ if token.lemma_ else "_"
                     f.write(
