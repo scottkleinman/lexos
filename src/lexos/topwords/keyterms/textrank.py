@@ -1,7 +1,7 @@
 """textrank.py.
 
-Last Updated: June 16, 2026
-Last Tested: May 24, 2026
+Last Updated: June 28, 2026
+Last Tested: June 28, 2026
 
 Usage:
 
