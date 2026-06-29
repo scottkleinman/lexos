@@ -1,7 +1,7 @@
 """scake.py.
 
-Last Updated: June 16, 2026
-Last Tested: June 2, 2026
+Last Updated: June 28, 2026
+Last Tested: June 28, 2026
 
 Usage:
 
@@ -210,7 +210,7 @@ def _build_cooc_matrix(
     """
     cooc_mat: collections.Counter[tuple[str, str]] = collections.Counter()
 
-    if isinstance(doc, Doc):
+    if isinstance(doc, Doc) and doc.has_annotation("SENT_START"):
         # Builds a mapping from token index to normalized string so we can look
         # Up the correct form for each sentence span
         idx_to_norm: dict[int, str] = {
@@ -237,12 +237,19 @@ def _build_cooc_matrix(
                 if w1_w2[0] != w1_w2[1]
             )
     else:
-        # Plain-string/normal doc path: one global window over all valid tokens
-        window_words = [
-            norm
-            for tok, norm in zip(terms, normalized_terms)
-            if _is_valid_tok_str(tok)
-        ]
+         # No sentence boundaries so we must treat the whole token sequence as one window.
+        if isinstance(doc, Doc):
+            window_words = [
+                norm
+                for tok, norm in zip(terms, normalized_terms)
+                if _is_valid_tok_doc(tok, include_pos)
+            ]
+        else:
+            window_words = [
+                norm
+                for tok, norm in zip(terms, normalized_terms)
+                if _is_valid_tok_str(tok)
+            ]
         cooc_mat.update(
             w1_w2
             for w1_w2 in itertools.combinations(sorted(window_words), 2)
