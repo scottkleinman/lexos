@@ -1,7 +1,7 @@
 """keyterms_util.py.
 
-Last Updated: June 16, 2026
-Last Tested: NA
+Last Updated: June 28, 2026
+Last Tested: June 28
 
 Usage:
 
