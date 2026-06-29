@@ -14,15 +14,14 @@ from lexos.topwords.keyterms.yake import yake
 keyterms = yake(doc=doc)
 """
 
-import keyterms_util
 import collections
 import math
 import re
 import statistics
-import unicodedata
 from functools import reduce
 from operator import mul
 from typing import Any, Collection, Iterable, Literal, Optional, Sequence
+from lexos.topwords.keyterms.keyterms_util import is_unicode_punctuation
 
 import pandas as pd
 from pydantic import ConfigDict, Field
