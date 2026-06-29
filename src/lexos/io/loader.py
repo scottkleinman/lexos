@@ -1,12 +1,12 @@
 """loader.py.
 
-Last Update: 2026-06-27
-Tested: 2026-06-27
+Last Update: 2026-06-28
+Last Tested: 2026-06-28
 """
 
 import mimetypes
 import zipfile
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Optional, Self
 
 import puremagic
@@ -26,6 +26,17 @@ from lexos.constants import (
 
 VALID_FILE_TYPES = {*TEXT_TYPES, *PDF_TYPES, *DOCX_TYPES, *ZIP_TYPES}
 from lexos.exceptions import LexosException
+
+
+def _sanitize_zip_filename(filename: str) -> str:
+    """Sanitize ZIP entry names to prevent path traversal."""
+    zip_path = PurePosixPath(filename)
+    safe_parts = [part for part in zip_path.parts if part not in ("..", ".", "/")]
+    if not safe_parts:
+        return zip_path.name or ""
+    return PurePosixPath(*safe_parts).as_posix()
+
+
 from lexos.io.base_loader import BaseLoader
 from lexos.io.data_loader import DataLoader
 from lexos.util import _decode_bytes as decode
@@ -76,7 +87,7 @@ class Loader(BaseLoader):
             self.names.append(Path(path).name)
             self.mime_types.append("application/docx")
             self.texts.append(text)
-        except BaseException as e:
+        except Exception as e:
             self.errors.append(e)
 
     def _load_pdf_file(self, path: Path | str) -> None:
@@ -92,7 +103,7 @@ class Loader(BaseLoader):
                 self.names.append(Path(path).name)
                 self.mime_types.append("application/pdf")
                 self.texts.append(text)
-        except BaseException as e:
+        except Exception as e:
             self.errors.append(e)
 
     def _load_text_file(self, path: Path | str, mime_type: str) -> None:
@@ -109,7 +120,7 @@ class Loader(BaseLoader):
                 self.names.append(Path(path).stem)
                 self.mime_types.append(mime_type)
                 self.texts.append(text)
-        except BaseException as e:
+        except Exception as e:
             self.errors.append(e)
 
     def _load_zip_file(self, path: Path | str) -> None:
@@ -121,6 +132,7 @@ class Loader(BaseLoader):
         with open(path, "rb") as fin:
             with zipfile.ZipFile(fin) as zip:
                 for info in zip.infolist():
+                    safe_filename = _sanitize_zip_filename(info.filename)
                     try:
                         # Get the mime type of the file
                         file_bytes = zip.read(info.filename)
@@ -133,19 +145,18 @@ class Loader(BaseLoader):
                         if mime_type in VALID_FILE_TYPES:
                             text = decode(file_bytes)
                             self.paths.append(
-                                Path(path).as_posix() + "/" + info.filename
+                                Path(path).as_posix() + "/" + safe_filename
                             )
-                            self.names.append(Path(info.filename).stem)
+                            self.names.append(Path(safe_filename).stem)
                             self.mime_types.append(mime_type)
                             self.texts.append(text)
                         else:
                             self.errors.append(
-                                f"Invalid MIME type: {mime_type} for file {info.filename}."
+                                f"Invalid MIME type: {mime_type} for file {safe_filename}."
                             )
-                    except BaseException as e:
+                    except Exception as e:
                         self.errors.append(e)
 
-    # @validate_call(config=model_config)
     def load_dataset(self, dataset: Self) -> None:
         """Load a dataset.
 
@@ -173,7 +184,7 @@ class Loader(BaseLoader):
         paths = ensure_list(paths)
         for path in paths:
             if Path(path).is_dir():
-                self.load([p for p in Path(path).rglob("*")])
+                self.load([p for p in Path(path).rglob("*") if p.is_file()])
                 continue
             # Get the mime type of the file
             try:
