@@ -1,8 +1,8 @@
 """test_clustermap.py.
 
-Coverage: 96%. Missing: 516, 705, 828-829, 834-835, 1052-1057, 1086-1098
+Coverage: 96%. Missing: 506, 695, 818-819, 824-825, 1042-1047, 1076-1088
 
-Last Updated: December 5, 2025
+Last Updated: June 28, 2026
 """
 
 from unittest.mock import Mock, patch
@@ -165,6 +165,30 @@ class TestGetMatrix:
         assert isinstance(result, list)
         assert len(result) == 3  # Should have 3 documents
         assert all(len(row) == 2 for row in result)  # Each should have 2 terms
+
+    def test_plotly_cluster_grid_z_score(self):
+        """Test z-scoring on PlotlyClusterGrid without redundant transpose operations."""
+        from lexos.cluster.clustermap import PlotlyClusterGrid
+
+        data = pd.DataFrame(
+            [[1.0, 2.0], [3.0, 4.0]], index=["a", "b"], columns=["x", "y"]
+        )
+        grid = PlotlyClusterGrid(data=data, z_score=1)
+
+        assert np.allclose(grid.data2d.values.mean(axis=1), np.zeros(2), atol=1e-7)
+        assert np.allclose(grid.data2d.values.std(axis=1), np.ones(2), atol=1e-7)
+
+    def test_plotly_cluster_grid_standard_scale(self):
+        """Test standard scaling on PlotlyClusterGrid without redundant transpose operations."""
+        from lexos.cluster.clustermap import PlotlyClusterGrid
+
+        data = pd.DataFrame(
+            [[1.0, 3.0], [2.0, 4.0]], index=["a", "b"], columns=["x", "y"]
+        )
+        grid = PlotlyClusterGrid(data=data, standard_scale=1)
+
+        assert np.allclose(grid.data2d.values.min(axis=1), np.zeros(2), atol=1e-7)
+        assert np.allclose(grid.data2d.values.max(axis=1), np.ones(2), atol=1e-7)
 
     def test_get_matrix_with_mixed_types(self):
         """Test _get_matrix with DataFrame containing mixed numeric types."""
@@ -995,9 +1019,9 @@ class TestPlotlyClusterGrid:
         """Test the _z_score static method."""
         z_scored = PlotlyClusterGrid._z_score(sample_dataframe, axis=1)
 
-        # Check that mean is approximately 0 and std is approximately 1
-        assert np.allclose(z_scored.mean().mean(), 0, atol=1e-10)
-        assert np.allclose(z_scored.std().mean(), 1, atol=1e-10)
+        # Check that mean is approximately 0 and std is approximately 1 per row
+        assert np.allclose(z_scored.mean(axis=1).mean(), 0, atol=1e-10)
+        assert np.allclose(z_scored.std(axis=1, ddof=0).mean(), 1, atol=1e-10)
 
     def test_standard_scale_method(self, sample_dataframe):
         """Test the _standard_scale static method."""
@@ -1014,7 +1038,7 @@ class TestPlotlyClusterGrid:
         # Check that z-scoring was applied (data should be different)
         assert not np.allclose(grid.data2d.values, sample_dataframe.values)
         # Check that standard deviation is approximately 1 for each row
-        assert np.allclose(grid.data2d.std(axis=1).mean(), 1, atol=0.1)
+        assert np.allclose(grid.data2d.std(axis=1, ddof=0).mean(), 1, atol=0.1)
 
     def test_plotly_cluster_grid_standard_scale_row_axis(self, sample_dataframe):
         """Test PlotlyClusterGrid with standard scaling on rows axis (line 495)."""

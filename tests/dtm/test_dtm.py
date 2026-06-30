@@ -1,7 +1,7 @@
 """test_dtm.py.
 
-Coverage: 98%. Missing: 245-246
-Last Update: June 15, 2025
+Coverage: 100%
+Last Update: June 27, 2026
 
 Unit tests for the DTM (Document-Term Matrix) and related functionality in the lexos package.
 Covers construction, sorting, statistics, conversion to DataFrame, and error handling.
@@ -186,6 +186,19 @@ def test_vectorizer_none(dtm: DTM) -> None:
     dtm.vectorizer = None
     # This should not raise an error
     dtm(docs=[["test"]], labels=["doc1"])
+
+
+def test_dtm_call_wraps_vectorizer_errors(nlp: spacy.language.Language) -> None:
+    """Test that DTM __call__ wraps vectorizer errors in LexosException."""
+    dtm = DTM()
+    docs = [nlp("test document")]
+    labels = ["doc1"]
+
+    with patch.object(
+        TextacyVectorizer, "fit_transform", side_effect=RuntimeError("boom")
+    ):
+        with pytest.raises(LexosException, match="Error building DTM: boom"):
+            dtm(docs=docs, labels=labels)
 
 
 def test_sorted_terms_list_basic(dtm_with_terms: DTM) -> None:
@@ -391,6 +404,27 @@ def test_to_df_with_statistics_no_percentages(mock_df_dtm: DTM) -> None:
         2,
         3 + 3,
     )  # (terms, docs + stats) assuming 2 terms and 3 docs in mock_df_dtm
+
+
+def test_to_df_sort_by_total_with_sum(mock_df_dtm: DTM) -> None:
+    """Test sorting by Total when Total is requested in non-percentage output."""
+    df = mock_df_dtm.to_df(sum=True, by="Total", ascending=False)
+    assert "Total" in df.columns
+    assert df.index.tolist() == ["term2", "term1"]
+
+
+def test_to_df_sort_by_mean_with_mean(mock_df_dtm: DTM) -> None:
+    """Test sorting by Mean when Mean is requested in non-percentage output."""
+    df = mock_df_dtm.to_df(mean=True, by="Mean", ascending=False)
+    assert "Mean" in df.columns
+    assert df.index.tolist() == ["term2", "term1"]
+
+
+def test_to_df_sort_by_median_with_median(mock_df_dtm: DTM) -> None:
+    """Test sorting by Median when Median is requested in non-percentage output."""
+    df = mock_df_dtm.to_df(median=True, by="Median", ascending=False)
+    assert "Median" in df.columns
+    assert df.index.tolist() == ["term2", "term1"]
 
 
 def test_vectorizer_instantiation_and_call() -> None:

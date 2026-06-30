@@ -19,7 +19,7 @@ from lexos.util import ensure_list
 class TextCutter(BaseModel, validate_assignment=True):
     """TextCutter class for chunking files and strings containing untokenised text."""
 
-    chunks: list[list[str]] = []
+    chunks: list[list[str]] = Field(default_factory=list)
 
     docs: Optional[Path | str | list[Path | str]] = Field(
         default=None,
@@ -34,7 +34,8 @@ class TextCutter(BaseModel, validate_assignment=True):
         description="When newline=False: the number of chunks to split into. When newline=True: the number of lines per chunk (equivalent to chunksize).",
     )
     names: Optional[list[str | None]] = Field(
-        default=[], description="A list of names for the doc files/strings."
+        default_factory=list,
+        description="A list of names for the doc files/strings.",
     )
     newline: Optional[bool] = Field(
         default=False, description="Whether to chunk by lines."
@@ -71,7 +72,7 @@ class TextCutter(BaseModel, validate_assignment=True):
         Returns:
             Iterator: An iterator containing the object's chunks.
         """
-        return iter([chunk for chunk in self.chunks])
+        return iter(self.chunks)
 
     def __len__(self):
         """Return the number of docs in the instance."""
@@ -92,6 +93,10 @@ class TextCutter(BaseModel, validate_assignment=True):
         chunk_size = size // n
         remainder = size % n
         return chunk_size, remainder
+
+    def _normalize_text(self, text: str) -> str:
+        """Normalize line endings for text content."""
+        return text.replace("\r\n", "\n").replace("\r", "\n")
 
     def _get_name(self, doc: Path | str, index: int) -> str:
         """Generate a filename based on doc or fallback rules.
@@ -192,30 +197,22 @@ class TextCutter(BaseModel, validate_assignment=True):
                             if not chunk_lines:
                                 break
                             chunk = b"".join(chunk_lines)
-                            chunks.append(chunk.decode("utf-8"))
+                            chunks.append(self._normalize_text(chunk.decode("utf-8")))
                     else:
                         file_size = buffer.getbuffer().nbytes
                         chunk_size, remainder = self._calculate_chunk_size(
                             file_size, self.n
                         )
-                        try:
-                            for i in range(self.n):
-                                size = (
-                                    chunk_size + remainder
-                                    if i == self.n - 1
-                                    else chunk_size
-                                )
-                                chunk = buffer.read(size)
-                                if not chunk:
-                                    break
-                                # Convert to string
-                                chunks.append(
-                                    chunk.decode("utf-8")
-                                    if isinstance(chunk, bytes)
-                                    else chunk
-                                )
-                        finally:
-                            buffer.close()
+                        for i in range(self.n):
+                            size = (
+                                chunk_size + remainder
+                                if i == self.n - 1
+                                else chunk_size
+                            )
+                            chunk = buffer.read(size)
+                            if not chunk:
+                                break
+                            chunks.append(self._normalize_text(chunk.decode("utf-8")))
                 else:
                     if self.newline:
                         # Read chunksize lines at a time
@@ -229,15 +226,16 @@ class TextCutter(BaseModel, validate_assignment=True):
                             if not chunk_lines:
                                 break
                             chunk = b"".join(chunk_lines)
-                            chunks.append(chunk.decode("utf-8"))
+                            chunks.append(self._normalize_text(chunk.decode("utf-8")))
                     else:
                         while chunk := buffer.read(self.chunksize):
-                            chunks.append(chunk.decode("utf-8"))
+                            chunks.append(self._normalize_text(chunk.decode("utf-8")))
             return chunks
 
         # Character-based chunking (default)
         if isinstance(doc, bytes):
             doc = doc.decode("utf-8")
+        doc = self._normalize_text(doc)
         chunks = []
 
         if self.newline:
@@ -315,45 +313,33 @@ class TextCutter(BaseModel, validate_assignment=True):
                             if not chunk_lines:
                                 break
                             chunk = b"".join(chunk_lines).decode("utf-8")
-                            chunk = chunk.replace("\r\n", "\n").replace("\r", "\n")
-                            chunks.append(chunk)
+                            chunks.append(self._normalize_text(chunk))
                     else:
                         file_size = os.path.getsize(str(path))
                         chunk_size, remainder = self._calculate_chunk_size(
                             file_size, self.n
                         )
-                        try:
-                            for i in range(self.n):
-                                size = (
-                                    chunk_size + remainder
-                                    if i == self.n - 1
-                                    else chunk_size
-                                )
-                                chunk = f.read(size)
-                                if not chunk:
-                                    break
-                                chunk = (
-                                    chunk.decode("utf-8")
-                                    .replace("\r\n", "\n")
-                                    .replace("\r", "\n")
-                                )
+                        for i in range(self.n):
+                            size = (
+                                chunk_size + remainder
+                                if i == self.n - 1
+                                else chunk_size
+                            )
+                            chunk = f.read(size)
+                            if not chunk:
+                                break
+                            chunk = self._normalize_text(chunk.decode("utf-8"))
 
-                                # Extend to end of line if not last chunk
-                                if (
-                                    i < self.n - 1
-                                    and chunk
-                                    and not chunk.endswith("\n")
-                                ):
-                                    rest_of_line = f.readline()
-                                    if rest_of_line:
-                                        rest_of_line = rest_of_line.decode("utf-8")
-                                        if rest_of_line.endswith("\n"):
-                                            rest_of_line = rest_of_line[:-1]
-                                            f.seek(f.tell() - 1)
-                                        chunk = chunk + rest_of_line
-                                chunks.append(chunk)
-                        finally:
-                            f.close()
+                            # Extend to end of line if not last chunk
+                            if i < self.n - 1 and chunk and not chunk.endswith("\n"):
+                                rest_of_line = f.readline()
+                                if rest_of_line:
+                                    rest_of_line = rest_of_line.decode("utf-8")
+                                    if rest_of_line.endswith("\n"):
+                                        rest_of_line = rest_of_line[:-1]
+                                        f.seek(f.tell() - 1)
+                                    chunk = chunk + rest_of_line
+                            chunks.append(chunk)
                 else:
                     if self.newline:
                         # Read chunksize lines at a time
@@ -367,22 +353,16 @@ class TextCutter(BaseModel, validate_assignment=True):
                             if not chunk_lines:
                                 break
                             chunk = b"".join(chunk_lines).decode("utf-8")
-                            chunk = chunk.replace("\r\n", "\n").replace("\r", "\n")
-                            chunks.append(chunk)
+                            chunks.append(self._normalize_text(chunk))
                     else:
                         while chunk := f.read(self.chunksize):
-                            chunk = (
-                                chunk.decode("utf-8")
-                                .replace("\r\n", "\n")
-                                .replace("\r", "\n")
-                            )
-                            chunks.append(chunk)
+                            chunks.append(self._normalize_text(chunk.decode("utf-8")))
             return chunks
 
         # Character-based chunking (default) - read entire file as text
         with open(path, "r", encoding="utf-8") as f:
             text = f.read()
-        text = text.replace("\r\n", "\n").replace("\r", "\n")
+        text = self._normalize_text(text)
         return self._process_buffer(text, n=n)
 
     def _read_by_lines(self, file_or_buf: BinaryIO, size: int) -> str:
@@ -441,7 +421,6 @@ class TextCutter(BaseModel, validate_assignment=True):
         path = Path(path)
         output_file = f"{path.stem}{self.delimiter}{str(n).zfill(self.pad)}.txt"
         output_path = output_dir / output_file
-        # Ensure the output directory exists
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(chunk)
 
@@ -478,6 +457,7 @@ class TextCutter(BaseModel, validate_assignment=True):
             pad (int): The padding for the chunk names.
             strip_chunks (bool): Whether to strip leading and trailing whitespace in the chunks.
         """
+        output_dir = Path(output_dir)
         self._set_attributes(
             output_dir=output_dir,
             delimiter=delimiter,
@@ -500,7 +480,7 @@ class TextCutter(BaseModel, validate_assignment=True):
             for num, chunk in enumerate(doc):
                 if strip_chunks:
                     chunk = chunk.strip()
-                self._write_chunk(self.names[i], num + 1, chunk, Path(output_dir))
+                self._write_chunk(self.names[i], num + 1, chunk, output_dir)
 
     @validate_call
     def split(
@@ -541,6 +521,7 @@ class TextCutter(BaseModel, validate_assignment=True):
             self.docs = ensure_list(docs)
         if not self.docs:
             raise LexosException("No documents provided for splitting.")
+        self.chunks = []
         self._set_attributes(
             n=n,
             newline=newline,
@@ -612,6 +593,7 @@ class TextCutter(BaseModel, validate_assignment=True):
             self.docs = ensure_list(docs)
         if not self.docs:
             raise LexosException("No documents provided for splitting.")
+        self.chunks = []
         self._set_attributes(
             delimiter=delimiter,
             pad=pad,

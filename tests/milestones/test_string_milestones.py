@@ -1,7 +1,7 @@
 """test_string_milestones.py.
 
-Coverage: 90%. Missing: 97, 105, 114, 118, 136
-Last Update: 12/21/2024
+Coverage: 96%. Missing: 114, 127
+Last Update: June 27, 2026
 """
 
 import pytest
@@ -73,7 +73,21 @@ def test_string_milestones_set_method_called():
     patterns = ["test"]
     milestones = StringMilestones(doc="This is a test document.", patterns=patterns)
     assert milestones.patterns == patterns
-    # assert milestones._spans[0].text == "test"  # Assuming set method initializes _spans
+    assert len(milestones.spans) == 1
+    assert milestones.spans[0].text == "test"
+
+
+def test_string_milestones_repeated_set_compiles_patterns():
+    """Test repeated set() calls recompile patterns correctly."""
+    milestones = StringMilestones(doc="Hello test world", patterns=["test"])
+    assert len(milestones._compiled_patterns) == 1
+    assert milestones._compiled_patterns[0].pattern == "test"
+
+    milestones.set(patterns=["Hello"], case_sensitive=True)
+    assert len(milestones._compiled_patterns) == 1
+    assert milestones._compiled_patterns[0].pattern == "Hello"
+    assert len(milestones.spans) == 1
+    assert milestones.spans[0].text == "Hello"
 
 
 if __name__ == "__main__":

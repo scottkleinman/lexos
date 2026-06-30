@@ -1,10 +1,11 @@
 """bubbleviz.py.
 
-Last Update: December 4, 2025
-Last Tested: December 5, 2025
+Last Update: June 28, 2026
+Last Tested: June 28, 2026
 """
 
 from collections import Counter
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Optional
 
@@ -33,6 +34,13 @@ multi_doc_types = (
     | pd.DataFrame
     | DTM
 )
+
+
+@lru_cache(maxsize=None)
+def _load_local_asset(path: Path) -> str:
+    with open(path, "r", encoding="utf-8") as f:
+        return f.read()
+
 
 DEFAULT_COLORS = [
     "#5A69AF",
@@ -176,10 +184,10 @@ class BubbleChart(BaseModel):
             bubbles (np.ndarray): Bubble array.
 
         Returns:
-            int: The length of the distance between bubbles.
+            int: The number of overlapping bubbles.
         """
         distance = self._outline_distance(bubble, bubbles)
-        return len(distance[distance < 0])
+        return int((distance < 0).sum())
 
     def _collapse(self, n_iterations: int = 50):
         """Move bubbles to the center of mass.
@@ -187,73 +195,68 @@ class BubbleChart(BaseModel):
         Args:
             n_iterations (int): Number of moves to perform.
         """
+        num_bubbles = len(self.bubbles)
         for _i in range(n_iterations):
             moves = 0
-            for i in range(len(self.bubbles)):
-                rest_bub = np.delete(self.bubbles, i, 0)
+            for i in range(num_bubbles):
+                mask = np.ones(num_bubbles, dtype=bool)
+                mask[i] = False
+                rest_bub = self.bubbles[mask]
+
                 # Try to move directly towards the center of mass
-                # Direction vector from bubble to the center of mass
                 dir_vec = self.com - self.bubbles[i, :2]
-
-                # Shorten direction vector to have length of 1
-                # NOTE: Produces invalid value encountered in divide Runtime warnings if dir_vec is zero
-                # dir_vec = dir_vec / np.sqrt(dir_vec.dot(dir_vec))
-
-                # Shorten direction vector to have length of 1
-                # Check if direction vector is non-zero to avoid division by zero
-                dir_vec_magnitude = np.sqrt(dir_vec.dot(dir_vec))
+                dir_vec_magnitude = np.hypot(dir_vec[0], dir_vec[1])
                 if dir_vec_magnitude > 0:
                     dir_vec = dir_vec / dir_vec_magnitude
                 else:
-                    # If bubble is already at center of mass, use a small random direction
-                    dir_vec = np.array([1.0, 0.0]) * self.step_dist * 0.01
+                    dir_vec = np.array([1.0, 0.0], dtype=float) * self.step_dist * 0.01
 
                 # Calculate new bubble position
                 new_point = self.bubbles[i, :2] + dir_vec * self.step_dist
                 new_bubble = np.append(new_point, self.bubbles[i, 2:4])
 
-                # Check whether new bubble collides with other bubbles
-                if not self._check_collisions(new_bubble, rest_bub):
-                    # NOTE: Produces invalid value encountered in cast Runtime warnings
+                if self._check_collisions(new_bubble, rest_bub) == 0:
                     self.bubbles[i, :] = new_bubble
                     self.com = self._center_of_mass()
                     moves += 1
-                else:
-                    # Try to move around a bubble that you collide with
-                    # Find colliding bubble
-                    for colliding in self._collides_with(new_bubble, rest_bub):
-                        # Calculate direction vector
-                        dir_vec = rest_bub[colliding, :2] - self.bubbles[i, :2]
-                        dir_vec = dir_vec / np.sqrt(dir_vec.dot(dir_vec))
-                        # Calculate orthogonal vector
-                        orth = np.array([dir_vec[1], -dir_vec[0]])
-                        # test which direction to go
-                        new_point1 = self.bubbles[i, :2] + orth * self.step_dist
-                        new_point2 = self.bubbles[i, :2] - orth * self.step_dist
-                        dist1 = self._center_distance(self.com, np.array([new_point1]))
-                        dist2 = self._center_distance(self.com, np.array([new_point2]))
-                        new_point = new_point1 if dist1 < dist2 else new_point2
-                        new_bubble = np.append(new_point, self.bubbles[i, 2:4])
-                        if not self._check_collisions(new_bubble, rest_bub):
-                            self.bubbles[i, :] = new_bubble
-                            self.com = self._center_of_mass()
+                    continue
 
-            if moves / len(self.bubbles) < 0.1:
+                for colliding in self._collides_with(new_bubble, rest_bub):
+                    dir_vec = rest_bub[colliding, :2] - self.bubbles[i, :2]
+                    dir_vec_magnitude = np.hypot(dir_vec[0], dir_vec[1])
+                    if dir_vec_magnitude == 0:
+                        continue
+                    dir_vec = dir_vec / dir_vec_magnitude
+                    orth = np.array([dir_vec[1], -dir_vec[0]], dtype=float)
+                    new_point1 = self.bubbles[i, :2] + orth * self.step_dist
+                    new_point2 = self.bubbles[i, :2] - orth * self.step_dist
+                    dist1 = self._center_distance(self.com, np.array([new_point1]))
+                    dist2 = self._center_distance(self.com, np.array([new_point2]))
+                    new_point = new_point1 if dist1 < dist2 else new_point2
+                    new_bubble = np.append(new_point, self.bubbles[i, 2:4])
+                    if self._check_collisions(new_bubble, rest_bub) == 0:
+                        self.bubbles[i, :] = new_bubble
+                        self.com = self._center_of_mass()
+                        moves += 1
+                        break
+
+            if moves == 0:
+                break
+            if moves / num_bubbles < 0.1:
                 self.step_dist = self.step_dist / 2
 
-    def _collides_with(self, bubble: np.ndarray, bubbles: np.ndarray) -> int:
-        """Collide.
+    def _collides_with(self, bubble: np.ndarray, bubbles: np.ndarray) -> np.ndarray:
+        """Return indices of overlapping bubbles.
 
         Args:
             bubble (np.ndarray): Bubble array.
             bubbles (np.ndarray): Bubble array.
 
         Returns:
-            int: The minimum index.
+            np.ndarray: Indices of overlapping bubbles.
         """
         distance = self._outline_distance(bubble, bubbles)
-        idx_min = np.argmin(distance)
-        return idx_min if type(idx_min) is np.ndarray else [idx_min]
+        return np.where(distance < 0)[0]
 
     def _outline_distance(self, bubble: np.ndarray, bubbles: np.ndarray) -> int:
         """Outline distance.
@@ -279,7 +282,6 @@ class BubbleChart(BaseModel):
             ax (Axes): The matplotlib Axes.
             labels (list[str]): The labels of the bubbles.
         """
-        plt.rcParams["font.family"] = self.font_family
         color_num = 0
         for i in range(len(self.bubbles)):
             if color_num == len(self.colors) - 1:
@@ -295,6 +297,7 @@ class BubbleChart(BaseModel):
                 labels[i],
                 horizontalalignment="center",
                 verticalalignment="center",
+                fontfamily=self.font_family,
             )
 
     @validate_call(config=model_config)

@@ -1,8 +1,10 @@
 """test_base_calculator.py.
 
-Coverage: 95%. Missing: 23, 27, 47, 362-367, 845-859, 924-925
-Last Update: February 16, 2025
+Coverage: 100%
+Last Update: June 27, 2026
 """
+
+import re
 
 import pytest
 import spacy
@@ -306,6 +308,21 @@ def test_regex_flags():
 
     count = calc._count_character_patterns_in_character_windows(window, pattern)
     assert count == 3
+
+
+def test_compile_regex_caching():
+    """Test regex compilation is cached for repeated patterns and flags."""
+    from lexos.rolling_windows.calculators.base_calculator import _compile_regex
+
+    pattern = r"test\d+"
+    flags = re.IGNORECASE | re.UNICODE
+
+    regex1 = _compile_regex(pattern, flags)
+    regex2 = _compile_regex(pattern, flags)
+
+    assert regex1 is regex2
+    assert regex1.pattern == pattern
+    assert regex1.flags & flags == flags
 
 
 def test_count_exact_mode(basic_calculator):

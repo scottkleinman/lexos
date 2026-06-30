@@ -1,15 +1,13 @@
 """milestones.py.
 
-Last Update: Jan 14 2025
-
 Span milestones are used to group spans together for analysis or visualization.
 Span milestones differ from normal milestones in that milestones are "invisible"
 structural boundaries between spans or groups of spans (e.g. sentence or line breaks).
 Thus, instead of storing a list of patterns representing milestones, span milestones
 store the groups of spans themselves.
 
-Last Update: 12/27/2024
-Last Tested: 12/27/2024
+Last Update: June 27, 2026
+Last Tested: June 27, 2026
 """
 
 from itertools import zip_longest
@@ -116,8 +114,8 @@ class SpanMilestones(BaseModel):
         """
         milestone_dicts = []
         for span in self.doc.spans["milestones"]:
-            start_char = self.doc[span.start].idx
-            end_char = start_char + len(span.text)
+            start_char = span.start_char
+            end_char = span.end_char
             chars = self.doc.text[start_char:end_char]
             if strip_punct:
                 chars = chars.rstrip(punctuation)

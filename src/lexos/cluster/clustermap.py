@@ -1,7 +1,7 @@
 """clustermap.py.
 
-Last Updated: December 3, 2025
-Last Tested: December 5, 2025
+Last Updated: June 28, 2026
+Last Tested: June 28, 2026
 
 Note: These clustermap classes are highly experimental and may change in the future.
 They may require fiddling with size and layout to be readable. The clustermap may
@@ -54,7 +54,6 @@ def _get_matrix(matrix: ArrayLike | DTM | pd.DataFrame) -> ArrayLike | pd.DataFr
         raise LexosException("The document-term matrix cannot be empty.")
 
     if isinstance(matrix, list):
-        first_row = len(matrix[0])
         first_row = len(matrix)
     else:
         first_row = matrix.shape[0]
@@ -457,16 +456,13 @@ class PlotlyClusterGrid:
             pd.DataFrame: Z-scored data
         """
         if axis == 1:
-            z_scored = data2d
-        else:
-            z_scored = data2d.T
+            mean = data2d.mean(axis=1)
+            std = data2d.std(axis=1, ddof=0)
+            return data2d.sub(mean, axis=0).div(std, axis=0)
 
-        z_scored = (z_scored - z_scored.mean()) / z_scored.std()
-
-        if axis == 1:
-            return z_scored
-        else:
-            return z_scored.T
+        mean = data2d.mean(axis=0)
+        std = data2d.std(axis=0, ddof=0)
+        return data2d.sub(mean, axis=1).div(std, axis=1)
 
     @staticmethod
     def _standard_scale(data2d: pd.DataFrame, axis: int = 1) -> pd.DataFrame:
@@ -480,19 +476,13 @@ class PlotlyClusterGrid:
             pd.DataFrame: Standard scaled data
         """
         if axis == 1:
-            standardized = data2d
-        else:
-            standardized = data2d.T
+            min_vals = data2d.min(axis=1)
+            max_vals = data2d.max(axis=1)
+            return data2d.sub(min_vals, axis=0).div(max_vals - min_vals, axis=0)
 
-        subtract = standardized.min()
-        standardized = (standardized - subtract) / (
-            standardized.max() - standardized.min()
-        )
-
-        if axis == 1:
-            return standardized
-        else:
-            return standardized.T
+        min_vals = data2d.min(axis=0)
+        max_vals = data2d.max(axis=0)
+        return data2d.sub(min_vals, axis=1).div(max_vals - min_vals, axis=1)
 
     def _process_mask(
         self, mask: Optional[np.ndarray | pd.DataFrame]

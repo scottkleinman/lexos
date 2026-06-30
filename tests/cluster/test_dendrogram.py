@@ -1,8 +1,8 @@
 """test_dendrogram.py.
 
-Coverage: 99%. Missing: 136
+Coverage: 98%. Missing: 132, 136
 
-Last Updated: December 5, 2025
+Last Updated: June 28, 2026
 """
 
 import tempfile

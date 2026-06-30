@@ -1,11 +1,12 @@
 """base_calculator.py.
 
-Last update: September 11, 2025
-Last tested: February 16, 2025
+Last update: June 27, 2026
+Last tested: June 27, 2026
 """
 
 import re
 from abc import ABC, abstractmethod
+from functools import lru_cache
 from typing import Any, ClassVar, Iterable, Optional
 
 import pandas as pd
@@ -66,9 +67,14 @@ def regex_escape(s: str) -> str:
     return re.sub(r"[][(){}?*+.^$]", lambda m: "\\" + m.group(), s)
 
 
+@lru_cache(maxsize=128)
+def _compile_regex(pattern: str, flags: int) -> re.Pattern:
+    return re.compile(pattern, flags)
+
+
 def spacy_rule_to_lower(
     patterns: dict | list[dict],
-    old_key: Optional[list[str] | str] = ["TEXT", "ORTH"],
+    old_key: Optional[list[str] | str] = None,
     new_key: Optional[str] = "LOWER",
 ) -> list:
     """Convert spacy Rule Matcher patterns to lowercase.
@@ -81,13 +87,14 @@ def spacy_rule_to_lower(
     Returns:
         A list of spacy Rule Matcher patterns
     """
+    if old_key is None:
+        old_key = ["TEXT", "ORTH"]
 
     def convert(key):
         """Converts the key to lowercase."""
         if key in old_key:
             return new_key
-        else:
-            return key
+        return key
 
     if isinstance(patterns, dict):
         new_dict = {}
@@ -141,17 +148,17 @@ class BaseCalculator(ABC, BaseModel):
         """Return metadata for the calculator."""
         # Note: model_dump() may evaluate computed fields on this model.
         # If any computed properties rely on external state or are expensive
-        # to compute, accessing them via model_dump() could raise or cause
-        # performance issues. Subclasses should ensure their computed fields
-        # are safe to evaluate here or override this property to exclude
-        # such fields explicitly (e.g., model_dump(exclude=[...])).
+        # To compute, accessing them via model_dump() could raise or cause
+        # Performance issues. Subclasses should ensure their computed fields
+        # Are safe to evaluate here or override this property to exclude
+        # Such fields explicitly (e.g., model_dump(exclude=[...])).
         #
         # Historically, this property intentionally did not return the
-        # result of `model_dump()`; it was used to ensure that validators or
-        # other side effects ran without exposing the entire dict to the
-        # caller. Maintain that behavior by calling `model_dump()` but not
-        # returning the value. If you need the metadata dict, override this
-        # property in subclasses to return it explicitly.
+        # Result of `model_dump()`; it was used to ensure that validators or
+        # Other side effects ran without exposing the entire dict to the
+        # Caller. Maintain that behavior by calling `model_dump()` but not
+        # Returning the value. If you need the metadata dict, override this
+        # Property in subclasses to return it explicitly.
         self.model_dump()
 
     @property
@@ -194,12 +201,12 @@ class BaseCalculator(ABC, BaseModel):
             The number of occurrences of the pattern in the window.
         """
         if self.mode == "regex":
-            return len(re.findall(pattern, window, self.regex_flags))
-        else:
-            if not self.case_sensitive:
-                window = window.lower()
-                pattern = pattern.lower()
-            return window.count(pattern)
+            regex = _compile_regex(pattern, self.regex_flags)
+            return len(regex.findall(window))
+        if not self.case_sensitive:
+            pattern = pattern.lower()
+            return window.lower().count(pattern)
+        return window.count(pattern)
 
     def _count_in_character_window(self, window: str, pattern: str) -> int:
         """Choose function for counting matches in character windows.
@@ -229,14 +236,12 @@ class BaseCalculator(ABC, BaseModel):
             The number of occurrences of the pattern in the window.
         """
         if self.mode == "regex":
-            return sum(
-                [len(re.findall(pattern, token, self.regex_flags)) for token in window]
-            )
-        else:
-            if not self.case_sensitive:
-                window = [token.lower() for token in window]
-                pattern = pattern.lower()
-            return window.count(pattern)
+            regex = _compile_regex(pattern, self.regex_flags)
+            return sum(len(regex.findall(token)) for token in window)
+        if not self.case_sensitive:
+            pattern = pattern.lower()
+            return sum(1 for token in window if token.lower() == pattern)
+        return window.count(pattern)
 
     def _count_token_patterns_in_span(self, window: Span, pattern: list | str) -> int:
         """Count patterns in spans or docs.
@@ -250,18 +255,12 @@ class BaseCalculator(ABC, BaseModel):
         """
         if self.mode == "exact":
             if not self.case_sensitive:
-                window = [token.lower_ for token in window]
                 pattern = pattern.lower()
-            else:
-                window = [token.text for token in window]
-            return window.count(pattern)
+                return sum(1 for token in window if token.lower_ == pattern)
+            return sum(1 for token in window if token.text == pattern)
         elif self.mode == "regex":
-            return sum(
-                [
-                    len(re.findall(pattern, token.text, self.regex_flags))
-                    for token in window
-                ]
-            )
+            regex = _compile_regex(pattern, self.regex_flags)
+            return sum(len(regex.findall(token.text)) for token in window)
         elif self.mode == "spacy_rule":
             if not self.case_sensitive:
                 pattern = spacy_rule_to_lower(pattern)
@@ -282,7 +281,8 @@ class BaseCalculator(ABC, BaseModel):
         count = 0
         if self.mode == "multi_token_exact":
             pattern = regex_escape(pattern)
-        for match in re.finditer(pattern, window.text, self.regex_flags):
+        regex = _compile_regex(pattern, self.regex_flags)
+        for match in regex.finditer(window.text):
             start, end = match.span()
             span = window.char_span(start, end, self.alignment_mode)
             if span is not None:
@@ -301,26 +301,19 @@ class BaseCalculator(ABC, BaseModel):
         Returns:
             The number of occurrences of the pattern in the window.
         """
-        # Validate window type for multi_token and spacy_rule modes
-        if self.mode in ["multi_token", "spacy_rule"]:
-            if not isinstance(window, (Doc, Span)):
-                raise LexosException(
-                    "You cannot use spaCy rules or perform multi-token searches with a string or list of token strings."
-                )
-        if isinstance(window, (list)) and self.mode in ["multi_token", "spacy_rule"]:
+        if self.mode in ["multi_token", "spacy_rule"] and not isinstance(
+            window, (Doc, Span)
+        ):
             raise LexosException(
                 "You cannot use spaCy rules or perform multi-token searches with a string or list of token strings."
             )
-        elif isinstance(window, list) and all(isinstance(i, str) for i in window):
-            # Match in single tokens
+
+        if isinstance(window, list) and all(isinstance(i, str) for i in window):
             return self._count_token_patterns_in_token_lists(window, pattern)
-        elif isinstance(window, Doc | Span):
-            # Iterate over the full text with token boundary alignment
+        if isinstance(window, (Doc, Span)):
             if self.mode.startswith("multi_token"):
                 return self._count_token_patterns_in_span_text(window, pattern)
-            # Match in single tokens
-            else:
-                return self._count_token_patterns_in_span(window, pattern)
+            return self._count_token_patterns_in_span(window, pattern)
 
     def _extract_string_pattern(self, pattern: list[list[dict[str, Any]]]) -> str:
         """Extract a string pattern from a spaCy rule.
@@ -332,10 +325,8 @@ class BaseCalculator(ABC, BaseModel):
             str: A string pattern.
         """
         return "|".join(
-            [
-                item if isinstance(item, str) else list(item.values())[0]
-                for item in list(flatten(pattern))
-            ]
+            item if isinstance(item, str) else list(item.values())[0]
+            for item in flatten(pattern)
         )
 
     def _get_window_count(
@@ -352,8 +343,7 @@ class BaseCalculator(ABC, BaseModel):
         """
         if self.window_type == "characters":
             return self._count_in_character_window(window, pattern)
-        else:
-            return self._count_in_token_window(window, pattern)
+        return self._count_in_token_window(window, pattern)
 
     def _set_attrs(self, attrs: dict) -> None:
         """Set instance attributes when public method is called.
@@ -366,6 +356,34 @@ class BaseCalculator(ABC, BaseModel):
                 setattr(self, key, value)
             if key == "model" and value is not None:
                 self.nlp = spacy.load(self.model)
+
+    def _get_column_labels(self, show_spacy_rules: bool = False) -> list[str]:
+        """Generate column labels for calculator output.
+
+        Args:
+            show_spacy_rules (bool): Whether to preserve full spaCy rule patterns.
+
+        Returns:
+            list[str]: Column labels.
+        """
+        if show_spacy_rules:
+            patterns = self.patterns
+        else:
+            patterns = []
+            for pattern in self.patterns:
+                if isinstance(pattern, list):
+                    patterns.append(self._extract_string_pattern(pattern))
+                else:
+                    patterns.append(pattern)
+
+        cols = []
+        for pattern in patterns:
+            if not self.case_sensitive and isinstance(pattern, str):
+                pattern = pattern.lower()
+            elif not self.case_sensitive and isinstance(pattern, list):
+                pattern = str(spacy_rule_to_lower(pattern))
+            cols.append(str(pattern))
+        return cols
 
     @abstractmethod
     def to_df(self, *args, **kwargs) -> pd.DataFrame:

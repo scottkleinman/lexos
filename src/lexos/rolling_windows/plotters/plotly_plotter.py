@@ -1,16 +1,18 @@
 """plotly_plotter.py.
 
-Last Update: December 4, 2025
-Last Tested: September 13, 2025
+Last Update: June 27, 2026
+Last Tested: June 27, 2026
 """
 
+import math
 from pathlib import Path
 from typing import Any, ClassVar, Optional
 
-import matplotlib.pyplot as plt
 import pandas as pd
 import plotly.express as px
 import plotly.io as pio
+from matplotlib.font_manager import FontProperties
+from matplotlib.textpath import TextPath
 from plotly.graph_objects import Figure
 from pydantic import (
     BaseModel,
@@ -131,8 +133,9 @@ class PlotlyPlotter(BasePlotter):
         super().__init__(**kwargs)
         self._validate_edge_cases()
 
-        # Massage the DataFrame for Plotly Express
-        self.df["id"] = self.df.index
+        # Massage the DataFrame for Plotly Express.
+        # Use assign() to ensure `id` is the last column for melting.
+        self.df = self.df.assign(id=self.df.index)
 
     @validate_call(config=model_config)
     def plot(
@@ -146,10 +149,11 @@ class PlotlyPlotter(BasePlotter):
             **kwargs (Any): Additional keyword arguments accepted by plotly.express.line.
 
         """
-        # Massage the DataFrame for Plotly Express
-        df = self.df.copy()
-        df["id"] = df.index
-        df = pd.melt(df, id_vars="id", value_vars=df.columns[:-1])
+        # Massage the DataFrame for Plotly Express.
+        df = self.df.melt(
+            id_vars="id",
+            value_vars=self.df.columns[:-1],
+        )
 
         # Create plotly line figure
         self.fig = px.line(
@@ -173,10 +177,9 @@ class PlotlyPlotter(BasePlotter):
 
         # Show milestones
         if self.show_milestones:
-            # Add milestones using absolute references
+            df_val_min = df["value"].min() * 1.2
+            df_val_max = df["value"].max() * 1.2
             for label, x in self.milestone_labels.items():
-                df_val_min = df["value"].min() * 1.2
-                df_val_max = df["value"].max() * 1.2
                 self._plot_milestone_marker(x, df_val_min, df_val_max)
                 if self.show_milestone_labels:
                     self._plot_milestone_label(label, x)
@@ -224,26 +227,26 @@ class PlotlyPlotter(BasePlotter):
         if "," in self.milestone_label_style["family"]:
             fontfamily = self.milestone_label_style["family"].split(",")
             fontfamily = [x.strip() for x in fontfamily]
-        tmp_fig, tmp_ax = plt.subplots()
-        r = tmp_fig.canvas.get_renderer()
+
+        fp = FontProperties(
+            family=fontfamily,
+            size=self.milestone_label_style["size"],
+        )
+        angle = math.radians(self.milestone_label_rotation)
         heights = []
         for x in list(labels.keys()):
-            t = tmp_ax.annotate(
-                x,
-                xy=(0, 0),
-                xytext=(0, 0),
-                textcoords="offset points",
-                rotation=self.milestone_label_rotation,
-                fontfamily=fontfamily,
-                fontsize=self.milestone_label_style["size"],
+            path = TextPath((0, 0), x, prop=fp)
+            bb = path.get_extents()
+            rotated_height = abs(bb.width * math.sin(angle)) + abs(
+                bb.height * math.cos(angle)
             )
-            bb = t.get_window_extent(renderer=r)
-            heights.append(bb.height)
-        plt.close()
-        if max(heights) < 50:
-            return max(heights) + 75
+            heights.append(rotated_height)
+
+        max_height = max(heights)
+        if max_height < 50:
+            return max_height + 75
         else:
-            return max(heights) + 50
+            return max_height + 50
 
     def _plot_milestone_label(self, label: str, x: int) -> None:
         """Add a milestone label to the Plotly figure.
@@ -280,7 +283,7 @@ class PlotlyPlotter(BasePlotter):
             yref="y",
             xref="x",
             x0=x,
-            y0=0,  # df_val_min,
+            y0=0,  # Not used: df_val_min,
             x1=x,
             y1=df_val_max,
             line=self.milestone_marker_style,

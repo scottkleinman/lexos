@@ -1,7 +1,7 @@
 """test_util.py.
 
-Coverage: 94%. Missing: 52, 69, 162-163
-Refactor: 12/27/2024
+Coverage: 96%. Missing: 69, 162-163
+Refactor: June 27, 2026
 """
 
 import pytest

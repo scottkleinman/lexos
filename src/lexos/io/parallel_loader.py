@@ -1,7 +1,7 @@
 """parallel_loader.py.
 
-Last Update: December 27, 2025
-Last Tested: December 27, 2025
+Last Update: 2026-06-27
+Last Tested: 2026-06-27
 """
 
 import mimetypes
@@ -9,7 +9,7 @@ import os
 import threading
 import zipfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Callable, Generator, Optional, Self
 
 import puremagic
@@ -41,6 +41,27 @@ from lexos.util import _decode_bytes as decode
 from lexos.util import ensure_list
 
 VALID_FILE_TYPES = {*TEXT_TYPES, *PDF_TYPES, *DOCX_TYPES, *ZIP_TYPES}
+
+
+def _sanitize_zip_filename(filename: str) -> str:
+    """Sanitize ZIP entry names to prevent path traversal."""
+    zip_path = PurePosixPath(filename)
+    if filename in ("..", "."):
+        return filename
+
+    safe_parts = []
+    for part in zip_path.parts:
+        if part in ("", ".", "/"):
+            continue
+        if part == "..":
+            if safe_parts:
+                safe_parts.pop()
+            continue
+        safe_parts.append(part)
+
+    if safe_parts:
+        return PurePosixPath(*safe_parts).as_posix()
+    return zip_path.name or ""
 
 
 class ParallelLoader(BaseLoader):
@@ -208,8 +229,9 @@ class ParallelLoader(BaseLoader):
 
                         try:
                             if mime_type in VALID_FILE_TYPES:
+                                safe_filename = _sanitize_zip_filename(info.filename)
                                 text = decode(file_bytes)
-                                full_path = Path(path).as_posix() + "/" + info.filename
+                                full_path = Path(path).as_posix() + "/" + safe_filename
                                 results.append(
                                     (
                                         full_path,
@@ -548,7 +570,6 @@ class ParallelLoader(BaseLoader):
         if self.show_progress and progress:
             progress.stop()
 
-    # @validate_call(config=model_config)
     def load_dataset(self, dataset: Self) -> None:
         """Load a dataset.
 

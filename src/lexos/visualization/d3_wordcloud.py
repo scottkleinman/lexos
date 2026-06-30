@@ -1,7 +1,7 @@
 """d3_wordcloud.py.
 
-Last Updated: August 12, 2025
-Last Tested: December 5, 2025
+Last Updated: June 28, 2026
+Last Tested: June 28, 2026
 """
 
 import json
@@ -9,6 +9,7 @@ import re
 import tempfile
 import webbrowser
 from collections import Counter
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Optional
 
@@ -22,7 +23,6 @@ from pydantic import (
     model_validator,
     validate_call,
 )
-from smart_open import open
 from spacy.schemas import DocJSONSchema
 from spacy.tokens import Doc, Span, Token
 
@@ -45,6 +45,12 @@ multi_doc_types = (
 )
 
 
+@lru_cache(maxsize=None)
+def _load_local_asset(path: Path) -> str:
+    with open(path, "r", encoding="utf-8") as f:
+        return f.read()
+
+
 class D3WordCloud(BaseModel):
     """A Pydantic model for D3 WordCloud options."""
 
@@ -55,7 +61,7 @@ class D3WordCloud(BaseModel):
     docs: Optional[int | str | list[int] | list[str]] = Field(
         None, description="A list of documents to be selected from the DTM."
     )
-    layout: Optional[dict[str, Any]] = {}
+    layout: dict[str, Any] = Field(default_factory=dict)
     limit: int = Field(100, description="The maximum number of terms in the cloud.")
     font: str = Field("Impact", description="The font to use for the word cloud.")
     spiral: str = Field(
@@ -91,9 +97,6 @@ class D3WordCloud(BaseModel):
     template: Path | str = Field(
         "d3_cloud_template-1.0.html",
         description="The template file for the word cloud.",
-    )
-    auto_open: bool = Field(
-        True, description="Whether to open the chart in a web browser automatically."
     )
     include_d3js: bool | str | None = Field(
         True,
@@ -146,12 +149,6 @@ class D3WordCloud(BaseModel):
         self._include_d3()
         self._include_d3_cloud()
 
-    def _load_template(self) -> str:
-        """Load the HTML template for the word cloud."""
-        template = self._get_asset_path(self.template)
-        with open(template) as f:
-            return f.read()
-
     def _render(self) -> None:
         """Render the word cloud as an HTML string."""
         template = Template(self._load_template())
@@ -189,9 +186,9 @@ class D3WordCloud(BaseModel):
         """
         if path == "d3.min.js":
             path = self._get_asset_path("d3.min.js")
+        path_obj = Path(path)
         try:
-            with open(path) as f:
-                return f'<script id="d3">\n{f.read()}\n</script>'
+            return f'<script id="d3">\n{_load_local_asset(path_obj)}\n</script>'
         except FileNotFoundError:
             raise LexosException(f"Script file not found: {path}")
 
@@ -220,26 +217,30 @@ class D3WordCloud(BaseModel):
 
     def _include_d3_cloud(self) -> None:
         """Modify the template to include d3 cloud scripts."""
-        # Handle loading/initializing d3 cloud
+        if not self.include_d3_cloud:
+            return
+
         if self.include_d3_cloud is True:
-            path = f"{self._get_asset_path('d3cloud_bundle.min.js')}"
+            path = self._get_asset_path("d3cloud_bundle.min.js")
         elif isinstance(self.include_d3_cloud, str) and self.include_d3_cloud.endswith(
             ".js"
         ):
-            path = self.include_d3_cloud
+            path = Path(self.include_d3_cloud)
+        else:
+            return
 
-        if self.include_d3_cloud:
-            with open(path) as f:
-                self.html = self.html.replace(
-                    '<script id="d3cloud"></script>',
-                    f'<script id="d3cloud">\n{f.read()}\n</script>',
-                )
+        self.html = self.html.replace(
+            '<script id="d3cloud"></script>',
+            f'<script id="d3cloud">\n{_load_local_asset(path)}\n</script>',
+        )
 
     def _load_template(self) -> str:
         """Load the HTML template for the word cloud."""
         template = self._get_asset_path(self.template)
-        with open(template) as f:
-            return f.read()
+        try:
+            return _load_local_asset(template)
+        except FileNotFoundError as exc:
+            raise LexosException(f"Template file not found: {template}") from exc
 
     def _minify_html(self, html: str) -> str:
         """Basic HTML minification."""

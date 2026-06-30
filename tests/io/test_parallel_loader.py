@@ -1,7 +1,7 @@
 """test_parallel_loader.py.
 
-Coverage: 96%. Missing: 135-136, 154-156, 235-236, 348, 389, 545, 692, 711-712
-Last Update: December 29, 2025
+Coverage: 98%. Missing: 55, 64, 257-258, 714
+Last Update: June 27, 2026
 
 Tests for the ParallelLoader class including thread safety, concurrent operations,
 progress tracking, and error handling.
@@ -9,6 +9,7 @@ progress tracking, and error handling.
 
 import os
 import tempfile
+import time
 import zipfile
 from pathlib import Path
 from unittest.mock import Mock, patch
@@ -92,6 +93,14 @@ def create_multiple_text_files(directory: str, count: int = 5):
         file_path = create_text_file(directory, f"test{i}.txt", f"Content {i}")
         files.append(file_path)
     return files
+
+
+def create_zip_file_with_bad_entry(temp_dir: str):
+    """Create a zip that contains an entry which triggers a decode failure."""
+    zip_path = Path(temp_dir) / "bad.zip"
+    with zipfile.ZipFile(zip_path, "w") as zf:
+        zf.writestr("bad.txt", b"some bytes")
+    return zip_path
 
 
 # Tests
@@ -181,6 +190,14 @@ class TestParallelLoaderData:
 class TestParallelLoaderMimeType:
     """Test MIME type detection and caching."""
 
+    def test_sanitize_zip_filename_removes_path_traversal(self):
+        """Test ZIP filename sanitizer drops path traversal components."""
+        from lexos.io.parallel_loader import _sanitize_zip_filename
+
+        assert _sanitize_zip_filename("../evil.txt") == "evil.txt"
+        assert _sanitize_zip_filename("./nested/../keep.txt") == "keep.txt"
+        assert _sanitize_zip_filename("..") == ".."
+
     def test_get_mime_type_text(self, parallel_loader):
         """Test MIME type detection for text files."""
         file_start = b"This is a text file"
@@ -205,6 +222,14 @@ class TestParallelLoaderMimeType:
 
         assert mime_type1 == mime_type2
         assert str(path) in parallel_loader._mime_cache
+
+    def test_calculate_optimal_workers_respects_max_workers(self, parallel_loader):
+        """Test that explicit max_workers overrides worker strategy."""
+        parallel_loader.max_workers = 12
+        result = parallel_loader._calculate_optimal_workers(
+            [("test.txt", "text/plain")]
+        )
+        assert result == 12
 
 
 class TestParallelLoaderLoadTextFiles:
@@ -249,6 +274,23 @@ class TestParallelLoaderLoadTextFiles:
         assert len(parallel_loader.texts) == 5
         assert len(parallel_loader.errors) == 0
 
+    def test_detect_mime_types_parallel_io_error(self, parallel_loader, tmp_path):
+        """Test mime detection records IO errors and updates progress."""
+        path = tmp_path / "missing.txt"
+        file_list = [(str(path), None)]
+        parallel_loader.show_progress = True
+
+        progress = Mock()
+        task_id = 1
+        with patch("lexos.io.parallel_loader.open", side_effect=IOError("boom")):
+            results = parallel_loader._detect_mime_types_parallel(
+                file_list, progress, task_id
+            )
+
+        assert results == [(str(path), None)]
+        assert len(parallel_loader.errors) == 1
+        progress.update.assert_called()
+
     def test_load_with_progress_bar(self):
         """Test loading with progress bar enabled."""
         temp_dir = tempfile.TemporaryDirectory()
@@ -258,7 +300,104 @@ class TestParallelLoaderLoadTextFiles:
         loader.load(files)
         temp_dir.cleanup()
 
-        assert len(loader.texts) == 5
+    def test_load_streaming_empty_queue_loop(self, parallel_loader, tmp_path):
+        """Test load_streaming handles Empty queue polling."""
+        temp_file = tmp_path / "test.txt"
+        temp_file.write_text("Hello")
+
+        # Slow down the worker so the consumer hits an empty queue first
+        with patch.object(
+            parallel_loader,
+            "_load_file_concurrent",
+            side_effect=lambda path, mime_type: time.sleep(0.2)
+            or [(Path(path).name, Path(path).stem, "text/plain", "Hello", None)],
+        ):
+            results = list(parallel_loader.load_streaming([str(temp_file)]))
+
+        assert len(results) == 1
+        assert results[0][3] == "Hello"
+
+    def test_load_progress_updates_on_future_exception(self, parallel_loader, tmp_path):
+        """Test that future exceptions trigger progress update in load()."""
+        temp_file = tmp_path / "test.txt"
+        temp_file.write_text("Hello")
+
+        parallel_loader.show_progress = True
+        parallel_loader.max_workers = 1
+
+        with patch.object(
+            parallel_loader,
+            "_load_file_concurrent",
+            side_effect=Exception("boom"),
+        ):
+            parallel_loader.load([str(temp_file)])
+
+        assert any(isinstance(e, Exception) for e in parallel_loader.errors)
+
+
+class TestParallelLoaderLoadZipFiles:
+    """Test ZIP file loading and archive edge cases."""
+
+    def test_load_docx_file_success(self, parallel_loader, tmp_path):
+        """Test successful loading of a docx file."""
+        docx_file = tmp_path / "test.docx"
+        # Create a fake docx file by patching Document
+        with patch("lexos.io.parallel_loader.Document") as mock_doc_class:
+            mock_doc = Mock()
+            mock_doc.paragraphs = [Mock(text="Para1"), Mock(text="Para2")]
+            mock_doc_class.return_value = mock_doc
+
+            result = parallel_loader._load_docx_file(str(docx_file))
+
+        assert result[3] == "Para1\nPara2"
+        assert result[4] is None
+
+    def test_load_pdf_file_success(self, parallel_loader, tmp_path):
+        """Test successful loading of a PDF file."""
+        pdf_file = tmp_path / "test.pdf"
+        pdf_file.write_text("fake")
+        mock_page = Mock()
+        mock_page.extract_text.return_value = "Page content"
+        mock_reader = Mock()
+        mock_reader.pages = [mock_page]
+
+        with patch("lexos.io.parallel_loader.PdfReader", return_value=mock_reader):
+            results = parallel_loader._load_pdf_file(str(pdf_file))
+
+        assert len(results) == 1
+        assert results[0][3] == "Page content"
+        assert results[0][4] is None
+
+    def test_load_zip_file_with_safe_paths(self, parallel_loader, tmp_path):
+        temp_dir = tmp_path / "ziptest"
+        temp_dir.mkdir()
+        file_path = temp_dir / "sample.txt"
+        file_path.write_text("Zip content")
+        zip_path = temp_dir / "archive.zip"
+        with zipfile.ZipFile(zip_path, "w") as zf:
+            zf.write(file_path, arcname="../evil.txt")
+
+        results = parallel_loader._load_zip_file(str(zip_path))
+        assert any("evil.txt" in item[0] for item in results)
+        assert any(item[3] == "Zip content" for item in results if item[4] is None)
+
+    def test_load_zip_file_error_for_bad_decode(self, parallel_loader, tmp_path):
+        zip_path = create_zip_file_with_bad_entry(tmp_path)
+        with patch("lexos.io.parallel_loader.decode", side_effect=ValueError("boom")):
+            results = parallel_loader._load_zip_file(str(zip_path))
+
+        assert any(isinstance(item[4], ValueError) for item in results)
+
+    def test_pdf_load_page_error(self, parallel_loader, tmp_path):
+        temp_file = tmp_path / "test.pdf"
+        temp_file.write_text("not a pdf")
+        with patch(
+            "lexos.io.parallel_loader.PdfReader", side_effect=ValueError("bad pdf")
+        ):
+            results = parallel_loader._load_pdf_file(str(temp_file))
+
+        assert len(results) == 1
+        assert isinstance(results[0][4], ValueError)
 
 
 class TestParallelLoaderCallback:

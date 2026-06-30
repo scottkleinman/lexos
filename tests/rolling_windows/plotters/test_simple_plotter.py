@@ -7,6 +7,7 @@ Last Updated: September 11, 2025
 import tempfile
 
 import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pytest
@@ -101,6 +102,25 @@ def test_simple_plotter_edge_case_milestone_validation():
         SimplePlotter(df=df, show_milestones=True)
     except LexosException as e:
         assert "require a value for `milestone_labels`" in str(e)
+
+
+def test_simple_plotter_uses_axis_methods(monkeypatch):
+    """Ensure SimplePlotter uses its Axes object rather than global pyplot."""
+    df = make_df()
+    plotter = SimplePlotter(df=df)
+
+    def fail_plot(*args, **kwargs):
+        raise AssertionError("plt.plot() should not be used")
+
+    def fail_grid(*args, **kwargs):
+        raise AssertionError("plt.grid() should not be used")
+
+    monkeypatch.setattr(plt, "plot", fail_plot)
+    monkeypatch.setattr(plt, "grid", fail_grid)
+
+    plotter.plot(show=False)
+    assert plotter.fig is not None
+    assert plotter.ax is not None
 
 
 def test_interpolate_legacy_and_default():

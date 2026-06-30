@@ -1,7 +1,7 @@
 """cloud.py.
 
-Last Update: December 4, 2025
-Last Tested: December 5, 2025
+Last Update: June 28, 2026
+Last Tested: June 28, 2026
 """
 
 import math
@@ -11,7 +11,6 @@ from typing import Any, Optional
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
 from pydantic import BaseModel, ConfigDict, Field, validate_call
 from spacy.schemas import DocJSONSchema
 from spacy.tokens import Doc, Span, Token
@@ -54,8 +53,8 @@ class WordCloud(BaseModel):
         200, gt=50, description="The height of the word cloud in pixels."
     )
     width: int = Field(200, gt=50, description="The width of the word cloud in pixels.")
-    opts: Optional[dict[str, Any]] = Field(
-        {
+    opts: dict[str, Any] = Field(
+        default_factory=lambda: {
             "background_color": "white",
             "max_words": 2000,
             "contour_width": 0,
@@ -63,8 +62,9 @@ class WordCloud(BaseModel):
         },
         description="The WordCloud() options.",
     )
-    figure_opts: Optional[dict[str, Any]] = Field(
-        {}, description="A dict of matplotlib figure options."
+    figure_opts: dict[str, Any] = Field(
+        default_factory=dict,
+        description="A dict of matplotlib figure options.",
     )
     round: Optional[int] = Field(
         0,
@@ -114,12 +114,13 @@ class WordCloud(BaseModel):
         if self.cloud is None:
             raise LexosException("No WordCloud object to save.")
         self.fig = plt.figure(**self.figure_opts)
+        ax = self.fig.add_subplot(111)
         if self.title:
             self.fig.suptitle(self.title)
-        plt.axis("off")
-        plt.imshow(self.cloud, interpolation="bilinear")
-        plt.savefig(path, **kwargs)
-        plt.close()
+        ax.axis("off")
+        ax.imshow(self.cloud, interpolation="bilinear")
+        self.fig.savefig(path, **kwargs)
+        plt.close(self.fig)
 
     def show(self) -> None:
         """Show the figure if it is hidden.
@@ -156,8 +157,8 @@ class MultiCloud(BaseModel):
         "auto",
         description="The number of rows and columns in the figure. Default is 'auto'.",
     )
-    opts: Optional[dict[str, Any]] = Field(
-        {
+    opts: dict[str, Any] = Field(
+        default_factory=lambda: {
             "background_color": "white",
             "max_words": 2000,
             "contour_width": 0,
@@ -296,9 +297,8 @@ class MultiCloud(BaseModel):
 
     def _render(self) -> None:
         """Generate and display the multi-cloud figure."""
-        # Set parameters for plotting
-        sns.set_theme()
-        plt.rcParams["figure.figsize"] = self.figsize
+        # Create a local figure without mutating global matplotlib style
+        self.fig = plt.figure(figsize=self.figsize)
 
         # Calculate layout
         n = len(self.doc_data)
@@ -310,9 +310,6 @@ class MultiCloud(BaseModel):
         else:
             raise LexosException("Invalid layout specification.")
 
-        # Create the figure
-        self.fig = plt.figure(figsize=self.figsize)
-
         # Add overall title
         if self.title:
             self.fig.suptitle(self.title, fontsize=16)
@@ -320,15 +317,15 @@ class MultiCloud(BaseModel):
         # Generate the word clouds
         for i, doc_counts in enumerate(self.doc_data):
             self.wordcloud.generate_from_frequencies(doc_counts)
-            plt.subplot(rows, columns, i + 1)
-            plt.imshow(self.wordcloud, interpolation="bilinear")
-            plt.axis("off")
+            ax = self.fig.add_subplot(rows, columns, i + 1)
+            ax.imshow(self.wordcloud, interpolation="bilinear")
+            ax.axis("off")
 
             # Add label if provided
             if self.labels and i < len(self.labels):
-                plt.title(self.labels[i])
+                ax.set_title(self.labels[i])
             else:
-                plt.title(f"Doc {i}")
+                ax.set_title(f"Doc {i}")
 
         # Get the figure and close to prevent automatic display
         self.fig = plt.gcf()

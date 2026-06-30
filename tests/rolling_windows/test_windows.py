@@ -1,7 +1,7 @@
 """test_windows.py.
 
 Coverage: 100%
-Last Update: 6 June, 2026
+Last Update: 27 June, 2026
 """
 
 import pytest
@@ -128,6 +128,13 @@ def test_call_with_string_list(basic_windows):
         assert all(isinstance(item, str) for item in window)
 
 
+def test_call_with_empty_list(basic_windows):
+    """Test window generation with an empty list input."""
+    result = basic_windows(input=[], n=2)
+    windows = list(result)
+    assert windows == []
+
+
 def test_call_with_token_list(nlp):
     """Test window generation with list of tokens."""
     doc = Doc(nlp.vocab, words=["Hello", "world"])
@@ -217,6 +224,23 @@ def test_call_invalid_output_type(basic_windows):
         LexosException, match="Output must be 'spans', 'strings' or 'tokens'."
     ):
         basic_windows(input="test", output="invalid_output")
+
+
+def test_call_with_alignment_mode_override(basic_windows):
+    """Test passing alignment_mode explicitly on call."""
+    windows = basic_windows(input="Hello world", n=2, alignment_mode="contract")
+    results = list(windows)
+    assert len(results) > 0
+    assert all(isinstance(w, str) for w in results)
+
+
+def test_call_invalid_alignment_mode(basic_windows):
+    """Test invalid alignment_mode on call raises an error."""
+    with pytest.raises(
+        LexosException,
+        match="Alignment mode must be None, 'strict', 'contract', or 'expand'.",
+    ):
+        basic_windows(input="Hello world", n=2, alignment_mode="invalid")
 
 
 def test_windows_invalid_output_type(nlp):
@@ -387,6 +411,48 @@ def test_doc_windows_configurations(sample_doc, window_type, alignment_mode, n):
     results = list(generator)
 
     assert len(results) > 0
+    assert all(isinstance(w, str) for w in results)
+
+
+def test_doc_windows_strict_character_output_tokens_raises(sample_doc):
+    """Test strict character windows with non-string output raises."""
+    windows = Windows(n=2, output="tokens", window_type="characters")
+    with pytest.raises(
+        LexosException,
+        match="Character windows with strict alignment only support output='strings'.",
+    ):
+        list(windows._get_doc_windows(sample_doc))
+
+
+def test_doc_windows_character_output_tokens_expands(sample_doc):
+    """Test character windows with token output and expanded alignment."""
+    windows = Windows(
+        n=2, output="tokens", window_type="characters", alignment_mode="expand"
+    )
+    results = list(windows._get_doc_windows(sample_doc))
+    assert len(results) > 0
+    assert all(isinstance(window, list) for window in results)
+    assert all(isinstance(token, Token) for window in results for token in window)
+
+
+def test_doc_windows_character_output_spans_contract(sample_doc):
+    """Test character windows with span output and contracted alignment."""
+    windows = Windows(
+        n=5, output="strings", window_type="characters", alignment_mode="contract"
+    )
+    windows.output = "spans"
+    results = list(windows._get_doc_windows(sample_doc))
+    assert len(results) > 0
+    assert all(isinstance(window, Span) for window in results)
+
+
+def test_doc_windows_tokens_alignment_contract_uses_char_span(sample_doc):
+    """Test non-character windows with contract alignment uses char_span."""
+    windows = Windows(
+        n=2, output="strings", window_type="tokens", alignment_mode="contract"
+    )
+    results = list(windows._get_doc_windows(sample_doc))
+    assert isinstance(results, list)
     assert all(isinstance(w, str) for w in results)
 
 

@@ -1,8 +1,8 @@
 """test_bubbleviz.py.
 
-Coverage: 100%
+Coverage: 98%. Missing: 41-42, 228.
 
-Last Tested: December 5, 2025
+Last Tested: June 28, 2026
 """
 
 import tempfile

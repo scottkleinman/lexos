@@ -81,11 +81,20 @@ class StringMilestones(BaseModel):
         """Set regex flags and milestone IOB extensions after initialization."""
         super().__init__(**data)
         self._spans: list = []
+        self._compiled_patterns: list[re.Pattern] = []
         if not self.case_sensitive:
             self.flags = case_insensitive_flags
         self.patterns = ensure_list(self.patterns)
         if self.patterns != [None]:
             self.set()
+
+    def _compile_patterns(self) -> None:
+        """Compile regex patterns using current flags."""
+        self._compiled_patterns = [
+            re.compile(pattern, self.flags)
+            for pattern in self.patterns
+            if pattern is not None
+        ]
 
     @property
     def spans(self) -> list[StringSpan]:
@@ -135,10 +144,11 @@ class StringMilestones(BaseModel):
         if patterns:
             self.patterns = ensure_list(patterns)
         self._set_case_sensitivity(case_sensitive)
+        self._compile_patterns()
         text = self.doc if isinstance(self.doc, str) else self.doc.text
         all_matches = []
-        for pattern in self.patterns:
-            matches = re.finditer(pattern, text, self.flags)
+        for pattern in self._compiled_patterns:
+            matches = pattern.finditer(text)
             all_matches.extend(
                 StringSpan(text=match.group(), start=match.start(), end=match.end())
                 for match in matches

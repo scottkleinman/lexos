@@ -1,7 +1,7 @@
 """dendrogram.py.
 
-Last Updated: July 25, 2025
-Last Tested: December 5, 2025
+Last Updated: June 28, 2026
+Last Tested: June 28, 2026
 """
 
 from pathlib import Path
@@ -137,9 +137,8 @@ class Dendrogram(BaseModel):
                 "The number of labels must match the number of documents."
             )
 
-        # Generate the pairwise distance and linkage matrices
-        X = pdist(matrix, metric=self.metric)
-        Z = sch.linkage(X, self.method)
+        # Generate the linkage matrix directly from the observation matrix
+        Z = sch.linkage(matrix, method=self.method, metric=self.metric)
 
         # Generate the dendrogram
         fig, ax = plt.subplots(figsize=self.figsize)
@@ -192,31 +191,15 @@ class Dendrogram(BaseModel):
 
         # Raw array/list input
         else:
-            matrix = self.dtm
-
-            # List input
-            if isinstance(matrix, list):
-                if len(matrix) < 2:
-                    raise LexosException(shape_error)
-                if not all(isinstance(x, (int, float)) for row in matrix for x in row):
-                    raise LexosException(type_error)
-
-            # NumPy array input
-            elif isinstance(matrix, np.ndarray):
-                # Consolidated NumPy array checks
-                if matrix.shape[0] < 2:
-                    raise LexosException(shape_error)
-                if not np.issubdtype(matrix.dtype, np.number):
-                    raise LexosException(type_error)
-            # You might want an 'else' here if there are other unsupported types
-            else:
+            matrix = np.asarray(self.dtm)
+            if matrix.ndim != 2:
                 raise LexosException("Unsupported document-term matrix type.")
+            if matrix.shape[0] < 2:
+                raise LexosException(shape_error)
+            if not np.issubdtype(matrix.dtype, np.number):
+                raise LexosException(type_error)
 
-        # Make sure we have a matrix length for list input
-        if isinstance(matrix, list):
-            matrix_length = len(matrix)
-        else:
-            matrix_length = matrix.shape[0]
+        matrix_length = matrix.shape[0]
 
         # Check labels vs matrix row count
         if self.labels and len(self.labels) != matrix_length:

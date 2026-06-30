@@ -1,13 +1,13 @@
 """milestones.py.
 
-Last Update: December 23, 2025
-Last Tested: December 23, 2025
+Last Update: June 27, 2026
+Last Tested: June 27, 2026
 """
 
 import re
 from enum import Enum
 from string import punctuation
-from typing import Any, Iterator, Match, Optional
+from typing import Any, ClassVar, Iterator, Match, Optional
 
 import spacy
 from pydantic import BaseModel, ConfigDict, Field, validate_call
@@ -200,6 +200,8 @@ class TokenMilestones(BaseModel):
                 pattern_matches.append(match)
         return [self._to_spacy_span(match) for match in pattern_matches]
 
+    _nlp_cache: ClassVar[dict[str, Any]] = {}
+
     def _get_phrase_matches(self, patterns: Any, attr: str = "ORTH") -> list[Span]:
         """Get matches to milestone patterns in phrases.
 
@@ -210,7 +212,9 @@ class TokenMilestones(BaseModel):
         Returns:
             list[Span]: A list of Spans matching the pattern.
         """
-        nlp = spacy.load(self.nlp)
+        if self.nlp not in self._nlp_cache:
+            self._nlp_cache[self.nlp] = spacy.load(self.nlp)
+        nlp = self._nlp_cache[self.nlp]
         matcher = PhraseMatcher(self.doc.vocab, attr=attr)
         patterns = [nlp.make_doc(text) for text in patterns]
         matcher.add("PatternList", patterns)
@@ -226,7 +230,9 @@ class TokenMilestones(BaseModel):
         Returns:
             list[Span]: A list of Spans matching the pattern.
         """
-        nlp = spacy.load(self.nlp)
+        if self.nlp not in self._nlp_cache:
+            self._nlp_cache[self.nlp] = spacy.load(self.nlp)
+        nlp = self._nlp_cache[self.nlp]
         spans = []
         if not self.case_sensitive:
             patterns = lowercase_spacy_rules(patterns)
@@ -343,10 +349,8 @@ class TokenMilestones(BaseModel):
 
         # If mode not provided or invalid, autodetect
         if not mode or mode not in mode_handlers:
-            spans = self.get_matches(patterns, mode=self._autodetect_mode(patterns))
-        # Get spans using appropriate handler
-        else:
-            spans = mode_handlers[mode]()
+            mode = self._autodetect_mode(patterns)
+        spans = mode_handlers[mode]()
         return self._remove_duplicate_spans(spans)
 
     @validate_call(config=validation_config)

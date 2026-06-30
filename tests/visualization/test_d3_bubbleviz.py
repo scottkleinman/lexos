@@ -1,9 +1,8 @@
 """test_d3_bubbleviz.py.
 
-Coverage: 98%. Missing: 150
-Line 150 is skipped because tests were run in WSL. At some point, this should be run in an environment that can find the pytest temporary directory.
+Coverage: 100%.
 
-Last Update: August 12, 2025
+Last Update: June 28, 2026
 """
 
 from pathlib import Path
@@ -81,7 +80,10 @@ class TestD3BubbleChartInitialization:
 
     def test_init_with_string_data(self, sample_text, mock_template_content):
         """Test initialization with string data."""
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=sample_text, auto_open=False)
                 assert isinstance(chart.counts, dict)
@@ -90,7 +92,10 @@ class TestD3BubbleChartInitialization:
 
     def test_init_with_dict_data(self, sample_counts, mock_template_content):
         """Test initialization with dictionary data."""
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=sample_counts, auto_open=False)
                 assert chart.counts == sample_counts
@@ -99,7 +104,10 @@ class TestD3BubbleChartInitialization:
     def test_init_with_spacy_doc(self, nlp, sample_text, mock_template_content):
         """Test initialization with spaCy Doc."""
         doc = nlp(sample_text)
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=doc, auto_open=False)
                 assert isinstance(chart.counts, dict)
@@ -109,7 +117,10 @@ class TestD3BubbleChartInitialization:
         """Test initialization with spaCy Span."""
         doc = nlp(sample_text)
         span = doc[:5]  # First 5 tokens
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=span, auto_open=False)
                 assert isinstance(chart.counts, dict)
@@ -119,7 +130,10 @@ class TestD3BubbleChartInitialization:
         """Test initialization with list of spaCy tokens."""
         doc = nlp(sample_text)
         tokens = [token for token in doc if not token.is_punct]
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=tokens, auto_open=False)
                 assert isinstance(chart.counts, dict)
@@ -128,7 +142,10 @@ class TestD3BubbleChartInitialization:
     def test_init_with_string_list(self, mock_template_content):
         """Test initialization with list of strings."""
         data = ["apple", "banana", "apple", "cherry", "banana", "apple"]
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=data, auto_open=False)
                 assert chart.counts["apple"] == 3
@@ -137,7 +154,10 @@ class TestD3BubbleChartInitialization:
 
     def test_init_with_dataframe(self, sample_dataframe, mock_template_content):
         """Test initialization with DataFrame."""
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=sample_dataframe, auto_open=False)
                 assert isinstance(chart.counts, dict)
@@ -150,7 +170,10 @@ class TestD3BubbleChartParameters:
     def test_custom_title(self, sample_counts, mock_template_content):
         """Test chart with custom title."""
         title = "My Custom Bubble Chart"
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=sample_counts, title=title, auto_open=False)
                 assert chart.title == title
@@ -159,7 +182,10 @@ class TestD3BubbleChartParameters:
     def test_custom_dimensions(self, sample_counts, mock_template_content):
         """Test chart with custom width and height."""
         width, height = 800, 500
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(
                     data=sample_counts, width=width, height=height, auto_open=False
@@ -172,7 +198,10 @@ class TestD3BubbleChartParameters:
     def test_custom_margin(self, sample_counts, mock_template_content):
         """Test chart with custom margins."""
         margin = {"top": 30, "right": 30, "bottom": 30, "left": 30}
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(
                     data=sample_counts, margin=margin, auto_open=False
@@ -182,7 +211,10 @@ class TestD3BubbleChartParameters:
     def test_custom_color_scheme(self, sample_counts, mock_template_content):
         """Test chart with custom color scheme."""
         color = "schemeSet3"
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=sample_counts, color=color, auto_open=False)
                 assert chart.color == color
@@ -191,7 +223,10 @@ class TestD3BubbleChartParameters:
     def test_custom_color_list(self, sample_counts, mock_template_content):
         """Test chart with custom color list."""
         colors = ["#ff0000", "#00ff00", "#0000ff"]
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=sample_counts, color=colors, auto_open=False)
                 assert chart.color == colors
@@ -199,14 +234,20 @@ class TestD3BubbleChartParameters:
     def test_limit_parameter(self, sample_counts, mock_template_content):
         """Test chart with limit parameter."""
         limit = 3
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=sample_counts, limit=limit, auto_open=False)
                 assert len(chart.counts) <= limit
 
     def test_include_d3js_parameter(self, sample_counts, mock_template_content):
         """Test chart with include_d3js parameter."""
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(
                     data=sample_counts, include_d3js=True, auto_open=False
@@ -217,12 +258,12 @@ class TestD3BubbleChartParameters:
 class TestD3BubbleChartMethods:
     """Test D3BubbleChart methods."""
 
-    @pytest.mark.skip(
-        reason="Tested in WSL which has trouble finding the temporary directory."
-    )
     def test_save_method(self, sample_counts, mock_template_content, tmp_path):
         """Test saving chart to file."""
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=sample_counts, auto_open=False)
 
@@ -231,9 +272,21 @@ class TestD3BubbleChartMethods:
 
                 assert output_path.exists()
 
+    def test_load_local_asset(self, tmp_path):
+        """Test the D3BubbleChart asset loader."""
+        from lexos.visualization.d3_bubbleviz import _load_local_asset
+
+        file_path = tmp_path / "asset.js"
+        file_path.write_text("console.log('hello')", encoding="utf-8")
+
+        assert _load_local_asset(file_path) == "console.log('hello')"
+
     def test_get_asset_path(self, sample_counts, mock_template_content):
         """Test asset path resolution."""
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=sample_counts, auto_open=False)
 
@@ -252,7 +305,10 @@ class TestD3BubbleChartMethods:
 
     def test_open_method(self, sample_counts, mock_template_content):
         """Test opening chart in browser."""
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open") as mock_browser:
                 with patch("tempfile.NamedTemporaryFile") as mock_temp:
                     mock_temp.return_value.__enter__.return_value.name = (
@@ -266,7 +322,10 @@ class TestD3BubbleChartMethods:
 
     def test_auto_open_true(self, sample_counts, mock_template_content):
         """Test automatic opening when auto_open is True."""
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open") as mock_browser:
                 with patch("tempfile.NamedTemporaryFile") as mock_temp:
                     mock_temp.return_value.__enter__.return_value.name = (
@@ -278,7 +337,10 @@ class TestD3BubbleChartMethods:
 
     def test_auto_open_false(self, sample_counts, mock_template_content):
         """Test no automatic opening when auto_open is False."""
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open") as mock_browser:
                 D3BubbleChart(data=sample_counts, auto_open=False)
                 mock_browser.assert_not_called()
@@ -289,14 +351,20 @@ class TestD3BubbleChartErrorHandling:
 
     def test_template_not_found(self, sample_counts):
         """Test handling of missing template file."""
-        with patch("builtins.open", side_effect=FileNotFoundError):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            side_effect=FileNotFoundError,
+        ):
             with pytest.raises(LexosException, match="Template file not found"):
                 D3BubbleChart(data=sample_counts, auto_open=False)
 
     def test_invalid_save_path(self, sample_counts, mock_template_content):
         """Test error handling for invalid save path."""
         # First patch is only for chart initialization
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=sample_counts, auto_open=False)
 
@@ -316,7 +384,10 @@ class TestD3BubbleChartWithDocs:
             index=["apple", "banana", "cherry", "date"],
         )
 
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=dtm_data, docs=["doc1"], auto_open=False)
                 assert isinstance(chart.counts, dict)
@@ -330,7 +401,10 @@ class TestD3BubbleChartHtmlOutput:
         self, sample_counts, mock_template_content
     ):
         """Test that generated HTML contains required elements."""
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=sample_counts, auto_open=False)
 
@@ -342,7 +416,10 @@ class TestD3BubbleChartHtmlOutput:
 
     def test_html_structure(self, sample_counts, mock_template_content):
         """Test basic HTML structure."""
-        with patch("builtins.open", mock_open(read_data=mock_template_content)):
+        with patch(
+            "lexos.visualization.d3_bubbleviz._load_local_asset",
+            return_value=mock_template_content,
+        ):
             with patch("webbrowser.open"):
                 chart = D3BubbleChart(data=sample_counts, auto_open=False)
 

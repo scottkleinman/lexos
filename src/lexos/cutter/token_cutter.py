@@ -2,8 +2,8 @@
 
 This class assumes that the docs consist of spaCy Doc objects.
 
-Last Updated: 23 December, 2025
-Tested: 23 December, 2025
+Last Updated: 27 June, 2026
+Tested: 27 June, 2026
 """
 
 from pathlib import Path
@@ -32,7 +32,9 @@ class TokenCutter(BaseModel, validate_assignment=True):
     Supports overlapping, merging, and export to disk.
     """
 
-    chunks: list[list[Doc]] = Field(default=[], description="The list of chunks.")
+    chunks: list[list[Doc]] = Field(
+        default_factory=list, description="The list of chunks."
+    )
 
     docs: Optional[Doc | list[Doc] | Path | str | list[Path | str]] = Field(
         default=None,
@@ -43,11 +45,11 @@ class TokenCutter(BaseModel, validate_assignment=True):
     )
     n: Optional[int] = Field(
         default=None,
-        # gt=0, Removed to allow runtime validation via LexosException instead of Pydantic pre-validation for testing coverage.
+        # Removed `gt=0` to allow runtime validation via LexosException instead of Pydantic pre-validation for testing coverage.
         description="The number of chunks or the number of lines or sentences per chunk.",
     )
     names: Optional[list[str]] = Field(
-        default=[], description="A list of names for the source docs."
+        default_factory=list, description="A list of names for the source docs."
     )
     newline: Optional[bool] = Field(
         default=False, description="Whether to chunk by lines."
@@ -82,9 +84,9 @@ class TokenCutter(BaseModel, validate_assignment=True):
 
     def __len__(self):
         """Return the number of source docs in the instance."""
-        if not self.docs:
+        if self.docs is None:
             return 0
-        return len(self.docs)
+        return len(ensure_list(self.docs))
 
     @staticmethod
     def list_start_end_indexes(arrays: list[np.ndarray]) -> list[tuple[int, int]]:
@@ -128,11 +130,9 @@ class TokenCutter(BaseModel, validate_assignment=True):
             self.merge_threshold if self.merge_threshold is not None else 0.5
         )
         if isinstance(self.n, int):
-            threshold = max([len(chunk) for chunk in chunks]) * merge_threshold
+            threshold = max(len(chunk) for chunk in chunks) * merge_threshold
         else:
-            threshold = (
-                self.chunksize if self.chunksize is not None else 1
-            ) * merge_threshold
+            threshold = (self.chunksize or 1) * merge_threshold
         # If the length of the last chunk < threshold, merge it with the previous chunk
         if force is True or len(chunks[-1]) < threshold:
             # Get rid of the last chunk
@@ -191,15 +191,16 @@ class TokenCutter(BaseModel, validate_assignment=True):
         extension_names = [name for name in doc[0]._.__dict__["_extensions"].keys()]
 
         # Split the doc into n chunks
+        attrs_list = list(attrs)
         if isinstance(self.n, int):
-            chunks_arr = np.array_split(doc.to_array(list(attrs)), self.n)
+            chunks_arr = np.array_split(doc.to_array(attrs_list), self.n)
             # If there is only one chunk, skip the rest of the function
             if len(chunks_arr) == 1:
                 return [doc]
         else:
             chunks_arr = np.array_split(
-                doc.to_array(list(attrs)),
-                np.arange(self.chunksize, len(attrs), self.chunksize),
+                doc.to_array(attrs_list),
+                np.arange(self.chunksize, len(doc), self.chunksize),
             )
             # Remove empty elements
             chunks_arr = [x for x in chunks_arr if x.size > 0]
@@ -220,7 +221,7 @@ class TokenCutter(BaseModel, validate_assignment=True):
             new_doc = Doc(doc.vocab, words=words)
 
             # Add the attributes to the new chunk doc
-            new_doc.from_array(list(attrs), chunk)
+            new_doc.from_array(attrs_list, chunk)
 
             # Add entities to the new chunk doc
             if doc.ents and len(doc.ents) > 0:
@@ -567,6 +568,9 @@ class TokenCutter(BaseModel, validate_assignment=True):
             strip_chunks (bool): Whether to strip leading and trailing whitespace in the chunks.
             as_text (Optional[bool]): Whether to save the chunks as text files or spaCy Doc objects (bytes).
         """
+        output_dir = Path(output_dir)
+        if names is not None:
+            names = ensure_list(names)
         self._set_attributes(
             output_dir=output_dir,
             delimiter=delimiter,
@@ -574,14 +578,14 @@ class TokenCutter(BaseModel, validate_assignment=True):
             pad=pad,
             strip_chunks=strip_chunks,
         )
-        if not self.chunks or self.chunks == []:
+        if not self.chunks:
             raise LexosException("No chunks to save.")
         if self.names:
             if len(self.names) != len(self.chunks):
                 raise LexosException(
                     f"The number of docs in `names` ({len(self.names)}) must equal the number of docs in `chunks` ({len(self.chunks)})."
                 )
-        elif self.names == [] or self.names is None:
+        else:
             self.names = [
                 f"doc{str(i + 1).zfill(self.pad)}" for i in range(len(self.chunks))
             ]
@@ -589,9 +593,7 @@ class TokenCutter(BaseModel, validate_assignment=True):
             for num, chunk in enumerate(doc):
                 if strip_chunks:
                     chunk = strip_doc(chunk)
-                self._write_chunk(
-                    self.names[i], num + 1, chunk, Path(output_dir), as_text
-                )
+                self._write_chunk(self.names[i], num + 1, chunk, output_dir, as_text)
 
     @validate_call(config=validation_config)
     def split(
@@ -630,6 +632,9 @@ class TokenCutter(BaseModel, validate_assignment=True):
             self.docs = ensure_list(docs)
         if not self.docs:
             raise LexosException("No documents provided for splitting.")
+        self.chunks = []
+        if names is not None:
+            names = ensure_list(names)
         self._set_attributes(
             chunksize=chunksize,
             n=n,
@@ -706,6 +711,9 @@ class TokenCutter(BaseModel, validate_assignment=True):
             self.docs = ensure_list(docs)
         if not self.docs:
             raise LexosException("No documents provided for splitting.")
+        self.chunks = []
+        if names is not None:
+            names = ensure_list(names)
         self._set_attributes(
             merge_threshold=merge_threshold,
             overlap=overlap,
@@ -762,6 +770,9 @@ class TokenCutter(BaseModel, validate_assignment=True):
             ValueError: If n is less than or equal to 0.
             ValueError: If the model has no sentences.
         """
+        self.chunks = []
+        if names is not None:
+            names = ensure_list(names)
         self._set_attributes(
             n=n,
             overlap=overlap,

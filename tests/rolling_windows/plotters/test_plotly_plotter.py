@@ -1,18 +1,17 @@
-"""test_simple_plotter.py.
+"""test_plotly_plotter.py.
 
-Coverage: 96%. Missing: 190-192, 205, 209
-These lines are hard to reach.
-Last Updated: September 13, 2025
+Coverage: 100%
+Last Updated: June 27, 2026
 """
 
 from pathlib import Path
 from unittest.mock import patch
 
-import matplotlib.pyplot as plt
 import pandas as pd
 import pytest
 
 from lexos.exceptions import LexosException
+from lexos.rolling_windows.plotters import plotly_plotter
 from lexos.rolling_windows.plotters.plotly_plotter import PlotlyPlotter
 
 
@@ -157,6 +156,45 @@ def test_get_axis_and_title_labels_with_dict_xlabel():
     assert isinstance(ylabel_dict, dict)
 
 
+def test_get_axis_and_title_labels_with_internal_dict_ylabel():
+    """Test _get_axis_and_title_labels with internal dict ylabel."""
+    df = pd.DataFrame({"A": [1, 2, 3]})
+    plotter = PlotlyPlotter(df=df)
+    object.__setattr__(plotter, "ylabel", {"title": "Custom Y"})
+    title_dict, xlabel_dict, ylabel_dict = plotter._get_axis_and_title_labels()
+    assert ylabel_dict == {"title": "Custom Y"}
+    assert isinstance(title_dict, dict)
+    assert isinstance(xlabel_dict, dict)
+
+
+def test_get_axis_and_title_labels_with_internal_dict_xlabel():
+    """Test _get_axis_and_title_labels with internal dict xlabel."""
+    df = pd.DataFrame({"A": [1, 2, 3]})
+    plotter = PlotlyPlotter(df=df)
+    object.__setattr__(plotter, "xlabel", {"title": "Custom X"})
+    title_dict, xlabel_dict, ylabel_dict = plotter._get_axis_and_title_labels()
+    assert xlabel_dict == {"title": "Custom X"}
+    assert isinstance(title_dict, dict)
+    assert isinstance(ylabel_dict, dict)
+
+
+def test_plotly_plotter_default_show_config(monkeypatch):
+    """Test plot() uses default Plotly config when show=True and config=None."""
+    df = make_df()
+    plotter = PlotlyPlotter(df=df)
+
+    called = {}
+
+    def fake_show(self, config=None):
+        called["config"] = config
+
+    monkeypatch.setattr(plotly_plotter.Figure, "show", fake_show)
+
+    plotter.plot(show=True, config=None)
+
+    assert called["config"] == {"displaylogo": False}
+
+
 def test_get_titlepad_returns_titlepad():
     """Test _get_titlepad returns titlepad if set."""
     df = pd.DataFrame({"A": [1, 2, 3]})
@@ -190,37 +228,20 @@ def test_get_titlepad_returns_max_height_plus_50(monkeypatch):
 
     plotter = PlotlyPlotter(df=df)
 
-    class DummyCanvas:
-        def get_renderer(self):
-            return None
+    class DummyExtents:
+        def __init__(self, width, height):
+            self.width = width
+            self.height = height
 
-    class DummyFig:
-        def __init__(self):
-            self.canvas = DummyCanvas()
+    class DummyTextPath:
+        def __init__(self, *args, **kwargs):
+            pass
 
-    class DummyText:
-        def get_window_extent(self, renderer=None):
-            class DummyExtent:
-                @property
-                def height(self):
-                    return 100  # Force height >= 50
+        def get_extents(self):
+            return DummyExtents(width=10, height=100)
 
-            return DummyExtent()
-
-    class DummyAx:
-        def get_figure(self):
-            return DummyFig()
-
-        def text(self, *args, **kwargs):
-            return DummyText()
-
-        def annotate(self, *args, **kwargs):
-            return DummyText()
-
-    def fake_subplots():
-        return DummyFig(), DummyAx()
-
-    monkeypatch.setattr(plt, "subplots", fake_subplots)
+    monkeypatch.setattr(plotly_plotter, "TextPath", DummyTextPath)
+    monkeypatch.setattr(plotly_plotter, "FontProperties", lambda **kwargs: None)
 
     result = plotter._get_titlepad(labels)
     assert result == 150  # 100 + 50

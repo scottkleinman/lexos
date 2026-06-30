@@ -1,11 +1,12 @@
 """test_span_milestones.py.
 
-Coverage: 87%. Missing: 67, 119-125, 166, 168, 227, 229, 261-263, 284, 322, 324, 360
-Last Update: 12/27/2024
+Coverage: 95%. Missing:  67, 166, 168, 227, 229, 322, 324
+Last Update: June 27, 2026
 """
 
 import pytest
 import spacy
+from spacy.tokens import Token
 
 from lexos.milestones.span_milestones import (
     CustomMilestones,
@@ -165,6 +166,20 @@ def test_span_milestones__get_list_empty_spans(span_milestones):
     assert milestone_dicts == []
 
 
+def test_span_milestones__get_list_strip_punct_variations(span_milestones, doc):
+    """Test _get_list handles punctuation stripping and no-strip cases."""
+    span = doc[4:6]  # includes trailing punctuation
+    span_milestones.doc.spans["milestones"] = [span]
+
+    stripped = span_milestones._get_list(strip_punct=True)[0]
+    assert stripped["characters"] == "document"
+    assert stripped["end_char"] == span.end_char - 1
+
+    not_stripped = span_milestones._get_list(strip_punct=False)[0]
+    assert not_stripped["characters"].endswith(".")
+    assert not_stripped["end_char"] == span.end_char
+
+
 def test_span_milestones__reset(span_milestones):
     """Test _reset method."""
     span_milestones._reset()
@@ -192,6 +207,18 @@ def test_sentence_milestones_invalid_model(doc_no_sents):
         match="Either the document's model does not parse sentence boundaries",
     ):
         _ = SentenceMilestones(doc=doc_no_sents)
+
+
+def test_sentence_milestones_registers_token_extensions_if_missing(nlp, doc):
+    """Test SentenceMilestones registers token extensions when missing."""
+    for attr in ("milestone_iob", "milestone_label"):
+        if Token.has_extension(attr):
+            Token.remove_extension(attr)
+
+    sentence_milestones = SentenceMilestones(doc=doc)
+    assert Token.has_extension("milestone_iob")
+    assert Token.has_extension("milestone_label")
+    assert sentence_milestones.type == "sentences"
 
 
 def test_sentence_milestones_reset(sentence_milestones, spans):
@@ -310,6 +337,26 @@ def test_line_milestones_set_with_pattern(nlp):
     assert line_milestones.spans[0].text == spans[0]
 
 
+def test_line_milestones_set_with_step_and_remove_linebreak_false(line_milestones):
+    """Test LineMilestones set with remove_linebreak=False and step=0."""
+    line_milestones.set(remove_linebreak=False, step=0)
+    assert len(line_milestones.spans) == 2
+    assert line_milestones.spans[0].text.endswith("\n")
+    assert line_milestones.spans[1].text == "Here is another sentence."
+
+
+def test_line_milestones_registers_token_extensions_if_missing(nlp, doc_line_breaks):
+    """Test LineMilestones registers token extensions when missing."""
+    for attr in ("milestone_iob", "milestone_label"):
+        if Token.has_extension(attr):
+            Token.remove_extension(attr)
+
+    line_milestones = LineMilestones(doc=doc_line_breaks)
+    assert Token.has_extension("milestone_iob")
+    assert Token.has_extension("milestone_label")
+    assert line_milestones.type == "lines"
+
+
 def test_line_milestones_to_list_basic(line_milestones):
     """Test LineMilestones to_list."""
     assert isinstance(line_milestones.to_list(), list)
@@ -332,9 +379,19 @@ def test_custom_milestones_init(custom_milestones, doc):
     assert custom_milestones.doc[0]._.milestone_label == ""
 
 
+def test_custom_milestones_registers_token_extensions_if_missing(nlp, doc):
+    """Test CustomMilestones registers token extensions when missing."""
+    for attr in ("milestone_iob", "milestone_label"):
+        if Token.has_extension(attr):
+            Token.remove_extension(attr)
+
+    custom_milestones = CustomMilestones(doc=doc)
+    assert Token.has_extension("milestone_iob")
+    assert Token.has_extension("milestone_label")
+    assert custom_milestones.type == "custom"
+
+
 def test_custom_milestones_milestones_reset(custom_milestones, spans):
-    """Test CustomMilestones reset."""
-    custom_milestones.doc[0]._.milestone_iob = "B"
     custom_milestones.doc[0]._.milestone_label = "Test"
     custom_milestones.doc.spans["milestones"] = spans
     custom_milestones.reset()
@@ -376,6 +433,12 @@ def test_custom_milestones_set_with_max_label_length(custom_milestones, spans):
 def test_custom_milestones_to_list_basic(custom_milestones):
     """Test CustomMilestones to_list."""
     assert isinstance(custom_milestones.to_list(), list)
+
+
+def test_custom_milestones_set_with_step_zero(custom_milestones, spans):
+    """Test CustomMilestones set with step=0."""
+    custom_milestones.set(spans, step=0)
+    assert list(custom_milestones.doc.spans["milestones"]) == spans
 
 
 def test_custom_milestones_to_list_strip_punct_true(custom_milestones):

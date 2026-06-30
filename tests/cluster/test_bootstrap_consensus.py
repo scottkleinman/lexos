@@ -1,11 +1,11 @@
 """test_bootstrap_consensus.py.
 
-Coverage: 96%. Missing: 287-288, 354-359, 465, 576
+Coverage: 95%. Missing:  95%   138, 140, 330-331, 338-339, 432-437, 559, 670
 Note: Some lines are not covered due to the complexity of the tree traversal logic
 or because of issues with pytest's coverage reporting.
 It may be worth refactoring module at some point to make it more testable.
 
-Last Updated: 2025-12-05
+Last Updated: 2026-06-28
 """
 
 import math
@@ -252,6 +252,26 @@ class TestBCT:
 
                 assert len(trees) == 5
                 assert mock_newick.call_count == 5
+
+    def test_get_bootstrap_trees_reuses_doc_term_matrix(self, sample_dtm):
+        """Test that _get_bootstrap_trees reuses the cached doc term matrix."""
+        from unittest.mock import PropertyMock
+
+        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
+            mock_fig.return_value = Mock(spec=Figure)
+
+            bct = BCT(dtm=sample_dtm, iterations=3)
+
+            with patch.object(
+                BCT, "_doc_term_matrix", new_callable=PropertyMock
+            ) as mock_property:
+                mock_property.return_value = sample_dtm.to_df().T
+                with patch.object(
+                    bct, "_get_newick_tree", return_value=Mock()
+                ) as mock_newick:
+                    bct._get_bootstrap_trees()
+                    assert mock_property.call_count == 1
+                    assert mock_newick.call_count == 3
 
     def test_get_bootstrap_consensus_tree(self, sample_dtm):
         """Test _get_bootstrap_consensus_tree method."""

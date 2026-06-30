@@ -1,7 +1,7 @@
 """This is a model to produce bootstrap consensus tree of the dtm.
 
-Last update: June 8, 2026
-Last tested: May 26, 2026
+Last update: June 28, 2026
+Last tested: June 28, 2026
 
 # TODO:
 - Datatype for `dtm` should match those allowable for the `Dendrogram` class.
@@ -102,7 +102,7 @@ class BCT(BaseModel):
 
     @field_validator("text_color", mode="after")
     @classmethod
-    def _validate_text_color(cls, value):
+    def _validate_text_color(cls, value) -> str:
         """Validate that the text color is a valid color string.
 
         Args:
@@ -229,20 +229,17 @@ class BCT(BaseModel):
         Returns:
             list[str]: A list of Newick formatted tree where each tree was based on an 80% subset of the complete DTM.
         """
-        # Save the DTM to avoid multiple calls
         dtm = self._doc_term_matrix
+        labels = dtm.index.tolist()
+        random_state = np.random.RandomState()
 
-        # Get doc names, since tree nodes need labels
-        labels = [doc for doc in self._doc_term_matrix.index.values.tolist()]
-
-        # The bootstrap process to get all the trees.
         return [
             self._get_newick_tree(
                 sample_dtm=dtm.sample(
                     axis=1,
                     frac=0.8,
                     replace=self.replace,
-                    random_state=np.random.RandomState(),
+                    random_state=random_state,
                 ),
                 labels=labels,
             )

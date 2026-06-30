@@ -1,12 +1,13 @@
 """test_processors.py.
 
-Coverage: 97%. Missing: 62, 226, 228
+Coverage: 100%
 
-Last Update: December 5, 2025
+Last Update: June 28, 2026
 """
 
 import token
 from collections import Counter
+from types import SimpleNamespace
 from unittest.mock import Mock
 
 import numpy as np
@@ -288,6 +289,32 @@ class TestProcessDTM:
         expected = {"term1": 3, "term2": 4, "term3": 2}
         assert result == expected
 
+    def test_dtm_no_matrix(self):
+        """Test process_dtm with a DTM lacking a matrix."""
+        dtm = DTM()
+
+        with pytest.raises(LexosException, match="DTM has no document-term matrix"):
+            process_dtm(dtm)
+
+    def test_dtm_with_label_filter(self):
+        """Test process_dtm with document labels."""
+        docs = [["a", "b"], ["a", "c"]]
+        dtm = DTM()
+        dtm(docs=docs, labels=["doc1", "doc2"])
+
+        result = process_dtm(dtm, docs=["doc2"])
+        assert result == {"a": 1, "c": 1}
+
+    def test_dtm_dense_matrix(self):
+        """Test process_dtm with a dense matrix implementation."""
+        dtm = DTM()
+        dtm.vectorizer = SimpleNamespace(terms_list=["term1", "term2"])
+        dtm.labels = ["doc1", "doc2"]
+        dtm.doc_term_matrix = np.array([[1, 0], [0, 2]])
+
+        result = process_dtm(dtm)
+        assert result == {"term1": 1, "term2": 2}
+
 
 class TestProcessList:
     """Test the process_list function."""
@@ -319,8 +346,16 @@ class TestProcessList:
         result = dict(sorted(result.items()))
 
         expected = dict(Counter(["natural", "language", "machine", "learning"]))
-        for k, v in result.items():
-            assert expected[k.text] == v
+        assert result == expected
+
+    def test_list_of_tokens(self, nlp):
+        """Test processing a list of spaCy Token objects."""
+        doc = nlp("natural language processing")
+        tokens = [token for token in doc if not token.is_punct]
+
+        result = process_list(tokens, None)
+        expected = dict(Counter([token.text for token in tokens]))
+        assert result == expected
 
 
 class TestProcessDocs:

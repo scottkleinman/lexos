@@ -1,7 +1,7 @@
 """filters.py.
 
-Last Update: December 26, 2025
-Last Tested: December 26, 2025
+Last Update: June 27, 2026
+Last Tested: June 27, 2026
 """
 
 import re
@@ -14,6 +14,8 @@ from spacy.tokens import Doc, Token
 
 from lexos.exceptions import LexosException
 from lexos.util import ensure_list
+
+ROMAN_PATTERN = re.compile(r"^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$")
 
 
 class BaseFilter(BaseModel):
@@ -52,34 +54,36 @@ class BaseFilter(BaseModel):
             self.matcher = matcher
         # Get the matches
         self.matches = self.matcher(doc)
+        return self.doc if self.doc is not None else doc
 
     @property
-    def matched_token_ids(self) -> set[int]:
+    def matched_token_ids(self) -> Optional[set[int]]:
         """A list of matched token ids after the filter was applied."""
-        if not self.matches:
+        if self.matches is None or self.doc is None:
             return None
-        token_ids = set()
-        for _, start, end in self.matches:
-            for i in range(start, end):
-                token_ids.add(i)
-        return token_ids
+        return {i for _, start, end in self.matches for i in range(start, end)}
 
     @property
-    def matched_tokens(self) -> list[int]:
+    def matched_tokens(self) -> list[Token]:
         """A list of matched tokens after the filter was applied."""
+        if self.doc is None or self.matched_token_ids is None:
+            return []
         return [self.doc[i] for i in self.matched_token_ids]
 
     @property
-    def filtered_tokens(self) -> list[int]:
+    def filtered_tokens(self) -> list[Token]:
         """A list of filtered tokens after the filter was applied."""
+        if self.filtered_token_ids is None or self.doc is None:
+            return []
         return [self.doc[i] for i in self.filtered_token_ids]
 
     @property
-    def filtered_token_ids(self) -> set[int]:
+    def filtered_token_ids(self) -> Optional[set[int]]:
         """A list of filtered token ids after the filter was applied."""
-        if not self.matches:
+        if self.matches is None or self.doc is None:
             return None
-        return set(range(len(self.doc))) - self.matched_token_ids
+        matched_ids = self.matched_token_ids or set()
+        return set(range(len(self.doc))) - matched_ids
 
     def _set_extensions(self, attr: str, default: Any):
         """Set the extensions."""
@@ -96,11 +100,12 @@ class BaseFilter(BaseModel):
         Returns:
             Doc: A new spaCy Doc containing only the matched tokens.
         """
-        words = [t.text for t in self.matched_tokens]
+        matched_tokens = self.matched_tokens
+        words = [t.text for t in matched_tokens]
         if add_spaces:
-            spaces = [" " for _ in self.matched_tokens]
+            spaces = [" " for _ in matched_tokens]
         else:
-            spaces = [t.whitespace_ for t in self.matched_tokens]
+            spaces = [t.whitespace_ for t in matched_tokens]
         return Doc(self.doc.vocab, words=words, spaces=spaces)
 
     def get_filtered_doc(self, add_spaces: bool = False) -> Doc:
@@ -113,11 +118,12 @@ class BaseFilter(BaseModel):
         Returns:
             Doc: A new spaCy Doc containing only the filtered tokens.
         """
-        words = [t.text for t in self.filtered_tokens]
+        filtered_tokens = self.filtered_tokens
+        words = [t.text for t in filtered_tokens]
         if add_spaces:
-            spaces = [" " for _ in self.filtered_tokens]
+            spaces = [" " for _ in filtered_tokens]
         else:
-            spaces = [t.whitespace_ for t in self.filtered_tokens]
+            spaces = [t.whitespace_ for t in filtered_tokens]
         return Doc(self.doc.vocab, words=words, spaces=spaces)
 
 
@@ -125,6 +131,9 @@ class IsRomanFilter(BaseFilter):
     """A filter for Roman numerals."""
 
     id: ClassVar[str] = "is_roman"
+    ROMAN_PATTERN: ClassVar[re.Pattern] = re.compile(
+        r"^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$"
+    )
     doc: Optional[Doc] = Field(default=None, description="A spaCy doc.")
     attr: Optional[str] = Field(
         default="is_roman",
@@ -207,8 +216,7 @@ class IsRomanFilter(BaseFilter):
         """
         if token.text == "":
             return False
-        pattern = r"^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$"
-        return bool(re.search(pattern, token.text))
+        return bool(self.ROMAN_PATTERN.search(token.text))
 
 
 class IsStopwordFilter(BaseFilter):
@@ -278,28 +286,14 @@ class IsStopwordFilter(BaseFilter):
         if case_sensitive is not None:
             self.case_sensitive = case_sensitive
 
-        # Use instance attributes if parameters are None
         working_doc = self.doc if self.doc is not None else doc
-        # Handle stopwords carefully - convert to list if it's a pydantic ValidatorIterator
-        if (
-            stopwords is None
-            and hasattr(self, "stopwords")
-            and self.stopwords is not None
-        ):
-            try:
-                working_stopwords = list(self.stopwords)
-            except (TypeError, AttributeError):
-                working_stopwords = self.stopwords
-        else:
-            working_stopwords = stopwords
-        working_remove = (
-            self.remove
-            if hasattr(self, "remove") and self.remove is not None
-            else remove
+        working_stopwords = (
+            ensure_list(self.stopwords) if self.stopwords is not None else []
         )
+        working_remove = self.remove if self.remove is not None else remove
         working_case_sensitive = (
             self.case_sensitive
-            if hasattr(self, "case_sensitive") and self.case_sensitive is not None
+            if self.case_sensitive is not None
             else case_sensitive
             if case_sensitive is not None
             else False
@@ -314,28 +308,14 @@ class IsStopwordFilter(BaseFilter):
             # Get the vocab (shared across all docs from the same model)
             vocab = working_doc.vocab
 
-            if working_remove:
-                for item in working_stopwords:
-                    if item is not None:  # Skip None values
-                        if working_case_sensitive:
-                            # Only modify the exact case provided
-                            vocab[item].is_stop = False
-                        else:
-                            # Modify common case variations
-                            vocab[item.lower()].is_stop = False
-                            vocab[item].is_stop = False
-                            vocab[item.capitalize()].is_stop = False
-            else:
-                for item in working_stopwords:
-                    if item is not None:  # Skip None values
-                        if working_case_sensitive:
-                            # Only modify the exact case provided
-                            vocab[item].is_stop = True
-                        else:
-                            # Modify common case variations
-                            vocab[item.lower()].is_stop = True
-                            vocab[item].is_stop = True
-                            vocab[item.capitalize()].is_stop = True
+            stopword_items = {item for item in working_stopwords if item is not None}
+            for item in stopword_items:
+                if working_case_sensitive:
+                    vocab[item].is_stop = not working_remove
+                else:
+                    vocab[item.lower()].is_stop = not working_remove
+                    vocab[item].is_stop = not working_remove
+                    vocab[item.capitalize()].is_stop = not working_remove
 
             # Store matches for stopwords
             self.matches = []
@@ -358,7 +338,7 @@ class IsWordFilter(BaseFilter):
         default=False, description="The default value of the attribute."
     )
     exclude: Optional[Optional[list[str] | str]] = Field(
-        default=[" ", "\n"],
+        default_factory=lambda: [" ", "\n"],
         description="A string/regex or list of strings/regex patterns to exclude.",
     )
     exclude_digits: Optional[Optional[bool]] = Field(
@@ -422,13 +402,13 @@ class IsWordFilter(BaseFilter):
         # Assign keyword variables to the instance attributes
         if doc:
             self.doc = doc
-        if exclude:
+        if exclude is not None:
             self.exclude = ensure_list(exclude)
         if exclude_digits is not None:
             self.exclude_digits = exclude_digits
         if exclude_roman_numerals is not None:
             self.exclude_roman_numerals = exclude_roman_numerals
-        if exclude_pattern:
+        if exclude_pattern is not None:
             self.exclude_pattern = ensure_list(exclude_pattern)
         if attr:
             self.attr = attr
@@ -473,8 +453,7 @@ class IsWordFilter(BaseFilter):
         """
         if string == "":
             return False
-        pattern = r"^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$"
-        return bool(re.search(pattern, string))
+        return bool(ROMAN_PATTERN.search(string))
 
     @validate_call(config=model_config)
     def is_word(self, token: Token) -> bool:
@@ -486,18 +465,26 @@ class IsWordFilter(BaseFilter):
         Returns:
             bool: True if the token is a word.
         """
-        predicates = []
+        text = token.text
+        if text == "":
+            return False
+
         if self.exclude_digits:
-            predicates.append(lambda token: token.text.isalpha())
+            if not text.isalpha():
+                return False
         else:
-            predicates.append(
-                lambda token: token.text.isalpha() or token.text.isdigit()
-            )
-        if self.exclude_roman_numerals:
-            predicates.append(lambda token: not self._is_roman_numeral(token.text))
-        if self.exclude_pattern:
-            self.exclude += self.exclude_pattern
-        if len(self.exclude) > 0:
-            exclude_pat = "|".join(self.exclude)
-            predicates.append(lambda token: re.search(exclude_pat, token.text) is None)
-        return all([f(token) for f in predicates])
+            if not (text.isalpha() or text.isdigit()):
+                return False
+
+        if self.exclude_roman_numerals and self._is_roman_numeral(text):
+            return False
+
+        exclude_list = list(ensure_list(self.exclude))
+        if self.exclude_pattern is not None:
+            exclude_list += ensure_list(self.exclude_pattern)
+        if exclude_list:
+            exclude_pat = re.compile("|".join(exclude_list))
+            if exclude_pat.search(text):
+                return False
+
+        return True

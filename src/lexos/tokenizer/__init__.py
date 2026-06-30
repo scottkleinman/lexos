@@ -1,7 +1,7 @@
 """__init__.py.
 
-Last Update: December 17, 2025
-Last Tested: December 17, 2025
+Last Update: June 27, 2026
+Last Tested: June 27, 2026
 
 Current usage:
 
@@ -35,13 +35,6 @@ from spacy.tokens import Doc, Token
 from lexos.exceptions import LexosException
 from lexos.util import ensure_list
 
-try:
-    default_model = spacy.load("xx_sent_ud_sm")
-except ImportError:
-    raise LexosException(
-        "The default model is not available. Please run `python -m spacy download xx_sent_ud_sm` from the command line."
-    )
-
 
 class Tokenizer(BaseModel):
     """A class for tokenizing text using spaCy."""
@@ -54,16 +47,16 @@ class Tokenizer(BaseModel):
         default=2000000,
         description="The maximum length of the doc.",
     )
-    disable: Optional[list[str]] = Field(
-        default=[],
+    disable: list[str] = Field(
+        default_factory=list,
         description="A list of spaCy pipeline components to disable.",
     )
-    stopwords: Optional[list[str] | str] = Field(
-        default=[],
+    stopwords: list[str] = Field(
+        default_factory=list,
         description="A list of stop words to apply to docs.",
     )
     nlp: Optional[Language] = Field(
-        default=default_model,
+        default=None,
         description="The spaCy language object.",
     )
 
@@ -76,13 +69,14 @@ class Tokenizer(BaseModel):
     def __init__(self, **data) -> None:
         """Initialise the Tokenizer class."""
         super().__init__(**data)
-        try:
-            self.nlp = spacy.load(self.model)
-            self.nlp.max_length = self.max_length
-        except OSError:
-            raise LexosException(
-                f"Error loading model {self.model}. Please check the name and try again. You may need to install the model on your system."
-            )
+        if self.nlp is None:
+            try:
+                self.nlp = spacy.load(self.model)
+            except (OSError, ImportError):
+                raise LexosException(
+                    f"Error loading model {self.model}. Please check the name and try again. You may need to install the model on your system."
+                )
+        self.nlp.max_length = self.max_length
 
     @validate_call
     def __call__(self, texts: str | Iterable[str]) -> Doc | Iterable[Doc]:
@@ -139,7 +133,11 @@ class Tokenizer(BaseModel):
 
     @validate_call
     def make_doc(
-        self, text: str, max_length: int = None, disable: list[str] = [], **kwargs: Any
+        self,
+        text: str,
+        max_length: int = None,
+        disable: Optional[Iterable[str]] = None,
+        **kwargs: Any,
     ) -> Doc:
         """Return a doc from a text.
 
@@ -157,17 +155,17 @@ class Tokenizer(BaseModel):
         if max_length:
             self.max_length = max_length
             self.nlp.max_length = max_length
+        disable = list(disable) if disable else []
         if disable:
-            # self.nlp.disabled.extend(disable)
             self.nlp.select_pipes(disable=disable)
-        return next(self.nlp.pipe([text], disable=disable, **kwargs))
+        return next(self.nlp.pipe([text], **kwargs))
 
     @validate_call
     def make_docs(
         self,
         texts: Iterable[str],
         max_length: int = None,
-        disable: Iterable[str] = [],
+        disable: Optional[Iterable[str]] = None,
         **kwargs: Any,
     ) -> Iterable[Doc]:
         """Return a generator of docs from an iterable of texts.
@@ -185,10 +183,10 @@ class Tokenizer(BaseModel):
         if max_length:
             self.max_length = max_length
             self.nlp.max_length = max_length
+        disable = list(disable) if disable else []
         if disable:
-            # self.nlp.disabled.extend(disable)
             self.nlp.select_pipes(disable=disable)
-        return self.nlp.pipe(texts, disable=disable, **kwargs)
+        return self.nlp.pipe(texts, **kwargs)
 
     @validate_call
     def remove_extension(self, name: str) -> None:

@@ -1,7 +1,7 @@
 """simple_plotter.py.
 
-Last Update: December 4, 2025
-Last Tested: September 13, 2025
+Last Update: June 27, 2026
+Last Tested: June 27, 2026
 """
 
 from pathlib import Path
@@ -205,15 +205,14 @@ class SimplePlotter(BasePlotter):
             self.ax.spines[spine].set_visible(False)
 
         # Labels and title
-        plt.margins(x=0, y=0)
-        plt.ticklabel_format(axis="both", style="plain")
+        self.ax.margins(x=0, y=0)
+        self.ax.ticklabel_format(axis="both", style="plain")
         if self.title_position == "bottom":
-            plt.title(self.title, y=-0.25)
+            self.ax.set_title(self.title, y=-0.25)
         else:
-            plt.title(self.title, pad=titlepad)
-        # TODO: plt.xlabel(self.xlabel, fontsize=10)
-        plt.xlabel(self.xlabel)
-        plt.ylabel(self.ylabel)
+            self.ax.set_title(self.title, pad=titlepad)
+        self.ax.set_xlabel(self.xlabel)
+        self.ax.set_ylabel(self.ylabel)
 
     def _adjust_titlepad(self, titlepad: float, width: float, height: float) -> None:
         """Hack to move the title above the labels.
@@ -279,7 +278,7 @@ class SimplePlotter(BasePlotter):
         return (width, height)
 
     def _plot_interpolated(self, df: pd.DataFrame, **kwargs) -> None:
-        """Plot with interpolate dvalues between points.
+        """Plot with interpolate values between points.
 
         Args:
             df (pd.DataFrame): A dataframe containing the data to plot.
@@ -287,9 +286,9 @@ class SimplePlotter(BasePlotter):
         x = np.arange(df.shape[0])
         xx = np.linspace(x[0], x[-1], self.interpolation_num)
         for term in df.columns:
-            y = np.array(df[term].values.tolist())
+            y = df[term].to_numpy()
             interpolated = interpolate(x, y, xx, self.interpolation_kind)
-            plt.plot(xx, interpolated, label=term, **kwargs)
+            self.ax.plot(xx, interpolated, label=term, **kwargs)
 
     def _show_milestones(self, df: pd.DataFrame, ax: Axes) -> None:
         """Plot the milestone markers and labels.
@@ -298,12 +297,11 @@ class SimplePlotter(BasePlotter):
             df (pd.DataFrame): A dataframe containing the data to plot.
             ax (Axes): The axes object to plot on.
         """
-        # Plot the milestones with adjustments to the margin and spines
-        # This looks like it is the highest value
         ymax = df.to_numpy().max()
-        for k, v in self.milestone_labels.items():
-            if self.show_milestones:
-                plt.vlines(
+
+        if self.show_milestones:
+            for v in self.milestone_labels.values():
+                ax.vlines(
                     x=v,
                     ymin=0,
                     ymax=ymax,
@@ -311,7 +309,9 @@ class SimplePlotter(BasePlotter):
                     ls=self.milestone_style,
                     lw=self.milestone_width,
                 )
-            if self.show_milestone_labels:
+
+        if self.show_milestone_labels:
+            for k, v in self.milestone_labels.items():
                 ax.annotate(
                     k,
                     xy=(v, ymax),
@@ -330,20 +330,18 @@ class SimplePlotter(BasePlotter):
             show (Optional[bool]): Whether to show the plot after generating it.
             **kwargs (Any): Additional keyword arguments accepted by matplotlib.pyplot.plot().
         """
-        # Grid
         if self.show_grid:
-            plt.grid(visible=True)
+            self.ax.grid(visible=True)
 
-        # Interpolation
         if self.use_interpolation:
             self._plot_interpolated(self.df, **kwargs)
         else:
             for term in self.df.columns:
-                plt.plot(self.df[term].values.tolist(), label=term, **kwargs)  # self.ax
-        if self.show_legend:
-            plt.legend()
+                self.ax.plot(self.df[term].to_numpy(), label=term, **kwargs)
 
-        # If milestones have been set, plot them
+        if self.show_legend:
+            self.ax.legend()
+
         if self.show_milestones or self.show_milestone_labels:
             self._show_milestones(self.df, self.ax)
 

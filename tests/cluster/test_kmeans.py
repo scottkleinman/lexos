@@ -1,8 +1,8 @@
 """test_kmeans.py.
 
-Coverage: 95%. Missing: 68, 80-81, 100, 309, 385-386, 478
+Coverage: 98%. Missing: 463, 530-531, 617
 
-Last Updated: 2025-12-05
+Last Updated: 2026-06-28
 """
 
 from pathlib import Path
@@ -144,9 +144,20 @@ class TestKMeans:
 
     def test_kmeans_sklearn_failure_with_invalid_k(self, sample_dataframe):
         """Test that KMeans raises exception with invalid k parameter."""
-        # k=0 or negative k should cause sklearn to fail
-        with pytest.raises(LexosException, match="KMeans clustering failed"):
+        # k=0 or negative k should cause local validation to fail
+        with pytest.raises(
+            LexosException,
+            match="Number of clusters 'k' must be specified for KMeans clustering",
+        ):
             KMeans(dtm=sample_dataframe, k=0)
+
+    def test_kmeans_initialization_with_negative_k(self, sample_dataframe):
+        """Test KMeans initialization with negative k."""
+        with pytest.raises(
+            LexosException,
+            match="Number of clusters 'k' must be specified for KMeans clustering",
+        ):
+            KMeans(dtm=sample_dataframe, k=-1)
 
     def test_kmeans_sklearn_failure_with_empty_data(self):
         """Test that KMeans raises exception with empty data."""
@@ -209,16 +220,48 @@ class TestKMeans:
             assert isinstance(matrix, np.ndarray)
             assert matrix.shape == (5, 4)
 
-    @pytest.mark.skip(
-        reason="It is hard to find a way to feed the instance an unsupported input type."
-    )
-    def test_get_valid_matrix_unsupported_type_raises_exception(self):
+    def test_get_valid_matrix_caches_matrix(self, sample_dataframe):
+        """Test that _get_valid_matrix caches the converted matrix."""
+        with patch("sklearn.cluster.KMeans") as mock_sklearn_kmeans:
+            mock_model = Mock()
+            mock_model.fit_predict.return_value = np.array([0, 1, 0, 1, 0])
+            mock_sklearn_kmeans.return_value = mock_model
+
+            kmeans = KMeans(dtm=sample_dataframe, k=2)
+            first = kmeans._get_valid_matrix()
+            second = kmeans._get_valid_matrix()
+
+            assert first is second
+
+    def test_get_valid_matrix_unsupported_type_raises_exception(self, sample_dataframe):
         """Test that _get_valid_matrix raises exception with unsupported input."""
-        with pytest.raises(
-            LexosException,
-            match="Unsupported input: must be DTM, DataFrame, or ndarray",
-        ):
-            kmeans = KMeans(dtm=np.array([1, 2, 3]), k=2)
+        with patch("sklearn.cluster.KMeans") as mock_sklearn_kmeans:
+            mock_model = Mock()
+            mock_model.fit_predict.return_value = np.array([0, 1, 0, 1, 0])
+            mock_sklearn_kmeans.return_value = mock_model
+
+            kmeans = KMeans(dtm=sample_dataframe, k=2)
+            kmeans.dtm = object()
+            kmeans._matrix = None
+            kmeans._matrix_source = None
+
+            with pytest.raises(
+                LexosException,
+                match="Unsupported input: must be DTM, DataFrame, or ndarray",
+            ):
+                kmeans._get_valid_matrix()
+
+    def test_build_sklearn_kmeans_helper(self):
+        """Test helper that builds sklearn KMeans instances with correct params."""
+        kmeans = KMeans(dtm=np.array([[1, 2], [3, 4]]), k=2)
+        model = kmeans._build_sklearn_kmeans(n_clusters=3, random_state=99)
+
+        assert model.n_clusters == 3
+        assert model.init == "k-means++"
+        assert model.max_iter == 300
+        assert model.n_init == 10
+        assert model.tol == 1e-4
+        assert model.random_state == 99
 
     def test_get_valid_matrix_too_few_documents_raises_exception(self):
         """Test that _get_valid_matrix raises exception with too few documents."""
@@ -311,17 +354,29 @@ class TestKMeans:
 
     def test_elbow_plot_sklearn_failure(self, sample_dataframe):
         """Test elbow plot when sklearn fails."""
-        with patch("sklearn.cluster.KMeans") as mock_sklearn_kmeans:
-            # Create invalid input that will cause sklearn to fail
-            # For example, a matrix with NaN values or invalid k parameter
-            invalid_df = sample_dataframe.copy()
-            invalid_df.iloc[0, 0] = np.nan  # Add NaN value
+        with patch("lexos.cluster.kmeans.kmeans.sklearn_KMeans") as mock_sklearn_kmeans:
+            mock_model = Mock()
+            mock_model.fit.side_effect = Exception("boom")
+            mock_model.inertia_ = 100.0
+            mock_sklearn_kmeans.return_value = mock_model
 
             kmeans = KMeans(dtm=sample_dataframe, k=2)
-            kmeans.dtm = invalid_df
-
             with pytest.raises(LexosException, match="Error fitting KMeans for k"):
                 kmeans.elbow_plot(k_range=range(1, 3), show=False)
+
+    def test_silhouette_plot(self, sample_dataframe):
+        """Test silhouette analysis plot generation."""
+        with patch("lexos.cluster.kmeans.kmeans.sklearn_KMeans") as mock_sklearn_kmeans:
+            mock_model = Mock()
+            mock_model.fit_predict.return_value = np.array([0, 1, 0, 1, 0])
+            mock_sklearn_kmeans.return_value = mock_model
+
+            kmeans = KMeans(dtm=sample_dataframe, k=2)
+            fig = kmeans.silhouette_plot(show=False)
+
+            assert fig is not None
+            assert hasattr(fig, "axes")
+            assert len(fig.axes) == 2
 
     def test_save_method(self, sample_dataframe, tmp_path):
         """Test the save method."""
@@ -469,6 +524,198 @@ class TestKMeans:
                 LexosException, match="The number of dimensions must be either 2 or 3"
             ):
                 kmeans.scatter(dim=4)
+
+    def test_scatter_save_path_calls_write_image(self, sample_dataframe, tmp_path):
+        """Test that scatter saves the plot when save_path is provided."""
+        with (
+            patch("sklearn.cluster.KMeans") as mock_sklearn_kmeans,
+            patch("lexos.cluster.kmeans.kmeans.PCA") as mock_pca,
+        ):
+            mock_model = Mock()
+            mock_model.fit_predict.return_value = np.array([0, 1, 0, 1])
+            mock_sklearn_kmeans.return_value = mock_model
+
+            mock_pca_instance = Mock()
+            mock_pca_instance.fit_transform.return_value = np.array(
+                [[1, 2], [3, 4], [5, 6], [7, 8]]
+            )
+            mock_pca.return_value = mock_pca_instance
+
+            mock_fig = Mock(spec=go.Figure)
+            with patch("plotly.express.scatter", return_value=mock_fig):
+                kmeans = KMeans(dtm=sample_dataframe, k=2)
+                output_path = tmp_path / "scatter.png"
+                result = kmeans.scatter(dim=2, show=False, save_path=output_path)
+
+                assert result is mock_fig
+                mock_fig.write_image.assert_called_once_with(output_path)
+
+    def test_silhouette_plot_requires_clustering(self, sample_dataframe):
+        """Test silhouette_plot requires a clustering result."""
+        with patch("sklearn.cluster.KMeans") as mock_sklearn_kmeans:
+            mock_model = Mock()
+            mock_model.fit_predict.return_value = np.array([0, 1, 0, 1])
+            mock_sklearn_kmeans.return_value = mock_model
+
+            kmeans = KMeans(dtm=sample_dataframe, k=2)
+            kmeans.cluster_assignments = None
+
+            with pytest.raises(
+                LexosException,
+                match="You must run clustering before silhouette analysis",
+            ):
+                kmeans.silhouette_plot(show=False)
+
+    def test_silhouette_plot_invalid_k_raises_exception(self, sample_dataframe):
+        """Test silhouette_plot raises when k is invalid."""
+        with patch("sklearn.cluster.KMeans") as mock_sklearn_kmeans:
+            mock_model = Mock()
+            mock_model.fit_predict.return_value = np.array([0, 1, 0, 1])
+            mock_sklearn_kmeans.return_value = mock_model
+
+            kmeans = KMeans(dtm=sample_dataframe, k=2)
+            kmeans.k = 0
+
+            with pytest.raises(
+                LexosException,
+                match="Number of clusters 'k' must be specified for KMeans clustering",
+            ):
+                kmeans.silhouette_plot(show=False)
+
+    def test_silhouette_plot_compute_failure_raises_exception(self, sample_dataframe):
+        """Test silhouette_plot wraps sklearn computation errors."""
+        with (
+            patch("sklearn.cluster.KMeans") as mock_sklearn_kmeans,
+            patch(
+                "lexos.cluster.kmeans.kmeans.silhouette_score",
+                side_effect=Exception("boom"),
+            ) as mock_score,
+        ):
+            mock_model = Mock()
+            mock_model.fit_predict.return_value = np.array([0, 1, 0, 1])
+            mock_sklearn_kmeans.return_value = mock_model
+
+            kmeans = KMeans(dtm=sample_dataframe, k=2)
+            with pytest.raises(
+                LexosException, match="Failed to compute silhouette analysis"
+            ):
+                kmeans.silhouette_plot(show=False)
+            mock_score.assert_called_once()
+
+    def test_silhouette_plot_skips_empty_cluster(self, sample_dataframe):
+        """Test silhouette_plot handles empty clusters in the assignment."""
+        with patch("sklearn.cluster.KMeans") as mock_sklearn_kmeans:
+            mock_model = Mock()
+            mock_model.fit_predict.return_value = np.array([0, 1, 0, 1])
+            mock_sklearn_kmeans.return_value = mock_model
+
+            kmeans = KMeans(dtm=sample_dataframe, k=3)
+            kmeans.cluster_assignments = np.array([0, 1, 0, 1])
+
+            fig = kmeans.silhouette_plot(show=False)
+
+            assert fig is not None
+            assert len(fig.axes) == 2
+
+    def test_silhouette_plot_show_true_returns_none(self, sample_dataframe):
+        """Test silhouette_plot returns None when show=True."""
+        with (
+            patch("sklearn.cluster.KMeans") as mock_sklearn_kmeans,
+            patch("matplotlib.pyplot.show") as mock_show,
+        ):
+            mock_model = Mock()
+            mock_model.fit_predict.return_value = np.array([0, 1, 0, 1])
+            mock_sklearn_kmeans.return_value = mock_model
+
+            kmeans = KMeans(dtm=sample_dataframe, k=2)
+            result = kmeans.silhouette_plot(show=True)
+
+            mock_show.assert_called_once()
+            assert result is None
+
+    def test_to_csv_success(self, sample_dataframe, tmp_path):
+        """Test exporting clustering results to CSV."""
+        with (
+            patch("sklearn.cluster.KMeans") as mock_sklearn_kmeans,
+            patch("lexos.cluster.kmeans.kmeans.PCA") as mock_pca,
+        ):
+            mock_model = Mock()
+            mock_model.fit_predict.return_value = np.array([0, 1, 0, 1])
+            mock_sklearn_kmeans.return_value = mock_model
+
+            mock_pca_instance = Mock()
+            mock_pca_instance.fit_transform.return_value = np.array(
+                [[1, 2], [3, 4], [5, 6], [7, 8]]
+            )
+            mock_pca.return_value = mock_pca_instance
+
+            kmeans = KMeans(dtm=sample_dataframe, k=2)
+            output_path = tmp_path / "output.csv"
+            kmeans.to_csv(output_path)
+
+            assert output_path.exists()
+
+    def test_to_csv_failure_raises_exception(self, sample_dataframe, tmp_path):
+        """Test to_csv wraps DataFrame export errors."""
+        with (
+            patch("sklearn.cluster.KMeans") as mock_sklearn_kmeans,
+            patch("lexos.cluster.kmeans.kmeans.PCA") as mock_pca,
+            patch(
+                "pandas.DataFrame.to_csv", side_effect=Exception("boom")
+            ) as mock_to_csv,
+        ):
+            mock_model = Mock()
+            mock_model.fit_predict.return_value = np.array([0, 1, 0, 1])
+            mock_sklearn_kmeans.return_value = mock_model
+
+            mock_pca_instance = Mock()
+            mock_pca_instance.fit_transform.return_value = np.array(
+                [[1, 2], [3, 4], [5, 6], [7, 8]]
+            )
+            mock_pca.return_value = mock_pca_instance
+
+            kmeans = KMeans(dtm=sample_dataframe, k=2)
+            with pytest.raises(LexosException, match="Failed to export CSV"):
+                kmeans.to_csv(tmp_path / "fail.csv")
+
+    def test_voronoi_requires_k(self, sample_dataframe):
+        """Test voronoi raises when k is not specified."""
+        with patch("sklearn.cluster.KMeans") as mock_sklearn_kmeans:
+            mock_model = Mock()
+            mock_model.fit_predict.return_value = np.array([0, 1, 0, 1])
+            mock_sklearn_kmeans.return_value = mock_model
+
+            kmeans = KMeans(dtm=sample_dataframe, k=2)
+            kmeans.k = None
+
+            with pytest.raises(
+                LexosException,
+                match="Number of clusters 'k' must be specified for KMeans clustering",
+            ):
+                kmeans.voronoi(show=False)
+
+    def test_voronoi_show_true_returns_none(self, sample_dataframe):
+        """Test voronoi returns None when show=True."""
+        with (
+            patch("sklearn.cluster.KMeans") as mock_sklearn_kmeans,
+            patch("lexos.cluster.kmeans.kmeans.PCA") as mock_pca,
+            patch("plotly.graph_objects.Figure.show") as mock_show,
+        ):
+            mock_model = Mock()
+            mock_model.fit_predict.return_value = np.array([0, 1, 0, 1])
+            mock_sklearn_kmeans.return_value = mock_model
+
+            mock_pca_instance = Mock()
+            mock_pca_instance.fit_transform.return_value = np.array(
+                [[1, 2], [3, 4], [5, 6], [7, 8]]
+            )
+            mock_pca.return_value = mock_pca_instance
+
+            kmeans = KMeans(dtm=sample_dataframe, k=2)
+            result = kmeans.voronoi(show=True)
+
+            mock_show.assert_called_once()
+            assert result is None
 
     def test_scatter_no_clustering_raises_exception(self, sample_dataframe):
         """Test scatter plot without clustering raises exception."""
@@ -737,7 +984,7 @@ class TestKMeans:
         """Test KMeans initialization with negative k."""
         with pytest.raises(
             LexosException,
-            match="The 'n_clusters' parameter of KMeans must be an int in the range",
+            match="Number of clusters 'k' must be specified for KMeans clustering",
         ):
             KMeans(dtm=sample_dataframe, k=-1)
 

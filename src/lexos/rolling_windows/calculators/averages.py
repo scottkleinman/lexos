@@ -1,7 +1,7 @@
 """averages.py.
 
-Last update: August 6, 2025
-Last Tested: February 16, 2025
+Last update: June 27, 2026
+Last Tested: June 27, 2026
 """
 
 from typing import ClassVar, Optional
@@ -67,23 +67,5 @@ class Averages(Counts):
         Returns:
             pd.DataFrame: A pandas DataFrame.
         """
-        if show_spacy_rules:
-            patterns = self.patterns
-        else:
-            patterns = []
-            # Extract strings from spaCy rules
-            for pattern in self.patterns:
-                if isinstance(pattern, list):
-                    patterns.append(self._extract_string_pattern(pattern))
-                else:
-                    patterns.append(pattern)
-        # Assign column labels
-        cols = []
-        for pattern in patterns:
-            if not self.case_sensitive and isinstance(pattern, str):
-                pattern = pattern.lower()
-            elif not self.case_sensitive and isinstance(pattern, list):
-                pattern = str(spacy_rule_to_lower(pattern))
-            cols.append(str(pattern))
-        # Generate dataframe
+        cols = self._get_column_labels(show_spacy_rules)
         return pd.DataFrame(self.data, columns=cols)

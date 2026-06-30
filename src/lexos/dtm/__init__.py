@@ -1,7 +1,7 @@
 """__init__.py.
 
-Last Update: January 2, 2026
-Last Tested: November 10, 2025
+Last Update: June 27, 2026
+Last Tested: June 27, 2026
 
 # WARNING: The sorted_terms_list and sorted_term_counts properties only work if the DTM has been built with a vectorizer that has compatible `terms_list` and `vocabulary_terms` attributes.
 """
@@ -110,7 +110,7 @@ class DTM(BaseModel):
         """
         if self.vectorizer is None or not hasattr(self.vectorizer, "terms_list"):
             # This handles cases where vectorizer might be None or not properly set up
-            # before attempting to access terms_list.
+            # Before attempting to access terms_list.
             raise LexosException(
                 "Vectorizer or its 'terms_list' attribute is not available to get sorted terms."
             )
@@ -137,7 +137,7 @@ class DTM(BaseModel):
         terms = self.vectorizer.terms_list
 
         # 3. Calculate the sum of each term (column) across all documents
-        # .sum(axis=0) returns a 1xN matrix. .A1 flattens it to a 1D numpy array for sparse matrices.
+        # The .sum(axis=0) returns a 1xN matrix. .A1 flattens it to a 1D numpy array for sparse matrices.
         term_totals = self.doc_term_matrix.sum(axis=0).A1.astype(int)
 
         # 4. Create a dictionary mapping terms to their total counts
@@ -260,13 +260,14 @@ class DTM(BaseModel):
         Returns:
             pd.DataFrame: A dataframe with term frequencies.
         """
-        dense_array = df.to_numpy()
-        total_sum = np.sum(dense_array)
+        total_sum = df.values.sum()
         if total_sum != 0:
-            percentage_array = (dense_array / total_sum) * 100
+            df = df.div(total_sum).mul(100)
         else:
-            percentage_array = np.zeros_like(dense_array)
-        df = pd.DataFrame(percentage_array, columns=df.columns, index=df.index)
+            df = df.mul(0.0)
+        # Densify after arithmetic to ensure round/astype work on all backends
+        if hasattr(df, "sparse"):
+            df = df.sparse.to_dense()
         if sum:
             df["Total"] = df.sum(numeric_only=True, axis=1)
         if mean:
@@ -276,7 +277,7 @@ class DTM(BaseModel):
         if rounding:
             df = df.round(rounding)
         if as_str == "string":
-            df = df.map(lambda x: f"{x}%")
+            df = df.astype(str) + "%"
         return df
 
     def _update_vectorizer(self, **kwargs: dict[str, str | int | float | bool]) -> None:
@@ -285,22 +286,18 @@ class DTM(BaseModel):
         Args:
             kwargs (dict): Additional keyword arguments to update the vectorizer.
         """
-        # Get parameters from the vectorizer attribute in case they have been set directly
-        params = {
-            "tf_type": self.vectorizer.tf_type,
-            "idf_type": self.vectorizer.idf_type,
-            "dl_type": self.vectorizer.dl_type,
-            "norm": self.vectorizer.norm,
-            "min_df": self.vectorizer.min_df,
-            "max_df": self.vectorizer.max_df,
-            "max_n_terms": self.vectorizer.max_n_terms,
-            "vocabulary_terms": self.vectorizer.vocabulary_terms,
-        }
-        # Override the settings with any additional keyword arguments
-        for key, value in kwargs.items():
-            params[key] = value
-
-        # Create a new vectorizer instance with the updated parameters
+        _PARAMS = (
+            "tf_type",
+            "idf_type",
+            "dl_type",
+            "norm",
+            "min_df",
+            "max_df",
+            "max_n_terms",
+            "vocabulary_terms",
+        )
+        params = {k: getattr(self.vectorizer, k) for k in _PARAMS}
+        params.update(kwargs)
         self.vectorizer = TextacyVectorizer(**params)
 
     def _validate_sorting_algorithm(self) -> bool:
@@ -348,17 +345,18 @@ class DTM(BaseModel):
         if by is None:
             by = self.labels[0]
         try:
-            df = pd.DataFrame.sparse.from_spmatrix(
-                self.doc_term_matrix,
-                columns=self.vectorizer.terms_list,
-                index=self.labels,
-            ).T
-        except AttributeError:
-            df = pd.DataFrame(
-                self.doc_term_matrix,
-                columns=self.vectorizer.terms_list,
-                index=self.labels,
-            ).T
+            if sp.issparse(self.doc_term_matrix):
+                df = pd.DataFrame.sparse.from_spmatrix(
+                    self.doc_term_matrix,
+                    columns=self.vectorizer.terms_list,
+                    index=self.labels,
+                ).T
+            else:
+                df = pd.DataFrame(
+                    self.doc_term_matrix,
+                    columns=self.vectorizer.terms_list,
+                    index=self.labels,
+                ).T
         except Exception as e:
             raise LexosException(f"Error converting DTM to DataFrame: {e}")
         if as_percent:
@@ -370,20 +368,51 @@ class DTM(BaseModel):
                 mean=mean,
                 median=median,
             )
+            df = df.sort_values(by=by, ascending=ascending)
+            if transpose:
+                df = df.T
         else:
-            if sum:
-                df["Total"] = df.sum(numeric_only=True, axis=1)
-            if mean:
-                df["Mean"] = df.mean(numeric_only=True, axis=1)
-            if median:
-                df["Median"] = np.median(df.to_numpy())
-        df = df.sort_values(by=by, ascending=ascending)
-        if transpose:
-            df = df.T
-        # NOTE: Sorting may need to be made conditional
-        # if transpose:
-        #     df = df.T
-        #     # After transpose, sort by index or don't sort
-        # else:
-        #     df = df.sort_values(by=by, ascending=ascending)
+            # Support sorting by statistics columns that are added later in this branch.
+            # Compute temporary sort columns when needed, then remove them after sorting.
+            sort_by = by
+            temp_sort_cols = {}
+            sort_keys = by if isinstance(by, list) else [by]
+            for key in sort_keys:
+                if key == "Total" and sum:
+                    temp_sort_cols[key] = "__lexos_sort_total__"
+                elif key == "Mean" and mean:
+                    temp_sort_cols[key] = "__lexos_sort_mean__"
+                elif key == "Median" and median:
+                    temp_sort_cols[key] = "__lexos_sort_median__"
+
+            if temp_sort_cols:
+                if hasattr(df, "sparse"):
+                    df = df.sparse.to_dense()
+                for key, temp_col in temp_sort_cols.items():
+                    if key == "Total":
+                        df[temp_col] = df.sum(numeric_only=True, axis=1)
+                    elif key == "Mean":
+                        df[temp_col] = df.mean(numeric_only=True, axis=1)
+                    elif key == "Median":
+                        df[temp_col] = df.median(axis=1)
+
+                if isinstance(by, list):
+                    sort_by = [temp_sort_cols.get(key, key) for key in by]
+                else:
+                    sort_by = temp_sort_cols.get(by, by)
+
+            df = df.sort_values(by=sort_by, ascending=ascending)
+            if temp_sort_cols:
+                df = df.drop(columns=list(temp_sort_cols.values()))
+            if transpose:
+                df = df.T
+            if sum or mean or median:
+                if hasattr(df, "sparse"):
+                    df = df.sparse.to_dense()
+                if sum:
+                    df["Total"] = df.sum(numeric_only=True, axis=1)
+                if mean:
+                    df["Mean"] = df.mean(numeric_only=True, axis=1)
+                if median:
+                    df["Median"] = df.median(axis=1)
         return df
