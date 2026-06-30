@@ -9,7 +9,7 @@ Supports Python and JavaScript files. For Python, it checks comments that start 
 
 Currently set to run only on Python files in the pre-commit configuration, but can be easily extended to check JavaScript files as well by adding the appropriate entry in the pre-commit config and ensuring the script is called with the correct file paths.
 
-Last Update: June 10, 2026
+Last Update: June 26, 2026
 """
 
 import re
@@ -25,6 +25,7 @@ SKIP_PREFIXES = (
     "eslint-",
     "todo",
     "fixme",
+    "pragma",
 )
 
 
