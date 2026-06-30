@@ -18,10 +18,10 @@ import collections
 import math
 import re
 import statistics
-import unicodedata
 from functools import reduce
 from operator import mul
 from typing import Any, Collection, Iterable, Literal, Optional, Sequence
+from lexos.topwords.keyterms.keyterms_util import is_unicode_punctuation
 
 import pandas as pd
 from pydantic import ConfigDict, Field
@@ -31,6 +31,9 @@ from textacy.extract.utils import get_filtered_topn_terms
 from textacy.utils import to_set
 
 from lexos.topwords import TopWords
+from lexos.topwords.keyterms.keyterms_util import (
+    is_unicode_punctuation,
+)
 
 validation_config = ConfigDict(
     arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
@@ -748,13 +751,3 @@ def _pos_allowed(term: TermLike, include_pos: Optional[set[str]]) -> bool:
     return pos_val in include_pos
 
 
-def is_unicode_punctuation(ch: str) -> bool:
-    """Return True if `ch` is a Unicode punctuation character.
-
-    Args:
-        ch (str): A single character string.
-
-    Returns:
-        bool: True if `ch` is a Unicode punctuation character, False otherwise.
-    """
-    return bool(ch) and all(unicodedata.category(char).startswith("P") for char in ch)
