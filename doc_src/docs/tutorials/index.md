@@ -74,7 +74,7 @@ Here is a list of the currently available tutorials, organised by module:
 ## Tokenizer
 
 <ul>
-<li>Using Tokenizer: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/tokenizer/tutorial.ipynb">📓 Notebook</a></li>
+<li>Using Tokenizer: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/tokenizer/tutorial.ipynb">📓 Notebook</a> | <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/tokenizer/Austen_Pride.txt">🗄️ Data</a></li>>
 </ul>
 
 ## Topic Modeling
