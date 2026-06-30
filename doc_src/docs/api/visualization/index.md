@@ -13,3 +13,11 @@ The [`cloud`](cloud.md) module produces traditional word clouds using the Python
 ## `processors`
 
 The [`processors`](processors.md) module contains helper functions for processing input data in various formats. Its functions are shared by the other two modules.
+
+## `d3_bubbleviz`
+
+The [`d3_bubbleviz`](d3_bubbleviz.md) module renders interactive D3 bubble charts as HTML documents.
+
+## `d3_wordcloud`
+
+The [`d3_wordcloud`](d3_wordcloud.md) module renders interactive D3-based word clouds and multi-cloud layouts as HTML documents.

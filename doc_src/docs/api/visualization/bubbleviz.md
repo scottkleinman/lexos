@@ -119,3 +119,23 @@
     rendering:
       show_root_heading: true
       heading_level: 3
+
+### ::: lexos.visualization.bubbleviz.BubbleChart._outline_distance
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
+### ::: lexos.visualization.bubbleviz.BubbleChart._plot
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
+### ::: lexos.visualization.bubbleviz.BubbleChart.save
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
+### ::: lexos.visualization.bubbleviz.BubbleChart.show
+    rendering:
+      show_root_heading: true
+      heading_level: 3

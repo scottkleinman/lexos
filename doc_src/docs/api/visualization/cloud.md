@@ -169,3 +169,38 @@
     rendering:
       show_root_heading: true
       heading_level: 3
+
+### ::: lexos.visualization.cloud.MultiCloudOld
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
+### ::: lexos.visualization.cloud.MultiCloudOld.__init__
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
+### ::: lexos.visualization.cloud.MultiCloudOld._process_data
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
+### ::: lexos.visualization.cloud.MultiCloudOld._render
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
+### ::: lexos.visualization.cloud.MultiCloudOld.save
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
+### ::: lexos.visualization.cloud.MultiCloudOld.get_clouds
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
+### ::: lexos.visualization.cloud.MultiCloudOld.show
+    rendering:
+      show_root_heading: true
+      heading_level: 3

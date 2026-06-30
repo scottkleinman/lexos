@@ -107,6 +107,11 @@ The `ParallelLoader` class is an implementation of the `Loader` class optimized 
       show_root_heading: true
       heading_level: 3
 
+### ::: lexos.io.parallel_loader.ParallelLoader.load_streaming
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
 ### ::: lexos.io.parallel_loader.ParallelLoader.load
     rendering:
       show_root_heading: true
