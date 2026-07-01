@@ -1,4 +1,8 @@
-"""Tests for tools.check_comment_caps."""
+"""Tests for tools.check_comment_caps.
+
+Coverage: 100%
+Last Update: July 1, 2026
+"""
 
 from importlib import util
 from pathlib import Path
