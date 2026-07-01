@@ -392,6 +392,7 @@ def test_custom_milestones_registers_token_extensions_if_missing(nlp, doc):
 
 
 def test_custom_milestones_milestones_reset(custom_milestones, spans):
+    """Test CustomMilestones reset."""
     custom_milestones.doc[0]._.milestone_label = "Test"
     custom_milestones.doc.spans["milestones"] = spans
     custom_milestones.reset()

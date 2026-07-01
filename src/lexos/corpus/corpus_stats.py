@@ -942,9 +942,9 @@ def get_plotly_boxplot(
     figure.layout.update(
         title={
             "text": title,
-            "x": 0.5,  # x position (0-1)
+            "x": 0.5,  # The x position (0-1)
             "xanchor": "center",  # Horizontal alignment
-            "y": 0.99,  # y position (0-1)
+            "y": 0.99,  # The y position (0-1)
             "yanchor": "top",  # Vertical alignment
         },
         height=300,

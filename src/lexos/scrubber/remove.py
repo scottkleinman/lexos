@@ -323,16 +323,16 @@ def tags(
     # Try using lxml for speed
     if _HAS_LXML:
         try:
-            # lxml.html.fromstring is extremely fast and very forgiving of both HTML fragments and full documents
+            # The lxml.html.fromstring method is extremely fast and very forgiving of both HTML fragments and full documents
             tree = html.fromstring(text)
 
-            # tree.itertext() is a fast C-level generator. joining with the separator effectively between tag boundaries
+            # The tree.itertext() method is a fast C-level generator. joining with the separator effectively between tag boundaries
             # Good for large documents, as it avoids building a large intermediate list
             plaintext = sep_clean.join(tree.itertext())
         except Exception:
             # If the HTML parser fails, try the recovery XML parser for strict XML
             try:
-                # recover=True allows processing of slightly malformed XML
+                # The recover=True option allows processing of slightly malformed XML
                 # etree.fromstring handles encoding declarations best when given bytes
                 parser = etree.XMLParser(recover=True, no_network=True)
                 tree = etree.fromstring(text.encode("utf-8"), parser=parser)

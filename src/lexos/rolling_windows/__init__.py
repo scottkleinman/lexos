@@ -1,7 +1,7 @@
 """__init__.py.
 
-Last Update: 27 June, 2026
-Last Tested: 27 June, 2026
+Last Update: 2026-06-27
+Last Tested: 2026-06-27
 
 Credits:
 

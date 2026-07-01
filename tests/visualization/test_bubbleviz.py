@@ -1,6 +1,6 @@
 """test_bubbleviz.py.
 
-Coverage: 98%. Missing: 41-42, 228.
+Coverage: 98%. Missing: 41-42, 228
 
 Last Tested: June 28, 2026
 """

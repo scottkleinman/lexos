@@ -16,8 +16,8 @@ for milestone in milestones:
 milestones.set("The", case_sensitive=False)
 spans = milestones.spans
 
-Last Update: Jan 14 2025
-Last Tested: Dec 21 2024
+Last Update: 2025-01-14
+Last Tested: 2024-12-21
 """
 
 import re

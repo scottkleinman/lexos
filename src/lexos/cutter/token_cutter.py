@@ -2,8 +2,8 @@
 
 This class assumes that the docs consist of spaCy Doc objects.
 
-Last Updated: 27 June, 2026
-Tested: 27 June, 2026
+Last Updated: 2026-06-27
+Tested: 2026-06-27
 """
 
 from pathlib import Path

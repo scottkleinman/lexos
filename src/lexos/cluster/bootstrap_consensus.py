@@ -370,7 +370,7 @@ class BCT(BaseModel):
 
         # Fan style: use 270 degrees (3/4 circle)
         start_angle = -135  # Start at bottom-left
-        total_angle = 270  # 270 degrees total
+        total_angle = 270  # A total of 270 degrees
 
         # Assign angles to terminal nodes
         terminal_angles = {}

@@ -226,7 +226,7 @@ class Mallet(BaseModel):
     # but all internal methods should rely only on the canonical keys below.
     # The synonyms list is used for migration to canonical form.
     CANONICAL_DOC_TOPIC_KEY: ClassVar[str] = "path_to_topic_distributions"
-    # canonical key names
+    # Canonical key names
     CANONICAL_DOC_TOPIC_KEY: ClassVar[str] = "path_to_topic_distributions"
     CANONICAL_TERM_WEIGHTS_KEY: ClassVar[str] = "path_to_term_weights"
     CANONICAL_TOPIC_KEYS_KEY: ClassVar[str] = "path_to_topic_keys"
@@ -718,17 +718,17 @@ class Mallet(BaseModel):
                     {"Topic": topic[0], "Label": topic[1], "Keywords": keywords}
                 )
             df = pd.DataFrame(data)
-            show_index = True  # or False
+            show_index = True  # Or False
             offset = 2 if show_index else 1
             nth = df.columns.get_loc("Keywords") + offset
 
             css = [
-                # header cell of Keywords column
+                # Header cell of Keywords column
                 {
                     "selector": f"thead th:nth-child({nth})",
                     "props": [("text-align", "left")],
                 },
-                # the column cells
+                # The column cells
                 {
                     "selector": f"td.col{df.columns.get_loc('Keywords')}",
                     "props": [("text-align", "left")],
@@ -800,7 +800,7 @@ class Mallet(BaseModel):
         # As a last resort, infer from distributions
         distribution_len = None
         if len(self.distributions) > 0:
-            # ensure all distributions have the same length; otherwise raise
+            # Ensure all distributions have the same length; otherwise raise
             lengths = set(len(d) for d in self.distributions)
             if len(lengths) > 1:
                 raise LexosException(
@@ -1076,7 +1076,7 @@ class Mallet(BaseModel):
             components = components.sort_index()
         elif sort_terms_by == "index":
             components = components.sort_index(kind="stable")
-        else:  # weight
+        else:  # Weight
             components = components.loc[
                 components.max(axis=1).sort_values(ascending=False).index
             ]
@@ -1407,7 +1407,7 @@ class Mallet(BaseModel):
                         ax=ax,
                         **overlay_kws,
                     )
-                # if overlay == 'none', do nothing
+                # If overlay == 'none', do nothing
             except Exception:
                 # Overlay plotting is optional; ignore any backend failures
                 pass
@@ -1727,7 +1727,7 @@ class Mallet(BaseModel):
         data_dicts = []
         for j, _distribution in enumerate(distributions):
             if len(_distribution) <= topic_index:
-                # skip documents that don't cover the requested topic index
+                # Skip documents that don't cover the requested topic index
                 continue
             data_dicts.append(
                 {"Probability": _distribution[topic_index], "Time": times[j]}
@@ -1856,7 +1856,7 @@ class Mallet(BaseModel):
         for k, v in flags.items():
             if k not in ["num-topics", "optimize-interval"]:
                 if k in mapping:
-                    # canonical keys already set earlier in the loop
+                    # Canonical keys already set earlier in the loop
                     continue
                 self.metadata[f"path_to_{k.replace('-', '_')}"] = v
         self.metadata["training_command"] = cmd
@@ -1891,11 +1891,11 @@ class Mallet(BaseModel):
         """
         # Accept a single file path or list of documents
         if isinstance(docs, (Path, str)) and Path(docs).is_file():
-            # it's an input file
+            # It's an input file
             input_file = str(docs)
-            # ensure we have a formatted mallet file if not provided
+            # Ensure we have a formatted mallet file if not provided
             path_to_formatted = os.path.join(self.model_dir, "infer_input.mallet")
-            # import-file to format the input for mallet
+            # The import-file to format the input for mallet
             cmd_import = [
                 self.path_to_mallet or "mallet",
                 "import-file",
@@ -1915,7 +1915,7 @@ class Mallet(BaseModel):
             # msg.info(" ".join(cmd_import))
             subprocess.run(cmd_import, check=True)
         else:
-            # assume a list of document strings
+            # Assume a list of document strings
             if isinstance(docs, bool) or not isinstance(docs, list):
                 raise LexosException(
                     "Invalid `docs` argument: expected a list of strings or a path to a file."
@@ -1929,7 +1929,7 @@ class Mallet(BaseModel):
                             "Invalid `docs` element: expected document text (str) for each item."
                         )
                     fh.write(f"{i}\tno_label\t{doc.replace('\n', ' ')}\n")
-            # format it with import-file
+            # Format it with import-file
             path_to_formatted = os.path.join(self.model_dir, "infer_input.mallet")
             cmd_import = [
                 self.path_to_mallet or "mallet",
@@ -1990,6 +1990,6 @@ class Mallet(BaseModel):
             )
 
         if show:
-            # user wants to display; we return None in this case for parity with other methods
+            # User wants to display; we return None in this case for parity with other methods
             return None
         return distributions

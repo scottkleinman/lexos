@@ -346,12 +346,12 @@ def process_mallet_state_file(
     print(f"Output directory: {output_dir}")
 
     # Initialize data structures
-    doc_topic_counts = []  # list of dicts: doc_idx -> {topic: count}
+    doc_topic_counts = []  # A list of dicts: doc_idx -> {topic: count}
     topic_word_counts = defaultdict(
         lambda: defaultdict(int)
-    )  # topic -> word_idx -> count
-    # doc_lengths = defaultdict(int)  # doc_idx -> token_count
-    vocab = dict()  # word_idx -> word_string
+    )  # A default dict: topic -> {word_idx: count}
+    # The variable doc_lengths = defaultdict(int)  # doc_idx -> token_count
+    vocab = dict()  # A dict: word_idx -> word_string
 
     last_doc_idx = 0
     current_doc_counts = defaultdict(int)

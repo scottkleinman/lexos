@@ -1,6 +1,7 @@
 """test_bootstrap_consensus.py.
 
-Coverage: 95%. Missing:  95%   138, 140, 330-331, 338-339, 432-437, 559, 670
+Coverage: 95%. Missing: 138, 140, 330-331, 338-339, 432-437, 559, 670
+
 Note: Some lines are not covered due to the complexity of the tree traversal logic
 or because of issues with pytest's coverage reporting.
 It may be worth refactoring module at some point to make it more testable.

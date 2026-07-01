@@ -309,8 +309,10 @@ class TestParallelLoaderLoadTextFiles:
         with patch.object(
             parallel_loader,
             "_load_file_concurrent",
-            side_effect=lambda path, mime_type: time.sleep(0.2)
-            or [(Path(path).name, Path(path).stem, "text/plain", "Hello", None)],
+            side_effect=lambda path, mime_type: (
+                time.sleep(0.2)
+                or [(Path(path).name, Path(path).stem, "text/plain", "Hello", None)]
+            ),
         ):
             results = list(parallel_loader.load_streaming([str(temp_file)]))
 
@@ -369,6 +371,7 @@ class TestParallelLoaderLoadZipFiles:
         assert results[0][4] is None
 
     def test_load_zip_file_with_safe_paths(self, parallel_loader, tmp_path):
+        """Test loading a ZIP file with safe paths."""
         temp_dir = tmp_path / "ziptest"
         temp_dir.mkdir()
         file_path = temp_dir / "sample.txt"
@@ -382,6 +385,7 @@ class TestParallelLoaderLoadZipFiles:
         assert any(item[3] == "Zip content" for item in results if item[4] is None)
 
     def test_load_zip_file_error_for_bad_decode(self, parallel_loader, tmp_path):
+        """Test loading a ZIP file with a bad decode."""
         zip_path = create_zip_file_with_bad_entry(tmp_path)
         with patch("lexos.io.parallel_loader.decode", side_effect=ValueError("boom")):
             results = parallel_loader._load_zip_file(str(zip_path))
@@ -389,6 +393,7 @@ class TestParallelLoaderLoadZipFiles:
         assert any(isinstance(item[4], ValueError) for item in results)
 
     def test_pdf_load_page_error(self, parallel_loader, tmp_path):
+        """Test PDF loading when PdfReader raises an error."""
         temp_file = tmp_path / "test.pdf"
         temp_file.write_text("not a pdf")
         with patch(

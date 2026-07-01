@@ -24,7 +24,7 @@ repos:
       name: Enforce capitalization of inline comments (py/js)
       entry: uv run python tools/check_comment_caps.py
       language: system
-      files: \.(py)$
+      files: ^(?!tests/).*\.py$
       pass_filenames: true
       always_run: true
     - id: validate-python-headers

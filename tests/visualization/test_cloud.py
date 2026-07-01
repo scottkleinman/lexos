@@ -425,7 +425,7 @@ class TestMultiCloud:
         """Test MultiCloud show method."""
         mc = MultiCloud(data=SAMPLE_DOCS[:2])
 
-        # show() should not raise an exception
+        # The show() method should not raise an exception
         mc.show()
 
     def test_multicloud_show_no_figure(self):

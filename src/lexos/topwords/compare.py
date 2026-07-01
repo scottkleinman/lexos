@@ -189,11 +189,11 @@ class Compare(BaseModel):
                     # This could be either - check if we have unique classes
                     unique_classes = {item["class_label"] for item in self.data}
                     if len(self.results) == len(unique_classes):
-                        label_key = "class_label"  # classes_to_classes
+                        label_key = "class_label"  # Compare classes_to_classes
                     else:
-                        label_key = "doc_label"  # documents_to_classes
+                        label_key = "doc_label"  # Compare documents_to_classes
                 else:
-                    label_key = "doc_label"  # document_to_corpus
+                    label_key = "doc_label"  # Compare document_to_corpus
             else:
                 label_key = "doc_label"
 

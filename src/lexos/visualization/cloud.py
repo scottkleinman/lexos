@@ -228,7 +228,7 @@ class MultiCloud(BaseModel):
 
                 # Get the row as a 1D array and convert to list/scalar values
                 doc_row = self.data.doc_term_matrix[doc_idx]
-                if hasattr(doc_row, "toarray"):  # sparse matrix
+                if hasattr(doc_row, "toarray"):  # Sparse matrix
                     doc_row = doc_row.toarray().flatten()
 
                 for term_idx, count in enumerate(doc_row):
@@ -474,7 +474,7 @@ class MultiCloudOld(BaseModel):
 
                 # Get the row as a 1D array and convert to list/scalar values
                 doc_row = self.data.doc_term_matrix[doc_idx]
-                if hasattr(doc_row, "toarray"):  # sparse matrix
+                if hasattr(doc_row, "toarray"):  # Sparse matrix
                     doc_row = doc_row.toarray().flatten()
 
                 for term_idx, count in enumerate(doc_row):

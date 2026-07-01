@@ -297,7 +297,7 @@ def strip_doc(doc: Doc) -> Doc:
 
     # Find last non-whitespace token
     end_idx = len(doc) - 1
-    for i in range(len(doc) - 1, -1, -1):  # list(doc)[::-1]
+    for i in range(len(doc) - 1, -1, -1):  # Replaces list(doc)[::-1]
         if not doc[i].is_space:
             end_idx = i
             break

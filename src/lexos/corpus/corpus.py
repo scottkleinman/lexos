@@ -393,7 +393,7 @@ class Corpus(BaseModel):
             else:
                 record_kwargs = dict(
                     id=new_id,
-                    name=name,  # self._ensure_unique_name(name),
+                    name=name,  # Replaces self._ensure_unique_name(name),
                     is_active=is_active,
                     content=item,
                     model=model,

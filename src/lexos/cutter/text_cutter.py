@@ -1,7 +1,7 @@
 """text_cutter.py.
 
-Last Updated: 23 December, 2025
-Last Tested: 23 December, 2025
+Last Updated: 2025-12-23
+Last Tested: 2025-12-23
 """
 
 import os

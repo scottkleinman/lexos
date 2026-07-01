@@ -1,7 +1,7 @@
 """__init__.py.
 
-Last Updated: June 19, 2026
-Last Tested: TBD
+Last Updated: 2026-06-19
+Last Tested: 2026-06-20
 """
 
 from .mallet import (

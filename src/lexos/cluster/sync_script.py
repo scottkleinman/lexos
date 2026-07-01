@@ -3,7 +3,7 @@
 This script synchronizes the heatmap and dendrogram axes in a Plotly clustermap.
 It is added to the HTML output of the clustermap to ensure that when the user zooms or pans on one axis, the corresponding axes are updated accordingly.
 
-Last Updated: 25 July, 2025
+Last Updated: 2025-07-25
 """
 
 SYNC_SCRIPT = """
