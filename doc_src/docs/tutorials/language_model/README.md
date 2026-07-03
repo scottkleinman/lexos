@@ -21,6 +21,8 @@ Supplementary guides for specific setup tasks:
 - **[Getting Training Data](training_data.md)** — where to find CONLL-U treebanks, how to annotate your own data, and the iterative bootstrap method
 - **[Choosing and Setting Up Base Models](base_models.md)** — how to find or train a suitable source model for your language and annotation scheme
 - **[Building a Specialized Model: Iterative Workflow](advanced_workflow.ipynb)** — for users with no existing training data, or who want to improve a model they have already trained
+- **[Fine-tuning MacBERTh: Transformer-based Training](transformer_tutorial.ipynb)** — training with a pre-trained transformer backbone instead of the CNN; best accuracy for historical English (requires a GPU)
+- **[Tuning Training Settings](training_settings.md)** — learning rates, early stopping, batch sizes, and data normalization for both CNN and transformer pipelines
 
 ---
 
@@ -97,6 +99,7 @@ spaCy's training is entirely controlled by a `config.cfg` file (Thinc's TOML-bas
 | `default_ud.cfg` | Full five-component UD pipeline, trained from scratch |
 | `finetune_ud.cfg` | Structural base used internally by `_generate_finetune_config()` for component-sourcing runs |
 | `multilingual_tagger.cfg` | Tagger-only model for any language, trained from scratch; a good starting point for languages with limited resources |
+| `transformer_ud.cfg` | Full UD pipeline backed by a pre-trained transformer (default: MacBERTh for historical English); requires the `transformers` extra and a GPU |
 
 To add a new recipe: write a valid spaCy config and drop it in `recipes/`. Leave `[paths]` values as `null` — they are injected by `copy_assets()`.
 
@@ -111,6 +114,8 @@ model.save_config()
 ```
 
 Call `save_config()` to write changes to disk before training, since `train()` re-reads `config.cfg` from disk.
+
+For which settings are worth changing — learning rates, early stopping, batch sizes — and sensible ranges for each pipeline type, see [Tuning Training Settings](training_settings.md).
 
 ---
 
@@ -216,6 +221,29 @@ pip install .[gpu]
 This installs `cupy-cuda12x` and the required NVIDIA CUDA libraries. The warning `CUDA path could not be detected` that appears on import is harmless.
 
 > **Note:** Evaluation always runs on CPU regardless of the `gpu` setting.
+
+---
+
+## Transformer-based training (MacBERTh)
+
+The module can train the same five-component UD pipeline on top of a pre-trained transformer instead of the CNN backbone. The bundled `transformer_ud.cfg` recipe defaults to [MacBERTh](https://huggingface.co/emanjavacas/MacBERTh), a BERT model pre-trained on ~3.9B tokens of historical English (1450–1950) — the best available starting point for Early Modern and other historical English text.
+
+```bash
+pip install .[gpu,transformers]
+```
+
+```python
+model = LanguageModel("my_model", gpu=True, recipe="transformer_ud.cfg")
+```
+
+Notes:
+
+- **Transformer training is recipe-only.** The `base_model=` component-sourcing mechanism is specific to tok2vec pipelines and is not used with transformers.
+- **A GPU is effectively required** — CPU transformer training is impractically slow. The constructor warns if the recipe is loaded with `gpu=False`.
+- The first training run downloads the transformer weights (~450 MB for MacBERTh) from Hugging Face and caches them.
+- To use a different transformer, edit `model.config["components"]["transformer"]["model"]["name"]` and `save_config()`.
+
+The full walkthrough — including GPU checks, VRAM guidance, and a score comparison against the CNN pipeline — is in [Fine-tuning MacBERTh: Transformer-based Training](transformer_tutorial.ipynb).
 
 ---
 

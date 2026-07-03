@@ -9,6 +9,7 @@ Last Updated: 2026-06-23
 Last Tested: 2026-06-11
 """
 
+import importlib.util
 import shutil
 import subprocess
 import sys
@@ -388,10 +389,14 @@ class LanguageModel:
                   width from the source model's ``config.cfg`` and patches it
                   into factory-defined component configs automatically.
 
-            recipe: Path to a ``.cfg`` file.  When provided, the file is
-                loaded as-is and ``base_model`` / ``components`` are ignored
-                for config generation (though they still control GPU and where
-                artefacts are stored).
+            recipe: Path to a ``.cfg`` file, or the filename of a bundled
+                recipe (e.g. ``"transformer_ud.cfg"``, resolved against the
+                module's ``recipes/`` folder).  When provided, the file is
+                loaded as-is, ``base_model`` is ignored for config generation,
+                and ``components`` is replaced by the recipe's
+                ``[nlp] pipeline``.  Transformer-based training is only
+                available through recipes — ``base_model`` sourcing is
+                specific to tok2vec pipelines.
             force: Overwrite an existing ``config.cfg`` if one already exists.
         """
         self.model_dir = Path(model_dir)
@@ -468,7 +473,22 @@ class LanguageModel:
     # ------------------------------------------------------------------
 
     def _load_recipe(self, recipe: str, msg: Printer) -> None:
-        """Load a config from a recipe file path."""
+        """Load a config from a recipe file path.
+
+        The recipe's ``[nlp] pipeline`` becomes ``self.components`` so that
+        validation output and the score-weight calculation reflect the actual
+        pipeline being trained, not the constructor default.
+
+        Args:
+            recipe: Path to a ``.cfg`` file, or the filename of a bundled
+                recipe in the module's ``recipes/`` folder.
+            msg: Printer used for status output.
+
+        Raises:
+            LexosException: If the recipe file cannot be found, or if the
+                recipe uses a transformer component and ``spacy-transformers``
+                is not installed.
+        """
         recipe_path = Path(recipe)
         if not recipe_path.exists():
             recipe_path = _RECIPES_DIR / recipe
@@ -478,6 +498,30 @@ class LanguageModel:
                 f"Checked: {Path(recipe).resolve()} and {_RECIPES_DIR / recipe}"
             )
         self.config = Config().from_disk(recipe_path)
+
+        pipeline = list(self.config.get("nlp", {}).get("pipeline", []))
+        if pipeline:
+            self.components = pipeline
+
+        if "transformer" in self.components:
+            if importlib.util.find_spec("spacy_transformers") is None:
+                raise LexosException(
+                    "This recipe uses a transformer component, but "
+                    "spacy-transformers is not installed. Install the "
+                    "transformer extras:\n"
+                    "    pip install .[transformers]\n"
+                    "or, for GPU training (strongly recommended):\n"
+                    "    pip install .[gpu,transformers]"
+                )
+            if not self.gpu:
+                warnings.warn(
+                    "Transformer training on CPU is impractically slow "
+                    "(hours become days). Pass gpu=True if an NVIDIA GPU "
+                    "is available.",
+                    UserWarning,
+                    stacklevel=2,
+                )
+
         msg.good(f"Loaded recipe: {recipe_path}")
 
     def _resolve_sources(self, base_model: str | dict) -> dict[str, str]:
@@ -535,6 +579,8 @@ class LanguageModel:
         if "corpora" in self.config and "train" in self.config["corpora"]:
             self.config["corpora"]["train"]["max_length"] = 2000
 
+        # tok2vec and transformer are embedding backbones with no scored
+        # output, so they intentionally have no entry here.
         _component_metrics: dict[str, list[str]] = {
             "tagger": ["tag_acc"],
             "morphologizer": ["pos_acc", "morph_acc"],
