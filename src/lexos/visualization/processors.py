@@ -2,8 +2,8 @@
 
 This module contains functions to process data from various source types into term frequency dictionaries.
 
-Last Update: June 28, 2026
-Last Tested: June 28, 2026
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 """
 
 from collections import Counter
@@ -147,7 +147,7 @@ def filter_docs(
 
 @validate_call(
     config=ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
     )
 )
 def process_dataframe(
@@ -171,7 +171,7 @@ def process_dataframe(
 
 @validate_call(
     config=ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
     )
 )
 def process_dtm(
@@ -213,7 +213,7 @@ def process_dtm(
 
 @validate_call(
     config=ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
     )
 )
 def process_list(
@@ -249,7 +249,7 @@ def process_list(
 
 @validate_call(
     config=ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
     )
 )
 def process_docs(
@@ -277,7 +277,7 @@ def process_docs(
 
 @validate_call(
     config=ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
     )
 )
 def process_item(
@@ -303,7 +303,7 @@ def process_item(
 
 @validate_call(
     config=ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
     )
 )
 def multicloud_processor(

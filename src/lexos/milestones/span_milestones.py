@@ -6,8 +6,8 @@ structural boundaries between spans or groups of spans (e.g. sentence or line br
 Thus, instead of storing a list of patterns representing milestones, span milestones
 store the groups of spans themselves.
 
-Last Update: June 27, 2026
-Last Tested: June 27, 2026
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 """
 
 from itertools import zip_longest
@@ -23,7 +23,7 @@ from spacy.tokens import Doc, Span, SpanGroup, Token
 # from .util import LexosBaseModel
 
 validation_config = ConfigDict(
-    arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+    arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
 )
 
 

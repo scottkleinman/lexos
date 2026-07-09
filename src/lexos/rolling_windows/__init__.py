@@ -1,7 +1,7 @@
 """__init__.py.
 
-Last Update: 2026-06-27
-Last Tested: 2026-06-27
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 
 Credits:
 
@@ -19,7 +19,7 @@ from spacy.tokens import Doc, Span, Token
 
 from lexos.exceptions import LexosException
 
-doc_schema = DocJSONSchema.schema()
+doc_schema = DocJSONSchema.model_json_schema()
 Tokenized = Doc | Span | list[Span | Token]
 
 validation_config = ConfigDict(

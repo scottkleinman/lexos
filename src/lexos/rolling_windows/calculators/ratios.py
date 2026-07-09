@@ -1,7 +1,7 @@
 """ratios.py.
 
-Last update: June 27, 2026
-Last Tested: June 27, 2026
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 """
 
 from typing import ClassVar, Optional
@@ -16,7 +16,7 @@ from lexos.rolling_windows.calculators.counts import Counts, spacy_rule_to_lower
 
 validation_config = ConfigDict(
     arbitrary_types_allowed=True,
-    json_schema_extra=DocJSONSchema.schema(),
+    json_schema_extra=DocJSONSchema.model_json_schema(),
     validate_assignment=True,
 )
 

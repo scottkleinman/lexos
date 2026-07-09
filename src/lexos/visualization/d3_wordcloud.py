@@ -1,7 +1,7 @@
 """d3_wordcloud.py.
 
-Last Updated: June 28, 2026
-Last Tested: June 28, 2026
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 """
 
 import json
@@ -110,7 +110,7 @@ class D3WordCloud(BaseModel):
     html: str = Field("", description="The HTML representation of the word cloud.")
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
     )
 
     @field_validator("spiral")

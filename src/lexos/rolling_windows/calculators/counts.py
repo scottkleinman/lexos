@@ -1,6 +1,6 @@
 """counts.py.
 
-Last update: June 27, 2026
+Last Updated: July 9, 2026
 Last tested: June 27, 2026
 """
 
@@ -19,7 +19,7 @@ from lexos.rolling_windows.calculators.base_calculator import (
 
 validation_config = ConfigDict(
     arbitrary_types_allowed=True,
-    json_schema_extra=DocJSONSchema.schema(),
+    json_schema_extra=DocJSONSchema.model_json_schema(),
     validate_assignment=True,
 )
 

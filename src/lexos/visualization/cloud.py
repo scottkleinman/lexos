@@ -1,7 +1,7 @@
 """cloud.py.
 
-Last Update: June 28, 2026
-Last Tested: June 28, 2026
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 """
 
 import math
@@ -79,7 +79,8 @@ class WordCloud(BaseModel):
     )
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 
     def __init__(self, **data: Any) -> None:
@@ -118,7 +119,7 @@ class WordCloud(BaseModel):
         if self.title:
             self.fig.suptitle(self.title)
         ax.axis("off")
-        ax.imshow(self.cloud, interpolation="bilinear")
+        ax.imshow(self.cloud.to_array(), interpolation="bilinear")
         self.fig.savefig(path, **kwargs)
         plt.close(self.fig)
 
@@ -132,7 +133,7 @@ class WordCloud(BaseModel):
         if self.title:
             self.fig.suptitle(self.title)
         plt.axis("off")
-        plt.imshow(self.cloud, interpolation="bilinear")
+        plt.imshow(self.cloud.to_array(), interpolation="bilinear")
 
 
 class MultiCloud(BaseModel):
@@ -185,7 +186,8 @@ class MultiCloud(BaseModel):
     )
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 
     def __init__(self, **data: Any) -> None:
@@ -318,7 +320,7 @@ class MultiCloud(BaseModel):
         for i, doc_counts in enumerate(self.doc_data):
             self.wordcloud.generate_from_frequencies(doc_counts)
             ax = self.fig.add_subplot(rows, columns, i + 1)
-            ax.imshow(self.wordcloud, interpolation="bilinear")
+            ax.imshow(self.wordcloud.to_array(), interpolation="bilinear")
             ax.axis("off")
 
             # Add label if provided
@@ -417,7 +419,8 @@ class MultiCloudOld(BaseModel):
     )
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 
     def __init__(self, **data: Any) -> None:
@@ -569,7 +572,7 @@ class MultiCloudOld(BaseModel):
             ax = axes[row, col]
 
             # Display the word cloud
-            ax.imshow(cloud.cloud, interpolation="bilinear")
+            ax.imshow(cloud.cloud.to_array(), interpolation="bilinear")
             ax.axis("off")
 
             # Add label if provided

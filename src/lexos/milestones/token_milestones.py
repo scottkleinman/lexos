@@ -1,7 +1,7 @@
 """milestones.py.
 
-Last Update: June 27, 2026
-Last Tested: June 27, 2026
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 """
 
 import re
@@ -28,7 +28,7 @@ case_insensitive_flags: Enum = re.DOTALL | re.IGNORECASE | re.MULTILINE | re.UNI
 case_sensitive_flags: Enum = re.DOTALL | re.MULTILINE | re.UNICODE
 
 validation_config = ConfigDict(
-    arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+    arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
 )
 
 

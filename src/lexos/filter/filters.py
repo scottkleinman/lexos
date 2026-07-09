@@ -1,7 +1,7 @@
 """filters.py.
 
-Last Update: June 27, 2026
-Last Tested: June 27, 2026
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 """
 
 import re
@@ -29,7 +29,7 @@ class BaseFilter(BaseModel):
     )
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
     )
 
     @validate_call(config=model_config)
@@ -144,7 +144,7 @@ class IsRomanFilter(BaseFilter):
     )
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
     )
 
     def __init__(self, **data):
@@ -238,7 +238,7 @@ class IsStopwordFilter(BaseFilter):
     )
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
     )
 
     def __init__(self, **data: Any):
@@ -354,7 +354,7 @@ class IsWordFilter(BaseFilter):
     )
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
     )
 
     def __init__(self, **data: Any):
