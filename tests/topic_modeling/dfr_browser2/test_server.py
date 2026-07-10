@@ -1,7 +1,8 @@
 """Tests for the dfr_browser2 server.py module.
 
-Coverage: 95%. Missing: 37, 39
-Last Updated: December 24, 2025
+Coverage: 83%. Missing: 44-47, 110-111, 121-125, 162-166, 203-207, 245-249, 342-346, 381-385, 426-430, 467-471, 506-510, 562-566, 606-610, 627, 639-640, 668-672, 711-715, 736, 758
+
+Last Updated: June 9, 2026
 """
 
 import http.client
@@ -308,8 +309,9 @@ def test_server_port_already_in_use(test_html_dir: Path, server_script: Path):
             timeout=2,
         )
 
+        output = (result.stdout or "") + (result.stderr or "")
         assert result.returncode == 1
-        assert "already in use" in result.stdout
+        assert "already in use" in output
 
     finally:
         cleanup_server_process(process1, port)
@@ -580,12 +582,14 @@ def test_server_handles_keyboard_interrupt(test_html_dir: Path, server_script: P
     """Test that server handles Ctrl+C (KeyboardInterrupt) gracefully."""
     port = 58133
 
+    creationflags = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)
     process = subprocess.Popen(
         [sys.executable, str(server_script), str(port)],
         cwd=str(test_html_dir),
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
+        creationflags=creationflags,
     )
 
     try:
@@ -608,15 +612,28 @@ def test_server_handles_keyboard_interrupt(test_html_dir: Path, server_script: P
 
         assert response.status == 200
 
-        # Send SIGINT (Ctrl+C)
-        process.send_signal(signal.SIGINT)
+        # Send Ctrl+C / Ctrl+Break depending on platform
+        signal_to_send = (
+            signal.CTRL_BREAK_EVENT
+            if hasattr(signal, "CTRL_BREAK_EVENT")
+            else signal.SIGINT
+        )
+        process.send_signal(signal_to_send)
 
         # Wait for process to exit
         stdout, stderr = process.communicate(timeout=5)
 
         # Check that it exited cleanly with the "Server stopped" message
-        assert process.returncode == 0 or process.returncode == -2  # -2 is SIGINT
-        assert "Server stopped" in stdout or "KeyboardInterrupt" in stderr
+        if sys.platform == "win32":
+            assert process.returncode in (0, -2, 3221225786)
+        else:
+            assert process.returncode in (0, -2)
+
+        assert (
+            "Server stopped" in stdout
+            or "KeyboardInterrupt" in stderr
+            or process.returncode == 3221225786
+        )
 
     finally:
         if process.poll() is None:
@@ -716,6 +733,11 @@ def test_server_privileged_port_permission_denied(
     This tests the 'else: raise' branch in the OSError handler.
     Note: This test may pass differently depending on user permissions.
     """
+    if sys.platform == "win32":
+        pytest.skip(
+            "Windows does not reliably enforce privileged port restrictions for non-admin users."
+        )
+
     # Try to bind to port 80 (requires root privileges on most systems)
     # This should trigger an OSError with errno 13 (Permission denied)
     # which is not 48 or 98, so it should be re-raised

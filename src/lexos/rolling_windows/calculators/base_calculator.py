@@ -1,6 +1,6 @@
 """base_calculator.py.
 
-Last update: June 27, 2026
+Last Updated: July 9, 2026
 Last tested: June 27, 2026
 """
 
@@ -22,7 +22,7 @@ from lexos.rolling_windows import Windows
 
 validation_config = ConfigDict(
     arbitrary_types_allowed=True,
-    json_schema_extra=DocJSONSchema.schema(),
+    json_schema_extra=DocJSONSchema.model_json_schema(),
     validate_assignment=True,
 )
 

@@ -1,7 +1,7 @@
 """record.py.
 
-Last updated: March 14, 2026
-Last tested: March 14, 2026
+Last updated: July 9, 2026
+Last tested: July 9, 2026
 
 
 Wrapping texts and spaCy Docs in a Pydantic model provides a lot of extra functionality, particularly through the model_dump() and model_dump_json() methods. See the Pydantic documentation for more information.
@@ -56,7 +56,7 @@ class Record(BaseModel):
     model_config = ConfigDict(
         arbitrary_types_allowed=True,
         validate_assignment=True,
-        json_schema_extra=DocJSONSchema.schema(),
+        json_schema_extra=DocJSONSchema,
     )
 
     @field_serializer("content")

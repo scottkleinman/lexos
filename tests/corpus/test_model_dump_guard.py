@@ -1,7 +1,7 @@
 """test_model_dump_guard.py.
 
-Coverage: 22%. Missing: 13-18, 23-29, 33-37, 50-74, 77-78
-Last Update: 10 December, 2025
+Coverage: 22%. Missing:  13-18, 23-29, 33-37, 50-74, 77-78
+Last Update: 9 July, 2026
 """
 
 import ast
@@ -49,7 +49,7 @@ def test_no_unguarded_record_model_dump_calls():
         # Skip test files and migrations
         if py_file.match("**/tests/**"):
             continue
-        code = py_file.read_text()
+        code = py_file.read_text(encoding="utf-8", errors="replace")
         try:
             tree = ast.parse(code, filename=str(py_file))
         except SyntaxError:

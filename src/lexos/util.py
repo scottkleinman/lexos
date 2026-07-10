@@ -2,8 +2,8 @@
 
 This file contains helper functions used by multiple modules.
 
-Last Updated: June 24, 2025
-Lasty Tested: June 24, 2025
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 """
 
 from pathlib import Path
@@ -169,7 +169,7 @@ def normalize_files(
         filepath = ensure_path(filepath)
         with open(filepath, "rb") as f:
             doc = f.read()
-        with open(destination_dir / filepath.name, "w") as f:
+        with open(destination_dir / filepath.name, "w", encoding="utf-8") as f:
             f.write(normalize(doc))
 
 
@@ -186,7 +186,7 @@ def normalize_file(filepath: Path | str, destination_dir: Path | str = ".") -> N
     destination_dir = ensure_path(destination_dir)
     with open(filepath, "rb") as f:
         doc = f.read()
-    with open(destination_dir / Path(filepath.name), "w") as f:
+    with open(destination_dir / Path(filepath.name), "w", encoding="utf-8") as f:
         f.write(normalize(doc))
 
 

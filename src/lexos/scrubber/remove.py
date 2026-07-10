@@ -346,9 +346,10 @@ def tags(
         try:
             from bs4 import BeautifulSoup
 
-            # Use lxml as the internal engine for speed if available
-            feature = "lxml" if _HAS_LXML else "html.parser"
-            soup = BeautifulSoup(text, feature)
+            # Always use the pure-Python html.parser here: lxml was already tried
+            # above and failed, and using "lxml" as the BS4 backend triggers a
+            # DeprecationWarning in bs4/builder/_lxml.py for strip_cdata.
+            soup = BeautifulSoup(text, "html.parser")
             plaintext = soup.get_text(separator=sep_clean)
         except Exception:
             # Last resort: return text as-is if no parser can handle it

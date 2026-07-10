@@ -2,8 +2,8 @@
 
 This class assumes that the docs consist of spaCy Doc objects.
 
-Last Updated: 2026-06-27
-Tested: 2026-06-27
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 """
 
 from pathlib import Path
@@ -21,7 +21,7 @@ from lexos.util import ensure_list, strip_doc
 
 # Configuration validation for the DocCutter class
 validation_config = ConfigDict(
-    arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+    arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
 )
 
 

@@ -1,7 +1,7 @@
 """keyterms.py.
 
-Last Updated: November 10, 2025
-Last Tested: November 10, 2025
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 """
 
 from typing import Any, Literal
@@ -17,7 +17,7 @@ from lexos.tokenizer import Tokenizer
 from lexos.topwords import TopWords
 
 validation_config = ConfigDict(
-    arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+    arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
 )
 
 # Register a custom extension for keyterms if not already set

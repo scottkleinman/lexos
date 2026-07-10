@@ -16,8 +16,8 @@ for milestone in milestones:
 milestones.set("The", case_sensitive=False)
 spans = milestones.spans
 
-Last Update: 2025-01-14
-Last Tested: 2024-12-21
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 """
 
 import re
@@ -74,7 +74,8 @@ class StringMilestones(BaseModel):
     )
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 
     def __init__(self, **data) -> None:

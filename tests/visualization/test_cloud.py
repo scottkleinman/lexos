@@ -1,8 +1,8 @@
 """test_cloud.py.
 
-Coverage: 99%. Missing: 494
+Coverage: 99%. Missing: 497
 
-Last Update: June 28, 2026
+Last Update: July 9, 2026
 """
 
 import tempfile
@@ -187,7 +187,10 @@ class TestWordCloud:
             patch("matplotlib.pyplot.axis") as mock_axis,
         ):
             wc.show()
-            mock_imshow.assert_called_once_with(wc.cloud, interpolation="bilinear")
+            assert mock_imshow.call_count == 1
+            args, kwargs = mock_imshow.call_args
+            assert np.array_equal(args[0], wc.cloud.to_array())
+            assert kwargs == {"interpolation": "bilinear"}
             mock_axis.assert_called_once_with("off")
 
     def test_wordcloud_show_with_title(self):
@@ -207,7 +210,10 @@ class TestWordCloud:
             wc.show()
 
             # Assert basic matplotlib calls
-            mock_imshow.assert_called_once_with(wc.cloud, interpolation="bilinear")
+            assert mock_imshow.call_count == 1
+            args, kwargs = mock_imshow.call_args
+            assert np.array_equal(args[0], wc.cloud.to_array())
+            assert kwargs == {"interpolation": "bilinear"}
             mock_axis.assert_called_once_with("off")
             mock_figure.assert_called_once_with(**wc.figure_opts)
 

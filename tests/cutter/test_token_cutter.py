@@ -1,7 +1,7 @@
 """test_token_cutter.py.
 
 Coverage: 100%
-Last updated: 23 December, 2025
+Last updated: 9 July, 2026
 """
 
 import numpy as np
@@ -1057,6 +1057,7 @@ def test_merge_empty_chunks(cutter):
         cutter.merge([])
 
 
+@pytest.mark.filterwarnings(r"ignore:\[W102\].*:UserWarning")
 def test_merge_with_attributes(cutter, nlp):
     """Test merging chunks with different attributes.
 
@@ -1132,10 +1133,13 @@ def test_save_text_mismatched_names(cutter_save, nlp, output_dir):
         cutter_save.save(output_dir, names=["single_name"], as_text=True)
 
 
-def test_save_text_invalid_path(cutter_save):
+def test_save_text_invalid_path(cutter_save, tmp_path):
     """Test error with invalid output path."""
+    invalid_output = tmp_path / "not_a_dir.txt"
+    invalid_output.write_text("not a directory")
+
     with pytest.raises(Exception):
-        cutter_save.save("/invalid/path/here", as_text=True)
+        cutter_save.save(invalid_output, as_text=True)
 
 
 def test_split_single_doc_chunksize(cutter, doc_for_split):
