@@ -18,7 +18,8 @@ class LexosBaseModel(BaseModel):
     """Base model inherits from Pydantic base model but validates spaCy objects."""
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 
 

@@ -29,7 +29,8 @@ class BaseFilter(BaseModel):
     )
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 
     @validate_call(config=model_config)
@@ -144,7 +145,8 @@ class IsRomanFilter(BaseFilter):
     )
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 
     def __init__(self, **data):
@@ -238,7 +240,8 @@ class IsStopwordFilter(BaseFilter):
     )
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 
     def __init__(self, **data: Any):
@@ -354,7 +357,8 @@ class IsWordFilter(BaseFilter):
     )
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 
     def __init__(self, **data: Any):

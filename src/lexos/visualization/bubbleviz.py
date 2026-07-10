@@ -94,7 +94,8 @@ class BubbleChart(BaseModel):
     )
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 
     @field_validator("data", mode="after")

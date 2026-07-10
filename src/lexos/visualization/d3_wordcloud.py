@@ -110,7 +110,8 @@ class D3WordCloud(BaseModel):
     html: str = Field("", description="The HTML representation of the word cloud.")
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.model_json_schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 
     @field_validator("spiral")
