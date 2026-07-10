@@ -1,7 +1,7 @@
 """corpus_stats.py.
 
-Last updated: December 4, 2025
-Last tested: November 18, 2025
+Last updated: July 10, 2026
+Last tested: July 10, 2026
 """
 
 import math
@@ -894,10 +894,9 @@ def get_seaborn_boxplot(
         title: The title of the plot.
     """
     sns.set_theme(style="darkgrid")
-    ax = sns.boxplot(y=df[column], width=0.25)
-    sns.swarmplot(y=column, data=df, color="black", ax=ax)
+    ax = sns.boxplot(y=df[column], width=0.25, orient="v")
+    sns.swarmplot(y=column, data=df, color="black", ax=ax, orient="v")
     ax.set_title(title)
-    plt.show()
 
 
 @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
@@ -935,8 +934,8 @@ def get_plotly_boxplot(
 
     # Create a figure with two subplots and fill the figure.
     figure = make_subplots(rows=1, cols=2, shared_yaxes=False)
-    figure.append_trace(trace=scatter_plot, row=1, col=1)
-    figure.append_trace(trace=box_plot, row=1, col=2)
+    figure.add_trace(trace=scatter_plot, row=1, col=1)
+    figure.add_trace(trace=box_plot, row=1, col=2)
 
     # Hide useless information on x-axis and set up title.
     figure.layout.update(

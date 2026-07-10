@@ -2389,14 +2389,12 @@ class TestCorpusClass:
 
 
 # --- Coverage for line 102: __iter__ method ---
-def test_corpus_iteration():
+def test_corpus_iteration(tmp_path):
     """Covers line 102: __iter__ method in corpus.py."""
-    import tempfile
-
     from lexos.corpus.corpus import Corpus
     from lexos.corpus.record import Record
 
-    corpus = Corpus(corpus_dir=tempfile.mkdtemp(), name="IterTest")
+    corpus = Corpus(corpus_dir=str(tmp_path), name="IterTest")
     # Add some records
     for i in range(3):
         record = Record(id=str(i), name=f"doc{i}", content=f"text {i}", is_active=True)
@@ -2408,14 +2406,12 @@ def test_corpus_iteration():
 
 
 # --- Coverage for lines 389-400: filter_records all branches ---
-def test_filter_records_all_branches():
+def test_filter_records_all_branches(tmp_path):
     """Covers lines 389-400: filter_records method all branches."""
-    import tempfile
-
     from lexos.corpus.corpus import Corpus
     from lexos.corpus.record import Record
 
-    corpus = Corpus(corpus_dir=tempfile.mkdtemp(), name="FilterTest")
+    corpus = Corpus(corpus_dir=str(tmp_path), name="FilterTest")
 
     # Create a mock object without meta attribute to test line 391
     class MockRecord:
@@ -2457,13 +2453,11 @@ def test_filter_records_all_branches():
 
 
 # --- Coverage for line 606: else branch when id is neither str nor list ---
-def test_remove_with_invalid_id_type():
+def test_remove_with_invalid_id_type(tmp_path):
     """Covers line 606: else branch when id is neither str nor list."""
-    import tempfile
-
     from lexos.corpus.corpus import Corpus
 
-    corpus = Corpus(corpus_dir=tempfile.mkdtemp(), name="RemoveTest")
+    corpus = Corpus(corpus_dir=str(tmp_path), name="RemoveTest")
     # Call remove with id as an integer (not str or list)
     # This triggers the else branch on line 606: ids = []
     try:
@@ -2473,14 +2467,12 @@ def test_remove_with_invalid_id_type():
 
 
 # --- Coverage for lines 631-632: KeyError exception in remove ---
-def test_remove_keyerror_branch():
+def test_remove_keyerror_branch(tmp_path):
     """Covers lines 631-632: KeyError exception in remove method."""
-    import tempfile
-
     from lexos.corpus.corpus import Corpus
     from lexos.corpus.record import Record
 
-    corpus = Corpus(corpus_dir=tempfile.mkdtemp(), name="RemoveKeyErrorTest")
+    corpus = Corpus(corpus_dir=str(tmp_path), name="RemoveKeyErrorTest")
 
     # Add a record
     record = Record(id="1", name="doc1", content="text", is_active=True)
@@ -2497,14 +2489,12 @@ def test_remove_keyerror_branch():
 
 
 # --- Coverage for line 735: Boolean dtype branch in to_df ---
-def test_to_df_boolean_dtype_branch():
+def test_to_df_boolean_dtype_branch(tmp_path):
     """Covers line 735: boolean dtype branch in to_df method."""
-    import tempfile
-
     from lexos.corpus.corpus import Corpus
     from lexos.corpus.record import Record
 
-    corpus = Corpus(corpus_dir=tempfile.mkdtemp(), name="BoolDFTest")
+    corpus = Corpus(corpus_dir=str(tmp_path), name="BoolDFTest")
 
     # Add records with boolean metadata
     record1 = Record(id="1", name="doc1", content="text1", is_active=True)

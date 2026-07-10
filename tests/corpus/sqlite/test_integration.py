@@ -45,10 +45,10 @@ def sample_texts():
 
 
 @pytest.fixture
-def memory_corpus():
+def memory_corpus(tmp_path):
     """Create an in-memory SQLite corpus for testing."""
     corpus = SQLiteCorpus(
-        corpus_dir="test_corpus",
+        corpus_dir=str(tmp_path),
         name="test_corpus",
         use_sqlite=True,
         sqlite_path=":memory:",
@@ -70,10 +70,10 @@ def file_corpus(temp_corpus_dir):
 
 
 @pytest.fixture
-def sqlite_only_corpus():
+def sqlite_only_corpus(tmp_path):
     """Create a database-only corpus (no file storage)."""
     corpus = SQLiteCorpus(
-        corpus_dir="test_corpus",
+        corpus_dir=str(tmp_path),
         name="sqlite_only",
         use_sqlite=True,
         sqlite_only=True,

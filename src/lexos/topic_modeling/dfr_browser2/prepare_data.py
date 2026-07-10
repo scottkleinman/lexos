@@ -20,8 +20,8 @@ from prepare_data import process_mallet_state_file
 process_mallet_state_file(statefile, output_dir, top_words, generate_all=False)
 ```
 
-Last Updated: December 24, 2025
-Last Tested: December 24, 2025
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 """
 
 import argparse
@@ -234,7 +234,7 @@ def write_topic_keys_txt(topic_words: list[dict], output_dir: str) -> None:
         output_dir (str): Directory to write the topic-keys.txt file
     """
     filepath = os.path.join(output_dir, "topic-keys.txt")
-    with open(filepath, "w") as f:
+    with open(filepath, "w", encoding="utf-8") as f:
         for i, topic in enumerate(topic_words):
             words = topic["words"][:15]  # Top 15 words for browser
             # Format: topic_number weight word1 word2 word3...
@@ -250,7 +250,7 @@ def write_doc_topic_txt(doc_proportions: list[list[float]], output_dir: str) -> 
         output_dir (str): Directory to write the doc-topic.txt file
     """
     filepath = os.path.join(output_dir, "doc-topic.txt")
-    with open(filepath, "w") as f:
+    with open(filepath, "w", encoding="utf-8") as f:
         for doc_idx, proportions in enumerate(doc_proportions):
             # Format: docNum docName proportion1 proportion2 ...
             prop_str = "\t".join(f"{p:.10f}" for p in proportions)
@@ -269,7 +269,7 @@ def write_doc_topic_counts_csv(
         output_dir (str): Directory to write the CSV file
     """
     filepath = os.path.join(output_dir, "doc-topic-counts.csv")
-    with open(filepath, "w", newline="") as f:
+    with open(filepath, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         # Header: docNum, topic0, topic1, ...
         writer.writerow(["docNum"] + [f"topic{i}" for i in range(num_topics)])
@@ -290,7 +290,7 @@ def write_basic_metadata_csv(num_docs: int, output_dir: str) -> None:
         print("metadata.csv already exists, skipping generation")
         return
 
-    with open(filepath, "w", newline="") as f:
+    with open(filepath, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(["docNum", "docName", "title", "author", "year"])
         for i in range(num_docs):
@@ -310,7 +310,7 @@ def write_topic_words_json(
     """
     filepath = os.path.join(output_dir, "tw.json")
     output = {"alpha": alpha, "tw": topic_words}
-    with open(filepath, "w") as f:
+    with open(filepath, "w", encoding="utf-8") as f:
         json.dump(output, f)
     print("Wrote tw.json with topic-words data")
 

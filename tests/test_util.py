@@ -1,7 +1,7 @@
 """Tests for util.py module.
 
 Coverage: 100%
-Last Update: June 24, 2025
+Last Update: July 9, 2026
 """
 
 import tempfile
@@ -10,7 +10,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 import spacy
-from spacy.tokens import Doc, Token
+from spacy.tokens import Token
 
 from lexos.exceptions import LexosException
 from lexos.util import (
@@ -73,7 +73,7 @@ def temp_files():
         files["latin1"] = latin1_file
 
         windows_file = tmpdir / "test_windows.txt"
-        windows_file.write_text("line1\r\nline2\r\nline3", encoding="utf-8")
+        windows_file.write_bytes("line1\r\nline2\r\nline3".encode("utf-8"))
         files["windows"] = windows_file
 
         files["tmpdir"] = tmpdir
@@ -133,14 +133,14 @@ def test_ensure_path_with_string():
     """Test ensure_path with string input."""
     result = ensure_path("test/path")
     assert isinstance(result, Path)
-    assert str(result) == "test/path"
+    assert result.as_posix() == "test/path"
 
 
 def test_ensure_path_with_windows_backslash():
     """Test ensure_path converts Windows backslashes."""
     result = ensure_path("test\\path\\file.txt")
     assert isinstance(result, Path)
-    assert str(result) == "test/path/file.txt"
+    assert result.as_posix() == "test/path/file.txt"
 
 
 def test_ensure_path_with_path_object():
@@ -678,13 +678,14 @@ def test_error_handling_file_operations(temp_files):
     """Test error handling in file operations."""
     tmpdir = temp_files["tmpdir"]
 
-    # Test with non-existent directory
+    # Test with non-existent source file
     with pytest.raises(FileNotFoundError):
         normalize_file("nonexistent.txt", tmpdir)
 
-    # Test with invalid destination
+    # Test with invalid destination directory
+    invalid_destination = tmpdir / "does_not_exist"
     with pytest.raises((FileNotFoundError, PermissionError, OSError)):
-        normalize_file(temp_files["utf8"], "/invalid/path/")
+        normalize_file(temp_files["utf8"], invalid_destination)
 
 
 # ---------------- Performance and Memory Tests ----------------
