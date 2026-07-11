@@ -1,7 +1,7 @@
 """Tests for util.py module.
 
-Coverage: 100%
-Last Update: July 9, 2026
+Coverage: 99%. Missing: 89-90, 511-513
+Last Update: July 10, 2026
 """
 
 import tempfile
@@ -16,6 +16,7 @@ from lexos.exceptions import LexosException
 from lexos.util import (
     _decode_bytes,
     _try_decode_bytes_,
+    count_doc_terms,
     ensure_list,
     ensure_path,
     get_encoding,
@@ -154,6 +155,26 @@ def test_ensure_path_with_non_string():
     """Test ensure_path with non-string, non-Path input."""
     result = ensure_path(42)
     assert result == 42
+
+
+def test_count_doc_terms_small_doc(spacy_nlp):
+    """Test count_doc_terms on a small spaCy Doc uses Counter path correctly."""
+    doc = spacy_nlp("the cat sat on the mat the cat")
+    result = count_doc_terms(doc)
+    assert result["the"] == 3
+    assert result["cat"] == 2
+    assert result["mat"] == 1
+    assert set(result.keys()) == {"the", "cat", "sat", "on", "mat"}
+
+
+def test_count_doc_terms_large_doc(spacy_nlp):
+    """Test count_doc_terms on a large spaCy Doc uses NumPy path correctly."""
+    words = ["apple", "banana", "cherry"] * 350
+    doc = spacy_nlp(" ".join(words))
+    result = count_doc_terms(doc)
+    assert result["apple"] == 350
+    assert result["banana"] == 350
+    assert result["cherry"] == 350
 
 
 # ---------------- Test get_paths ----------------

@@ -1,7 +1,7 @@
 """record.py.
 
-Last updated: July 9, 2026
-Last tested: July 9, 2026
+Last updated: July 10, 2026
+Last tested: July 10, 2026
 
 
 Wrapping texts and spaCy Docs in a Pydantic model provides a lot of extra functionality, particularly through the model_dump() and model_dump_json() methods. See the Pydantic documentation for more information.
@@ -39,6 +39,7 @@ from spacy.vocab import Vocab
 
 from lexos.corpus.utils import LexosModelCache
 from lexos.exceptions import LexosException
+from lexos.util import count_doc_terms
 
 
 class Record(BaseModel):
@@ -199,7 +200,7 @@ class Record(BaseModel):
             Counter: Collection mapping term -> count for the record.
         """
         if self.is_parsed:
-            return Counter([t.text for t in self.content])
+            return count_doc_terms(self.content)
         else:
             raise LexosException("Record is not parsed.")
 
