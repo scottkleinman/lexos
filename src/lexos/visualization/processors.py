@@ -2,8 +2,8 @@
 
 This module contains functions to process data from various source types into term frequency dictionaries.
 
-Last Updated: July 9, 2026
-Last Tested: July 9, 2026
+Last Updated: July 10, 2026
+Last Tested: July 10, 2026
 """
 
 from collections import Counter
@@ -18,7 +18,7 @@ from spacy.tokens import Doc, Span, Token
 
 from lexos.dtm import DTM
 from lexos.exceptions import LexosException
-from lexos.util import ensure_list
+from lexos.util import count_doc_terms, ensure_list
 
 
 @validate_call(config=ConfigDict(allow_arbitrary_types=True))
@@ -48,7 +48,7 @@ def process_data(
 
     # Handle spaCy objects
     elif isinstance(data, (Doc, Span)):
-        counts = Counter([token.text for token in data])
+        counts = count_doc_terms(data)
 
     # Handle dictionary input (already in correct format)
     elif isinstance(data, dict):

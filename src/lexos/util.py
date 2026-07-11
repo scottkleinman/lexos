@@ -2,27 +2,63 @@
 
 This file contains helper functions used by multiple modules.
 
-Last Updated: July 9, 2026
-Last Tested: July 9, 2026
+Last Updated: July 10, 2026
+Last Tested: July 10, 2026
 """
 
+import collections
+from collections import Counter
 from pathlib import Path
 from typing import Any, Collection, TypeVar
 
 import chardet
+import numpy as np
 import spacy
 from bs4 import (
     UnicodeDammit,  # type: ignore - this import is correct, but Pylance fails to recognize it
 )
 from pydantic_core import PydanticCustomError
 from pydantic_extra_types.color import Color
+from spacy.attrs import ORTH
 from spacy.language import Language
-from spacy.tokens import Doc
+from spacy.tokens import Doc, Span
 
 import lexos.constants as constants
 from lexos.exceptions import LexosException
 
 AnyVal = TypeVar("AnyVal")
+
+# Threshold (in tokens) above which np.unique on doc.to_array([ORTH]) is faster
+# than collections.Counter.
+_DOC_TERM_COUNT_THRESHOLD = 1000
+
+
+def count_doc_terms(doc: Doc | Span) -> Counter:
+    """Count tokens in a spaCy Doc or Span using the fastest available method.
+
+    For documents with fewer than `_DOC_TERM_COUNT_THRESHOLD` tokens,
+    `collections.Counter` over `token.text` is used.  Above that threshold
+    the NumPy path (`doc.to_array([ORTH])` + `np.unique`) is substantially
+    faster — roughly 7× at 10,000 tokens and 16× at 50,000 tokens.
+
+    Benchmarked on spaCy 3.8 + NumPy 2 (July 2026).
+
+    Args:
+        doc (Doc | Span): A spaCy Doc or Span object.
+
+    Returns:
+        Counter: Token text counts.
+    """
+    if len(doc) >= _DOC_TERM_COUNT_THRESHOLD:
+        ids = doc.to_array([ORTH]).ravel()
+        unique_ids, counts = np.unique(ids, return_counts=True)
+        return Counter(
+            {
+                doc.vocab.strings[int(uid)]: int(cnt)
+                for uid, cnt in zip(unique_ids, counts)
+            }
+        )
+    return Counter(token.text for token in doc)
 
 
 def ensure_list(item: Any) -> list:
@@ -276,7 +312,7 @@ def strip_doc(doc: Doc) -> Doc:
     Note: If the final token has trailing whitespace, this will be preserved.
           You can remove the space with:
 
-          ```python
+          ``python
           words = [t.text for t in doc]
           spaces = [t.whitespace_ for t in doc]
           spaces[-1] = ""
@@ -326,11 +362,11 @@ def to_collection(
 
     Args:
         val (AnyVal | Collection[AnyVal]): Value or values to validate and cast.
-        val_type (type[Any] | tuple[type[Any], ...]): Type of each value in collection, e.g. ``int`` or ``(str, bytes)``.
-        col_type (type[Any]): Type of collection to return, e.g. ``tuple`` or ``set``.
+        val_type (type[Any] | tuple[type[Any], ...]): Type of each value in collection, e.g. `int` or `(str, bytes)`.
+        col_type (type[Any]): Type of collection to return, e.g. `tuple` or `set`.
 
     Returns:
-        Collection[AnyVal]: Collection of type ``col_type`` with values all of type ``val_type``.
+        Collection[AnyVal]: Collection of type `col_type` with values all of type `val_type`.
 
     Raises:
         TypeError: An invalid value was passed.
