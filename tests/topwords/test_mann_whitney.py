@@ -1,8 +1,8 @@
 """Tests for mann_whitney.py module.
 
-Coverage: 99%. Missing: 44
+Coverage: 98%. Missing: 44
 
-Last Update: November 14, 2025
+Last Update: July 11, 2026
 """
 
 from unittest.mock import patch

@@ -2,8 +2,8 @@
 
 Module for performing z-tests using Pydantic models.
 
-Last Update: November 8, 2025
-Last Tested: November 8, 2025
+Last Update: July 11, 2026
+Last Tested: July 11, 2026
 
 
 NB. This implementation assumes that the documents are pre-tokenized
@@ -46,7 +46,7 @@ from spacy.tokens import Doc, Token
 
 from lexos.tokenizer import Tokenizer
 from lexos.topwords import TopWords
-from lexos.util import ensure_list
+from lexos.util import count_doc_terms, ensure_list
 
 if not Doc.has_extension("topwords"):
     Doc.set_extension("topwords", default=None, force=True)
@@ -111,58 +111,37 @@ class ZTest(TopWords):
             for doc in ensure_list(self.comparison_docs)
         ]
 
-        # Get the tokens for target and comparison documents
-        target_tokens = self._get_doc_tokens(self.target_docs)
-        comparison_tokens = self._get_doc_tokens(self.comparison_docs)
-
         # Get the term counts for target and comparison
-        target_counts: Counter = Counter(target_tokens)
-        comparison_counts: Counter = Counter(comparison_tokens)
+        target_counts: Counter = self._get_doc_term_counts(self.target_docs)
+        comparison_counts: Counter = self._get_doc_term_counts(self.comparison_docs)
 
         # Total number of tokens in target and comparison
         target_total: int = sum(target_counts.values())
         comparison_total: int = sum(comparison_counts.values())
 
-        # Calculate Z-scores for each term
-        results: list[tuple[str, float]] = []
-        all_terms: set = set(target_counts) | set(comparison_counts)
-        for term in all_terms:
-            # Proportion of this term in target and comparison
-            p1: float = target_counts[term] / target_total if target_total else 0
-            p2: float = (
-                comparison_counts[term] / comparison_total if comparison_total else 0
-            )
-            # Combined proportion of this term in both sets
-            p: float = (
-                (target_counts[term] + comparison_counts[term])
-                / (target_total + comparison_total)
-                if (target_total + comparison_total)
-                else 0
-            )
-            n1, n2 = target_total, comparison_total
+        # Calculate Z-scores with vectorized NumPy operations.
+        terms = list(set(target_counts) | set(comparison_counts))
+        tc_arr = np.array([target_counts[t] for t in terms], dtype=np.float64)
+        cc_arr = np.array([comparison_counts[t] for t in terms], dtype=np.float64)
 
-            # Only calculate Z if both sets have data and p is not 0 or 1
-            if n1 > 0 and n2 > 0 and p > 0 and p < 1:
-                # Standard error for the difference in proportions
-                denominator = np.sqrt(p * (1 - p) * (1 / n1 + 1 / n2))
-                if denominator != 0:
-                    # Z-score: difference in proportions divided by standard error
-                    z: float = (p1 - p2) / denominator
-                else:
-                    z = 0.0
-            else:
-                z = 0.0
+        n1, n2 = target_total, comparison_total
+        total = n1 + n2
 
-            # Convert z to a plain Python float if it's a numpy type
-            z_value = z.item() if hasattr(z, "item") else z
-            results.append((term, z_value))
+        if n1 > 0 and n2 > 0 and total > 0:
+            p1 = tc_arr / n1
+            p2 = cc_arr / n2
+            p = (tc_arr + cc_arr) / total
+            se = np.sqrt(p * (1.0 - p) * (1.0 / n1 + 1.0 / n2))
+            valid = (se > 0) & (p > 0) & (p < 1)
+            z_scores = np.where(valid, (p1 - p2) / np.where(se > 0, se, 1.0), 0.0)
+        else:
+            z_scores = np.zeros(len(terms), dtype=np.float64)
 
-        # Filter out terms with a Z-score of 0.0 before sorting.
-        filtered_results = [item for item in results if item[1] != 0.0]
-
-        # Sort results by absolute Z-score in descending order
+        nonzero = z_scores != 0.0
         sorted_results = sorted(
-            filtered_results, key=lambda item: abs(item[1]), reverse=True
+            zip(np.array(terms, dtype=object)[nonzero], z_scores[nonzero].tolist()),
+            key=lambda item: abs(item[1]),
+            reverse=True,
         )
 
         # Assign the top N results
@@ -228,6 +207,44 @@ class ZTest(TopWords):
                     for ngram in ngrams:
                         tokens.append(" ".join(ngram))
         return tokens
+
+    def _get_doc_term_counts(self, docs: list[Doc]) -> Counter:
+        """Build a Counter of terms after applying preprocessing settings.
+
+        Args:
+            docs (list[Doc]): List of spaCy Doc objects.
+
+        Returns:
+            Counter: Term frequency counts across all documents.
+        """
+        if isinstance(self.ngrams, int):
+            ngram_range = [self.ngrams]
+        else:
+            ngram_range = list(self.ngrams)
+
+        is_unigram = ngram_range == [1] or ngram_range == [1, 1]
+        use_fast_doc_count = (
+            is_unigram
+            and self.case_sensitive
+            and not self.remove_stopwords
+            and not self.remove_punct
+            and not self.remove_digits
+        )
+
+        counts: Counter = Counter()
+        for doc in ensure_list(docs):
+            if use_fast_doc_count:
+                counts.update(count_doc_terms(doc))
+            elif is_unigram:
+                counts.update(self._filter_doc(doc))
+            else:
+                token_list = self._filter_doc(doc)
+                for n in range(ngram_range[0], ngram_range[-1] + 1):
+                    counts.update(
+                        " ".join(gram)
+                        for gram in zip(*[token_list[i:] for i in range(n)])
+                    )
+        return counts
 
     def to_dict(self):
         """Return the topwords as a dictionary with terms and Z-scores."""
