@@ -2,8 +2,8 @@
 
 Implements the Mann-Whitney U (AKA Wilcoxon Rank-Sum) Test.
 
-Last Updated: November 10, 2025
-Last Tested: November 14, 2025
+Last Updated: July 11, 2026
+Last Tested: July 11, 2026
 """
 
 from typing import Optional
@@ -139,20 +139,14 @@ class MannWhitney(TopWords):
             x_subset = self.target
             y_subset = self.comparison
 
-        x_sorted = x_subset.T.sort_index(ascending=True)
-        # Use numeric_only=True to handle non-numeric columns gracefully
-        x_sorted["Mean"] = x_sorted.mean(axis=1, numeric_only=True)
-        x_mean = x_sorted["Mean"].tolist()
+        # Compute per-term means directly across rows, then align by term order.
+        x_mean = x_subset.mean(axis=0, numeric_only=True).sort_index()
+        y_mean = y_subset.mean(axis=0, numeric_only=True).sort_index()
 
-        y_sorted = y_subset.T.sort_index(ascending=True)
-        y_sorted["Mean"] = y_sorted.mean(axis=1, numeric_only=True)
-        y_mean = y_sorted["Mean"].tolist()
-
-        difference = [v1 - v2 for v1, v2 in zip(x_mean, y_mean)]
-        difference = [f"{d * 100:.2f}%" for d in difference]
-        df = pd.DataFrame({"ave_freq": x_mean, "difference": difference})
-        df.index = x_sorted.index
-        return df
+        difference = [f"{(x - y) * 100:.2f}%" for x, y in zip(x_mean, y_mean)]
+        return pd.DataFrame(
+            {"ave_freq": x_mean.tolist(), "difference": difference}, index=x_mean.index
+        )
 
     def to_df(self) -> pd.DataFrame:
         """Returns the result of the Mann-Whitney U test as a DataFrame."""

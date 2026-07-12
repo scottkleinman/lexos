@@ -1,11 +1,11 @@
 """compare.py.
 
-Last Updated: November 14, 2025
-Last Tested: November 14, 2025
+Last Updated: July 11, 2026
+Last Tested: July 11, 2026
 """
 
 import pandas as pd
-from pydantic import BaseModel, ConfigDict, Field, validate_call
+from pydantic import BaseModel, ConfigDict, Field, PrivateAttr, validate_call
 from spacy.tokens import Doc
 
 from lexos.exceptions import LexosException
@@ -19,8 +19,17 @@ class Compare(BaseModel):
     calculator: TopWords
     data: list = Field(default_factory=list)
     results: dict = Field(default_factory=dict)
+    _calculator_config: dict = PrivateAttr(default_factory=dict)
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    def model_post_init(self, __context) -> None:
+        """Cache calculator configuration used for per-comparison instantiation."""
+        self._calculator_config = {
+            field: getattr(self.calculator, field)
+            for field in self.calculator.model_fields
+            if field not in {"target_docs", "comparison_docs", "topwords"}
+        }
 
     def _calculate(
         self, target_docs: list[Doc], comparison_docs: list[Doc]
@@ -34,18 +43,12 @@ class Compare(BaseModel):
         Returns:
             list[tuple]: List of (term, score) tuples
         """
-        # Create a new instance of the calculator with the specific docs
+        # Create a new instance of the calculator with the specific docs.
         calculator_class = type(self.calculator)
-
-        # Get the configuration from the original calculator
-        config = {}
-        for field in self.calculator.model_fields:
-            if field not in ["target_docs", "comparison_docs", "topwords"]:
-                config[field] = getattr(self.calculator, field)
-
-        # Create new instance with target and comparison docs
         new_calculator = calculator_class(
-            target_docs=target_docs, comparison_docs=comparison_docs, **config
+            target_docs=target_docs,
+            comparison_docs=comparison_docs,
+            **self._calculator_config,
         )
 
         return new_calculator.topwords
