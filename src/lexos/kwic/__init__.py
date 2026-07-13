@@ -1,7 +1,7 @@
 """kwic.py.
 
-Last Updated: December 6, 2025
-Last Tested: July 28, 2025
+Last Updated: July 13, 2026
+Last Tested: July ar, 2026
 
 A current limitation is that all spaCy docs must share the same model. This is due to the way spaCy loads models and the Matcher/PhraseMatcher, which are tied to the vocabulary of the loaded model. Without detecting the document models and loading each one, the only way to support lists of documents with different models is to create separate instances of the Kwic class for each set of documents created with a specific model.
 
@@ -108,7 +108,12 @@ class Kwic(BaseModel):
             list: A list of tuples, each containing the context before, the matched keyword,
                 and the context after, or a DataFrame with the same content.
         """
-        # Validate input types
+        matcher = matcher.lower() if isinstance(matcher, str) else matcher
+        if matcher == "character":
+            matcher = "characters"
+
+        # Ensure that docs and labels are lists of equal length
+        docs = ensure_list(docs)
         if matcher in ["rule", "phrase", "tokens"] and any(
             isinstance(doc, str) for doc in docs
         ):
@@ -116,8 +121,6 @@ class Kwic(BaseModel):
                 "Docs must be spaCy Doc objects when using 'rule', 'phrase', or 'tokens' matcher. To search raw text strings, use the 'characters' matcher type, setting `use_regex` if you wish to use regex patterns."
             )
 
-        # Ensure that docs and labels are lists of equal length
-        docs = ensure_list(docs)
         if isinstance(labels, list):
             labels = ensure_list(labels)
             if len(docs) != len(labels) and labels:
@@ -126,6 +129,8 @@ class Kwic(BaseModel):
                 )
         else:
             labels = [f"Doc {i + 1}" for i in range(len(docs))]
+
+        patterns = ensure_list(patterns)
 
         # Assign search parameters and call match method
         match matcher:
@@ -154,9 +159,35 @@ class Kwic(BaseModel):
                 patterns = ensure_list(patterns)
                 hits = list(
                     self._match_strings(
-                        docs, labels, patterns, window, case_sensitive=case_sensitive
+                        docs,
+                        labels,
+                        patterns,
+                        window,
+                        case_sensitive=case_sensitive,
+                        use_regex=use_regex,
                     )
                 )
+
+        if not as_df:
+            if hits and sort_by in [
+                "doc",
+                "context_before",
+                "keyword",
+                "context_after",
+            ]:
+                sort_index = [
+                    "doc",
+                    "context_before",
+                    "keyword",
+                    "context_after",
+                ].index(sort_by)
+                sort_key = natsort_keygen(alg=self.alg)
+                hits = sorted(
+                    hits,
+                    key=lambda item: sort_key(item[sort_index]),
+                    reverse=not ascending,
+                )
+            return hits
 
         # Convert hits to DataFrame for sorting
         df = pd.DataFrame(
@@ -168,11 +199,6 @@ class Kwic(BaseModel):
             df = df.sort_values(
                 by=sort_by, ascending=ascending, key=natsort_keygen(alg=self.alg)
             )
-
-        # If as_df is False, convert DataFrame to list of dictionaries
-        if not as_df:
-            result = list(df.to_records(index=False))
-            return [tuple(item) for item in result]
 
         return df
 
@@ -207,23 +233,28 @@ class Kwic(BaseModel):
         patterns: list,
         window: int,
         case_sensitive: bool,
+        use_regex: bool,
     ):
         """Match keywords in a string and return their context.
 
         Args:
             docs (list[str]): The text to search within.
-            labels (str): A list of labels for the documents.
+            labels (list[str]): A list of labels for the documents.
             patterns (list): A list of regex patterns to match.
             window (int): The number of characters to include before and after the match.
             case_sensitive (bool): If True, the matching will be case-sensitive.
+            use_regex (bool): If True, use regex for matching. Otherwise, match exact strings.
 
         Yields:
             tuple (tuple): A tuple containing the context before, the matched keyword, and the context after.
         """
         flags = 0 if case_sensitive else re.IGNORECASE
+        if not use_regex:
+            patterns = [re.escape(pattern) for pattern in patterns]
+        compiled_patterns = [re.compile(pattern, flags=flags) for pattern in patterns]
         for i, doc in enumerate(docs):
-            for pattern in patterns:
-                for match in re.finditer(pattern, doc, flags=flags):
+            for compiled in compiled_patterns:
+                for match in compiled.finditer(doc):
                     start = match.start()
                     end = match.end()
                     context_start = max(0, start - window)
