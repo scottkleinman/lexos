@@ -1,1319 +1,715 @@
 """test_bootstrap_consensus.py.
 
-Coverage: 95%. Missing: 138, 140, 330-331, 338-339, 432-437, 559, 670
+Coverage: 100%
 
-Note: Some lines are not covered due to the complexity of the tree traversal logic
-or because of issues with pytest's coverage reporting.
-It may be worth refactoring module at some point to make it more testable.
-
-Last Updated: 2026-06-28
+Last Updated: 2026-07-15
 """
 
-import math
-import tempfile
 from io import StringIO
-from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, PropertyMock, patch
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pytest
 from Bio import Phylo
+from Bio.Phylo.BaseTree import Clade, Tree
 from matplotlib.figure import Figure
 
-from lexos.cluster.bootstrap_consensus import BCT
+from lexos.cluster.bootstrap_consensus import (
+    BCT,
+    FanTree,
+    RectangularTree,
+    assign_auto_colors,
+    generate_colors,
+    resolve_label_colors,
+)
 from lexos.dtm import DTM
 from lexos.exceptions import LexosException
 
 
-class TestBCT:
-    """Test suite for the BCT (Bootstrap Consensus Tree) class."""
+def test_generate_colors_uses_fixed_palette_for_small_n():
+    """Small n should return the expected first colors from the fixed palette."""
+    colors = generate_colors(3)
+    assert colors == ["#1f77b4", "#ff7f0e", "#2ca02c"]
 
-    @pytest.fixture
-    def sample_dtm(self):
-        """Create a sample DTM for testing."""
-        data = np.array(
-            [[1, 2, 3, 4, 5], [2, 3, 4, 5, 6], [3, 4, 5, 6, 7], [4, 5, 6, 7, 8]]
+
+def test_generate_colors_returns_hex_values_for_large_n():
+    """Large n should still return n distinct hex colors."""
+    colors = generate_colors(12)
+    assert len(colors) == 12
+    assert len(set(colors)) == 12
+    assert all(color.startswith("#") and len(color) == 7 for color in colors)
+
+
+def test_resolve_label_colors_applies_custom_mapping_to_known_labels_only():
+    """Only labels present in the tree should be recolored by explicit mappings."""
+    tree = Phylo.read(StringIO("((A:1,B:1):1,C:1);"), "newick")
+
+    resolved = resolve_label_colors(
+        tree=tree,
+        label_colors={"#ff0000": ["A", "MISSING"], "#0000ff": ["C"]},
+        base_color="#111111",
+    )
+
+    assert resolved == {"A": "#ff0000", "B": "#111111", "C": "#0000ff"}
+
+
+def test_resolve_label_colors_auto_uses_generated_assignments():
+    """Auto mode should apply assignments returned by assign_auto_colors."""
+    tree = Phylo.read(StringIO("((A:1,B:1):1,C:1);"), "newick")
+
+    with patch("lexos.cluster.bootstrap_consensus.assign_auto_colors") as mock_auto:
+        mock_auto.return_value = {"A": "#aaaaaa", "B": "#bbbbbb"}
+        resolved = resolve_label_colors(
+            tree=tree,
+            label_colors="auto",
+            base_color="#000000",
         )
-        df = pd.DataFrame(
-            data,
-            columns=["doc1", "doc2", "doc3", "doc4", "doc5"],
-            index=["term1", "term2", "term3", "term4"],
-        )
-        dtm = Mock(spec=DTM)
-        dtm.to_df.return_value = df
-        return dtm
-
-    @pytest.fixture
-    def sample_labels_list(self):
-        """Create sample labels as a list."""
-        return ["Document 1", "Document 2", "Document 3", "Document 4", "Document 5"]
-
-    @pytest.fixture
-    def sample_labels_dict(self):
-        """Create sample labels as a dictionary."""
-        return {0: "Doc A", 1: "Doc B", 2: "Doc C", 3: "Doc D", 4: "Doc E"}
-
-    def test_bct_initialization_basic(self, sample_dtm):
-        """Test basic BCT initialization."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-
-            assert bct.dtm == sample_dtm
-            assert bct.metric == "euclidean"
-            assert bct.method == "average"
-            assert bct.cutoff == 0.5
-            assert bct.iterations == 100
-            assert bct.replace == "without"
-            assert bct.text_color == "rgb(0, 0, 0)"
-            assert bct.title == "Bootstrap Consensus Tree Result"
-            assert bct.layout == "rectangular"
-            assert bct.figsize == (10, 10)
-            assert bct.fig is not None
-
-    def test_bct_initialization_with_custom_parameters(
-        self, sample_dtm, sample_labels_list
-    ):
-        """Test BCT initialization with custom parameters."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(
-                dtm=sample_dtm,
-                metric="manhattan",
-                method="ward",
-                cutoff=0.7,
-                iterations=50,
-                replace="with",
-                labels=sample_labels_list,
-                text_color="rgb(255, 0, 0)",
-                title="Custom Tree",
-                layout="fan",
-                figsize=(10, 8),
-            )
-
-            assert bct.metric == "manhattan"
-            assert bct.method == "ward"
-            assert bct.cutoff == 0.7
-            assert bct.iterations == 50
-            assert bct.replace == "with"
-            assert bct.labels == sample_labels_list
-            assert bct.text_color == "rgb(255, 0, 0)"
-            assert bct.title == "Custom Tree"
-            assert bct.layout == "fan"
-            assert bct.figsize == (10, 8)
-
-    def test_validate_figsize_invalid(self, sample_dtm):
-        """Test figsize validation with invalid values."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            with pytest.raises(
-                LexosException, match="figsize values must be greater than 0"
-            ):
-                BCT(dtm=sample_dtm, figsize=(0, 10))
-
-    def test_doc_term_matrix_property(self, sample_dtm):
-        """Test _doc_term_matrix property."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-            matrix = bct._doc_term_matrix
-
-            # Should return transposed DataFrame
-            assert isinstance(matrix, pd.DataFrame)
-            assert matrix.shape == (5, 4)  # 5 docs, 4 terms
-            assert list(matrix.index) == ["doc1", "doc2", "doc3", "doc4", "doc5"]
-
-    def test_doc_term_matrix_property_no_dtm(self):
-        """Test _doc_term_matrix property raises error when no DTM."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT()
-
-            with pytest.raises(LexosException, match="No document term matrix found"):
-                _ = bct._doc_term_matrix
-
-    def test_document_label_map_with_string_labels(
-        self, sample_dtm, sample_labels_list
-    ):
-        """Test _document_label_map with string labels."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm, labels=sample_labels_list)
-            label_map = bct._document_label_map
-
-            expected = {
-                0: "Document 1",
-                1: "Document 2",
-                2: "Document 3",
-                3: "Document 4",
-                4: "Document 5",
-            }
-            assert label_map == expected
-
-    def test_document_label_map_with_int_labels(self, sample_dtm):
-        """Test _document_label_map with integer labels."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
 
-            int_labels = [1, 2, 3, 4, 5]
-            bct = BCT(dtm=sample_dtm, labels=int_labels)
-            label_map = bct._document_label_map
+    assert resolved == {"A": "#aaaaaa", "B": "#bbbbbb", "C": "#000000"}
 
-            expected = {0: "doc1", 1: "doc2", 2: "doc3", 3: "doc4", 4: "doc5"}
-            assert label_map == expected
-
-    def test_document_label_map_with_dict_labels(self, sample_dtm, sample_labels_dict):
-        """Test _document_label_map with dictionary labels."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm, labels=sample_labels_dict)
-            label_map = bct._document_label_map
-
-            assert label_map == sample_labels_dict
-
-    def test_document_label_map_no_labels(self, sample_dtm):
-        """Test _document_label_map with no labels."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-            label_map = bct._document_label_map
-
-            assert label_map == {}
-
-    def test_validate_text_color_valid(self, sample_dtm):
-        """Test text color validation with valid colors."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            valid_colors = ["rgb(255, 0, 0)", "blue", "#FF0000", "red"]
 
-            for color in valid_colors:
-                bct = BCT(dtm=sample_dtm, text_color=color)
-                assert bct.text_color == color
-
-    def test_validate_text_color_invalid(self, sample_dtm):
-        """Test text color validation with invalid colors."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            with pytest.raises(LexosException, match="Value is not a valid colour"):
-                BCT(dtm=sample_dtm, text_color="invalid_color")
-
-    def test_linkage_to_newick_basic(self):
-        """Test linkage_to_newick static method."""
-        # Simple linkage matrix for 3 items
-        linkage_matrix = np.array([[0, 1, 1.0, 2], [2, 3, 2.0, 3]])
-        labels = ["A", "B", "C"]
-
-        newick = BCT.linkage_to_newick(linkage_matrix, labels)
-
-        assert isinstance(newick, str)
-        assert newick.endswith(";")
-        assert "A" in newick and "B" in newick and "C" in newick
-
-    def test_get_newick_tree(self, sample_dtm):
-        """Test _get_newick_tree method."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-            labels = ["doc1", "doc2", "doc3", "doc4", "doc5"]
-            sample_matrix = bct._doc_term_matrix.sample(
-                axis=1, frac=0.8, random_state=42
-            )
-
-            tree = bct._get_newick_tree(labels, sample_matrix)
-
-            assert tree is not None
-            # Should be a Phylo tree object
-            assert hasattr(tree, "root")
-
-    def test_get_bootstrap_trees(self, sample_dtm):
-        """Test _get_bootstrap_trees method."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm, iterations=5)  # Small number for testing
+def test_assign_auto_colors_groups_by_depth_one_clades():
+    """All descendants of each root child should share a color."""
+    tree = Phylo.read(StringIO("(((A:1,B:1):1,C:1):1,(D:1,E:1):1);"), "newick")
 
-            with patch.object(bct, "_get_newick_tree") as mock_newick:
-                mock_tree = Mock()
-                mock_newick.return_value = mock_tree
+    colors = assign_auto_colors(tree)
 
-                trees = bct._get_bootstrap_trees()
-
-                assert len(trees) == 5
-                assert mock_newick.call_count == 5
-
-    def test_get_bootstrap_trees_reuses_doc_term_matrix(self, sample_dtm):
-        """Test that _get_bootstrap_trees reuses the cached doc term matrix."""
-        from unittest.mock import PropertyMock
-
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
+    assert set(colors) == {"A", "B", "C", "D", "E"}
+    assert colors["A"] == colors["B"] == colors["C"]
+    assert colors["D"] == colors["E"]
+    assert colors["A"] != colors["D"]
 
-            bct = BCT(dtm=sample_dtm, iterations=3)
 
-            with patch.object(
-                BCT, "_doc_term_matrix", new_callable=PropertyMock
-            ) as mock_property:
-                mock_property.return_value = sample_dtm.to_df().T
-                with patch.object(
-                    bct, "_get_newick_tree", return_value=Mock()
-                ) as mock_newick:
-                    bct._get_bootstrap_trees()
-                    assert mock_property.call_count == 1
-                    assert mock_newick.call_count == 3
-
-    def test_get_bootstrap_consensus_tree(self, sample_dtm):
-        """Test _get_bootstrap_consensus_tree method."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
+def test_assign_auto_colors_skips_terminals_without_names():
+    """Unnamed terminals should be ignored by color assignment."""
+    left = Clade(clades=[Clade(name="A"), Clade(name=None)])
+    right = Clade(clades=[Clade(name="B"), Clade(name="C")])
+    tree = Tree(root=Clade(clades=[left, right]))
 
-            with patch.object(bct, "_get_bootstrap_trees") as mock_trees:
-                # Mock some simple trees
-                mock_trees.return_value = [Mock() for _ in range(3)]
+    colors = assign_auto_colors(tree)
 
-                with patch(
-                    "lexos.cluster.bootstrap_consensus.majority_consensus"
-                ) as mock_consensus:
-                    mock_consensus_tree = Mock()
-                    mock_consensus.return_value = mock_consensus_tree
+    assert set(colors) == {"A", "B", "C"}
+    assert all(color.startswith("#") and len(color) == 7 for color in colors.values())
 
-                    result = bct._get_bootstrap_consensus_tree()
 
-                    assert result == mock_consensus_tree
-                    mock_consensus.assert_called_once()
+def test_bct_accepts_numpy_matrix_and_generates_default_labels():
+    """Array input should be accepted and default labels should be generated."""
+    dtm = np.array([[1.0, 2.0, 3.0], [3.0, 4.0, 5.0]])
 
-    def test_get_bootstrap_consensus_tree_fig_rectangular(self, sample_dtm):
-        """Test _get_bootstrap_consensus_tree_fig with rectangular layout."""
-        # Don't patch the method during initialization - let it run normally
-        with patch.object(BCT, "_get_bootstrap_consensus_tree") as mock_tree:
-            mock_tree.return_value = Mock()
+    with patch.object(BCT, "_get_bootstrap_consensus_tree_fig", return_value=object()):
+        bct = BCT(dtm=dtm)
 
-            with patch.object(BCT, "_draw_rectangular_tree") as mock_draw:
-                mock_figure = Mock(spec=Figure)
-                mock_draw.return_value = mock_figure
+    assert bct.labels == ["Doc1", "Doc2"]
+    assert bct._doc_term_matrix.index.tolist() == ["Doc1", "Doc2"]
 
-                # Create BCT instance (this will call _get_bootstrap_consensus_tree_fig)
-                bct = BCT(dtm=sample_dtm, layout="rectangular")
 
-                # Verify the draw method was called during initialization
-                mock_draw.assert_called_once()
+def test_bct_rejects_non_numeric_document_term_matrix():
+    """Non-numeric matrix values should raise a clear LexosException."""
+    dtm = pd.DataFrame([["x", "y"], ["a", "b"]], index=["d1", "d2"])
 
-    def test_get_bootstrap_consensus_tree_fig_fan(self, sample_dtm):
-        """Test _get_bootstrap_consensus_tree_fig with fan layout."""
-        # Don't patch the method during initialization - let it run normally
-        with patch.object(BCT, "_get_bootstrap_consensus_tree") as mock_tree:
-            mock_tree.return_value = Mock()
-
-            with patch.object(BCT, "_draw_fan_tree") as mock_draw:
-                mock_figure = Mock(spec=Figure)
-                mock_draw.return_value = mock_figure
-
-                # Create BCT instance (this will call _get_bootstrap_consensus_tree_fig)
-                bct = BCT(dtm=sample_dtm, layout="fan")
-
-                # Verify the draw method was called during initialization
-                mock_draw.assert_called_once()
-
-    def test_get_bootstrap_consensus_tree_fig_invalid_layout(self, sample_dtm):
-        """Test _get_bootstrap_consensus_tree_fig with invalid layout."""
-        # Use a valid layout for initialization to avoid the mock iteration issue
-        with patch.object(BCT, "_get_bootstrap_consensus_tree") as mock_tree:
-            mock_tree.return_value = Mock()
-
-            with patch.object(BCT, "_draw_rectangular_tree") as mock_draw:
-                mock_draw.return_value = Mock(spec=Figure)
-
-                # Create BCT instance with valid layout (this will work)
-                bct = BCT(dtm=sample_dtm, layout="rectangular")
-
-                # Now test the method directly with invalid layout
-                with pytest.raises(ValueError, match="Unknown layout: invalid"):
-                    bct._get_bootstrap_consensus_tree_fig("invalid")
-
-    def test_draw_rectangular_tree_exists(self, sample_dtm):
-        """Test that _draw_rectangular_tree method exists.
-
-        Note: This method is primarily concerned with matplotlib rendering, which is better tested through integration tests rather than unit tests. The core logic of the BCT class is already well-tested through the other methods. If we absolutely need to test this method, we can focus on testing it through the higher-level methods that call it (like _get_bootstrap_consensus_tree_fig) rather than testing it in isolation.
-        """
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-
-            # Just verify the method exists
-            assert hasattr(bct, "_draw_rectangular_tree")
-            assert callable(getattr(bct, "_draw_rectangular_tree"))
-
-    def test_draw_fan_tree_exists(self, sample_dtm):
-        """Test that _draw_fan_tree method exists.
-
-        Note: This method is primarily concerned with matplotlib rendering and complex
-        tree structure manipulation, which is better tested through integration tests
-        rather than unit tests. The core logic of the BCT class is already well-tested
-        through the other methods.
-        """
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-
-            # Just verify the method exists
-            assert hasattr(bct, "_draw_fan_tree")
-            assert callable(getattr(bct, "_draw_fan_tree"))
-
-    def test_draw_fan_tree_no_terminals(self, sample_dtm):
-        """Test _draw_fan_tree with no terminal nodes."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-
-            mock_tree = Mock()
-            mock_tree.get_terminals.return_value = []
-
-            normalized_color = (0, 0, 0)
-
-            with pytest.raises(ValueError, match="Tree has no terminal nodes"):
-                bct._draw_fan_tree(mock_tree, normalized_color, "fan")
-
-    def test_save_method(self, sample_dtm):
-        """Test save method."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
-            mock_figure = Mock(spec=Figure)
-            mock_fig_method.return_value = mock_figure
-
-            bct = BCT(dtm=sample_dtm)
-
-            with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_file:
-                bct.save(tmp_file.name)
-                mock_figure.savefig.assert_called_once_with(tmp_file.name)
-
-    def test_save_method_no_path(self, sample_dtm):
-        """Test save method with no path."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-
-            with pytest.raises(LexosException, match="You must provide a valid path"):
-                bct.save("")
-
-    def test_save_method_none_path(self, sample_dtm):
-        """Test save method with None path."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-
-            with pytest.raises(LexosException, match="You must provide a valid path"):
-                bct.save(None)
-
-    def test_show_method(self, sample_dtm):
-        """Test show method."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
-            mock_figure = Mock(spec=Figure)
-            mock_fig_method.return_value = mock_figure
-
-            bct = BCT(dtm=sample_dtm)
-
-            result = bct.show()
-            assert result == mock_figure
-
-    def test_show_method_no_figure(self, sample_dtm):
-        """Test show method with no figure."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig:
-            mock_fig.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-            bct.fig = None
-
-            with pytest.raises(
-                LexosException,
-                match="You must call the instance before showing the figure",
-            ):
-                bct.show()
-
-    def test_plt_close_called_in_init(self, sample_dtm):
-        """Test that plt.close() is called in __init__."""
-        with (
-            patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig,
-            patch("matplotlib.pyplot.close") as mock_close,
+    with patch.object(BCT, "_get_bootstrap_consensus_tree_fig", return_value=object()):
+        with pytest.raises(
+            LexosException,
+            match="must contain only numeric values",
         ):
-            mock_fig.return_value = Mock(spec=Figure)
+            BCT(dtm=dtm)
 
-            BCT(dtm=sample_dtm)
 
-            mock_close.assert_called_once()
+def test_fantree_draw_builds_figure_with_labels_and_title():
+    """Draw should render branches/labels and return a matplotlib Figure."""
+    tree = Phylo.read(StringIO("((A:1,B:1):1,(C:1,D:1):1);"), "newick")
+    fan = FanTree(
+        tree_obj=tree,
+        title="Coverage Title",
+        label_colors={"#ff0000": ["A"], "#00aa00": ["C"]},
+        label_fontsize=10,
+    )
 
-    def test_color_parsing(self, sample_dtm):
-        """Test color parsing for RGB values."""
-        # Don't patch the method during initialization - let it run normally
-        with (
-            patch.object(BCT, "_get_bootstrap_consensus_tree") as mock_tree,
-            patch.object(BCT, "_draw_rectangular_tree") as mock_draw,
+    fig = fan.draw()
+
+    assert isinstance(fig, Figure)
+    assert fig._suptitle is not None
+    assert fig._suptitle.get_text() == "Coverage Title"
+    assert len(fig.axes) == 1
+    assert len(fig.axes[0].texts) == 4
+
+
+def test_fantree_compute_equal_angle_flips_terminal_label_orientation():
+    """Terminal labels in the left hemisphere should rotate by 180 degrees."""
+    base_tree = Tree(root=Clade(clades=[Clade(name="A"), Clade(name="B")]))
+    fan = FanTree(tree_obj=base_tree)
+
+    lines, labels_info = fan._compute_equal_angle(
+        Clade(name="T"), min_angle=np.pi / 2, max_angle=3 * np.pi / 2, x=1.0, y=2.0
+    )
+
+    assert lines == []
+    assert len(labels_info) == 1
+    x, y, angle_rad, angle_deg, label = labels_info[0]
+    assert (x, y, label) == (1.0, 2.0, "T")
+    assert np.isclose(angle_rad, np.pi)
+    assert np.isclose(angle_deg, 0.0)
+
+
+def test_fantree_compute_equal_angle_internal_clade_uses_default_branch_length():
+    """Internal layout should use 0.5 when a child branch length is missing."""
+    root = Clade(
+        clades=[Clade(name="A", branch_length=None), Clade(name="B", branch_length=1.0)]
+    )
+    tree = Tree(root=root)
+    fan = FanTree(tree_obj=tree)
+
+    lines, labels_info = fan._compute_equal_angle(root)
+
+    assert len(lines) == 2
+    assert len(labels_info) == 2
+    first_segment = lines[0]
+    (x1, y1), (x2, y2) = first_segment
+    assert np.isclose(np.hypot(x2 - x1, y2 - y1), 0.5)
+
+
+def test_fantree_get_leaf_count_terminal_and_recursive():
+    """Leaf counting should handle both terminal and nested clades."""
+    root = Clade(
+        clades=[Clade(name="A"), Clade(clades=[Clade(name="B"), Clade(name="C")])]
+    )
+    tree = Tree(root=root)
+    fan = FanTree(tree_obj=tree)
+
+    assert fan._get_leaf_count(Clade(name="leaf")) == 1
+    assert fan._get_leaf_count(root) == 3
+
+
+def test_fantree_normalize_branches_covers_proportional_and_fixed_modes():
+    """Normalization should update internal and terminal branch lengths in both modes."""
+    root_prop = Clade(
+        clades=[Clade(name="A"), Clade(clades=[Clade(name="B"), Clade(name="C")])]
+    )
+    fan_prop = FanTree(
+        tree_obj=Tree(root=root_prop), min_leaf_len=1.7, internal_scale=0.6
+    )
+
+    fan_prop._normalize_branches(root_prop, use_proportional_branches=True)
+
+    expected_root = max(0.3, 3 * 0.15) * 0.6
+    assert np.isclose(root_prop.branch_length, expected_root)
+    assert np.isclose(root_prop.clades[0].branch_length, 1.7)
+    assert np.isclose(root_prop.clades[1].clades[0].branch_length, 1.7)
+
+    root_fixed = Clade(branch_length=None, clades=[Clade(name="X"), Clade(name="Y")])
+    fan_fixed = FanTree(
+        tree_obj=Tree(root=root_fixed), min_leaf_len=1.2, internal_scale=0.4
+    )
+
+    fan_fixed._normalize_branches(root_fixed, use_proportional_branches=False)
+
+    assert np.isclose(root_fixed.branch_length, 0.4)
+    assert np.isclose(root_fixed.clades[0].branch_length, 1.2)
+    assert np.isclose(root_fixed.clades[1].branch_length, 1.2)
+
+
+def test_rectangulartree_draw_supports_dict_labels_and_explicit_figsize():
+    """Rectangular draw should handle dict labels and return a configured figure."""
+    tree = Phylo.read(StringIO("(A:1,B:2);"), "newick")
+    rect = RectangularTree(
+        tree_obj=tree,
+        labels={0: "A", 1: "B"},
+        label_colors={"#ff0000": ["A"]},
+        figsize=(6.0, 4.0),
+        title="Rectangular Dict Labels",
+    )
+
+    fig = rect.draw()
+
+    assert isinstance(fig, Figure)
+    assert np.allclose(fig.get_size_inches(), [6.0, 4.0])
+    ax = fig.axes[0]
+    assert ax.get_xlabel() == "Branch Length"
+    assert ax.get_ylabel() == "Documents"
+    assert ax.get_title() == "Rectangular Dict Labels"
+    plt.close(fig)
+
+
+def test_rectangulartree_draw_uses_default_size_when_figsize_is_none():
+    """When figsize is None, width/height should be computed from label count."""
+    tree = Phylo.read(StringIO("(A:1,B:2);"), "newick")
+    labels = ["A", "B"]
+    rect = RectangularTree(tree_obj=tree, labels=labels, figsize=None)
+
+    fig = rect.draw()
+
+    width, height = fig.get_size_inches()
+    assert np.isclose(width, 9.5)
+    assert np.isclose(height, len(labels) * 0.3 + 1)
+    plt.close(fig)
+
+
+def test_doc_term_matrix_raises_when_dtm_missing():
+    """Accessing _doc_term_matrix should fail when dtm is missing."""
+    bct = BCT.model_construct(dtm=None, labels=None)
+
+    with pytest.raises(LexosException, match="No document term matrix found"):
+        _ = bct._doc_term_matrix
+
+
+def test_doc_term_matrix_handles_dtm_instance_path_via_to_df_transpose():
+    """DTM instance path should use to_df().T before returning the frame."""
+
+    class FakeDTM:
+        def __init__(self, frame: pd.DataFrame):
+            self._frame = frame
+
+        def to_df(self) -> pd.DataFrame:
+            return self._frame
+
+    source = pd.DataFrame(
+        [[1.0, 2.0], [3.0, 4.0]], index=["term1", "term2"], columns=["Doc1", "Doc2"]
+    )
+    fake_dtm = FakeDTM(source)
+
+    with patch("lexos.cluster.bootstrap_consensus.DTM", FakeDTM):
+        bct = BCT.model_construct(dtm=fake_dtm, labels=None)
+        matrix = bct._doc_term_matrix
+
+    assert matrix.equals(source.T)
+
+
+def test_doc_term_matrix_raises_for_unconvertible_array_input():
+    """Unsupported array-like values should raise a LexosException."""
+
+    class BadArray:
+        def __array__(self, dtype=None):
+            raise ValueError("cannot convert")
+
+    bct = BCT.model_construct(dtm=BadArray(), labels=None)
+
+    with pytest.raises(LexosException, match="Unsupported document-term matrix type"):
+        _ = bct._doc_term_matrix
+
+
+def test_doc_term_matrix_raises_for_non_2d_array_input():
+    """One-dimensional raw array input should be rejected."""
+    bct = BCT.model_construct(dtm=[1, 2, 3], labels=None)
+
+    with pytest.raises(LexosException, match="must be two-dimensional"):
+        _ = bct._doc_term_matrix
+
+
+def test_doc_term_matrix_raises_on_dict_label_count_mismatch():
+    """Dict label count must match number of documents."""
+    dtm = pd.DataFrame([[1.0, 2.0], [3.0, 4.0]])
+    bct = BCT.model_construct(dtm=dtm, labels={0: "OnlyOne"})
+
+    with pytest.raises(LexosException, match="number of labels must match"):
+        _ = bct._doc_term_matrix
+
+
+def test_doc_term_matrix_applies_dict_labels_to_index():
+    """Dict labels should be applied to dataframe index in document order."""
+    dtm = pd.DataFrame([[1.0, 2.0], [3.0, 4.0]])
+    bct = BCT.model_construct(dtm=dtm, labels={0: "Alpha", 1: "Beta"})
+
+    matrix = bct._doc_term_matrix
+
+    assert matrix.index.tolist() == ["Alpha", "Beta"]
+
+
+def test_doc_term_matrix_raises_on_list_label_count_mismatch():
+    """List label count must match number of documents."""
+    dtm = pd.DataFrame([[1.0, 2.0], [3.0, 4.0]])
+    bct = BCT.model_construct(dtm=dtm, labels=["OnlyOne"])
+
+    with pytest.raises(LexosException, match="number of labels must match"):
+        _ = bct._doc_term_matrix
+
+
+def test_document_label_map_handles_dict_list_and_none():
+    """Document label map should normalize dict/list labels and support None."""
+    from_dict = BCT.model_construct(dtm=None, labels={0: "A", 1: 200})
+    from_list = BCT.model_construct(dtm=None, labels=["X", 99])
+    from_none = BCT.model_construct(dtm=None, labels=None)
+
+    assert from_dict._document_label_map == {0: "A", 1: "200"}
+    assert from_list._document_label_map == {0: "X", 1: "99"}
+    assert from_none._document_label_map == {}
+
+
+def test_bct_init_raises_when_dtm_is_missing():
+    """BCT init should reject missing document-term matrices."""
+    with pytest.raises(LexosException, match="must provide a document-term matrix"):
+        BCT()
+
+
+def test_bct_init_populates_labels_from_dtm_instance():
+    """When labels are absent, init should adopt labels from a DTM-like object."""
+    docs_df = pd.DataFrame(
+        [[1.0, 2.0], [3.0, 4.0]], index=["term1", "term2"], columns=["DocA", "DocB"]
+    )
+    dtm_obj = DTM.model_construct(labels=["DocA", "DocB"])
+
+    with patch.object(DTM, "to_df", return_value=docs_df):
+        with patch.object(
+            BCT, "_get_bootstrap_consensus_tree_fig", return_value=object()
         ):
-            mock_tree.return_value = Mock()
-            mock_figure = Mock(spec=Figure)
-            mock_draw.return_value = mock_figure
-
-            # Create BCT instance - this will call the real _get_bootstrap_consensus_tree_fig
-            bct = BCT(
-                dtm=sample_dtm, text_color="rgb(255, 128, 64)", layout="rectangular"
-            )
-
-            # Check that the normalized color was calculated correctly during initialization
-            mock_draw.assert_called_once()
-            args = mock_draw.call_args[0]
-            normalized_color = args[1]
-            expected_color = (255 / 255, 128 / 255, 64 / 255)
-            assert normalized_color == expected_color
-
-    @patch("matplotlib.pyplot.subplots")
-    @patch("matplotlib.pyplot.xlabel")
-    @patch("matplotlib.pyplot.ylabel")
-    @patch("matplotlib.pyplot.gca")
-    @patch("matplotlib.pyplot.axis")
-    @patch("matplotlib.pyplot.gcf")
-    @patch("matplotlib.pyplot.title")
-    @patch("lexos.cluster.bootstrap_consensus.Phylo.draw")
-    def test_draw_rectangular_tree(
-        self,
-        mock_phylo_draw,
-        mock_title,
-        mock_gcf,
-        mock_axis,
-        mock_gca,
-        mock_ylabel,
-        mock_xlabel,
-        mock_subplots,
-        sample_dtm,
-    ):
-        """Test _draw_rectangular_tree method."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
-            mock_fig_method.return_value = Mock(spec=Figure)
-
-            # Create BCT instance with labels for _document_label_map
-            bct = BCT(dtm=sample_dtm, labels=["doc1", "doc2", "doc3", "doc4", "doc5"])
-
-            # Setup mocks for the method call
-            mock_fig_obj = Mock(spec=Figure)
-            mock_ax = Mock()
-            mock_subplots.return_value = (mock_fig_obj, mock_ax)
-
-            # Mock gca() to return an object with the required attributes
-            mock_gca_obj = Mock()
-            mock_gca_obj.spines = {
-                "top": Mock(),
-                "right": Mock(),
-                "bottom": Mock(),
-                "left": Mock(),
-            }
-            mock_gca_obj.texts = []  # Empty list for the text iteration
-            mock_gca.return_value = mock_gca_obj
-
-            # Mock gcf() to return an object with required methods
-            mock_gcf_obj = Mock()
-            mock_gcf_obj.set_size_inches = Mock()
-            mock_gcf_obj.tight_layout = Mock()
-            mock_gcf.return_value = mock_gcf_obj
-
-            # Mock axis() to return the required 4 values
-            mock_axis.return_value = (0, 10, 0, 5)  # x_left, x_right, y_low, y_high
-
-            # Create mock tree and normalized color
-            mock_tree = Mock()
-            normalized_color = (1.0, 0.5, 0.25)
-
-            # Call the method directly
-            result = bct._draw_rectangular_tree(mock_tree, normalized_color)
-
-            # Verify the result and that key functions were called
-            assert result == mock_fig_obj
-            mock_phylo_draw.assert_called_once()
-            mock_subplots.assert_called_once()
-            mock_xlabel.assert_called_once_with("Branch Length", color=normalized_color)
-            mock_ylabel.assert_called_once_with("Documents", color=normalized_color)
-            mock_title.assert_called_once_with(bct.title, color=normalized_color)
-
-            # Verify matplotlib styling calls
-            mock_gca_obj.spines["top"].set_visible.assert_called_once_with(False)
-            mock_gca_obj.spines["right"].set_visible.assert_called_once_with(False)
-            mock_gca_obj.spines["bottom"].set_color.assert_called_once_with(
-                normalized_color
-            )
-            mock_gca_obj.spines["left"].set_color.assert_called_once_with(
-                normalized_color
-            )
-            mock_gca_obj.tick_params.assert_called_once_with(colors=normalized_color)
-
-            # Verify figure sizing and layout
-            mock_gcf_obj.set_size_inches.assert_called_once_with(w=10, h=10)
-            mock_gcf_obj.tight_layout.assert_called_once()
-
-    @patch("matplotlib.pyplot.subplots")
-    @patch("matplotlib.pyplot.xlabel")
-    @patch("matplotlib.pyplot.ylabel")
-    @patch("matplotlib.pyplot.gca")
-    @patch("matplotlib.pyplot.axis")
-    @patch("matplotlib.pyplot.gcf")
-    @patch("matplotlib.pyplot.title")
-    @patch("lexos.cluster.bootstrap_consensus.Phylo.draw")
-    def test_draw_rectangular_tree_custom_figsize(
-        self,
-        mock_phylo_draw,
-        mock_title,
-        mock_gcf,
-        mock_axis,
-        mock_gca,
-        mock_ylabel,
-        mock_xlabel,
-        mock_subplots,
-        sample_dtm,
-    ):
-        """Test _draw_rectangular_tree uses custom figsize when configured."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
-            mock_fig_method.return_value = Mock(spec=Figure)
-
-            bct = BCT(
-                dtm=sample_dtm,
-                labels=["doc1", "doc2", "doc3", "doc4", "doc5"],
-                figsize=(11, 7),
-            )
-
-            mock_fig_obj = Mock(spec=Figure)
-            mock_ax = Mock()
-            mock_subplots.return_value = (mock_fig_obj, mock_ax)
-
-            mock_gca_obj = Mock()
-            mock_gca_obj.spines = {
-                "top": Mock(),
-                "right": Mock(),
-                "bottom": Mock(),
-                "left": Mock(),
-            }
-            mock_gca_obj.texts = []
-            mock_gca.return_value = mock_gca_obj
-
-            mock_gcf_obj = Mock()
-            mock_gcf_obj.set_size_inches = Mock()
-            mock_gcf_obj.tight_layout = Mock()
-            mock_gcf.return_value = mock_gcf_obj
-
-            mock_axis.return_value = (0, 10, 0, 5)
-
-            mock_tree = Mock()
-            normalized_color = (1.0, 0.5, 0.25)
-
-            bct._draw_rectangular_tree(mock_tree, normalized_color)
-
-            mock_gcf_obj.set_size_inches.assert_called_once_with(w=11, h=7)
-
-    @patch("matplotlib.pyplot.subplots")
-    @patch("matplotlib.pyplot.title")
-    @patch("matplotlib.pyplot.tight_layout")
-    @patch("lexos.cluster.bootstrap_consensus.colorsys.hsv_to_rgb")
-    @patch("lexos.cluster.bootstrap_consensus.mcolors.rgb2hex")
-    def test_draw_fan_tree(
-        self,
-        mock_rgb2hex,
-        mock_hsv_to_rgb,
-        mock_tight_layout,
-        mock_title,
-        mock_subplots,
-        sample_dtm,
-    ):
-        """Test _draw_fan_tree method."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
-            mock_fig_method.return_value = Mock(spec=Figure)
-
-            # Create BCT instance with labels
-            bct = BCT(dtm=sample_dtm, labels=["doc1", "doc2", "doc3", "doc4", "doc5"])
-
-            # Setup mocks for the method call
-            mock_fig_obj = Mock(spec=Figure)
-            mock_ax = Mock()
-            mock_subplots.return_value = (mock_fig_obj, mock_ax)
-
-            # Mock the color generation functions
-            mock_hsv_to_rgb.return_value = (0.5, 0.8, 0.9)
-            mock_rgb2hex.return_value = "#1f77b4"
-
-            # Create a mock tree with proper structure
-            mock_tree = Mock()
-
-            # Create mock terminal nodes
-            mock_terminal1 = Mock()
-            mock_terminal1.name = "doc1"
-            mock_terminal1.is_terminal.return_value = True
-            mock_terminal1.clades = []
-
-            mock_terminal2 = Mock()
-            mock_terminal2.name = "doc2"
-            mock_terminal2.is_terminal.return_value = True
-            mock_terminal2.clades = []
-
-            mock_terminal3 = Mock()
-            mock_terminal3.name = "doc3"
-            mock_terminal3.is_terminal.return_value = True
-            mock_terminal3.clades = []
-
-            # Create mock internal node
-            mock_internal = Mock()
-            mock_internal.is_terminal.return_value = False
-            mock_internal.clades = [mock_terminal1, mock_terminal2]
-            mock_internal.name = None
-
-            # Create mock root
-            mock_root = Mock()
-            mock_root.is_terminal.return_value = False
-            mock_root.clades = [mock_internal, mock_terminal3]
-            mock_root.name = "root"
-
-            # Setup tree structure
-            mock_tree.get_terminals.return_value = [
-                mock_terminal1,
-                mock_terminal2,
-                mock_terminal3,
-            ]
-            mock_tree.root = mock_root
-
-            # Setup ax mock methods
-            mock_ax.set_aspect = Mock()
-            mock_ax.plot = Mock()
-            mock_ax.text = Mock()
-            mock_ax.set_xlim = Mock()
-            mock_ax.set_ylim = Mock()
-            mock_ax.set_xticks = Mock()
-            mock_ax.set_yticks = Mock()
-            mock_ax.spines = {
-                "top": Mock(),
-                "right": Mock(),
-                "bottom": Mock(),
-                "left": Mock(),
-            }
-
-            # Make spines visible property settable
-            for spine in mock_ax.spines.values():
-                spine.set_visible = Mock()
-
-            normalized_color = (1.0, 0.5, 0.25)
-
-            # Call the method directly
-            result = bct._draw_fan_tree(mock_tree, normalized_color, "fan")
-
-            # Verify the result and that key functions were called
-            assert result == mock_fig_obj
-            mock_subplots.assert_called_once_with(figsize=(10, 10))
-            mock_ax.set_aspect.assert_called_once_with("equal")
-            mock_title.assert_called_once_with(
-                bct.title, color=normalized_color, pad=30, fontsize=16, weight="bold"
-            )
-            mock_tight_layout.assert_called_once()
-
-            # Verify tree terminals were accessed
-            mock_tree.get_terminals.assert_called_once()
-
-            # Verify plot elements were created
-            assert mock_ax.plot.called  # Branch lines should be drawn
-            assert mock_ax.text.called  # Labels should be drawn
-            mock_ax.set_xlim.assert_called()
-            mock_ax.set_ylim.assert_called()
-            mock_ax.set_xticks.assert_called_once_with([])
-            mock_ax.set_yticks.assert_called_once_with([])
-
-            # Verify spines were hidden
-            for spine in mock_ax.spines.values():
-                spine.set_visible.assert_called_once_with(False)
-
-    @patch("matplotlib.pyplot.subplots")
-    @patch("matplotlib.pyplot.title")
-    @patch("matplotlib.pyplot.tight_layout")
-    @patch("lexos.cluster.bootstrap_consensus.colorsys.hsv_to_rgb")
-    @patch("lexos.cluster.bootstrap_consensus.mcolors.rgb2hex")
-    def test_draw_fan_tree_custom_figsize(
-        self,
-        mock_rgb2hex,
-        mock_hsv_to_rgb,
-        mock_tight_layout,
-        mock_title,
-        mock_subplots,
-        sample_dtm,
-    ):
-        """Test _draw_fan_tree uses custom figsize when configured."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
-            mock_fig_method.return_value = Mock(spec=Figure)
-
-            bct = BCT(
-                dtm=sample_dtm,
-                labels=["doc1", "doc2", "doc3", "doc4", "doc5"],
-                figsize=(9, 9),
-            )
-
-            mock_fig_obj = Mock(spec=Figure)
-            mock_ax = Mock()
-            mock_subplots.return_value = (mock_fig_obj, mock_ax)
-
-            mock_hsv_to_rgb.return_value = (0.5, 0.8, 0.9)
-            mock_rgb2hex.return_value = "#1f77b4"
-
-            mock_tree = Mock()
-
-            mock_terminal1 = Mock()
-            mock_terminal1.name = "doc1"
-            mock_terminal1.is_terminal.return_value = True
-            mock_terminal1.clades = []
-
-            mock_terminal2 = Mock()
-            mock_terminal2.name = "doc2"
-            mock_terminal2.is_terminal.return_value = True
-            mock_terminal2.clades = []
-
-            mock_internal = Mock()
-            mock_internal.is_terminal.return_value = False
-            mock_internal.clades = [mock_terminal1, mock_terminal2]
-            mock_internal.name = None
-
-            mock_root = Mock()
-            mock_root.is_terminal.return_value = False
-            mock_root.clades = [mock_internal]
-            mock_root.name = "root"
-
-            mock_tree.get_terminals.return_value = [mock_terminal1, mock_terminal2]
-            mock_tree.root = mock_root
-
-            mock_ax.set_aspect = Mock()
-            mock_ax.plot = Mock()
-            mock_ax.text = Mock()
-            mock_ax.set_xlim = Mock()
-            mock_ax.set_ylim = Mock()
-            mock_ax.set_xticks = Mock()
-            mock_ax.set_yticks = Mock()
-            mock_ax.spines = {
-                "top": Mock(),
-                "right": Mock(),
-                "bottom": Mock(),
-                "left": Mock(),
-            }
-            for spine in mock_ax.spines.values():
-                spine.set_visible = Mock()
-
-            normalized_color = (1.0, 0.5, 0.25)
-            bct._draw_fan_tree(mock_tree, normalized_color, "fan")
-
-            mock_subplots.assert_called_once_with(figsize=(9, 9))
-
-    # def test_draw_fan_tree_no_terminals(self, sample_dtm):
-    #     """Test _draw_fan_tree with no terminal nodes."""
-    #     with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
-    #         mock_fig_method.return_value = Mock(spec=Figure)
-
-    #         # Create BCT instance
-    #         bct = BCT(dtm=sample_dtm)
-
-    #         # Create a mock tree with no terminals
-    #         mock_tree = Mock()
-    #         mock_tree.get_terminals.return_value = []
-
-    #         normalized_color = (0, 0, 0)
-
-    #         with pytest.raises(ValueError, match="Tree has no terminal nodes"):
-    #             bct._draw_fan_tree(mock_tree, normalized_color, "fan")
-
-    def test_draw_fan_tree_no_terminals_coverage(self, sample_dtm):
-        """Test _draw_fan_tree with no terminal nodes to cover lines 287-288.
-
-        Note: The pytest-cov does not seem to register any attempt to cover these lines, although they are being reached.
-        """
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
-            mock_fig_method.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-
-            # Create a mock tree with no terminals
-            mock_tree = Mock()
-            mock_tree.get_terminals.return_value = []
-
-            # Mock matplotlib functions to ensure the method gets past initial setup
-            with (
-                patch("matplotlib.pyplot.subplots") as mock_subplots,
-                patch("matplotlib.pyplot.title"),
-                patch("matplotlib.pyplot.tight_layout"),
-                patch("lexos.cluster.bootstrap_consensus.colorsys"),
-                patch("lexos.cluster.bootstrap_consensus.mcolors"),
-            ):
-                # Setup the subplot mocks properly
-                mock_fig_obj = Mock(spec=Figure)
-                mock_ax = Mock()
-                mock_ax.set_aspect = Mock()
-                mock_subplots.return_value = (mock_fig_obj, mock_ax)
-
-                # This should reach lines 287-288 and raise ValueError
-                with pytest.raises(ValueError, match="Tree has no terminal nodes"):
-                    bct._draw_fan_tree(mock_tree, (0, 0, 0), "fan")
-
-                # Verify the execution path to confirm we reached the terminal check
-                mock_tree.get_terminals.assert_called_once()
-                mock_ax.set_aspect.assert_called_once_with("equal")
-
-    @patch("matplotlib.pyplot.subplots")
-    @patch("matplotlib.pyplot.title")
-    @patch("matplotlib.pyplot.tight_layout")
-    @patch("lexos.cluster.bootstrap_consensus.colorsys.hsv_to_rgb")
-    @patch("lexos.cluster.bootstrap_consensus.mcolors.rgb2hex")
-    def test_draw_fan_tree_single_terminal(
-        self,
-        mock_rgb2hex,
-        mock_hsv_to_rgb,
-        mock_tight_layout,
-        mock_title,
-        mock_subplots,
-        sample_dtm,
-    ):
-        """Test _draw_fan_tree with single terminal node to cover line 313."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
-            mock_fig_method.return_value = Mock(spec=Figure)
-
-            # Create BCT instance
-            bct = BCT(dtm=sample_dtm)
-
-            # Setup mocks for the method call
-            mock_fig_obj = Mock(spec=Figure)
-            mock_ax = Mock()
-            mock_subplots.return_value = (mock_fig_obj, mock_ax)
-
-            # Setup all required ax methods
-            mock_ax.set_aspect = Mock()
-            mock_ax.plot = Mock()
-            mock_ax.text = Mock()
-            mock_ax.set_xlim = Mock()
-            mock_ax.set_ylim = Mock()
-            mock_ax.set_xticks = Mock()
-            mock_ax.set_yticks = Mock()
-            mock_ax.spines = {
-                "top": Mock(),
-                "right": Mock(),
-                "bottom": Mock(),
-                "left": Mock(),
-            }
-            for spine in mock_ax.spines.values():
-                spine.set_visible = Mock()
-
-            # Mock color functions
-            mock_hsv_to_rgb.return_value = (0.5, 0.8, 0.9)
-            mock_rgb2hex.return_value = "#1f77b4"
-
-            # Create a mock tree with exactly ONE terminal
-            mock_tree = Mock()
-            mock_terminal = Mock()
-            mock_terminal.name = "doc1"
-            mock_terminal.is_terminal.return_value = True
-            mock_terminal.clades = []
-
-            mock_tree.get_terminals.return_value = [mock_terminal]  # Only one terminal
-            mock_tree.root = mock_terminal
-
-            normalized_color = (0, 0, 0)
-
-            # Call the method to trigger line 313: angle = start_angle (when num_terminals == 1)
-            result = bct._draw_fan_tree(mock_tree, normalized_color, "fan")
-
-            # Verify it completes successfully
-            assert result == mock_fig_obj
-            mock_tree.get_terminals.assert_called_once()
-
-    def test_draw_fan_tree_many_terminals_simple(self, sample_dtm):
-        """Test _draw_fan_tree with many terminal nodes - to cover lines 354-359.
-
-        Note: The pytest-cov does not seem to register any attempt to cover these lines.
-        """
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
-            mock_fig_method.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-
-            # Create a mock tree with many terminals
-            mock_tree = Mock()
-            terminals = [Mock() for _ in range(12)]  # 12 terminals
-            for i, terminal in enumerate(terminals):
-                terminal.name = f"doc{i + 1}"
-                terminal.is_terminal.return_value = True
-                terminal.clades = []
-
-            mock_tree.get_terminals.return_value = terminals
-            mock_tree.root = Mock()
-            mock_tree.root.clades = terminals
-
-            # Comprehensive mocking to avoid any execution issues
-            with (
-                patch("matplotlib.pyplot.subplots", return_value=(Mock(), Mock())),
-                patch("matplotlib.pyplot.title"),
-                patch("matplotlib.pyplot.tight_layout"),
-                patch(
-                    "lexos.cluster.bootstrap_consensus.colorsys.hsv_to_rgb",
-                    return_value=(0.5, 0.8, 0.9),
-                ),
-                patch(
-                    "lexos.cluster.bootstrap_consensus.mcolors.rgb2hex",
-                    return_value="#1f77b4",
-                ),
-            ):
-                # Just verify the method can handle many terminals without crashing
-                try:
-                    result = bct._draw_fan_tree(mock_tree, (0, 0, 0), "fan")
-                    # If we get here, the method handled > 10 terminals successfully
-                    assert result is not None
-                except Exception as e:
-                    # If it fails, skip the test as the tree structure is too complex to mock properly
-                    pytest.skip(f"Complex tree traversal issue: {e}")
-
-    @patch("matplotlib.pyplot.subplots")
-    @patch("matplotlib.pyplot.title")
-    @patch("matplotlib.pyplot.tight_layout")
-    def test_draw_fan_tree_internal_branches_minimal(
-        self, mock_tight_layout, mock_title, mock_subplots, sample_dtm
-    ):
-        """Test _draw_fan_tree with internal branches - minimal approach for line 465."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
-            mock_fig_method.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-
-            # Setup minimal mocks
-            mock_fig_obj = Mock(spec=Figure)
-            mock_ax = Mock()
-            mock_subplots.return_value = (mock_fig_obj, mock_ax)
-
-            # Mock all ax methods to prevent any attribute errors
-            for method_name in [
-                "set_aspect",
-                "plot",
-                "text",
-                "set_xlim",
-                "set_ylim",
-                "set_xticks",
-                "set_yticks",
-            ]:
-                setattr(mock_ax, method_name, Mock())
-
-            mock_ax.spines = {
-                spine: Mock() for spine in ["top", "right", "bottom", "left"]
-            }
-            for spine in mock_ax.spines.values():
-                spine.set_visible = Mock()
-
-            # Create a very simple tree structure
-            mock_tree = Mock()
-
-            # Two terminals
-            terminal1 = Mock()
-            terminal1.name = "doc1"
-            terminal1.is_terminal.return_value = True
-            terminal1.clades = []
-
-            terminal2 = Mock()
-            terminal2.name = "doc2"
-            terminal2.is_terminal.return_value = True
-            terminal2.clades = []
-
-            # One internal node
-            internal = Mock()
-            internal.is_terminal.return_value = False
-            internal.clades = [terminal1, terminal2]
-            internal.name = None
-
-            # Root with internal child (this is the key for line 465)
-            mock_root = Mock()
-            mock_root.is_terminal.return_value = False
-            mock_root.clades = [internal]  # Root has internal child
-            mock_root.name = "root"
-
-            mock_tree.get_terminals.return_value = [terminal1, terminal2]
-            mock_tree.root = mock_root
-
-            # Mock color functions to avoid any color generation issues
-            with (
-                patch(
-                    "lexos.cluster.bootstrap_consensus.colorsys.hsv_to_rgb",
-                    return_value=(0.5, 0.8, 0.9),
-                ),
-                patch(
-                    "lexos.cluster.bootstrap_consensus.mcolors.rgb2hex",
-                    return_value="#1f77b4",
-                ),
-            ):
-                try:
-                    result = bct._draw_fan_tree(mock_tree, (0, 0, 0), "fan")
-                    # If we get here without error, the test succeeded
-                    assert result == mock_fig_obj
-                except Exception as e:
-                    # If it fails due to complex tree traversal, just skip
-                    pytest.skip(f"Tree traversal too complex to mock: {e}")
-
-    @patch("matplotlib.pyplot.subplots")
-    @patch("matplotlib.pyplot.title")
-    @patch("matplotlib.pyplot.tight_layout")
-    def test_draw_fan_tree_internal_branches_complex(
-        self, mock_tight_layout, mock_title, mock_subplots, sample_dtm
-    ):
-        """Test _draw_fan_tree with complex internal structure to cover line 465."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
-            mock_fig_method.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-
-            # Setup minimal mocks
-            mock_fig_obj = Mock(spec=Figure)
-            mock_ax = Mock()
-            mock_subplots.return_value = (mock_fig_obj, mock_ax)
-
-            # Mock all ax methods
-            for method_name in [
-                "set_aspect",
-                "plot",
-                "text",
-                "set_xlim",
-                "set_ylim",
-                "set_xticks",
-                "set_yticks",
-            ]:
-                setattr(mock_ax, method_name, Mock())
-
-            mock_ax.spines = {
-                spine: Mock() for spine in ["top", "right", "bottom", "left"]
-            }
-            for spine in mock_ax.spines.values():
-                spine.set_visible = Mock()
-
-            # Create a tree with THREE levels to ensure internal-to-internal connections
-            mock_tree = Mock()
-
-            # Four terminals
-            terminals = []
-            for i in range(4):
-                terminal = Mock()
-                terminal.name = f"doc{i + 1}"
-                terminal.is_terminal.return_value = True
-                terminal.clades = []
-                terminals.append(terminal)
-
-            # Two internal nodes (level 2)
-            internal1 = Mock()
-            internal1.is_terminal.return_value = False
-            internal1.clades = [terminals[0], terminals[1]]
-            internal1.name = None
-
-            internal2 = Mock()
-            internal2.is_terminal.return_value = False
-            internal2.clades = [terminals[2], terminals[3]]
-            internal2.name = None
-
-            # One higher-level internal node (level 1) - this is key
-            super_internal = Mock()
-            super_internal.is_terminal.return_value = False
-            super_internal.clades = [internal1, internal2]  # Two internal children!
-            super_internal.name = None
-
-            # Root connects to the super internal node
-            mock_root = Mock()
-            mock_root.is_terminal.return_value = False
-            mock_root.clades = [super_internal]
-            mock_root.name = "root"
-
-            mock_tree.get_terminals.return_value = terminals
-            mock_tree.root = mock_root
-
-            # Mock color functions
-            with (
-                patch(
-                    "lexos.cluster.bootstrap_consensus.colorsys.hsv_to_rgb",
-                    return_value=(0.5, 0.8, 0.9),
-                ),
-                patch(
-                    "lexos.cluster.bootstrap_consensus.mcolors.rgb2hex",
-                    return_value="#1f77b4",
-                ),
-            ):
-                try:
-                    result = bct._draw_fan_tree(mock_tree, (0, 0, 0), "fan")
-                    # If we get here without error, the test succeeded
-                    assert result == mock_fig_obj
-                except Exception as e:
-                    # If it fails due to complex tree traversal, just skip
-                    pytest.skip(f"Tree traversal too complex to mock: {e}")
-
-    @patch("matplotlib.pyplot.subplots")
-    @patch("matplotlib.pyplot.title")
-    @patch("matplotlib.pyplot.tight_layout")
-    @patch("lexos.cluster.bootstrap_consensus.colorsys.hsv_to_rgb")
-    @patch("lexos.cluster.bootstrap_consensus.mcolors.rgb2hex")
-    def test_draw_fan_tree_text_positioning_line_576(
-        self,
-        mock_rgb2hex,
-        mock_hsv_to_rgb,
-        mock_tight_layout,
-        mock_title,
-        mock_subplots,
-        sample_dtm,
-    ):
-        """Test _draw_fan_tree to cover line 576 (text positioning logic)."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
-            mock_fig_method.return_value = Mock(spec=Figure)
-
-            # Create BCT instance with labels to ensure text positioning is triggered
-            bct = BCT(
-                dtm=sample_dtm,
-                labels=["Document 1", "Document 2", "Document 3", "Document 4"],
-            )
-
-            # Setup mocks for the method call
-            mock_fig_obj = Mock(spec=Figure)
-            mock_ax = Mock()
-            mock_subplots.return_value = (mock_fig_obj, mock_ax)
-
-            # Setup all required ax methods
-            mock_ax.set_aspect = Mock()
-            mock_ax.plot = Mock()
-            mock_ax.text = Mock()
-            mock_ax.set_xlim = Mock()
-            mock_ax.set_ylim = Mock()
-            mock_ax.set_xticks = Mock()
-            mock_ax.set_yticks = Mock()
-            mock_ax.spines = {
-                "top": Mock(),
-                "right": Mock(),
-                "bottom": Mock(),
-                "left": Mock(),
-            }
-            for spine in mock_ax.spines.values():
-                spine.set_visible = Mock()
-
-            # Mock color functions
-            mock_hsv_to_rgb.return_value = (0.5, 0.8, 0.9)
-            mock_rgb2hex.return_value = "#1f77b4"
-
-            # Create a mock tree with multiple terminals to trigger text positioning
-            mock_tree = Mock()
-            terminals = []
-            for i in range(4):  # 4 terminals to ensure text positioning logic
-                terminal = Mock()
-                terminal.name = f"doc{i + 1}"
-                terminal.is_terminal.return_value = True
-                terminal.clades = []
-                terminals.append(terminal)
-
-            # Create internal structure
-            internal1 = Mock()
-            internal1.is_terminal.return_value = False
-            internal1.clades = [terminals[0], terminals[1]]
-            internal1.name = None
-
-            internal2 = Mock()
-            internal2.is_terminal.return_value = False
-            internal2.clades = [terminals[2], terminals[3]]
-            internal2.name = None
-
-            mock_root = Mock()
-            mock_root.is_terminal.return_value = False
-            mock_root.clades = [internal1, internal2]
-            mock_root.name = "root"
-
-            mock_tree.get_terminals.return_value = terminals
-            mock_tree.root = mock_root
-
-            normalized_color = (0, 0, 0)
-
-            # Call the method - this should trigger line 576 in text positioning logic
-            try:
-                result = bct._draw_fan_tree(mock_tree, normalized_color, "fan")
-
-                # Verify it completes successfully
-                assert result == mock_fig_obj
-                mock_tree.get_terminals.assert_called_once()
-
-                # Verify text positioning was called (which should cover line 576)
-                assert mock_ax.text.called, "Text positioning should be called"
-
-            except Exception as e:
-                # If it fails due to complex tree traversal, just skip
-                pytest.skip(f"Tree traversal too complex to mock: {e}")
-
-    @patch("matplotlib.pyplot.subplots")
-    @patch("matplotlib.pyplot.title")
-    @patch("matplotlib.pyplot.tight_layout")
-    def test_draw_fan_tree_text_angles_line_576(
-        self, mock_tight_layout, mock_title, mock_subplots, sample_dtm
-    ):
-        """Test _draw_fan_tree with specific angles to cover line 576."""
-        with patch.object(BCT, "_get_bootstrap_consensus_tree_fig") as mock_fig_method:
-            mock_fig_method.return_value = Mock(spec=Figure)
-
-            bct = BCT(dtm=sample_dtm)
-
-            # Setup mocks
-            mock_fig_obj = Mock(spec=Figure)
-            mock_ax = Mock()
-            mock_subplots.return_value = (mock_fig_obj, mock_ax)
-
-            # Setup all ax methods
-            for method_name in [
-                "set_aspect",
-                "plot",
-                "text",
-                "set_xlim",
-                "set_ylim",
-                "set_xticks",
-                "set_yticks",
-            ]:
-                setattr(mock_ax, method_name, Mock())
-
-            mock_ax.spines = {
-                spine: Mock() for spine in ["top", "right", "bottom", "left"]
-            }
-            for spine in mock_ax.spines.values():
-                spine.set_visible = Mock()
-
-            # Create a tree with 6 terminals to get varied angles around the circle
-            mock_tree = Mock()
-            terminals = []
-            for i in range(6):
-                terminal = Mock()
-                terminal.name = f"doc{i + 1}"
-                terminal.is_terminal.return_value = True
-                terminal.clades = []
-                terminals.append(terminal)
-
-            mock_tree.get_terminals.return_value = terminals
-            mock_tree.root = Mock()
-            mock_tree.root.is_terminal.return_value = False
-            mock_tree.root.clades = terminals
-
-            # Mock color functions
-            with (
-                patch(
-                    "lexos.cluster.bootstrap_consensus.colorsys.hsv_to_rgb",
-                    return_value=(0.5, 0.8, 0.9),
-                ),
-                patch(
-                    "lexos.cluster.bootstrap_consensus.mcolors.rgb2hex",
-                    return_value="#1f77b4",
-                ),
-            ):
-                try:
-                    result = bct._draw_fan_tree(mock_tree, (0, 0, 0), "fan")
-                    assert result == mock_fig_obj
-                except Exception as e:
-                    pytest.skip(f"Tree traversal too complex to mock: {e}")
+            bct = BCT(dtm=dtm_obj, labels=None)
+
+    assert bct.labels == ["DocA", "DocB"]
+
+
+def test_bct_init_sets_empty_labels_when_array_conversion_fails():
+    """Init should set labels to [] when np.asarray conversion fails."""
+
+    class BadArray:
+        def __array__(self, dtype=None):
+            raise ValueError("cannot convert")
+
+    mock_df = pd.DataFrame([[1.0, 2.0], [3.0, 4.0]])
+    with patch.object(
+        BCT, "_doc_term_matrix", new_callable=PropertyMock
+    ) as mock_matrix:
+        mock_matrix.return_value = mock_df
+        with patch.object(
+            BCT, "_get_bootstrap_consensus_tree_fig", return_value=object()
+        ):
+            bct = BCT(dtm=BadArray(), labels=None)
+
+    assert bct.labels == []
+
+
+def test_bct_init_raises_for_single_document_matrix():
+    """BCT init should require at least two documents."""
+    dtm = pd.DataFrame([[1.0, 2.0, 3.0]])
+
+    with pytest.raises(LexosException, match="at least two documents"):
+        BCT(dtm=dtm)
+
+
+def test_validate_label_colors_accepts_valid_values():
+    """Validator should accept valid dict, auto string, and None values."""
+    assert BCT._validate_label_colors({"#ff0000": ["A"]}) == {"#ff0000": ["A"]}
+    assert BCT._validate_label_colors("auto") == "auto"
+    assert BCT._validate_label_colors(None) is None
+
+
+def test_validate_label_colors_rejects_invalid_dict_and_string_values():
+    """Validator should reject invalid color literals in dict and string forms."""
+    with pytest.raises(LexosException, match="Invalid label colors"):
+        BCT._validate_label_colors({"not-a-color": ["A"]})
+
+    with pytest.raises(LexosException, match="Invalid label colors"):
+        BCT._validate_label_colors("not-a-color")
+
+
+def test_validate_label_colors_rejects_unsupported_types():
+    """Validator should reject non-dict, non-string, non-None values."""
+    with pytest.raises(LexosException, match='label_colors must be a "auto", None'):
+        BCT._validate_label_colors(123)
+
+
+def test_validate_figsize_accepts_none_and_valid_tuple():
+    """Figsize validator should accept None and valid positive tuples."""
+    assert BCT._validate_figsize(None) is None
+    assert BCT._validate_figsize((8.0, 6.0)) == (8.0, 6.0)
+
+
+def test_validate_figsize_rejects_bad_shapes_and_nonpositive_values():
+    """Figsize validator should reject wrong tuple length and nonpositive entries."""
+    with pytest.raises(LexosException, match="exactly two numeric values"):
+        BCT._validate_figsize((10.0,))
+
+    with pytest.raises(LexosException, match="must be greater than 0"):
+        BCT._validate_figsize((10.0, 0.0))
+
+
+def test_validate_label_fontsize_paths():
+    """Font size validator should default None, reject nonpositive, and accept positives."""
+    assert BCT._validate_label_fontsize(None) == 12
+    assert BCT._validate_label_fontsize(14) == 14
+
+    with pytest.raises(LexosException, match="positive integer"):
+        BCT._validate_label_fontsize(0)
+
+
+def test_linkage_to_newick_builds_recursive_tree_string():
+    """Linkage conversion should produce a valid recursive Newick tree."""
+    linkage_matrix = np.array([[0, 1, 0.4, 2], [2, 3, 0.8, 3]])
+    labels = ["A", "B", "C"]
+
+    newick = BCT.linkage_to_newick(linkage_matrix, labels)
+
+    assert isinstance(newick, str)
+    assert newick.endswith(";")
+    assert "(" in newick and ")" in newick
+    assert "A:" in newick and "B:" in newick and "C:" in newick
+
+
+def test_get_newick_tree_uses_linkage_and_reads_newick():
+    """_get_newick_tree should call linkage, convert to Newick, and parse with Phylo."""
+    bct = BCT.model_construct(metric="cityblock", method="average")
+    sample_dtm = pd.DataFrame([[1.0, 2.0], [2.0, 3.0]])
+    expected_tree = object()
+
+    with patch("lexos.cluster.bootstrap_consensus.linkage") as mock_linkage:
+        mock_linkage.return_value = np.array([[0, 1, 1.0, 2]])
+        with patch.object(
+            BCT, "linkage_to_newick", return_value="(A:0.1,B:0.1);"
+        ) as mock_to_newick:
+            with patch(
+                "lexos.cluster.bootstrap_consensus.Phylo.read",
+                return_value=expected_tree,
+            ) as mock_read:
+                result = bct._get_newick_tree(labels=["A", "B"], sample_dtm=sample_dtm)
+
+    assert result is expected_tree
+    mock_linkage.assert_called_once()
+    args, kwargs = mock_linkage.call_args
+    assert np.array_equal(args[0], sample_dtm.values)
+    assert kwargs == {"metric": "cityblock", "method": "average"}
+    mock_to_newick.assert_called_once()
+    mock_read.assert_called_once()
+
+
+def test_get_bootstrap_trees_uses_cached_matrix_labels_and_seeded_state():
+    """_get_bootstrap_trees should read matrix/labels once and build one tree per iteration."""
+    dtm = pd.DataFrame(
+        [[1, 2, 3, 4, 5], [2, 3, 4, 5, 6], [3, 4, 5, 6, 7]],
+        index=["Doc1", "Doc2", "Doc3"],
+    )
+    bct = BCT.model_construct(iterations=3, replace="without", random_seed=42)
+
+    with patch.object(
+        BCT, "_doc_term_matrix", new_callable=PropertyMock
+    ) as mock_matrix:
+        mock_matrix.return_value = dtm
+        with patch.object(
+            BCT, "_get_newick_tree", side_effect=["t1", "t2", "t3"]
+        ) as mock_newick:
+            trees = bct._get_bootstrap_trees()
+
+    assert trees == ["t1", "t2", "t3"]
+    assert mock_newick.call_count == 3
+    for call in mock_newick.call_args_list:
+        kwargs = call.kwargs
+        assert kwargs["labels"] == ["Doc1", "Doc2", "Doc3"]
+        assert isinstance(kwargs["sample_dtm"], pd.DataFrame)
+        assert kwargs["sample_dtm"].shape[1] == 4
+
+
+def test_get_bootstrap_consensus_tree_delegates_to_majority_consensus():
+    """Consensus tree helper should pass bootstrap trees and cutoff through."""
+    bct = BCT.model_construct(cutoff=0.7)
+    tree_list = [object(), object()]
+    consensus_tree = object()
+
+    with patch.object(BCT, "_get_bootstrap_trees", return_value=tree_list):
+        with patch(
+            "lexos.cluster.bootstrap_consensus.majority_consensus",
+            return_value=consensus_tree,
+        ) as mock_consensus:
+            result = bct._get_bootstrap_consensus_tree()
+
+    assert result is consensus_tree
+    mock_consensus.assert_called_once_with(trees=tree_list, cutoff=0.7)
+
+
+def test_get_bootstrap_consensus_tree_fig_rectangular_builds_tree_and_draws():
+    """Rectangular layout should lazily build tree and call RectangularTree.draw()."""
+    built_tree = object()
+    figure = object()
+    bct = BCT.model_construct(
+        tree=None,
+        label_colors={"#ff0000": ["A"]},
+        figsize=(9.0, 6.0),
+        title="Rect",
+        label_fontsize=11,
+        fontfamily="serif",
+        labels=["A", "B"],
+    )
+
+    with patch.object(BCT, "_get_bootstrap_consensus_tree", return_value=built_tree):
+        with patch.object(
+            BCT,
+            "_document_label_map",
+            new_callable=PropertyMock,
+            return_value={0: "A", 1: "B"},
+        ):
+            with patch(
+                "lexos.cluster.bootstrap_consensus.RectangularTree"
+            ) as mock_rect:
+                mock_rect.return_value.draw.return_value = figure
+                result = bct._get_bootstrap_consensus_tree_fig(layout="rectangular")
+
+    assert result is figure
+    assert bct.tree is built_tree
+    mock_rect.assert_called_once()
+    assert mock_rect.call_args.kwargs["tree_obj"] is built_tree
+
+
+def test_get_bootstrap_consensus_tree_fig_fan_and_unknown_layout():
+    """Fan layout should draw with FanTree and unknown layout should raise."""
+    existing_tree = object()
+    fan_figure = object()
+    bct = BCT.model_construct(
+        tree=existing_tree,
+        figsize=(8.0, 8.0),
+        title="Fan",
+        label_fontsize=12,
+        fontfamily="sans-serif",
+        label_colors=None,
+        linewidth=1.5,
+        min_leaf_len=1.2,
+        internal_scale=0.5,
+    )
+
+    with patch("lexos.cluster.bootstrap_consensus.FanTree") as mock_fan:
+        mock_fan.return_value.draw.return_value = fan_figure
+        result = bct._get_bootstrap_consensus_tree_fig(layout="fan")
+
+    assert result is fan_figure
+
+    with pytest.raises(ValueError, match="Unknown layout"):
+        bct._get_bootstrap_consensus_tree_fig(layout="diagonal")
+
+
+def test_save_requires_nonempty_path_and_calls_figure_savefig():
+    """Save should reject empty paths and delegate valid paths to fig.savefig."""
+    mock_fig = type("FigStub", (), {"savefig": lambda self, p: None})()
+    bct = BCT.model_construct(fig=mock_fig)
+
+    with pytest.raises(LexosException, match="provide a valid path"):
+        bct.save("")
+
+    with patch.object(BCT, "_sync_state", return_value=False):
+        with patch.object(mock_fig, "savefig") as mock_savefig:
+            bct.save("/tmp/test-bootstrap.png")
+    mock_savefig.assert_called_once_with("/tmp/test-bootstrap.png")
+
+
+def test_show_switches_layout_and_returns_regenerated_figure():
+    """show() should regenerate figure when layout changes and then return it."""
+    dtm = np.array([[1.0, 2.0], [2.0, 3.0]])
+    old_tree = object()
+    old_fig = object()
+    new_fig = object()
+    with patch.object(BCT, "_get_bootstrap_consensus_tree", return_value=old_tree):
+        with patch.object(
+            BCT,
+            "_get_bootstrap_consensus_tree_fig",
+            side_effect=[old_fig, new_fig],
+        ) as mock_get_fig:
+            bct = BCT(dtm=dtm, layout="rectangular")
+
+            with patch("lexos.cluster.bootstrap_consensus.plt.close") as mock_close:
+                result = bct.show(layout="fan")
+
+    assert bct.layout == "fan"
+    assert bct.fig is new_fig
+    assert result is new_fig
+    assert mock_get_fig.call_count == 2
+    assert mock_get_fig.call_args_list[1].kwargs == {"layout": "fan"}
+    mock_close.assert_called_once()
+
+
+def test_show_raises_when_figure_is_missing():
+    """show() should raise when no figure is available."""
+    bct = BCT.model_construct(layout="rectangular", fig=None)
+
+    with pytest.raises(LexosException, match="before showing the figure"):
+        bct.show()
+
+
+def test_show_redraws_for_visual_setting_change_without_rebuilding_tree():
+    """Changing render settings should redraw but not rebuild consensus tree."""
+    tree_obj = object()
+    fig_obj = object()
+    dtm = np.array([[1.0, 2.0], [2.0, 3.0]])
+
+    with patch.object(
+        BCT, "_get_bootstrap_consensus_tree", return_value=tree_obj
+    ) as mock_tree:
+        with patch.object(
+            BCT, "_get_bootstrap_consensus_tree_fig", return_value=fig_obj
+        ) as mock_fig:
+            bct = BCT(dtm=dtm)
+            assert mock_tree.call_count == 1
+            assert mock_fig.call_count == 1
+
+            bct.title = "Updated Title"
+            bct.show()
+
+    assert mock_tree.call_count == 1
+    assert mock_fig.call_count == 2
+
+
+def test_show_rebuilds_tree_when_random_seed_changes():
+    """Changing random_seed should invalidate tree_spec and rebuild the tree."""
+    dtm = np.array([[1.0, 2.0], [2.0, 3.0]])
+
+    with patch.object(
+        BCT, "_get_bootstrap_consensus_tree", side_effect=[object(), object()]
+    ) as mock_tree:
+        with patch.object(
+            BCT, "_get_bootstrap_consensus_tree_fig", return_value=object()
+        ) as mock_fig:
+            bct = BCT(dtm=dtm, random_seed=1)
+            assert mock_tree.call_count == 1
+            assert mock_fig.call_count == 1
+
+            bct.random_seed = 99
+            bct.show()
+
+    assert mock_tree.call_count == 2
+    assert mock_fig.call_count == 2
+
+
+def test_save_applies_pending_updates_before_saving():
+    """save() should synchronize pending render changes before writing output."""
+    dtm = np.array([[1.0, 2.0], [2.0, 3.0]])
+    saveable_fig = Mock()
+
+    with patch.object(BCT, "_get_bootstrap_consensus_tree", return_value=object()):
+        with patch.object(
+            BCT,
+            "_get_bootstrap_consensus_tree_fig",
+            side_effect=[saveable_fig, saveable_fig],
+        ) as mock_fig:
+            bct = BCT(dtm=dtm)
+            assert mock_fig.call_count == 1
+
+            bct.label_fontsize = 18
+            bct.save("/tmp/bct-sync.png")
+
+    assert mock_fig.call_count == 2
+    saveable_fig.savefig.assert_called_once_with("/tmp/bct-sync.png")
+
+
+def test_serialize_label_colors_dict_normalizes_order_and_label_sequences():
+    """Dict color mappings should be sorted and label lists converted to tuples."""
+    serialized = BCT._serialize_label_colors(
+        {
+            "#00FF00": ["B", "A"],
+            "#0000FF": ["C"],
+        }
+    )
+
+    assert serialized == (
+        "dict",
+        (("#0000FF", ("C",)), ("#00FF00", ("B", "A"))),
+    )
+
+
+def test_serialize_labels_dict_normalizes_key_and_value_types():
+    """Dict label mappings should be normalized to int keys and string values."""
+    serialized = BCT._serialize_labels({"2": "Gamma", 1: 99})
+
+    assert serialized == ("dict", ((1, "99"), (2, "Gamma")))
+
+
+def test_dtm_signature_returns_dataframe_identity_marker():
+    """DataFrame dtm should use the dataframe identity marker branch."""
+    dtm = pd.DataFrame([[1.0, 2.0], [3.0, 4.0]])
+    bct = BCT.model_construct(dtm=dtm)
+
+    assert bct._dtm_signature() == ("dataframe", id(dtm))
