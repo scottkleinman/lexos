@@ -264,28 +264,40 @@ Note that `write_image()` and `write_html()` have parallel `to_image()` and `to_
 
 ## Bootstrap Consensus Trees
 
-A **Bootstrap Consensus Tree** is particularly robust because it doesn't just build one tree. Instead, it builds many, many trees by randomly sampling portions of your DTM. It then finds the "consensus": the most consistently appearing relationships across all those individual trees.
+A **Bootstrap Consensus Tree** is a particularly robust form of hierarchical clustering because it doesn't just build one tree. Instead, it builds multiple trees by randomly sampling portions of your document-term matrix. It then finds the "consensus": the most consistently appearing relationships across all those individual trees.
 
-Generating bootrap consensus dendrograms involves submitting the same distance metric and linkage method parameters as regular dendrogram. However, there are a few additional parameters to set:
+Generating bootstrap consensus dendrograms with the Lexos `BCT` class involves using the same distance metric and linkage method parameters as regular dendrograms, plus a few `BCT`-specific options you can use to adjust your analysis or the appearance of your visualization.
 
-- `dtm`: Unlike the other clustering modules, the `BCT` class accepts only an instance of a Lexos `DTM`.
-- `cutoff`: This is a confidence threshold. As mentioned, the BCT is built from many individual "bootstrap" trees. A `cutoff` of `0.5` (which means 50%) means that a specific grouping of documents (a branch on the tree) must appear in at least 50% of all the trees generated during the `iterations` to be considered reliable enough to show up in the final consensus tree. Higher `cutoff` values (e.g., 0.7 or 0.8) will result in a "sparser" tree, showing only the most robust and consistent relationships. Lower `cutoff` values (e.g., 0.3) will show more relationships, but some of these might be less statistically reliable.
-- `iterations`: This is the number of "bootstrap resampling" rounds. In each round, Lexos takes a random 80% sample of the terms (columns) from your DTM and builds a tree from that sample. More iterations (e.g., 100, 1000) makes the consensus tree more statistically reliable and representative of the underlying relationships in your texts, as it averages out more variations. However, it will take longer to compute. Fewer iterations (e.g., 10, 20) are good for quick testing or initial explorations. For final research results, `100` (the default in the `BCT` class) or higher is often recommended if computation time allows.
-- `replace`: This relates to how the terms are sampled during each iteration. Setting the value to "with" means a term column can be selected multiple times within a single 80% sample (allows for more randomness). The value "without" means each term column can only be selected once per 80% sample (more stable). This setting is generally suitable for DTMs as it ensures each unique term contributes uniquely within a sample.
-- `doc_labels`: This is simply the list of descriptive names for your documents (e.g., "Poe", "Lippard") that we defined earlier. These will appear as the leaves (endpoints) on your tree.
-- `text_color`: Sets the color for all text on the plot (axis labels, branch lengths, and document labels). You can use "rgb(R, G, B)" format. For example: `"rgb(0, 0, 0)"` (black) or `"rgb(255, 0, 0)"` (red).
-- `layout`: Sets the layout of the dendrogram, either "rectangular" (the default) or "fan".
+### Tree Generation Parameters
+
+- `dtm`: The input document-term matrix. `BCT` accepts a Lexos `DTM`, a compatible Pandas DataFrame, or an equivalent 2D array-like structure.
+- `metric`: Distance metric used when creating each bootstrap tree (for example `"euclidean"`, `"cosine"`, or `"cityblock"`).
+- `method`: Linkage method used to merge clusters (for example `"average"`, `"single"`, `"complete"`, or `"ward"`).
+- `cutoff`: This is a confidence threshold. Since a BCT is built from many individual "bootstrap" trees, a `cutoff` of `0.5` (50%) means that a specific grouping of documents (a branch on the tree) must appear in at least 50% of all the trees generated in each iteration to be considered reliable enough to show up in the final consensus tree. Higher `cutoff` values will result in a "sparser" tree, showing only the most robust and consistent relationships. Lower `cutoff` values will show more relationships, but some of these might be less statistically reliable.
+- `iterations`: The number of "bootstrap resampling" rounds. In each round, Lexos takes a random 80% sample of the terms (columns) from your DTM and builds a tree from that sample. More iterations will make the consensus tree more statistically reliable and representative of the underlying relationships in your documents, as it averages out more variations. However, it will take longer to compute. Since fewer iterations will be faster, a lower number is good for quick testing or initial explorations. Setting `iterations` to 100 or higher is recommended for final research results if computation time allows.
+- `replace`: This determines how the terms are sampled during each iteration. If set to "with", a term column can be selected multiple times within a single 80% sample (which allows for more randomness). The default setting "without" means that each term column can only be selected once per 80% sample (which is more stable).
+- `random_seed`: Optional seed integer for reproducible bootstrap sampling.
+
+Keep in mind that there is an element of randomness in the sampling of your data, which means that the results of successive runs will not be the same. Setting `iterations` to a higher value will cause multiple runs to converge on the same results. If you need to reproduce results exactly, set the `random_seed` value to a number of your choice. This will ensure that the bootstrapping process produces the same tree every time you run it.
+
+### Visualization Parameters
+
+- `labels`: A list of labels to use for the leaves (endpoints) on your tree. The list should have the same order as the names in your DTM and will override any names associated with the DTM.
+- `label_colors`: Sets the color for the document labels. If you set it to "auto", the colors will be chosen by the clade structure. You can also provide a dictionary where the keys are hexidecimal color codes and the value are lists of corresponding labels. If you do not set it, the default color is black.
+- `title`: A title to place at the top of the plot.
 - `figsize`: Optional figure size as (width, height) in inches. The default is `(10, 10)`.
+- `label_fontsize`: Sets the font size for document labels.
+- `font_family`: Sets the font family for the entire plot. The default is "sans-serif".
 
 ### Plotting Bootstrap Consensus Trees
 
-To create a bootstrap consensus tree with rectangular layout, use the following code, setting the parameters describe above as required:
+To create a bootstrap consensus tree with rectangular layout, use the following code, setting the parameters described above as required:
 
 ```python
 # Import the BCT class for Bootstrap Consensus Tree
 from lexos.cluster import BCT
 
-# Create an instance of the BCT object (feel free to adjust parameters)
+# Create an instance of the BCT object
 bct = BCT(
     dtm=dtm,
     metric="euclidean",
@@ -293,10 +305,10 @@ bct = BCT(
     cutoff=0.5,
     iterations=10,
     replace="without",
+    random_seed=42,
     labels=labels,
-    text_color="rgb(0, 0, 0)",
     layout="rectangular",
-    title="Bootstrap Consensus Tree (Rectangular Layout)"
+    title="Bootstrap Consensus Tree (Rectangular Layout)",
 )
 
 # Show the figure
@@ -304,13 +316,75 @@ bct.show()
 ```
 
 <figure>
-  <img src="../../cluster/bootstrap_consensus_rectangular.png" alt="Sample Bootstrap Consensus Tree rectangular layout">
+  <img src="../../cluster/bct-shakespeare15-rect.png" alt="Sample Bootstrap Consensus Tree rectangular layout">
   <figcaption>Sample Bootstrap Consensus Tree rectangular layout</figcaption>
 </figure>
 
-To generate a diagram with a fan layout, set `layout="fan"` (and adjust the `title` set above).
+You can also leave the `layout` parameter out of the constructor since "rectangular" is the default setting. To generate a diagram with a fan layout, change the `layout` parameter to "fan":
+
+```python
+# Create an instance of the BCT object
+bct = BCT(
+    dtm=dtm,
+    metric="euclidean",
+    method="average",
+    cutoff=0.5,
+    iterations=10,
+    replace="without",
+    random_seed=42,
+    labels=labels,
+    layout="fan",
+    title="Bootstrap Consensus Tree (Fan Layout)",
+)
+
+# Show the figure
+bct.show()
+```
 
 <figure>
-  <img src="../../cluster/bootstrap_consensus_fan.png" alt="Sample Bootstrap Consensus Tree fan layout">
+  <img src="../../cluster/bct-shakespeare15-fan.png" alt="Sample Bootstrap Consensus Tree fan layout">
   <figcaption>Sample Bootstrap Consensus Tree fan layout</figcaption>
+</figure>
+
+### Changing Parameters After Creation
+
+You can change the settings for an existing `BCT` object after it has been created. For example, you can change the title and layout of the tree:
+
+```python
+bct.title = "Bootstrap Consensus Tree (Rectangular Layout)"
+bct.layout = "rectangular"
+bct.show()
+```
+Keep in mind that changing any of the visualization settings will not change the underlying tree structure, only how it is displayed. If you change any the tree settings, the tree will be rebuilt (which can take quite a bit longer).
+
+If you just want to change the layout and keep the rest of your settings, you can do this with `bct.show(layout="fan")` or `bct.show(layout="rectangular")`. This will redraw the tree in the new layout without rebuilding it.
+
+To color labels automatically by cluster structure, set `label_colors="auto"` and redraw:
+
+```python
+bct.title = "Bootstrap Consensus Tree (Auto Label Colors)"
+bct.label_colors = "auto"
+bct.show(layout="rectangular")
+```
+
+<figure>
+  <img src="../../cluster/bct-shakespeare15-auto-colors.png" alt="Sample Bootstrap Consensus Tree with automatic label colors">
+  <figcaption>Sample Bootstrap Consensus Tree with automatic label colors</figcaption>
+</figure>
+
+You can also provide custom label color groups using hex colors:
+
+```python
+bct.label_colors = {
+    "#FF0000": ["titus-andronicus", "antony-and-cleopatra"],
+    "#00FF00": ["measure-for-measure", "henry-iv-part-1"],
+    "#0000FF": ["two-gentlemen-of-verona"],
+}
+bct.title = "Bootstrap Consensus Tree (Custom Label Colors)"
+bct.show(layout="rectangular")
+```
+
+<figure>
+  <img src="../../cluster/bct-shakespeare15-custom-colors.png" alt="Sample Bootstrap Consensus Tree with custom label colors">
+  <figcaption>Sample Bootstrap Consensus Tree with custom label colors</figcaption>
 </figure>
