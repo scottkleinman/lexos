@@ -69,7 +69,6 @@ dev = [
     "mkdocs-macros-plugin>=1.5.0",
     "mkdocstrings[python]>=1.0.0",
     "griffe-pydantic>=1.1.8",
-    "zensical>=0.0.11",
     "ipykernel>=6.29.5",
     "pre-commit>=4.5.0",
 ]
