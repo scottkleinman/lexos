@@ -315,7 +315,7 @@ def test_with_statistics(mock_df: pd.DataFrame) -> None:
 def test_string_output(mock_df: pd.DataFrame) -> None:
     """Test output of percentages as strings with percent sign."""
     dtm = DTM()
-    result = dtm._get_term_percentages(mock_df, as_str="string")
+    result = dtm._get_term_percentages(mock_df, as_str=True)
     assert all(isinstance(x, str) and x.endswith("%") for x in result.values.flatten())
 
 

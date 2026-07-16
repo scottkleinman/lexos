@@ -242,7 +242,7 @@ class DTM(BaseModel):
         self,
         df: pd.DataFrame,
         rounding: int = 3,
-        as_str: bool | str = "string",
+        as_str: bool = False,
         sum: bool = False,
         mean: bool = False,
         median: bool = False,
@@ -252,7 +252,7 @@ class DTM(BaseModel):
         Args:
             df (pd.DataFrame): The dataframe to convert to percentages.
             rounding (int): The number of decimal places to round to.
-            as_str (bool | str): Whether to return the terms as strings.
+            as_str (bool): Whether to return the terms as strings.
             sum (bool): Whether to include a column for the sum of each row.
             mean (bool): Whether to include a column for the mean of each row.
             median (bool): Whether to include a column for the median of each row.
@@ -276,7 +276,7 @@ class DTM(BaseModel):
             df["Median"] = df.median(numeric_only=True, axis=1)
         if rounding:
             df = df.round(rounding)
-        if as_str == "string":
+        if as_str:
             df = df.astype(str) + "%"
         return df
 
@@ -363,7 +363,8 @@ class DTM(BaseModel):
             df = self._get_term_percentages(
                 df,
                 rounding=rounding,
-                as_str=as_percent,
+                # Explicitly control formatting based on the value of as_percent
+                as_str=True if as_percent == "string" else False,
                 sum=sum,
                 mean=mean,
                 median=median,
