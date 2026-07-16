@@ -1,7 +1,7 @@
 """clustermap.py.
 
-Last Updated: June 28, 2026
-Last Tested: June 28, 2026
+Last Updated: July 15, 2026
+Last Tested: July 15, 2026
 
 Note: These clustermap classes are highly experimental and may change in the future.
 They may require fiddling with size and layout to be readable. The clustermap may
@@ -28,6 +28,7 @@ from scipy.cluster import hierarchy
 from lexos.cluster.sync_script import SYNC_SCRIPT
 from lexos.dtm import DTM
 from lexos.exceptions import LexosException
+from lexos.util import safe_recursion_limit
 
 sns.set_theme()
 
@@ -338,9 +339,10 @@ def _create_dendrogram_traces(
     Returns:
         traces (list): List of plotly scatter traces for dendrogram
     """
-    dendro_data = hierarchy.dendrogram(
-        linkage_matrix, labels=labels, no_plot=True, color_threshold=-np.inf
-    )
+    with safe_recursion_limit(len(linkage_matrix) + 1):
+        dendro_data = hierarchy.dendrogram(
+            linkage_matrix, labels=labels, no_plot=True, color_threshold=-np.inf
+        )
 
     traces = []
 

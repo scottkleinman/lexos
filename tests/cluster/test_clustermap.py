@@ -1,8 +1,7 @@
 """test_clustermap.py.
 
-Coverage: 96%. Missing: 506, 695, 818-819, 824-825, 1042-1047, 1076-1088
-
-Last Updated: June 28, 2026
+Coverage: 96%. Missing: 508, 697, 820-821, 826-827, 1044-1049, 1078-1090
+Last Updated: July 15, 2026
 """
 
 from unittest.mock import Mock, patch
@@ -1857,7 +1856,9 @@ class TestPlotlyClustermap:
             with pytest.raises(
                 (TypeError, ValueError), match="Linkage matrix 'Z' must"
             ):
-                PlotlyClustermap(dtm=sample_dataframe, col_linkage=invalid_linkage)
+                PlotlyClustermap(
+                    dtm=sample_dataframe, col_linkage=invalid_linkage, row_cluster=False
+                )
 
     def test_plotly_clustermap_clustering_disabled_with_no_linkage(
         self, sample_dataframe

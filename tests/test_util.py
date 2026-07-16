@@ -1,9 +1,10 @@
 """Tests for util.py module.
 
-Coverage: 99%. Missing: 89-90, 511-513
-Last Update: July 10, 2026
+Coverage: 87%. Missing: 53-62, 157, 329-342, 354
+Last Update: July 15, 2026
 """
 
+import sys
 import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -14,6 +15,7 @@ from spacy.tokens import Token
 
 from lexos.exceptions import LexosException
 from lexos.util import (
+    LexosException,
     _decode_bytes,
     _try_decode_bytes_,
     count_doc_terms,
@@ -28,6 +30,7 @@ from lexos.util import (
     normalize_file,
     normalize_files,
     normalize_strings,
+    safe_recursion_limit,
     strip_doc,
     to_collection,
 )
@@ -313,6 +316,13 @@ def test_load_spacy_model_with_invalid_string():
             load_spacy_model("invalid_model")
 
 
+def test_load_spacy_model_with_other_oserror():
+    """Test load_spacy_model with an OSError other than 'Model not found'."""
+    with patch("spacy.load", side_effect=OSError("Permission denied")):
+        with pytest.raises(LexosException, match="Error loading model"):
+            load_spacy_model("some_model")
+
+
 def test_load_spacy_model_with_invalid_type():
     """Test load_spacy_model with invalid input type."""
     with pytest.raises(
@@ -468,6 +478,26 @@ def test_decode_bytes_encoding_error():
             _decode_bytes(b"test")
 
 
+def test_decode_bytes_unicode_dammit_fallback():
+    """Test _decode_bytes using UnicodeDammit when chardet fails."""
+    # Force chardet to return ascii (which will fail for non-ascii bytes)
+    # causing _try_decode_bytes_ to fall back to UnicodeDammit.
+    with patch("chardet.detect", return_value={"encoding": "ascii"}):
+        data = "Hello 世界".encode("utf-8")
+        result = _decode_bytes(data)
+        # UnicodeDammit might decode it differently depending on heuristics,
+        # but it should return a string and handled without crash.
+        assert isinstance(result, str)
+        assert len(result) > 0
+
+
+def test_decode_bytes_type_error():
+    """Test _decode_bytes with a TypeError to cover the Exception block."""
+    with patch("lexos.util._try_decode_bytes_", side_effect=TypeError("Bad type")):
+        with pytest.raises(LexosException, match="Chardet failed to detect encoding"):
+            _decode_bytes(b"test")
+
+
 # ---------------- Test strip_doc ----------------
 
 
@@ -596,6 +626,23 @@ def test_to_collection_invalid_input_object():
     """Test to_collection with completely invalid input type."""
     with pytest.raises(TypeError, match="values must be .* or a collection thereof"):
         to_collection(42.5, str, list)  # Float is not string or collection
+
+
+def test_to_collection_unsupported_collection():
+    """Test to_collection with an unsupported collection type to trigger the else block."""
+    with pytest.raises(TypeError, match="values must be .* or a collection thereof"):
+        to_collection({"a": 1}, str, list)
+
+
+def test_safe_recursion_limit_active():
+    """Test that safe_recursion_limit actually changes the limit and restores it."""
+    import sys
+
+    original_limit = sys.getrecursionlimit()
+    target_obs = original_limit + 1000
+    with safe_recursion_limit(target_obs):
+        assert sys.getrecursionlimit() >= target_obs + 500
+    assert sys.getrecursionlimit() == original_limit
 
 
 # ---------------- Integration Tests ----------------
@@ -736,3 +783,27 @@ def test_encoding_detection_performance():
     # Should complete in reasonable time (less than 5 seconds)
     assert end_time - start_time < 5.0
     assert isinstance(encoding, str)
+
+
+def test_load_spacy_model_encoding_error():
+    """Test load_spacy_model with OSError that is not 'Model not found'."""
+    with patch("spacy.load", side_effect=OSError("Some other error")):
+        with pytest.raises(LexosException, match="Error loading model"):
+            load_spacy_model("some_model")
+
+
+def test_to_collection_unknown_type():
+    """Test to_collection with an unsupported collection type to trigger the else block."""
+    # Current implementation handles tuple, list, set, frozenset.
+    # If we pass a dict, it should fall into the else block.
+    with pytest.raises(TypeError, match="values must be .* or a collection thereof"):
+        to_collection({"a": 1}, str, list)
+
+
+def test_safe_recursion_limit_active():
+    """Test that safe_recursion_limit actually changes the limit and restores it."""
+    original_limit = sys.getrecursionlimit()
+    target_obs = original_limit + 1000
+    with safe_recursion_limit(target_obs):
+        assert sys.getrecursionlimit() >= target_obs + 500
+    assert sys.getrecursionlimit() == original_limit

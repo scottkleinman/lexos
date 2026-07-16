@@ -1,7 +1,7 @@
 """dendrogram.py.
 
-Last Updated: June 28, 2026
-Last Tested: June 28, 2026
+Last Updated: July 15, 2026
+Last Tested: July 15, 2026
 """
 
 from pathlib import Path
@@ -18,6 +18,7 @@ from scipy.spatial.distance import pdist
 
 from lexos.dtm import DTM
 from lexos.exceptions import LexosException
+from lexos.util import safe_recursion_limit
 
 
 class Dendrogram(BaseModel):
@@ -144,26 +145,27 @@ class Dendrogram(BaseModel):
         fig, ax = plt.subplots(figsize=self.figsize)
         if self.title:
             plt.title(self.title)
-        sch.dendrogram(
-            Z,
-            labels=self.labels,
-            truncate_mode=self.truncate_mode,
-            color_threshold=self.color_threshold,
-            get_leaves=self.get_leaves,
-            orientation=self.orientation,
-            count_sort=self.count_sort,
-            distance_sort=self.distance_sort,
-            show_leaf_counts=self.show_leaf_counts,
-            no_plot=self.no_plot,
-            no_labels=self.no_labels,
-            leaf_rotation=self.leaf_rotation,
-            leaf_font_size=self.leaf_font_size,
-            leaf_label_func=self.leaf_label_func,
-            show_contracted=self.show_contracted,
-            link_color_func=self.link_color_func,
-            ax=self.ax,
-            above_threshold_color=self.above_threshold_color,
-        )
+        with safe_recursion_limit(matrix_length):
+            sch.dendrogram(
+                Z,
+                labels=self.labels,
+                truncate_mode=self.truncate_mode,
+                color_threshold=self.color_threshold,
+                get_leaves=self.get_leaves,
+                orientation=self.orientation,
+                count_sort=self.count_sort,
+                distance_sort=self.distance_sort,
+                show_leaf_counts=self.show_leaf_counts,
+                no_plot=self.no_plot,
+                no_labels=self.no_labels,
+                leaf_rotation=self.leaf_rotation,
+                leaf_font_size=self.leaf_font_size,
+                leaf_label_func=self.leaf_label_func,
+                show_contracted=self.show_contracted,
+                link_color_func=self.link_color_func,
+                ax=self.ax,
+                above_threshold_color=self.above_threshold_color,
+            )
         self.fig = fig
         plt.close()
 

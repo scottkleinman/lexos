@@ -2,12 +2,13 @@
 
 This file contains helper functions used by multiple modules.
 
-Last Updated: July 10, 2026
-Last Tested: July 10, 2026
+Last Updated: July 15, 2026
+Last Tested: July 15, 2026
 """
 
-import collections
+import sys
 from collections import Counter
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Collection, TypeVar
 
@@ -384,3 +385,17 @@ def to_collection(
         raise TypeError(
             f"values must be {val_type} or a collection thereof, not {type(val)}"
         )
+
+
+@contextmanager
+def safe_recursion_limit(n_observations: int):
+    """Temporarily increase recursion limit based on the number of tree leaves."""
+    old_limit = sys.getrecursionlimit()
+    # A binary tree of N leaves can have a depth up to N.
+    # We add a buffer of 500 for standard stack usage.
+    required_limit = max(old_limit, n_observations + 500)
+    sys.setrecursionlimit(required_limit)
+    try:
+        yield
+    finally:
+        sys.setrecursionlimit(old_limit)

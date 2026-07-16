@@ -1,7 +1,7 @@
 """plotly_dendrogram.py.
 
-Last Updated: June 28, 2026
-Last Tested: June 28, 2026
+Last Updated: July 15, 2026
+Last Tested: July 15, 2026
 
 Information here about how to add truncate mode: https://stackoverflow.com/questions/70801281/how-can-i-plot-a-truncated-dendrogram-plot-using-plotly
 """
@@ -20,6 +20,7 @@ from scipy.spatial.distance import pdist
 
 from lexos.dtm import DTM
 from lexos.exceptions import LexosException
+from lexos.util import safe_recursion_limit
 
 
 class PlotlyDendrogram(BaseModel):
@@ -138,16 +139,17 @@ class PlotlyDendrogram(BaseModel):
                 self.labels = [f"Doc{i + 1}" for i in range(matrix.shape[0])]
 
         # Create the figure
-        self.fig = create_dendrogram(
-            matrix,
-            labels=self.labels,
-            distfun=distfun,
-            linkagefun=linkagefun,
-            orientation=self.orientation,
-            colorscale=self.colorscale,
-            hovertext=self.hovertext,
-            color_threshold=self.color_threshold,
-        )
+        with safe_recursion_limit(matrix.shape[0]):
+            self.fig = create_dendrogram(
+                matrix,
+                labels=self.labels,
+                distfun=distfun,
+                linkagefun=linkagefun,
+                orientation=self.orientation,
+                colorscale=self.colorscale,
+                hovertext=self.hovertext,
+                color_threshold=self.color_threshold,
+            )
 
         # Set the standard layout
         self.fig.update_layout(
