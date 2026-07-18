@@ -71,6 +71,12 @@ Here is a list of the currently available tutorials, organised by module:
 <li>Scrubbing Markup Tags: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/scrubber/tags_tutorial.ipynb">📓 Notebook</a></li>
 </ul>
 
+## Structural Stylometry
+
+<ul>
+<li>Analyzing Structure: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/structural_stylometry/analyzing_structure.ipynb">📓 Notebook</a></li>
+</ul>
+
 ## Tokenizer
 
 <ul>

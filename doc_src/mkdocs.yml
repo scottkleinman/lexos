@@ -39,6 +39,7 @@ nav:
         - Rolling Windows: user_guide/rolling_windows.md
         - Topwords: user_guide/topwords.md
         - Keywords in Context (KWIC): user_guide/kwic.md
+        - Structural Stylometry: user_guide/structural_stylometry.md
       - Topic Modelling:
         - Topic Modeling with MALLET: user_guide/topic_modeling/mallet.md
         - Exploring MALLET Topic Models with DFR Browser 2: user_guide/topic_modeling/dfr_browser2.md
