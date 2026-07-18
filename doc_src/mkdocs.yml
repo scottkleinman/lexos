@@ -114,6 +114,8 @@ nav:
           - scrubber: api/scrubber/scrubber.md
           - tags: api/scrubber/tags.md
           - utils: api/scrubber/utils.md
+      - structural_stylometry:
+          - Overview: api/structural_stylometry/index.md
       - tokenizer:
           - Overview: api/tokenizer/index.md
           - tokenizer: api/tokenizer/tokenizer.md

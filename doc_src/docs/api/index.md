@@ -55,19 +55,23 @@ of the Lexos API modules:
             they are tokenised.</td>
         </tr>
         <tr class="row-even">
+            <td><a class="" href="structural_stylometry/" title="api_lexos.structural_stylometry"><code>structural_stylometry</code></a></td>
+            <td>A set of functions for analyzing the structural style of texts.</td>
+        </tr>
+        <tr class="row-odd">
             <td><a class="" href="tokenizer/" title="api_lexos.tokenizer"><code>tokenizer</code></a></td>
             <td>A set of functions used to convert texts into spaCy tokenised
             <a href="https://spacy.io/" target="_blank">spaCy</a> docs and to manipulate those docs.</td>
         </tr>
-        <tr class="row-odd">
+        <tr class="row-even">
             <td><a class="" href="topic-modeling/" title="api_lexos.topic_modeling"><code>topic_modeling</code></a></td>
             <td>Provides methods for creating and visualizing topic models.</td>
         </tr>
-        <tr class="row-even">
+        <tr class="row-odd">
             <td><a class="" href="util/" title="api_lexos.util"><code>util</code></a></td>
             <td>A set of utility functions available to all modules.</td>
         </tr>
-        <tr class="row-odd">
+        <tr class="row-even">
             <td><a class="" href="visualization/" title="api_lexos.visualization"><code>visualization</code></a></td>
             <td>A set of functions for visualising data generated from documents.</td>
         </tr>
