@@ -25,6 +25,8 @@ coverage.xml
 *.py,cover
 .pytest_cache/
 htmlcov/
+corpus_metadata.json
+corpus.db
 
 # Jupyter Notebook
 .ipynb_checkpoints
