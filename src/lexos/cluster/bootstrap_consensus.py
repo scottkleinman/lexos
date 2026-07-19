@@ -801,7 +801,7 @@ class BCT(BaseModel):
 
     @field_validator("figsize", mode="after")
     @classmethod
-    def _validate_figsize(cls, value):
+    def _validate_figsize(cls, value: tuple[float, float]) -> tuple[float, float]:
         """Validate that the figure size is a tuple of two positive numbers.
 
         Args:
