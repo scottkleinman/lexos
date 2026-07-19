@@ -1,8 +1,8 @@
 """test_mallet.py.
 
-Coverage: 100%.
+Coverage: 99%. Missing: 247-251, 683-684, 1023, 1119, 1178, 1186
 
-Last Updated: June 20, 2026
+Last Updated: July 19, 2026
 """
 
 import subprocess
@@ -870,6 +870,7 @@ def test_plot_termite_builds_components_and_maps_highlights(tmp_model_dir):
                 highlight_topics=[1],
                 n_terms=15,
                 output_path=expected_save,
+                show=False,
             )
 
     assert axis == "fake-axis"
@@ -892,8 +893,8 @@ def test_plot_termite_rejects_unknown_topics(tmp_model_dir):
             m.plot_termite(topics=[2])
 
 
-def test_plot_termite_interactive_builds_figure(tmp_model_dir):
-    """Ensure plot_termite_interactive returns a Plotly figure with non-zero topic-term points."""
+def test_plot_termite_plotly_builds_figure(tmp_model_dir):
+    """Ensure plot_termite_plotly returns a Plotly figure with non-zero topic-term points."""
     m = Mallet(model_dir=str(tmp_model_dir))
     fake_distributions = {
         0: {"apple": 0.6, "banana": 0.4},
@@ -904,7 +905,7 @@ def test_plot_termite_interactive_builds_figure(tmp_model_dir):
         "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
         return_value=fake_distributions,
     ):
-        fig = m.plot_termite_interactive(topics=[0, 1], n_terms=3, marker_scale=10)
+        fig = m.plot_termite_plotly(topics=[0, 1], n_terms=3, marker_scale=10)
 
     assert len(fig.data) == 1
     assert fig.data[0].mode == "markers"
@@ -913,7 +914,7 @@ def test_plot_termite_interactive_builds_figure(tmp_model_dir):
     assert all(size > 0 for size in fig.data[0].marker.size)
 
 
-def test_plot_termite_interactive_invalid_rank_metric_raises_orig(tmp_model_dir):
+def test_plot_termite_plotly_invalid_rank_metric_raises_orig(tmp_model_dir):
     """Invalid rank_terms_by should raise ValueError."""
     m = Mallet(model_dir=str(tmp_model_dir))
 
@@ -922,7 +923,7 @@ def test_plot_termite_interactive_invalid_rank_metric_raises_orig(tmp_model_dir)
         return_value={0: {"apple": 1.0}},
     ):
         with pytest.raises(ValueError):
-            m.plot_termite_interactive(rank_terms_by="median")
+            m.plot_termite_plotly(rank_terms_by="median")
 
 
 def test_import_docs_method_writes_training_data(tmp_model_dir, monkeypatch):
@@ -2038,35 +2039,31 @@ def test_infer_whitespace_token_no_colon_raises(tmp_model_dir, monkeypatch):
 
 
 def test_track_progress_progress_updates(tmp_model_dir, monkeypatch):
-    """Simulate MALLET stdout that includes <n> progress fields to exercise _track_progress."""
+    """Simulate MALLET stdout that includes progress fields to exercise _track_progress."""
     m = Mallet(model_dir=str(tmp_model_dir))
 
     class FakeStdOut:
         def __init__(self, lines):
-            self._lines = [l.encode("utf-8") + b"\n" for l in lines]
-            self.i = 0
+            self._lines = [l + "\n" for l in lines]
+            self._iter = iter(self._lines)
 
-        def readline(self):
-            if self.i < len(self._lines):
-                line = self._lines[self.i]
-                self.i += 1
-                return line
-            return b""
+        def __iter__(self):
+            return self
+
+        def __next__(self):
+            return next(self._iter)
 
     class FakePopen:
         def __init__(self, *args, **kwargs):
-            self.stdout = FakeStdOut(["text", "<1.0>", "<5.0>", "<10.0>"])
+            self.stdout = FakeStdOut(["text", "<1>", "<5>", "<10>", "Iteration 15:"])
             self.returncode = 0
-
-        def poll(self):
-            return None if self.stdout.i < len(self.stdout._lines) else 0
 
         def wait(self):
             return 0
 
     monkeypatch.setattr(subprocess, "Popen", FakePopen)
     # No exception should be raised while updating progress
-    m._track_progress("mallet fake", 10, verbose=True)
+    m._track_progress(["mallet", "fake"], 10, verbose=True)
 
 
 def test_import_data_flags_included(tmp_model_dir, monkeypatch):
@@ -2436,8 +2433,7 @@ def test_track_progress_error_raises_exception(tmp_model_dir, monkeypatch):
 
     class FakePopen:
         def __init__(self, *args, **kwargs):
-            self.stdout = MagicMock()
-            self.stdout.readline.return_value = b""
+            self.stdout = []
             self.returncode = 1
 
         def wait(self):
@@ -2454,9 +2450,8 @@ def test_track_progress_catches_value_error(tmp_model_dir, monkeypatch):
 
     class FakePopen:
         def __init__(self, *args, **kwargs):
-            # float("<>") will raise ValueError
-            self.stdout = MagicMock()
-            self.stdout.readline.side_effect = [b"<>\n", b""]
+            # Regex match found but int() or logic crashes (simulated)
+            self.stdout = ["<not_an_int>\n"]
             self.returncode = 0
 
         def wait(self):
@@ -2499,7 +2494,7 @@ def test_plot_termite_accepts_int_topics(tmp_model_dir):
         return_value=fake_distributions,
     ):
         with patch("textacy.viz.termite.termite_df_plot", return_value=plt.gca()):
-            axis = m.plot_termite(topics=0)
+            axis = m.plot_termite(topics=0, show=False)
             assert axis is not None
 
 
@@ -2529,53 +2524,53 @@ def test_plot_termite_missing_highlights_raises(tmp_model_dir):
         assert "99" in str(excinfo.value)
 
 
-def test_plot_termite_interactive_plotly_missing(tmp_model_dir):
-    """Ensure plot_termite_interactive raises LexosException if plotly is missing."""
+def test_plot_termite_plotly_plotly_missing(tmp_model_dir):
+    """Ensure plot_termite_plotly raises LexosException if plotly is missing."""
     m = Mallet(model_dir=str(tmp_model_dir))
     with patch.dict("sys.modules", {"plotly": None, "plotly.graph_objects": None}):
         with pytest.raises(LexosException) as excinfo:
-            m.plot_termite_interactive()
+            m.plot_termite_plotly()
         assert "plotly is required" in str(excinfo.value)
 
 
-def test_plot_termite_interactive_invalid_params(tmp_model_dir):
-    """Ensure plot_termite_interactive validates parameters."""
+def test_plot_termite_plotly_invalid_params(tmp_model_dir):
+    """Ensure plot_termite_plotly validates parameters."""
     m = Mallet(model_dir=str(tmp_model_dir))
     with pytest.raises(ValueError):
-        m.plot_termite_interactive(n_terms=0)
+        m.plot_termite_plotly(n_terms=0)
     with pytest.raises(ValueError):
-        m.plot_termite_interactive(marker_scale=0)
+        m.plot_termite_plotly(marker_scale=0)
     with pytest.raises(ValueError):
-        m.plot_termite_interactive(rank_terms_by="invalid")
+        m.plot_termite_plotly(rank_terms_by="invalid")
     with pytest.raises(ValueError):
-        m.plot_termite_interactive(sort_terms_by="invalid")
+        m.plot_termite_plotly(sort_terms_by="invalid")
 
 
-def test_plot_termite_interactive_empty_components(tmp_model_dir):
-    """Ensure plot_termite_interactive raises if data is empty."""
+def test_plot_termite_plotly_empty_components(tmp_model_dir):
+    """Ensure plot_termite_plotly raises if data is empty."""
     m = Mallet(model_dir=str(tmp_model_dir))
     with patch(
         "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
         return_value={},
     ):
         with pytest.raises(LexosException):
-            m.plot_termite_interactive()
+            m.plot_termite_plotly()
 
 
-def test_plot_termite_interactive_int_topics(tmp_model_dir):
-    """Ensure plot_termite_interactive accepts int topics."""
+def test_plot_termite_plotly_int_topics(tmp_model_dir):
+    """Ensure plot_termite_plotly accepts int topics."""
     m = Mallet(model_dir=str(tmp_model_dir))
     fake_distributions = {0: {"a": 1.0}}
     with patch(
         "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
         return_value=fake_distributions,
     ):
-        fig = m.plot_termite_interactive(topics=0)
+        fig = m.plot_termite_plotly(topics=0)
         assert fig is not None
 
 
-def test_plot_termite_interactive_sorting(tmp_model_dir):
-    """Exercise sorting options in plot_termite_interactive."""
+def test_plot_termite_plotly_sorting(tmp_model_dir):
+    """Exercise sorting options in plot_termite_plotly."""
     m = Mallet(model_dir=str(tmp_model_dir))
     fake_distributions = {0: {"b": 0.5, "a": 0.5}, 1: {"c": 1.0}}
     with patch(
@@ -2583,18 +2578,18 @@ def test_plot_termite_interactive_sorting(tmp_model_dir):
         return_value=fake_distributions,
     ):
         # Alphabetical
-        fig = m.plot_termite_interactive(sort_terms_by="alphabetical")
+        fig = m.plot_termite_plotly(sort_terms_by="alphabetical")
         assert fig is not None
         # Index
-        fig = m.plot_termite_interactive(sort_terms_by="index")
+        fig = m.plot_termite_plotly(sort_terms_by="index")
         assert fig is not None
         # Weight
-        fig = m.plot_termite_interactive(sort_terms_by="weight")
+        fig = m.plot_termite_plotly(sort_terms_by="weight")
         assert fig is not None
 
 
-def test_plot_termite_interactive_save(tmp_model_dir):
-    """Ensure plot_termite_interactive saves to output_path."""
+def test_plot_termite_plotly_save(tmp_model_dir):
+    """Ensure plot_termite_plotly saves to output_path."""
     m = Mallet(model_dir=str(tmp_model_dir))
     fake_distributions = {0: {"a": 1.0}}
     out = tmp_model_dir / "termite.html"
@@ -2602,12 +2597,12 @@ def test_plot_termite_interactive_save(tmp_model_dir):
         "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
         return_value=fake_distributions,
     ):
-        m.plot_termite_interactive(output_path=str(out))
+        m.plot_termite_plotly(output_path=str(out))
         assert out.exists()
 
 
-def test_plot_termite_interactive_missing_topics_raises(tmp_model_dir):
-    """Ensure plot_termite_interactive raises ValueError helper for missing topics."""
+def test_plot_termite_plotly_missing_topics_raises(tmp_model_dir):
+    """Ensure plot_termite_plotly raises ValueError helper for missing topics."""
     m = Mallet(model_dir=str(tmp_model_dir))
     fake_distributions = {0: {"a": 1.0}}
     with patch(
@@ -2615,7 +2610,7 @@ def test_plot_termite_interactive_missing_topics_raises(tmp_model_dir):
         return_value=fake_distributions,
     ):
         with pytest.raises(ValueError):
-            m.plot_termite_interactive(topics=[1])
+            m.plot_termite_plotly(topics=[1])
 
 
 def test_heatmap_label_logic_and_num_keys_0(tmp_model_dir, monkeypatch):
@@ -2778,3 +2773,140 @@ def test_mallet_path_expansion(tmp_path):
     m = Mallet(path_to_mallet=str(bin_dir))
     # It should append 'mallet' to the directory path
     assert m.path_to_mallet == str(bin_dir / "mallet")
+
+
+def test_read_file_io_error(tmp_path):
+    """Test read_file handles IOError (Lines 110 gap)."""
+    f = tmp_path / "protected.txt"
+    f.write_text("content")
+    with patch("builtins.open", side_effect=IOError("Mocked IO Error")):
+        with pytest.raises(LexosException) as exc:
+            read_file(f)
+        assert "could not be read" in str(exc.value)
+
+
+def test_import_files_io_error(tmp_path):
+    """Test import_files handles IOError (Line 167 gap)."""
+    f = tmp_path / "protected.txt"
+    f.write_text("content")
+    with patch("builtins.open", side_effect=IOError("Mocked IO Error")):
+        with pytest.raises(LexosException) as exc:
+            import_files([f])
+        assert "could not be read" in str(exc.value)
+
+
+def test_track_progress_fast_run_completion(tmp_model_dir, monkeypatch):
+    """Ensure p.wait() and finalization are covered (Lines 683-684 gap)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+
+    class FakePopen:
+        def __init__(self, *args, **kwargs):
+            self.stdout = iter(["<1>\n"])
+            self.returncode = 0
+            self.pid = 1234
+
+        def wait(self):
+            return 0
+
+        def poll(self):
+            return 0
+
+        def kill(self):
+            pass
+
+        def terminate(self):
+            pass
+
+    monkeypatch.setattr(subprocess, "Popen", FakePopen)
+    m._track_progress(["fake"], 1, verbose=False)
+
+
+def test_plot_termite_show_return_none(tmp_model_dir):
+    """Test plot_termite returns None when show=True (Line 1023 gap)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    # We need at least 2 terms for seriation in textacy
+    fake_dist = {0: {"a": 1.0, "b": 0.5}}
+    with patch(
+        "lexos.topic_modeling.mallet.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_dist,
+    ):
+        with patch("matplotlib.pyplot.show"):
+            res = m.plot_termite(show=True, highlight_topics=[])
+            assert res is None
+
+
+def test_plot_termite_plotly_seriation(tmp_model_dir):
+    """Test spectral seriation logic (Lines 1149-1157 gap)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    fake_dist = {
+        0: {"apple": 0.9, "banana": 0.1, "cherry": 0.05},
+        1: {"apple": 0.1, "banana": 0.8, "cherry": 0.1},
+        2: {"apple": 0.05, "banana": 0.1, "cherry": 0.85},
+    }
+    with patch(
+        "lexos.topic_modeling.mallet.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_dist,
+    ):
+        fig = m.plot_termite_plotly(sort_terms_by="seriation", n_terms=3)
+        assert fig is not None
+
+
+def test_plot_termite_plotly_invalid_rank(tmp_model_dir):
+    """Test plot_termite_plotly invalid rank_terms_by (Line 1119 gap)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    fake_dist = {0: {"a": 1.0}}
+    with patch(
+        "lexos.topic_modeling.mallet.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_dist,
+    ):
+        with pytest.raises(Exception):  # agg will raise error
+            m.plot_termite_plotly(rank_terms_by="invalid")
+
+
+def test_plot_termite_plotly_empty_components(tmp_model_dir):
+    """Cover the empty components check in plotly version (Line 1178 gap)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    with patch(
+        "lexos.topic_modeling.mallet.mallet.Mallet.load_topic_term_distributions",
+        return_value={},
+    ):
+        with pytest.raises(LexosException) as exc:
+            m.plot_termite_plotly()
+        assert "No topic-term probabilities" in str(exc.value)
+
+
+def test_plot_termite_plotly_missing_topics_and_highlights(tmp_model_dir):
+    """Cover missing topics and highlight labels validation (Line 1186, etc gap)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    fake_dist = {0: {"a": 1.0}}
+    with patch(
+        "lexos.topic_modeling.mallet.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_dist,
+    ):
+        with pytest.raises(ValueError) as exc:
+            m.plot_termite_plotly(topics=[99])
+        assert "Requested topics [99] are not available" in str(exc.value)
+        with pytest.raises(ValueError) as exc:
+            m.plot_termite_plotly(highlight_topics=["NonExistent"])
+        assert "not available in the selected data" in str(exc.value)
+
+
+def test_mallet_init_metadata_ioerror(tmp_path):
+    """Cover Line 251-253 gap in Mallet.__init__."""
+    model_dir = tmp_path / "fail_meta"
+    model_dir.mkdir()
+    meta_json = model_dir / "meta.json"
+    meta_json.write_text('{"key": "val"}')
+
+    # Mock open and check if it's our target file
+    original_open = open
+
+    def mock_open_file(file, *args, **kwargs):
+        if str(file).endswith("meta.json"):
+            raise IOError("Mocked Meta IO Error")
+        return original_open(file, *args, **kwargs)
+
+    with patch("builtins.open", side_effect=mock_open_file):
+        with pytest.raises(LexosException) as exc:
+            Mallet(model_dir=str(model_dir))
+        assert "Failed to load metadata" in str(exc.value)

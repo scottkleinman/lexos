@@ -1,7 +1,7 @@
 """mallet.py.
 
-Last Updated: June 19, 2026
-Last Tested: June 20, 2026
+Last Updated: July 19, 2026
+Last Tested: July 19, 2026
 
 A fork of Maria Antoniak's Little Mallet Wrapper: https://github.com/maria-antoniak/little-mallet-wrapper.
 
@@ -12,11 +12,12 @@ Here is a rough summary of the changes:
 - A more object-oriented approach to keep track of paths and other metadata so that fewer arguments need to be passed to functions.
 - Support for a fuller range of MALLET keyword arguments, including the output-state-file which is needed for generating PyLDAVis and Dfr-Browser visualizations.
 - Optional progress tracking during training.
-- Topic clouds visualisation.
+- Topic clouds and termite plot visualisations.
 - More parameters for customising the plotting functions.
 """
 
 import glob
+import json
 import os
 import re
 import subprocess
@@ -34,15 +35,8 @@ from matplotlib.figure import Figure
 from matplotlib.typing import ColorType
 from pandas.io.formats.style import Styler
 from pydantic import BaseModel, ConfigDict, Field, model_validator, validate_call
-from rich.console import Console
-from rich.progress import (
-    BarColumn,
-    Progress,
-    TaskProgressColumn,
-    TextColumn,
-    TimeElapsedColumn,
-)
 from spacy.tokens import Doc
+from tqdm.auto import tqdm
 from wasabi import msg
 from wordcloud import WordCloud
 
@@ -52,7 +46,7 @@ from lexos.visualization.cloud import MultiCloud
 
 # Get the path to the MALLET binary from the environment
 load_dotenv()
-MALLET_BINARY_PATH = os.path.expanduser(os.getenv("MALLET_BINARY_PATH") or "mallet")
+MALLET_BINARY_PATH = str(Path(os.getenv("MALLET_BINARY_PATH") or "mallet").expanduser())
 
 
 @validate_call
@@ -151,11 +145,6 @@ def read_dirs(dirs: Path | str | list[Path | str]) -> list[str]:
     return training_data
 
 
-# Backwards-compatible aliases for older function names/tests
-import_data_file = read_file
-import_dirs = read_dirs
-
-
 @validate_call
 def import_files(files: Path | str | list[Path | str]) -> list[str]:
     """Import the text content of a file or list of files.
@@ -232,6 +221,39 @@ class Mallet(BaseModel):
     CANONICAL_TOPIC_KEYS_KEY: ClassVar[str] = "path_to_topic_keys"
     CANONICAL_INFERENCER_KEY: ClassVar[str] = "path_to_inferencer"
 
+    def __init__(self, **data: Any):
+        """Initialize the Mallet class.
+
+        Args:
+            **data (Any): Arbitrary keyword arguments for initialization.
+        """
+        super().__init__(**data)
+        # Save the path to MALLET in the metadata for reference
+        self.metadata["path_to_mallet"] = self.path_to_mallet
+
+        # Ensure model_dir is a Path object if provided as a string
+        if self.model_dir and isinstance(self.model_dir, str):
+            self.model_dir = Path(self.model_dir)
+
+        if self.model_dir:
+            self.metadata["model_directory"] = str(self.model_dir)
+
+        # If the model directory exists, attempt to load existing metadata from meta.json
+        if self.model_dir and self.model_dir.exists():
+            meta_path = self.model_dir / "meta.json"
+            if meta_path.exists():
+                try:
+                    with open(meta_path, "r") as f:
+                        loaded_metadata = json.load(f)
+                        # Update the metadata dictionary with loaded values
+                        self.metadata.update(loaded_metadata)
+                        # Ensure model_directory in metadata matches the object property
+                        self.metadata["model_directory"] = str(self.model_dir)
+                except (json.JSONDecodeError, IOError) as e:
+                    raise LexosException(
+                        f"Failed to load metadata from {meta_path}: {e}"
+                    )
+
     def _metadata_get(self, keys: list[str]) -> str | None:
         """Return the first metadata value present among the provided keys or None.
 
@@ -307,12 +329,13 @@ class Mallet(BaseModel):
         """Expand tilde and handle directory paths for MALLET."""
         if self.path_to_mallet:
             # Expand ~ to the user's home directory
-            self.path_to_mallet = os.path.expanduser(self.path_to_mallet)
+            p = Path(self.path_to_mallet).expanduser()
 
             # If the path points to a directory, append 'mallet'
-            p = Path(self.path_to_mallet)
             if p.is_dir():
-                self.path_to_mallet = os.path.join(self.path_to_mallet, "mallet")
+                p = p / "mallet"
+
+            self.path_to_mallet = str(p)
 
         return self
 
@@ -456,10 +479,10 @@ class Mallet(BaseModel):
         path_to_training_data = (
             path_to_training_data
             if path_to_training_data is not None
-            else os.path.join(self.model_dir, "training_data.txt")
+            else str(Path(self.model_dir) / "training_data.txt")
         )
-        path_to_formatted_training_data = os.path.join(
-            self.model_dir, "training_data.mallet"
+        path_to_formatted_training_data = str(
+            Path(self.model_dir) / "training_data.mallet"
         )
         total_tokens = 0
         vocab = set()
@@ -489,6 +512,10 @@ class Mallet(BaseModel):
             total_tokens / num_docs if num_docs > 0 else 0
         )
         self.metadata["vocab_size"] = len(vocab)
+
+        # Write the meta file to the model directory for future reference
+        with open(Path(self.model_dir) / "meta.json", "w") as f:
+            f.write(json.dumps(self.metadata))
 
         # Build and execute the command to format the training data for MALLET
         cmd = [
@@ -545,8 +572,8 @@ class Mallet(BaseModel):
 
         # Determine output paths if not provided
         if not path_to_training_data:
-            model_base = self.model_dir if self.model_dir else os.getcwd()
-            path_to_training_data = os.path.join(model_base, "training_data.txt")
+            model_base = Path(self.model_dir) if self.model_dir else Path.cwd()
+            path_to_training_data = str(model_base / "training_data.txt")
         self._import_training_data(
             training_data,
             path_to_training_data,
@@ -606,69 +633,70 @@ class Mallet(BaseModel):
             verbose (bool): Whether to print the MALLET output.
 
         Notes:
-            - Prints MALLET output and updates the progress bar in 10% increments.
+            - Prints MALLET output and updates the progress bar.
         """
-        console = Console()
-        # NOTE: This is a hack to make Jupyter notebooks in VS Code display all lines
-        # in the same cell. It may cause undesirable results in other environments and
-        # needs further testing. See https://github.com/Textualize/rich/issues/3483.
-        if verbose:
-            console.is_jupyter = False
+        # Initialize the progress bar. tqdm.auto will use the notebook widget if available.
+        pbar = tqdm(total=num_iterations or 0, desc="Training model", leave=True)
 
-        # Create a progress display with rich
-        with Progress(
-            TextColumn("[progress.description]{task.description}"),
-            BarColumn(),
-            TaskProgressColumn(),
-            TimeElapsedColumn(),
-        ) as progress:
-            # Create a task with a total of 100 (percentage)
-            task = progress.add_task("[blue]Training model...", total=100)
-
-            # Run the MALLET command
+        try:
+            # Run the MALLET command using a line-buffered stream
             p = subprocess.Popen(
-                mallet_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+                mallet_cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                bufsize=1,
+                universal_newlines=True,
+                encoding="utf-8",
+                errors="replace",
             )
 
-            # Regex to match progress information
-            prog = re.compile(r"\<([^\)]+)\>")
+            # Regex to match iteration number strictly inside brackets or with text.
+            prog = re.compile(r"(?:\<|Iteration\s+)(\d+)(?:\>|:)")
 
-            # Track the last reported progress percentage to avoid duplicate updates
-            last_progress = -1
+            # Track the last reported iteration to avoid redundant updates
+            last_iter = -1
 
-            # Process the output line by line
-            for line in iter(p.stdout.readline, b""):
-                line = line.decode()
-                if verbose:
-                    # Print MALLET output without disrupting progress
-                    console.print(line, end="")
+            # Process the output line by line from the text stream
+            if p.stdout:
+                for line_str in p.stdout:
+                    if verbose:
+                        # Use tqdm.write to ensure the bar stays at the bottom and doesn't duplicate
+                        tqdm.write(line_str.rstrip())
 
-                # Keep track of modeling progress
-                try:
-                    # A float indicating the percentage, which is output by MALLET
-                    groups = prog.match(line)
-                    if groups:
-                        this_iter = float(groups.groups()[0])
-                        current_progress = int(100.0 * this_iter / num_iterations)
+                    try:
+                        # Look for iteration markers in the line
+                        match = prog.search(line_str)
+                        if match:
+                            this_iter = int(match.group(1))
 
-                        # Only update on 10% multiples and avoid duplicate updates
-                        if (
-                            current_progress % 10 == 0
-                            and current_progress > last_progress
-                        ):
-                            # Update to the current progress percentage
-                            progress.update(task, completed=this_iter)
-                            last_progress = current_progress
-                        if current_progress == 100:
-                            progress.update(
-                                task, description="[green]Complete", completed=100
-                            )
-                except (AttributeError, ValueError):  # Not every line will match.
-                    pass
+                            # Only update if we've actually progressed
+                            if this_iter > last_iter:
+                                # Update position directly
+                                pbar.n = min(this_iter, num_iterations)
+                                pbar.refresh()
 
+                                # If we hit the final iteration, update description
+                                # because MALLET still has to write files (the "last 10%" lag).
+                                if num_iterations and this_iter >= num_iterations:
+                                    pbar.set_description("Saving model files")
+                                last_iter = this_iter
+                    except (AttributeError, ValueError):
+                        pass
+
+            # Wait for MALLET to finish writing the state and output files.
             p.wait()
-            if p.returncode != 0:
+
+            # Finalize the bar
+            if p.returncode == 0:
+                pbar.n = num_iterations
+                pbar.set_description("Complete")
+                pbar.refresh()
+            else:
                 raise subprocess.CalledProcessError(p.returncode, mallet_cmd)
+
+        finally:
+            # Ensure the progress bar is closed
+            pbar.close()
 
     @validate_call(config=model_config)
     def get_keys(
@@ -903,6 +931,8 @@ class Mallet(BaseModel):
         sort_terms_by: str = "seriation",
         output_path: Optional[str] = None,
         rc_params: Optional[dict[str, Any]] = None,
+        show: bool = True,
+        title: Optional[str] = None,
     ) -> Any:
         """Plot a termite chart from MALLET topic-term outputs using textacy.
 
@@ -917,6 +947,8 @@ class Mallet(BaseModel):
             output_path (Optional[str]): If provided, save the figure to this path.
             rc_params (Optional[dict[str, Any]]): Matplotlib rc params passed to
                 textacy's plotting helper.
+            show (bool): Whether to show the plot.
+            title (Optional[str]): Figure title.
 
         Returns:
             Any: A matplotlib axis containing the termite plot.
@@ -933,9 +965,11 @@ class Mallet(BaseModel):
             ) from e
 
         topic_term_probability_dict = self.load_topic_term_distributions()
-        components = pd.DataFrame.from_dict(
-            topic_term_probability_dict, orient="columns"
-        ).fillna(0.0)
+        components = (
+            pd.DataFrame.from_dict(topic_term_probability_dict, orient="columns")
+            .fillna(0.0)
+            .sort_index()
+        )
 
         if components.empty:
             raise LexosException("No topic-term probabilities are available to plot.")
@@ -985,18 +1019,25 @@ class Mallet(BaseModel):
             rc_params=rc_params,
         )
 
+        if title:
+            axis.set_title(title, pad=20)
+
+        if show:
+            plt.show()
+            return None
+
         return axis
 
     @validate_call(config=model_config)
-    def plot_termite_interactive(
+    def plot_termite_plotly(
         self,
         topics: Optional[int | list[int]] = None,
+        highlight_topics: Optional[int | str | list[int | str]] = None,
         n_terms: int = 25,
         rank_terms_by: str = "max",
         sort_terms_by: str = "weight",
-        marker_scale: float = 50.0,
-        colorscale: str = "Viridis",
-        title: str = "Termite Plot of Topic Models",
+        marker_scale: float = 25.0,
+        title: Optional[str] = None,
         output_path: Optional[str] = None,
     ) -> Any:
         """Create an interactive termite plot with Plotly.
@@ -1004,13 +1045,14 @@ class Mallet(BaseModel):
         Args:
             topics (Optional[int | list[int]]): Topic index or indices to include.
                 If None, all available topics are used.
+            highlight_topics (Optional[int | str | list[int | str]]): Topic labels
+                or indices to highlight in the plot.
             n_terms (int): Number of terms to include in the plot.
             rank_terms_by (str): Metric used to select top terms. Supported
                 values are "max", "mean", and "var".
             sort_terms_by (str): Method used to order selected terms on the y-axis.
-                Supported values are "weight", "alphabetical", and "index".
+                Supported values are "weight", "alphabetical", "index", and "seriation".
             marker_scale (float): Multiplier used to map probabilities to marker size.
-            colorscale (str): Plotly colorscale name for marker colors.
             title (str): Figure title.
             output_path (Optional[str]): If provided, save the plot to this path.
 
@@ -1037,15 +1079,17 @@ class Mallet(BaseModel):
         sort_terms_by = sort_terms_by.lower()
         if rank_terms_by not in {"max", "mean", "var"}:
             raise ValueError("`rank_terms_by` must be one of: 'max', 'mean', 'var'.")
-        if sort_terms_by not in {"weight", "alphabetical", "index"}:
+        if sort_terms_by not in {"weight", "alphabetical", "index", "seriation"}:
             raise ValueError(
-                "`sort_terms_by` must be one of: 'weight', 'alphabetical', 'index'."
+                "`sort_terms_by` must be one of: 'weight', 'alphabetical', 'index', 'seriation'."
             )
 
         topic_term_probability_dict = self.load_topic_term_distributions()
-        components = pd.DataFrame.from_dict(
-            topic_term_probability_dict, orient="columns"
-        ).fillna(0.0)
+        components = (
+            pd.DataFrame.from_dict(topic_term_probability_dict, orient="columns")
+            .fillna(0.0)
+            .sort_index()
+        )
 
         if components.empty:
             raise LexosException("No topic-term probabilities are available to plot.")
@@ -1067,15 +1111,50 @@ class Mallet(BaseModel):
         components = components.loc[:, selected_topics]
         components.columns = [f"Topic {int(topic)}" for topic in components.columns]
 
+        # Handle highlighted labels
+        highlight_labels = set()
+        if highlight_topics is not None:
+            for topic in ensure_list(highlight_topics):
+                if isinstance(topic, int):
+                    highlight_labels.add(f"Topic {topic}")
+                else:
+                    highlight_labels.add(topic)
+
+            missing_highlights = [
+                topic for topic in highlight_labels if topic not in components.columns
+            ]
+            if missing_highlights:
+                raise ValueError(
+                    f"Highlighted topics {missing_highlights} are not available in the selected data. "
+                    f"Available topics: {list(components.columns)}"
+                )
+
         # Select top terms according to the requested ranking metric.
-        scores = components.agg(rank_terms_by, axis=1)
-        top_terms = scores.nlargest(n_terms).index
+        # Match textacy's ranking logic exactly: agg -> sort_values -> head
+        top_terms = (
+            components.agg(rank_terms_by, axis=1)
+            .sort_values(ascending=False)
+            .head(n_terms)
+            .index
+        )
         components = components.loc[top_terms]
 
         if sort_terms_by == "alphabetical":
             components = components.sort_index()
         elif sort_terms_by == "index":
             components = components.sort_index(kind="stable")
+        elif sort_terms_by == "seriation":
+            # Spectral seriation: sort terms such that similar topic distributions are adjacent.
+            # Calculate similarity matrix (dot product of weights minus min to ensure non-negativity)
+            weights = components.values
+            similarity = weights @ (weights - weights.min()).T
+            # Compute Laplacian matrix: L = D - S
+            laplacian = np.diag(similarity.sum(axis=1)) - similarity
+            # Find eigenvalues and eigenvectors
+            vals, vecs = np.linalg.eigh(laplacian)
+            # Use Fiedler vector (second smallest eigenvalue) to order terms
+            fiedler_idx = np.argsort(vals)[1]
+            components = components.iloc[np.argsort(vecs[:, fiedler_idx])]
         else:  # Weight
             components = components.loc[
                 components.max(axis=1).sort_values(ascending=False).index
@@ -1087,6 +1166,27 @@ class Mallet(BaseModel):
         df_melted = df_melted.rename(columns={"index": "Term"})
         df_melted = df_melted[df_melted["Probability"] > 0]
 
+        # Calculate a reasonable size reference for Plotly's area-based scaling
+        max_prob = df_melted["Probability"].max()
+        term_order = components.index.tolist()
+        topic_labels = list(components.columns)
+
+        # Generate colors for markers based on highlight status
+        colors = []
+        for topic in df_melted["Topic"]:
+            if topic in highlight_labels:
+                colors.append("#2596be")  # Highlight color
+            else:
+                colors.append("#d3d3d3")  # Light grey
+
+        # Generate topic label tick text with HTML for individual colors
+        ticktext = []
+        for label in topic_labels:
+            if label in highlight_labels:
+                ticktext.append(f'<span style="color:#2596be">{label}</span>')
+            else:
+                ticktext.append(label)
+
         fig = go.Figure()
         fig.add_trace(
             go.Scatter(
@@ -1094,11 +1194,11 @@ class Mallet(BaseModel):
                 y=df_melted["Term"],
                 mode="markers",
                 marker={
-                    "size": df_melted["Probability"] * marker_scale,
-                    "color": df_melted["Probability"],
-                    "colorscale": colorscale,
-                    "showscale": True,
-                    "line": {"color": "DarkSlateGrey", "width": 1},
+                    "size": df_melted["Probability"],
+                    "sizemode": "area",
+                    "sizeref": max_prob / (marker_scale**2) if max_prob > 0 else 1,
+                    "color": colors,
+                    "line": {"color": "grey", "width": 1},
                     "sizemin": 2,
                 },
                 customdata=df_melted["Probability"],
@@ -1107,16 +1207,43 @@ class Mallet(BaseModel):
         )
 
         fig.update_layout(
-            title=title,
-            xaxis_title="Latent Topics",
-            yaxis_title="Keywords",
+            title={"text": title, "x": 0.5, "xanchor": "center"} if title else None,
             xaxis_tickangle=-45,
             paper_bgcolor="white",
-            plot_bgcolor="rgba(240, 240, 240, 0.95)",
-            height=600,
-            margin={"l": 100, "r": 50, "t": 100, "b": 100},
+            plot_bgcolor="white",
+            # Vertical space: scale height by number of terms
+            height=max(400, n_terms * 33 + 150),
+            # Horizontal space: scale width by number of topics to keep it tight
+            width=max(400, len(selected_topics) * 60 + 150),
+            # Adjust margins: left for keywords, top for topic labels
+            margin={"l": 120, "r": 50, "t": 150, "b": 50},
+            xaxis=dict(
+                showgrid=True,
+                gridcolor="lightgrey",
+                side="top",  # Move topic labels to the top
+                tickmode="array",
+                tickvals=topic_labels,
+                ticktext=ticktext,
+                showline=True,  # Add border
+                linewidth=1,
+                linecolor="lightgrey",
+                mirror=True,  # Mirror to create a box
+            ),
+            yaxis=dict(
+                showgrid=True,
+                gridcolor="lightgrey",
+                showline=True,  # Add border
+                linewidth=1,
+                linecolor="lightgrey",
+                mirror=True,  # Mirror to create a box
+            ),
         )
-        fig.update_yaxes(autorange="reversed")
+        fig.update_yaxes(
+            autorange="reversed",
+            type="category",
+            categoryorder="array",
+            categoryarray=term_order,
+        )
 
         if output_path:
             fig.write_html(output_path)
@@ -1337,7 +1464,6 @@ class Mallet(BaseModel):
 
         # Combine the labels and distributions into a dataframe.
         figs = []
-        import os
 
         # Use user-provided topic_distributions if given, else default to self.distributions
         distributions = (
@@ -1422,8 +1548,8 @@ class Mallet(BaseModel):
             plt.tight_layout()
             # Save each plot to a unique file if output_path is set
             if output_path:
-                base, ext = os.path.splitext(output_path)
-                save_path = f"{base}_topic{topic}{ext}"
+                p = Path(output_path)
+                save_path = f"{p.parent / p.stem}_topic{topic}{p.suffix}"
                 fig.savefig(save_path)
             figs.append(fig)
             if show:
@@ -1795,8 +1921,8 @@ class Mallet(BaseModel):
                 that can be used with `mallet infer-topics`. If not provided, defaults to
                 `model_dir/inferencer.mallet`.
         """
-        path_to_formatted_training_data = os.path.join(
-            self.model_dir, "training_data.mallet"
+        path_to_formatted_training_data = str(
+            Path(self.model_dir) / "training_data.mallet"
         )
 
         # Build the MALLET command
@@ -1806,18 +1932,18 @@ class Mallet(BaseModel):
             "num-topics": num_topics,
             "num-iterations": num_iterations,
             "output-state": path_to_state
-            or os.path.join(self.model_dir, "topic-state.gz"),
+            or str(Path(self.model_dir) / "topic-state.gz"),
             "output-topic-keys": path_to_topic_keys
-            or os.path.join(self.model_dir, "topic-keys.txt"),
+            or str(Path(self.model_dir) / "topic-keys.txt"),
             "output-doc-topics": path_to_topic_distributions
-            or os.path.join(self.model_dir, "doc-topic.txt"),
+            or str(Path(self.model_dir) / "doc-topic.txt"),
             "topic-word-weights-file": path_to_term_weights
-            or os.path.join(self.model_dir, "topic-weights.txt"),
+            or str(Path(self.model_dir) / "topic-weights.txt"),
             "diagnostics-file": path_to_diagnostics
-            or os.path.join(self.model_dir, "diagnostics.xml"),
+            or str(Path(self.model_dir) / "diagnostics.xml"),
             # Optional inferencer filename path to save a trained inferencer for later inference
             "inferencer-filename": path_to_inferencer
-            or os.path.join(self.model_dir, "inferencer.mallet"),
+            or str(Path(self.model_dir) / "inferencer.mallet"),
             "optimize-interval": optimize_interval,
         }
 
@@ -1825,7 +1951,7 @@ class Mallet(BaseModel):
             if v:
                 # Save file names in the model directory if they are not absolute paths
                 if isinstance(v, str) and len(Path(v).parts) == 1:
-                    v = f"{self.metadata['model_directory']}/{v}"
+                    v = str(Path(self.model_dir) / v)
                 cmd.extend([f"--{k}", str(v)])
                 # Set canonical metadata keys for common outputs so consumers can
                 # rely on a single key. Map train flags directly to the
@@ -1840,10 +1966,7 @@ class Mallet(BaseModel):
                     self.metadata[self.CANONICAL_INFERENCER_KEY] = str(v)
 
         # Train the model
-        msg.good("Training topics...")
         self._track_progress(cmd, num_iterations, verbose)
-        self.metadata["num_topics"] = num_topics
-        self.metadata["optimize_interval"] = optimize_interval
         # For flags we don't have a canonical mapping for, provide a path_to_ entry
         # to preserve other easily accessible metadata entries. Do not set legacy
         # keys when we are mapping to a canonical key.
@@ -1860,41 +1983,52 @@ class Mallet(BaseModel):
                     continue
                 self.metadata[f"path_to_{k.replace('-', '_')}"] = v
         self.metadata["training_command"] = cmd
+        self.metadata["num_topics"] = num_topics
+        self.metadata["num_iterations"] = num_iterations
+        self.metadata["optimize_interval"] = optimize_interval
+
+        # Save the metadata to a JSON file in the model directory
+        with open(self.model_dir / "meta.json", "w") as f:
+            f.write(json.dumps(self.metadata))
+
         msg.good("Complete")
 
     @validate_call(config=model_config)
     def infer(
         self,
         docs: list[str] | Path | str,
-        path_to_inferencer: Optional[str] = None,
-        output_path: Optional[str] = None,
+        path_to_inferencer: Optional[str | Path] = None,
+        output_path: Optional[str | Path] = None,
         keep_sequence: bool = True,
         preserve_case: bool = True,
         remove_stopwords: bool = True,
-        use_pipe_from: Optional[str] = None,
+        use_pipe_from: Optional[str | Path] = None,
         show: bool = False,
     ) -> list[list[float]] | None:
         """Infer topic distributions for new documents using a saved MALLET inferencer.
 
         Args:
             docs (list[str] | Path | str): The documents to infer topics for or a path to a file with documents.
-            path_to_inferencer (Optional[str]): Path to the MALLET inferencer file. If None, use metadata.
-            output_path (Optional[str]): Path to write the output doc-topics file. If None, it defaults to model_dir/infer-doc-topics.txt
+            path_to_inferencer (Optional[str | Path]): Path to the MALLET inferencer file. If None, use metadata.
+            output_path (Optional[str | Path]): Path to write the output doc-topics file. If None, it defaults to model_dir/infer-doc-topics.txt
             keep_sequence (bool): Whether to keep the sequence in the import-file step.
             preserve_case (bool): Whether to preserve case in the import-file step.
             remove_stopwords (bool): Whether to remove stopwords in the import-file step.
-            use_pipe_from (Optional[str]): Optional pipe file to reuse for formatting.
+            use_pipe_from (Optional[str | Path]): Optional pipe file to reuse for formatting.
             show (bool): If True, display the returned distributions (no-op in headless).
 
         Returns:
             list[list[float]] | None: The inferred topic distributions (list of lists), or None if `show` is True.
         """
+        if use_pipe_from:
+            use_pipe_from = str(use_pipe_from)
+
         # Accept a single file path or list of documents
         if isinstance(docs, (Path, str)) and Path(docs).is_file():
             # It's an input file
             input_file = str(docs)
             # Ensure we have a formatted mallet file if not provided
-            path_to_formatted = os.path.join(self.model_dir, "infer_input.mallet")
+            path_to_formatted = str(Path(self.model_dir) / "infer_input.mallet")
             # The import-file to format the input for mallet
             cmd_import = [
                 self.path_to_mallet or "mallet",
@@ -1921,7 +2055,7 @@ class Mallet(BaseModel):
                     "Invalid `docs` argument: expected a list of strings or a path to a file."
                 )
             # Write a temporal input file
-            path_to_plain = os.path.join(self.model_dir, "infer_input.txt")
+            path_to_plain = str(Path(self.model_dir) / "infer_input.txt")
             with open(path_to_plain, "w", encoding="utf-8") as fh:
                 for i, doc in enumerate(docs):
                     if isinstance(doc, bool) or not isinstance(doc, str):
@@ -1930,7 +2064,7 @@ class Mallet(BaseModel):
                         )
                     fh.write(f"{i}\tno_label\t{doc.replace('\n', ' ')}\n")
             # Format it with import-file
-            path_to_formatted = os.path.join(self.model_dir, "infer_input.mallet")
+            path_to_formatted = str(Path(self.model_dir) / "infer_input.mallet")
             cmd_import = [
                 self.path_to_mallet or "mallet",
                 "import-file",
@@ -1946,7 +2080,7 @@ class Mallet(BaseModel):
             if preserve_case:
                 cmd_import.append("--preserve-case")
             if use_pipe_from:
-                cmd_import.extend(["--use-pipe-from", use_pipe_from])
+                cmd_import.extend(["--use-pipe-from", str(use_pipe_from)])
             # msg.info(" ".join(cmd_import))
             subprocess.run(cmd_import, check=True)
 
@@ -1960,7 +2094,9 @@ class Mallet(BaseModel):
 
         path_to_formatted = path_to_formatted
         if output_path is None:
-            output_path = os.path.join(self.model_dir, "infer-doc-topics.txt")
+            output_path = str(Path(self.model_dir) / "infer-doc-topics.txt")
+        else:
+            output_path = str(output_path)
 
         cmd = [
             self.path_to_mallet or "mallet",
