@@ -86,7 +86,7 @@ Here is a list of the currently available tutorials, organised by module:
 ## Topic Modeling
 
 <ul>
-<li>Mallet Topic Modeling Tutorial: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/topic_modeling/mallet_tutorial.ipynb">📓 Notebook</a> | <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/topic_modeling/sample_data.zip">🗄️ Data</a></li>
+<li>Mallet Topic Modeling Tutorial: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/topic_modeling/mallet_tutorial.ipynb">📓 Notebook</a> | 🗄️ Data: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/topic_modeling/litbank_texts.zip">LitBank Texts</a>, <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/topic_modeling/additional_texts.zip">Additional Texts</a></li>
 </ul>
 
 ## TopWords

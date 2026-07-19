@@ -17,6 +17,9 @@ The `dfr_browser2` module provides a small helper class `Browser` that automates
 
 If you have not yet generated a MALLET topic model, it is recommended that you start with the <a href="https://mimno.github.io/Mallet/topics.html" target="_blank">MALLET</a> tutorial.
 
+!!! Important
+    Although you can generate a MALLET topic model without any metadata, DFR Browser 2 requires a `metadata.csv` file. To generate a browser from Lexos, this file must be placed in your topic model folder. See the <a href="https://github.com/scottkleinman/dfr-browser2" target="_blank">DFR Browser 2 documentation</a> for formatting requirements. If you are creating a browser from a topic model produced using the data from the Lexos MALLET Topic Modeling Tutorial, you can rename the `litbank_metadata.csv` file and place it to your topic model folder. You can also use this file as a template to create your own `metadata.csv` file.
+
 ---
 
 ## Browser Class
@@ -36,7 +39,7 @@ b.serve()
 
 Calling the `serve()` method will start a localhost server and open the browser in your system's default web browser. The server runs in a subprocess, so you can continue working in your Python session while the browser is running. You can also start the server from the commmand line by running the `server.py` script in your DFR Browser 2 folder.
 
-<img src="../dfr_browser2.png" alt="DFR Browser screen shot">
+<img src="images/dfr_browser2.png" alt="DFR Browser screen shot">
 
 !!! Note
     DFR Browser 2 must be served from a server; otherwise it will not have full functionality. The `serve()` method checks if the specified port is available before starting the server. If the port is already in use, you'll receive a helpful error message with instructions on how to find and terminate the conflicting process, or you can specify a different port using the `port` parameter. The default port is 8000, which may conflict with Jupyter notebooks or other local servers.

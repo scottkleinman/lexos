@@ -8,6 +8,8 @@ For more on topic modeling and installing MALLET, see Shawn Graham, Scott Weinga
 
 The Lexos `mallet` module integrates Maria Antoniak's <a href="https://github.com/maria-antoniak/little-mallet-wrapper" target="_blank">Litte Mallet Wrapper</a> functions with a slightly simplified API that manages file paths. For more advanced methods of exploring a topic model, see the Lexos integration of [DFR Browser 2](dfr_browser2.md).
 
+In the examples below, we will use a sample dataset of English-language fiction from David Bamman's [LitBank](https://github.com/DBamman/litbank). Additional texts were collected by Allen Riddell for [TAToM: Text Analysis with Topic Models for the Humanities and Social Sciences](https://github.com/ariddell/tatom).
+
 ---
 
 ## Import the `Mallet` class from the `mallet` Module
@@ -15,15 +17,18 @@ The Lexos `mallet` module integrates Maria Antoniak's <a href="https://github.co
 First, import the `Mallet` class and helper functions from the Lexos `mallet` module.
 
 ```python
-from lexos.topic_modeling.mallet import Mallet
-from IPython.display import display
+from lexos.topic_modeling.mallet import Mallet, import_docs, import_files, read_file, read_dirs
 ```
 
 ---
 
 ## Check Mallet Installation
 
-Verify that MALLET is installed and accessible by calling the MALLET binary.
+Verify that MALLET is installed and accessible by calling the MALLET binary. For instance, if your MALLET binary is located at `~/mallet/bin`, you can run the following command in a terminal:
+
+```bash
+~/mallet/bin/mallet
+```
 
 If you are using a Jupyter notebook, you can configure the path to your MALLET binary and run
 
@@ -50,36 +55,36 @@ sample_docs = [
     "Dogs are great pets for families.",
     "Foxes are wild animals found in forests."
 ]
+
+training_data = import_docs(sample_docs)
 ```
 
-You will see the command sent to MALLET in the output.
+This just copies the list `sample_docs` into a new list called `training_data` but ensures that the raw text strings are copied if your sample docs are spaCy `Doc` objects.
+
+Because topic modelling normally uses a large number of documents, you will most likely want to import them from a directory or line-delimited file. The `read_dirs()` and `read_file()` functions will read your documents into a list of strings.
 
 ### Reading Directories
 
-The `read_dirs()` function will read all text files in a directory (or list of directories) into a list of strings. Each file will be treated as a separate document. Note that the order of the documents in the list is important, as it will be used for document indexes in the topic model.
+The `read_dirs()` function will read all text files in a directory (or list of directories) into a list of strings where each file is treated as a separate document. Note that the order of the documents in the list is important, as it will be used for document indexes in the topic model.
 
-In the examples below, we will use the `sample_data` folder distributed with MALLET, which contains text from 12 Wikipedia articles.
+In the examples below, we will use the `litbank_texts` folder distributed with MALLET, which contains text from 12 Wikipedia articles.
 
 ```python
 from lexos.topic_modeling.mallet import read_dirs
-corpus_dir = "sample_data"
-docs = read_dirs(corpus_dir)
-for doc in docs[:5]:
-    print(f"- {doc[0:100]}...")
+corpus_dir = "litbank_texts"
+training_data = read_dirs(corpus_dir)
 ```
 
 ### Reading from a File
 
-You can also load documents from a single file using the `read_file()` function. Here each line in the file will be treated as a separate document. Again, the order of documents will be used for document indexes in the topic model.
+You can also load documents from a single file using the `read_file()` function. Here each line in the file is treated as a separate document. Again, the order of documents will be used for document indexes in the topic model.
 
 Note: Technically, MALLET expects the tab-delimited file where the first column is an index, the second is an optional label, and the third is the document text itself. The `read_file()` function accepts files in this format, as well as files containing only texts.
 
 ```python
 from lexos.topic_modeling.mallet import read_file
 corpus_file = "sample_data.txt"
-docs = read_file(corpus_file)
-for doc in docs[:5]:
-    print(f"- {doc[0:100]}...")
+training_data = read_file(corpus_file)
 ```
 
 ---
@@ -102,10 +107,10 @@ path_to_mallet = "/path/to/your/mallet/binary"
 mallet_model = Mallet(model_dir=model_dir, path_to_mallet=path_to_mallet)
 ```
 
-Now import your training data with `import_data`.
+Now import your training data into the model instance with `import_data`.
 
 ```python
-mallet_model.import_data(training_data=docs)
+mallet_model.import_data(training_data=training_data)
 ```
 
 You can configure the following parameters:
@@ -162,6 +167,22 @@ The `train()` method takes the following parameters:
 
 ---
 
+## Loading an Existing Model
+
+Sometimes you need to load an existing model into memory, rather than creating one from scratch. You can do this easily by instantiating a new `Mallet` object with the existing `model_dir` path.
+
+```python
+# Import the Mallet class
+from lexos.topic_modeling.mallet import Mallet
+
+# Initialize Mallet model
+mallet_model = Mallet(model_dir="mallet_model")
+
+# View the previously-generated metadata for the trained model
+mallet_model.metadata
+
+---
+
 ## After Training
 
 After training, you can inspect various model properties:
@@ -190,28 +211,7 @@ Once you have created your model, you can display the discovered topics and thei
 mallet_model.get_keys(as_df=True)
 ```
 
-|    |   Topic |   Label | Keywords                                                                                     |
-|---:|--------:|--------:|:---------------------------------------------------------------------------------------------|
-|  0 |       0 |    0.25 | Test cricket Hill South top-grossing year runs team batsman played                           |
-|  1 |       1 |    0.25 | film Gilbert equilibrium addition considered original News movie Alvida Kabhi                |
-|  2 |       2 |    0.25 | London time Needham series critical men Grant's Grant values forms                           |
-|  3 |       3 |    0.25 | died return run Paris Davis lobby traveled governor brigade Commonwealth's                   |
-|  4 |       4 |    0.25 | Edward survived Richard invaded Dil born collisional originated exosphere—corona aerodynamic |
-|  5 |       5 |    0.25 | back general Thespis Greek Sullivan practice allegiance swore captured Bragg's               |
-|  6 |       6 |    0.25 | Zinta role Indian acting Kehna Award Filmfare earned films performances                      |
-|  7 |       7 |    0.25 | Thylacine Tiger extinct pouch found related Tasmania marsupial Thylacinus stability          |
-|  8 |       8 |    0.25 | Tasmanian modern reported Devil species century teenage cricketers helping discord           |
-|  9 |       9 |    0.25 | Norway king including journalist spent husband details Saga figure subsequently              |
-| 10 |      10 |    0.25 | Hindi Naa actress innings drama Punjab Kings Wadia Ness boyfriend                            |
-| 11 |      11 |    0.25 | Yard National wilderness standards Parks Service movement invasion interrupted Governor      |
-| 12 |      12 |    0.25 | rings system ring dust moons narrow Uranian particles discovered Uranus                      |
-| 13 |      13 |    0.25 | Echo Sunderland World paper Thomas Storey East newspaper boycott Triangular                  |
-| 14 |      14 |    0.25 | Gunnhild life Orkney Erik mother outbreak Telugu specific formula episodes                   |
-| 15 |      15 |    0.25 | Union Gen battle Confederates War line position Maj launched Beauregard                      |
-| 16 |      16 |    0.25 | death States United numerous Tennessee American national neutrality park late                |
-| 17 |      17 |    0.25 | years Australian career record including England ended scored involved worked                |
-| 18 |      18 |    0.25 | Hawes Confederate Kentucky Army Battle ceremony Commonwealth Virginia Whig fighting          |
-| 19 |      19 |    0.25 | equipartition theorem average energy kinetic system effects stars law classical              |
+![Topic Keys table](images/topic_keys.png "Topic Keys table")
 
 ---
 
@@ -228,18 +228,7 @@ You can display the discovered topics and their top words using `get_top_docs()`
 mallet_model.get_top_docs(topic=0, n=10)
 ```
 
-| Doc ID | Distribution | Document                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-|-------:|-------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|      8 |     0.435096 | Clem Hill (1877–1945) was an Australian cricketer who played 49 Test matches as a specialist batsman between 1896 and 1912. He captained the Australian team in ten Tests, winning five and losing five. A prolific run scorer, Hill scored 3,412 runs in Test cricket—a world record at the time of his retirement—at an average of 39.21 per innings, including seven centuries. In 1902, Hill was the first batsman to make 1,000 Test runs in a calendar year, a feat that would not be repeated for 45 years. His innings of 365 scored against New South Wales for South Australia in 1900–01 was a Sheffield Shield record for 27 years. His Test cricket career ended in controversy after he was involved in a brawl with cricket administrator and fellow Test selector Peter McAlister in 1912. He was one of the "Big Six", a group of leading Australian cricketers who boycotted the 1912 Triangular Tournament in England when the players were stripped of the right to appoint the tour manager. The boycott effectively ended his Test career. After retiring from cricket, Hill worked in the horse racing industry as a stipendiary steward and later as a handicapper for races including the Caulfield Cup.                                                                                                                                                                                                                                                   |
-|     10 |      0.12037 | Preity Zinta (born 1975) is an Indian film actress. She has appeared in Hindi films of Bollywood, as well as Telugu and English-language movies. After graduating with a degree in criminal psychology, Zinta made her acting debut in Dil Se in 1998 followed by a role in Soldier the same year. These performances earned her a Filmfare Best Female Debut Award, and she was later recognised for her role as a teenage single mother in Kya Kehna (2000). She subsequently played a variety of character types, and in doing so has been credited with changing the image of a Hindi film heroine. Zinta received her first Filmfare Best Actress Award in 2003 for her performance in the drama Kal Ho Naa Ho. She went on to play the lead female role in two consecutive annual top-grossing films in India: the science fiction film Koi... Mil Gaya, her biggest commercial success, and the star-crossed romance Veer-Zaara, which earned her critical acclaim. She was later noted for her portrayal of independent, modern Indian women in Salaam Namaste and Kabhi Alvida Naa Kehna, top-grossing productions in overseas markets. These accomplishments have established her as a leading actress of Hindi cinema. In addition to movie acting, Zinta has written a series of columns for BBC News Online South Asia, is a regular stage performer, and along with boyfriend Ness Wadia she is a co-owner of the Indian Premier League cricket team Kings XI Punjab. |
-|      3 |   0.00431034 | Elizabeth Needham (died 3 May 1731), also known as Mother Needham, was an English procuress and brothel-keeper of 18th-century London, who has been identified as the bawd greeting Moll Hackabout in the first plate of William Hogarth\'s series of satirical etchings, A Harlot\'s Progress. Although Needham was notorious in London at the time, little is recorded of her life, and no genuine portraits of her survive. Her house was the most exclusive in London and her customers came from the highest strata of fashionable society, but she eventually crossed the moral reformers of the day and died as a result of the severe treatment she received after being sentenced to stand in the pillory.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-|      5 |   0.00294118 | Gunnhild konungamóðir (mother of kings) or Gunnhild Gormsdóttir[1] (c. 910  –  c. 980) was the wife of Erik Bloodaxe (king of Norway 930–34, "king" of Orkney c. 937–54, and king of Jórvík 948–49 and 952–54). Gunnhild is a prominent figure in many Norse sagas, including Fagrskinna, Egil\'s Saga, Njal\'s Saga, and Heimskringla. Many of the details of her life are disputed, including her parentage. Gunnhild lived during a time of great change in Norway. Her father-in-law Harald Fairhair had recently united much of Norway under his rule. Shortly after his death, Gunnhild and her husband were overthrown and exiled. She spent much of the rest of her life in exile in Orkney, Jorvik and Denmark. A number of her many children with Erik became co-rulers of Norway in the late tenth century. What details of her life are known come largely from Icelandic sources; because the Icelanders were generally hostile to her and her husband, scholars regard some of the episodes reported in them as suspect.                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-|      2 |       0.0025 | Thespis is an operatic extravaganza that was the first collaboration between dramatist W. S. Gilbert and composer Arthur Sullivan. It was never published, and most of the music is now lost. However, Gilbert and Sullivan went on to become one of the most famous and successful partnerships in Victorian England, creating a string of comic opera hits, including H.M.S. Pinafore, The Pirates of Penzance and The Mikado, that continue to be popular. Thespis premièred in London at the Gaiety Theatre on 26 December 1871. Like many productions at that theatre, it was written in a broad, burlesque style, considerably different from Gilbert and Sullivan\'s later works. It was a modest success—for a Christmas entertainment of the time—and closed on 8 March 1872, after a run of 63 performances. It was advertised as "An entirely original Grotesque Opera in Two Acts". The story follows an acting troupe headed by Thespis, the legendary Greek father of the drama, who temporarily trade places with the gods on Mount Olympus, who have grown elderly and ignored. The actors turn out to be comically inept rulers. Having seen the ensuing mayhem down below, the angry gods return, sending the actors back to Earth as "eminent tragedians, whom no one ever goes to see."                                                                                                                                                                         |
-|      9 |       0.0025 | The equipartition theorem is a formula from statistical mechanics that relates the temperature of a system with its average energies. The original idea of equipartition was that, in thermal equilibrium, energy is shared equally among its various forms; for example, the average kinetic energy in the translational motion of a molecule should equal the average kinetic energy in its rotational motion. Like the virial theorem, the equipartition theorem gives the total average kinetic and potential energies for a system at a given temperature, from which the system\'s heat capacity can be computed. However, equipartition also gives the average values of individual components of the energy. It can be applied to any classical system in thermal equilibrium, no matter how complicated. The equipartition theorem can be used to derive the classical ideal gas law, and the Dulong–Petit law for the specific heat capacities of solids. It can also be used to predict the properties of stars, even white dwarfs and neutron stars, since it holds even when relativistic effects are considered. Although the equipartition theorem makes very accurate predictions in certain conditions, it becomes inaccurate when quantum effects are significant, namely at low enough temperatures.                                                                                                                                                             |
-|      0 |   0.00247525 | The Sunderland Echo is an evening provincial newspaper serving the Sunderland, South Tyneside and East Durham areas of North East England. The newspaper was founded by Samuel Storey, Edward Backhouse, Edward Temperley Gourley, Charles Palmer, Richard Ruddock, Thomas Glaholm and Thomas Scott Turnbull in 1873, as the Sunderland Daily Echo and Shipping Gazette. Designed to provide a platform for the Radical views held by Storey and his partners, it was also Sunderland\'s first local daily paper. The inaugural edition of the Echo was printed in Press Lane, Sunderland on 22 December 1873; 1,000 copies were produced and sold for a halfpenny each. The Echo survived intense competition in its early years, as well as the depression of the 1930s and two World Wars. Sunderland was heavily bombed in the Second World War and, although the Echo building was undamaged, it was forced to print its competitor\'s paper under wartime rules. It was during this time that the paper\'s format changed, from a broadsheet to its current tabloid layout, because of national newsprint shortages.                                                                                                                                                                                                                                                                                                                                                          |
-|      7 |   0.00227273 | The rings of Uranus were discovered on March 10, 1977, by James L. Elliot, Edward W. Dunham, and Douglas J. Mink. Two additional rings were discovered in 1986 by the Voyager 2 spacecraft, and two outer rings were found in 2003–2005 by the Hubble Space Telescope. A number of faint dust bands and incomplete arcs may exist between the main rings. The rings are extremely dark—the Bond albedo of the rings\' particles does not exceed 2%. They are likely composed of water ice with the addition of some dark radiation-processed organics. The majority of Uranus\'s rings are opaque and only a few kilometres wide. The ring system contains little dust overall; it consists mostly of large bodies 0.2–20 m in diameter. The relative lack of dust in the ring system is due to aerodynamic drag from the extended Uranian exosphere—corona. The rings of Uranus are thought to be relatively young, at not more than 600 million years. The mechanism that confines the narrow rings is not well understood. The Uranian ring system probably originated from the collisional fragmentation of a number of moons that once existed around the planet. After colliding, the moons broke up into numerous particles, which survived as narrow and optically dense rings only in strictly confined zones of maximum stability.                                                                                                                                        |
-|     11 |   0.00227273 | Richard Hawes (1797–1877) was a United States Representative from Kentucky and the second Confederate Governor of Kentucky. Originally a Whig, Hawes became a Democrat following the dissolution of the Whig party in the 1850s. At the outbreak of the American Civil War, Hawes was a supporter of Kentucky\'s doctrine of armed neutrality. When the Commonwealth\'s neutrality was breached in September 1861, Hawes fled to Virginia and enlisted as a brigade commissary under Confederate general Humphrey Marshall. He was elected Confederate governor of the Commonwealth following the late George W. Johnson\'s death at the Battle of Shiloh. Hawes and the Confederate government traveled with Braxton Bragg\'s Army of Tennessee, and when Bragg invaded Kentucky in October 1862, he captured Frankfort and held an inauguration ceremony for Hawes. The ceremony was interrupted, however, by forces under Union general Don Carlos Buell, and the Confederates were driven from the Commonwealth following the Battle of Perryville. Hawes relocated to Virginia, where he continued to lobby President Jefferson Davis to attempt another invasion of Kentucky. Following the war, he returned to his home in Paris, Kentucky, swore an oath of allegiance to the Union, and was allowed to return to his law practice.                                                                                                                                         |
-|      6 |   0.00215517 | Robert Sterling Yard (1861–1945) was an American writer, journalist and wilderness activist. Yard graduated from Princeton University and spent the first twenty years of his career as a journalist, editor and publisher. In 1915 he was recruited by his friend Stephen Mather to help publicize the need for an independent national park agency. Their numerous publications were part of a movement that resulted in legislative support for a National Park Service in 1916. Yard served as head of the National Parks Educational Committee for several years after its conception, but tension within the NPS led him to concentrate on non-government initiatives. He became executive secretary of the National Parks Association in 1919. Yard worked to promote the national parks as well as educate Americans about their use. Creating high standards based on aesthetic ideals for park selection, he also opposed commercialism and industrialization of what he called "America\'s masterpieces". These standards caused discord with his peers. After helping to establish a relationship between the NPA and the United States Forest Service, Yard later became involved in the protection of wilderness areas. In 1935 he became one of the eight founding members of The Wilderness Society and acted as its first president from 1937 until his death eight years later. Yard is now considered an important figure in the modern wilderness movement.     |
+![Top documents table](images/top_doc_topics.png "Top documents table")
 
 ---
 
@@ -255,30 +244,11 @@ You can display the the term distribution for a given topic with `get_topic_term
 mallet_model.get_topic_term_probabilities(topics=[0, 1], n=10, as_df=True)
 ```
 
-|    | Topic | Term          | Probability |
-|---:|------:|:--------------|------------:|
-|  0 |     0 | Test          |   0.0856613 |
-|  1 |     0 | Hill          |   0.0571551 |
-|  2 |     0 | cricket       |   0.0571551 |
-|  3 |     0 | South         |   0.0429019 |
-|  4 |     0 | played        |   0.0286488 |
-|  5 |     0 | batsman       |   0.0286488 |
-|  6 |     0 | team          |   0.0286488 |
-|  7 |     0 | runs          |   0.0286488 |
-|  8 |     0 | year          |   0.0286488 |
-|  9 |     0 | top-grossing  |   0.0286488 |
-| 10 |     1 | Gilbert       |    0.042299 |
-| 11 |     1 | film          |    0.042299 |
-| 12 |     1 | original      |   0.0282462 |
-| 13 |     1 | considered    |   0.0282462 |
-| 14 |     1 | addition      |   0.0282462 |
-| 15 |     1 | equilibrium   |   0.0282462 |
-| 16 |     1 | intense       |   0.0141934 |
-| 17 |     1 | collaboration |   0.0141934 |
-| 18 |     1 | composer      |   0.0141934 |
-| 19 |     1 | published     |   0.0141934 |
+![Topic-Term Probabilities table](images/topic_term_probabilities.png "Topic-Term Probabilities table")
 
 ---
+
+## Visualizing Topic-Term Weights with a Termite Plot
 
 ## Visualizing Topic-Term Weights with a Termite Plot
 
@@ -291,6 +261,7 @@ The method takes the following parameters:
 - `n_terms`: Number of top terms to include in the plot.
 - `rank_terms_by`: How terms are ranked before selection (for example, `"max"`, `"mean"`, `"var"`).
 - `sort_terms_by`: How selected terms are ordered in the display (for example, `"seriation"`, `"weight"`, `"index"`, `"alphabetical"`).
+- `title`: An optional title for the plot.
 - `output_path`: Optional path for saving the figure.
 - `rc_params`: Optional matplotlib style overrides passed to `textacy`.
 
@@ -304,40 +275,27 @@ ax = mallet_model.plot_termite(
 )
 ```
 
+![Termite plot of topics 0-3](images/termite_plot.png "Termite plot of topics 0-3")
+
 If `output_path` is omitted, the method returns the matplotlib axis so you can customize or display the figure in your notebook environment.
 
----
-
-## Visualizing Topic-Term Weights with an Interactive Plotly Termite Plot
-
-The `plot_termite_plotly()` method creates an interactive termite plot as a Plotly figure. This is useful when you want hover details, easy zooming, and shareable HTML output.
-
-The method takes the following parameters:
-
-- `topics`: Topic index or list of indices to include. If `None`, all topics are used.
-- `n_terms`: Number of terms to include in the plot.
-- `rank_terms_by`: Metric used to select terms (`"max"`, `"mean"`, or `"var"`).
-- `sort_terms_by`: How selected terms are ordered (`"weight"`, `"alphabetical"`, or `"index"`).
-- `marker_scale`: Multiplier that controls marker size relative to term probability.
-- `colorscale`: Plotly colorscale name for marker colors.
-- `title`: Plot title.
-- `output_path`: Optional path to save the interactive figure as an HTML file.
+You can also use the `plot_termite_plotly` method to generate an interactive version. The Plotly version allows you to adjust the scaling of the circles with `marker_scale`. You can use this to minimize differences in appearance between the Plotly and the non-Plotly outputs.
 
 ```python
 fig = mallet_model.plot_termite_plotly(
-    topics=[0, 1, 2],
+    topics=[0, 1, 2, 3],
+    highlight_topics=[1],
     n_terms=20,
     rank_terms_by="max",
-    sort_terms_by="weight",
-    marker_scale=50,
-    output_path="termite_plotly.html"
+    sort_terms_by="seriation",
+    marker_scale=25, # The default setting is 25, which can make the circles appear too large in some cases. Adjust as needed.
 )
-
-# In notebooks, display inline
 fig.show()
 ```
 
-If `output_path` is provided, Lexos saves an interactive HTML file you can open in a browser.
+The `output_path` parameter saves to an HTML file.
+
+<iframe src="images/termite_plot.html" width="100%" height="600px" style="border: none;"></iframe>
 
 ---
 
@@ -373,7 +331,7 @@ categories = ["People", "Concepts", "People", "People", "People", "Battles", "Te
 mallet_model.plot_categories_by_topic_boxplots(categories)
 ```
 
-![Box plot of Topic 1](boxplot_topic1.png "Box plot of Topic 1")
+![Box plot of Topic 1](images/topic-10-boxplot.png "Box plot of Topic 1")
 
 ---
 
@@ -404,10 +362,11 @@ mallet_model.plot_categories_by_topics_heatmap(
 )
 ```
 
-![Heatmap showing topics by category](heatmap.png "Heatmap showing topics by category")
+![Heatmap showing topics by category](images/topic-heatmap.png "Heatmap showing topics by category")
+
 
 !!! Note
-    If you make the figure size too small, some topic labels may be omitted. You can mitigate this by reducting the font scale.
+    If you make the figure size too small, some topic labels may be omitted. You can mitigate this by reducing the font scale.
 
 ---
 
@@ -417,13 +376,13 @@ The `topic_clouds()` method in the Mallet class generates word clouds for each t
 
 **Parameters:**
 
-- `topics`: (int or list[int], optional) Topics to include. If None, all topics are shown.
-- `max_terms`: (int, optional) Maximum number of keywords per topic cloud (default: 30).
-- `figsize`: (tuple, optional) Size of the overall figure (default: (10, 10)).
-- `output_path`: (str, optional) If provided, saves the figure to this path.
-- `show`: (bool, optional) If True, displays the figure; if False, returns the matplotlib Figure object.
-- `round_mask`: (bool|int|str, optional) Whether to use a circular mask for the clouds (True/False or integer radius).
-- `title`: (str, optional) Title for the figure.
+- `topics`: A topic number or list of topic numbers to include. If None, all topics are shown.
+- `max_terms`: An optional maximum number of keywords per topic cloud (default: 30).
+- `figsize`: An optional tuple (default: (10, 10)) specifying the size of the overall figure.
+- `output_path`: An optional string specifying the path to save the figure.
+- `show`: An optional boolean. If True, displays the figure; if False, returns the matplotlib Figure object.
+- `round_mask`: An optional boolean or integer indicating whether to use a circular mask for the clouds (True/False or integer radius).
+- `title`: An optional string specifying the title for the figure.
 - `**kwargs`: Additional keyword arguments for customization (see below).
 
 **Customization:**
@@ -435,7 +394,7 @@ The `topic_clouds()` method in the Mallet class generates word clouds for each t
 mallet_model.topic_clouds(show=True)
 ```
 
-![Topic clouds](topic_clouds.png "Topic clouds")
+![Topic clouds](images/topic-word-clouds.png "Topic clouds")
 
 ## Visualizing Topic Trends Over Time
 
@@ -443,75 +402,85 @@ The `plot_topics_over_time()` method in the Mallet class allows you to visualize
 
 **Parameters:**
 
-- `times`: (list) Sequence of time points or other ordering variable, one per document.
-- `topic_index`: (int) The topic to plot (0-based index).
-- `topic_distributions`: (list[list[float]], optional) Topic distributions per document. If None, uses the model's distributions.
-- `topic_keys`: (list[list[str]], optional) Topic keys. If None, uses the model's keys.
-- `output_path`: (str, optional) If provided, saves the figure to this path.
-- `figsize`: (tuple, optional) Size of the figure (default: (7, 2.5)).
-- `font_scale`: (float, optional) Seaborn font scale (default: 1.2).
-- `color`: (str, optional) Line color (default: "cornflowerblue").
-- `show`: (bool, optional) If True, displays the figure; if False, returns the matplotlib Figure object.
-- `title`: (str, optional) Title for the figure. If not supplied, uses topic keywords.
+- `times`: A sequence of time points or other ordering variable, one per document.
+- `topic_index`: An integer specifying the topic to plot (0-based index).
+- `topic_distributions`: An optional list of lists of floats representing topic distributions per document. If None, uses the model's distributions.
+- `topic_keys`: An optional list of lists of strings representing topic keys. If None, uses the model's keys.
+- `output_path`: An optional string specifying the path to save the figure.
+- `figsize`: An optional tuple specifying the size of the figure (default: (7, 2.5)).
+- `font_scale`: An optional float specifying the Seaborn font scale (default: 1.2).
+- `color`: An optional string specifying the line color (default: "cornflowerblue").
+- `show`: An optional boolean. If True, displays the figure; if False, returns the matplotlib Figure object.
+- `title`: An optional string specifying the title for the figure. If not supplied, uses topic keywords.
 
 **Note:**
 
-- The `times` list must be the same length as the number of documents.
+- The `times` list must be the same length and order as the documents in the training data.
 
 ```python
 times = [2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012]
 mallet_model.plot_topics_over_time(times=times, topic_index=0, show=True)
 ```
 
-![Topics over time line chart](topics_over_time.png "Topics over time line chart")
+![Topics over time line chart](images/topic-10-over-time.png "Topics over time line chart")
 
 ---
 
 ## Advanced: Infer Topics for New Documents
 
-Sometimes you want train a model and then feed it new documents after training. To help you do this, Lexos creates an inferencer file when you initially train the model. It will automatically be saved as `inferencer.mallet` in your model's folder, but you can use the `path_to_inferencer` parameter if you want to save its somewhere else.
+Sometimes you want train a model and then feed it new documents after training. To help you do this, Lexos creates an inferencer file when you initially train the model. It will automatically be saved as `inferencer.mallet` in your model's folder, but you can use the `path_to_inferencer` parameter when training your model (or change it in your metadata) if you want to give it a different name or save it somewhere else.
+
+To use the inferencer to infer new topic distributions, you will need to define the following paths:
+
+- `pipe_file`: Path to the `.mallet` pipe file created during training. Ensures new documents are processed identically to training data.
+- `output_path`: Where to save the topic distributions for the new documents (as a text file).
+- path_to_inferencer`: Path to the inferencer file created during training. This is used to infer topics for new documents.
+
+In the example below, we read three texts from the `additional_texts` folder and define our paths relative to out model directory.
 
 ```python
-import os
-new_docs = [
-    "A fox runs quickly through the forest.",
-    "Dogs are loyal and friendly pets."
-]
-pipe_file = os.path.join(mallet_model.model_dir, "training_data.mallet")
-output_path = os.path.join(mallet_model.model_dir, "new_doc_topics.txt")
+# Read the new documents for inference
+additional_dir = "additional_texts"
+additional_docs = read_dirs(additional_dir)
+
+# Define paths to your pipe file, output path, and inferencer file
+pipe_file = mallet_model.model_dir / "training_data.mallet"
 path_to_inferencer = mallet_model.metadata['path_to_inferencer']
-inferred_topics = mallet_model.infer(
-    new_docs,
-    path_to_inferencer=path_to_inferencer,
-    use_pipe_from=pipe_file,
-    output_path=output_path
-)
-for i, dist in enumerate(inferred_topics):
+output_path = mallet_model.model_dir / "new_doc_topics.txt"
+
+# Use the Mallet class's infer() method to get topic distributions
+inferred_topics = mallet_model.infer(additional_docs, path_to_inferencer=path_to_inferencer, use_pipe_from=pipe_file, output_path=output_path)
+
+# Display the inferred topic distributions (also saved to the output_path)
+print("First Two Distributions:")
+for i, dist in enumerate(inferred_topics[:2]):
     print(f"Document {i}: {dist}\n")
 ```
 
 This will output
 
 ```txt
+Rewriting extended pipe from mallet_model/training_data.mallet
+  Instance ID = aa26dc31-29d3-42b1-b4a1-89a31b9cb449
 First Two Distributions:
-Document 0: [0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.20833333333333334, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664, 0.041666666666666664]
+Document 0: [0.03701587759523014, 0.22562284679833042, 0.011659133624194816, 0.002089723344164718, 0.05482355134447515, 0.3132625834708346, 0.0011246840846130227, 0.00875726731924916, 0.005425182463279581, 0.0013473854522018753, 0.1560084238479422, 0.014117284325535412, 0.10390895731894548, 0.005292742634827119, 0.0019167923579688285, 0.04280442602096767, 0.0013246091759711973, 0.004029924652703965, 0.008940321094880905, 0.0005282830736837843]
 
-Document 1: [0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]
+Document 1: [0.04276331790842658, 0.11287681572179306, 0.022736045794555307, 0.01648919393485762, 0.05502635415146537, 0.11588804624647527, 0.00856333391392494, 0.0890756981614076, 0.02915079847037649, 0.0010344730189665156, 0.18701993312212353, 0.012668273493168633, 0.012715348488343447, 0.041008989754911886, 0.011172857813115408, 0.15024808522457125, 0.006581476617065313, 0.00015573977570333965, 0.08273940381087777, 0.0020858145778706724]
 ```
 
-Next, use the inferencer to infer new topic distributions. You will need to define the following paths:
-
-- `pipe_file`: Path to the `.mallet` pipe file created during training. Ensures new documents are processed identically to training data.
-- `output_path`: Where to save the topic distributions for the new documents (as a text file).
-- path_to_inferencer`: Path to the inferencer file created during training. This is used to infer topics for new documents.
-
-In the code below, we use the default paths that should have been created in your model folder.
+Now combine the old and the new distributions. Since some of our visualization methods involve categories and times, we create categories and times lists that include our new documents.
 
 ```python
+# Combine training and new distributions
 all_distributions = mallet_model.distributions + inferred_topics
-categories_training = ["People", "Concepts", "People", "People", "People", "Battles", "Texts", "Texts", "Animals", "Planets", "People", "People"]
-categories_new = ["Animals", "Animals"]
-all_categories = categories_training + categories_new
+
+# Create a combined categories list (must match the length and order of all_distributions)
+new_categories = ["Brontë, Charlotte", "Brontë, Charlotte", "Richardson, Samuel"]
+all_categories = categories + new_categories
+
+# Create a combined times list (must match the length and order of all_distributions)
+new_times = [1846, 1853, 1740]
+all_times = times + new_times
 ```
 
 Now we can use any of the visualization methods. For instance, here are boxplots for the combined distributions:
@@ -525,7 +494,7 @@ mallet_model.plot_categories_by_topic_boxplots(
 )
 ```
 
-![Box plot of Topic 3 with combined distributions](boxplot_topic3_inferred.png "Box plot of Topic 3 with combined distributions")
+![Box plot of Topic 3 with combined distributions](images/topic-10-boxplot-combined.png "Box plot of Topic 3 with combined distributions")
 
 The code below will produce heatmap and topic over time visualizations.
 
@@ -542,12 +511,12 @@ mallet_model.plot_categories_by_topics_heatmap(
 )
 ```
 
-![Heatmap with combined distributions](heatmap_combined_distributions.png "Heatmap with combined distributions")
+![Heatmap with combined distributions](images/topic-heatmap-combined.png "Heatmap with combined distributions")
 
 ```python
-times = [2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014]
+times = [1846, 1853, 1740]
 mallet_model.plot_topics_over_time(
-    times=times,
+    times=all_times,
     topic_index=0,
     topic_distributions=all_distributions,
     title="Topic 0 Trend (Combined Distributions)",
@@ -557,4 +526,4 @@ mallet_model.plot_topics_over_time(
 )
 ```
 
-![Topics over time line graph with combined distributions](topics_over_time_combined.png "Topics over time line graph with combined distributions")
+![Heatmap and topics over time line graph with combined distributions](images/topic0-over-time-combined.png "Topic 0 over time line graph with combined distributions")

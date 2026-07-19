@@ -83,12 +83,6 @@
       show_root_heading: true
       heading_level: 3
 
-### ::: lexos.cluster.bootstrap_consensus.BCT.linkage_to_newick_build_newick_tree
-
-    rendering:
-      show_root_heading: true
-      heading_level: 3
-
 ### ::: lexos.cluster.bootstrap_consensus.BCT._get_newick_tree
 
     rendering:
@@ -139,24 +133,6 @@
       show_root_heading: true
       heading_level: 3
 
-### ::: lexos.cluster.bootstrap_consensus.FanTree.draw._compute_equal_angle
-
-    rendering:
-      show_root_heading: true
-      heading_level: 3
-
-### ::: lexos.cluster.bootstrap_consensus.FanTree.draw._compute_equal_angle.layout
-
-    rendering:
-      show_root_heading: true
-      heading_level: 3
-
-### ::: lexos.cluster.bootstrap_consensus.FanTree.draw._get_leaf_count
-
-    rendering:
-      show_root_heading: true
-      heading_level: 3
-
 ### ::: lexos.cluster.bootstrap_consensus.FanTree._normalize_branches
 
     rendering:
@@ -186,18 +162,6 @@
       heading_level: 3
 
 ### ::: lexos.cluster.bootstrap_consensus.assign_auto_colors
-
-    rendering:
-      show_root_heading: true
-      heading_level: 3
-
-### ::: lexos.cluster.bootstrap_consensus.assign_auto_colors.find_terminal_descendants
-
-    rendering:
-      show_root_heading: true
-      heading_level: 3
-
-### ::: lexos.cluster.bootstrap_consensus.assign_auto_colors.assign_colors_recursive
 
     rendering:
       show_root_heading: true

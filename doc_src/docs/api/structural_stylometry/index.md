@@ -45,12 +45,12 @@
       show_root_heading: true
       heading_level: 3
 
-### ::: lexos.dtm.visualize
+### ::: lexos.structural_stylometry.StructuralAnalyzer.visualize
     rendering:
       show_root_heading: true
       heading_level: 3
 
-### ::: lexos.dtm.get_loadings
+### ::: lexos.structural_stylometry.StructuralAnalyzer.get_loadings
     rendering:
       show_root_heading: true
       heading_level: 3
