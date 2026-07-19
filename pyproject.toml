@@ -42,6 +42,7 @@ dependencies = [
     "sqlalchemy>=2.0.44",
     "scipy>=1.15.1",
     "html-to-markdown>=2.8.3",
+    "tqdm>=4.67.1",
 ]
 
 [build-system]
@@ -71,6 +72,7 @@ dev = [
     "griffe-pydantic>=1.1.8",
     "ipykernel>=6.29.5",
     "pre-commit>=4.5.0",
+    "nbconvert>=7.17.1",
 ]
 
 [tool.pytest.ini_options]
