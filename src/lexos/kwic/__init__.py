@@ -1,28 +1,7 @@
-"""kwic.py.
+"""Public API for the `lexos.kwic` package.
 
-Last Updated: July 13, 2026
-Last Tested: July ar, 2026
-
-A current limitation is that all spaCy docs must share the same model. This is due to the way spaCy loads models and the Matcher/PhraseMatcher, which are tied to the vocabulary of the loaded model. Without detecting the document models and loading each one, the only way to support lists of documents with different models is to create separate instances of the Kwic class for each set of documents created with a specific model.
-
-Sample usage:
-
-```python
-    kwic = Kwic(nlp="en_core_web_sm")
-    results = kwic(
-        docs=["This is a test document.", "Another test document."],
-        labels=["Doc 1", "Doc 2"],
-        patterns=["test", "document"],
-        window=5,
-        matcher="tokens",
-        case_sensitive=False,
-        use_regex=False,
-        as_df=True,
-        sort_by="keyword",
-        ascending=True,
-    )
-    print(results)
-```
+Phase 1 export surface:
+- Kwic
 """
 
 import re
@@ -37,6 +16,8 @@ from spacy.tokens import Doc
 
 from lexos.exceptions import LexosException
 from lexos.util import ensure_list
+
+__all__ = ["Kwic"]
 
 
 class Kwic(BaseModel):

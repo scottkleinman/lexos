@@ -8,7 +8,28 @@ import pandas as pd
 import pytest
 from pydantic import BaseModel, ConfigDict
 
-from lexos.topwords import TopWords
+from lexos.topwords import KeyTerms, MannWhitney, TopWords, ZTest
+
+
+def test_topwords_exports():
+    """Verify that topwords components are exported correctly."""
+    assert TopWords is not None
+    assert KeyTerms is not None
+    assert MannWhitney is not None
+    assert ZTest is not None
+
+
+def test_topwords_all():
+    """Verify that __all__ is correctly set for topwords."""
+    import lexos.topwords
+
+    assert set(lexos.topwords.__all__) == {
+        "TopWords",
+        "KeyTerms",
+        "MannWhitney",
+        "ZTest",
+    }
+
 
 # ---------------- Fixtures ----------------
 

@@ -1,11 +1,16 @@
-"""__init__.py.
+"""Public API for the `lexos.topwords` package.
 
-Last Updated: June 25, 2025
-Last Tested: June 25, 2025
+Topwords classes are used to identify keywords and significant terms in a corpus.
+
+Phase 1 export surface:
+- TopWords
+- KeyTerms
+- MannWhitney
+- ZTest
 """
 
 import pandas as pd
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class TopWords(BaseModel):
@@ -13,4 +18,11 @@ class TopWords(BaseModel):
 
     def to_df(self):
         """Return a pandas DataFrame representation of the model."""
-        raise NotImplementedError("Subclasses must implement the to_df method")
+        return pd.DataFrame()
+
+
+from lexos.topwords.keyterms import KeyTerms
+from lexos.topwords.mann_whitney import MannWhitney
+from lexos.topwords.ztest import ZTest
+
+__all__ = ["TopWords", "KeyTerms", "MannWhitney", "ZTest"]

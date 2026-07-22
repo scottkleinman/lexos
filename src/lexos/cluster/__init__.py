@@ -1,15 +1,13 @@
-"""__init__.py."""
+"""Public API for the `lexos.cluster` package.
 
-from .bootstrap_consensus import BCT
-from .clustermap import (
-    Clustermap,
-    PlotlyClusterGrid,
-    PlotlyClustermap,
-    _create_dendrogram_traces,
-    _get_matrix,
-    get_matrix,
-)
-from .dendrogram import Dendrogram
-from .kmeans.kmeans import KMeans
-from .plotly_dendrogram import PlotlyDendrogram
-from .sync_script import SYNC_SCRIPT
+Phase 1 export surface:
+- BootstrapConsensus (BCT)
+- Dendrogram
+- KMeans
+"""
+
+from lexos.cluster.bootstrap_consensus import BCT as BootstrapConsensus
+from lexos.cluster.dendrogram import Dendrogram
+from lexos.cluster.kmeans.kmeans import KMeans
+
+__all__ = ["BootstrapConsensus", "Dendrogram", "KMeans"]

@@ -313,7 +313,7 @@ def strip_doc(doc: Doc) -> Doc:
     Note: If the final token has trailing whitespace, this will be preserved.
           You can remove the space with:
 
-          ``python
+          `python
           words = [t.text for t in doc]
           spaces = [t.whitespace_ for t in doc]
           spaces[-1] = ""

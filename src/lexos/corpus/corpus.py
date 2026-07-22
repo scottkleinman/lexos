@@ -35,8 +35,8 @@ from pydantic import (
 from spacy.tokens import Doc
 from wasabi import msg
 
-from lexos.corpus import Record
 from lexos.corpus.corpus_stats import CorpusStats
+from lexos.corpus.record import Record
 from lexos.corpus.utils import LexosModelCache, RecordsDict
 from lexos.exceptions import LexosException
 

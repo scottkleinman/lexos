@@ -1,9 +1,8 @@
-"""__init__.py.
+"""Public API for the `lexos.dtm` package.
 
-Last Update: June 27, 2026
-Last Tested: June 27, 2026
-
-# WARNING: The sorted_terms_list and sorted_term_counts properties only work if the DTM has been built with a vectorizer that has compatible `terms_list` and `vocabulary_terms` attributes.
+Phase 1 export surface:
+- DTM
+- Vectorizer
 """
 
 from typing import Callable, Iterable, Literal, Optional
@@ -66,6 +65,9 @@ class Vectorizer(BaseModel):
             max_n_terms=max_n_terms,
             vocabulary_terms=vocabulary_terms,
         )
+
+
+__all__ = ["DTM", "Vectorizer"]
 
 
 class DTM(BaseModel):

@@ -1,18 +1,17 @@
-"""__init__.py.
+"""Public API for the `lexos.filter` package.
 
-Filter module for Lexos.
-
-This module provides filters for identifying and working with specific types of tokens
-in spaCy Doc objects.
-
-Available filters:
-
-- BaseFilter: Base class for all filters
-- IsWordFilter: Identifies word tokens
-- IsRomanFilter: Identifies Roman numeral tokens
-- IsStopwordFilter: Manages stop words in a model
+Phase 1 export surface:
+- BaseFilter
+- IsWordFilter
+- IsRomanFilter
+- IsStopwordFilter
 """
 
-from .filters import BaseFilter, IsRomanFilter, IsStopwordFilter, IsWordFilter
+from lexos.filter.filters import (
+    BaseFilter,
+    IsRomanFilter,
+    IsStopwordFilter,
+    IsWordFilter,
+)
 
 __all__ = ["BaseFilter", "IsWordFilter", "IsRomanFilter", "IsStopwordFilter"]

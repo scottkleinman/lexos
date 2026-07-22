@@ -52,7 +52,7 @@ DEFAULT_COLORS = [
 ]
 
 
-class BubbleChart(BaseModel):
+class BubbleViz(BaseModel):
     """Bubble chart.
 
     Notes:
@@ -112,7 +112,7 @@ class BubbleChart(BaseModel):
         return value
 
     def __init__(self, **data):
-        """Initialize the BubbleChart with the provided data."""
+        """Initialize the BubbleViz with the provided data."""
         super().__init__(**data)
 
         # Process different data types to get individual document data

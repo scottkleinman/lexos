@@ -1,26 +1,7 @@
-"""__init__.py.
+"""Public API for the `lexos.tokenizer` package.
 
-Last Updated: July 9, 2026
-Last Tested: July 9, 2026
-
-Current usage:
-
-tokenizer = Tokenizer()
-# Modify the nlp pipeline any way you like
-tokenizer.nlp.exclude = ["parser"]
-# Helper methods
-tokenizer.add_stopwords(["the", "and", "a"])
-tokenizer.remove_stopwords(["the", "and", "a"])
-tokenizer.add_extension("is_cat", default=False)
-# Tokenize a single doc
-doc = tokenizer.make_doc("This is a test.")
-# Tokenize multiple docs
-doc_stream = tokenizer.make_docs(["This is a test.", "This is another test."])
-docs = list(doc_stream)
-# make_doc and make_docs are public methods to which you can pass keyword arguments,
-# but it can be easier to simply call the tokenizer directly (like spaCy's nlp):
-# doc = tokenizer("This is a test.")
-# docs = tokenizer(["This is a test.", "This is another test."])
+Phase 1 export surface:
+- Tokenizer
 """
 
 from itertools import batched
@@ -34,6 +15,8 @@ from spacy.tokens import Doc, Token
 
 from lexos.exceptions import LexosException
 from lexos.util import ensure_list
+
+__all__ = ["Tokenizer"]
 
 
 class Tokenizer(BaseModel):

@@ -14,7 +14,7 @@ import spacy
 
 from lexos.dtm import DTM
 from lexos.exceptions import LexosException
-from lexos.visualization.d3_bubbleviz import D3BubbleChart
+from lexos.visualization.d3_bubbleviz import D3BubbleViz
 
 
 # Load spaCy model once for all tests
@@ -75,8 +75,8 @@ def mock_template_content():
     """
 
 
-class TestD3BubbleChartInitialization:
-    """Test D3BubbleChart initialization with different data types."""
+class TestD3BubbleVizInitialization:
+    """Test D3BubbleViz initialization with different data types."""
 
     def test_init_with_string_data(self, sample_text, mock_template_content):
         """Test initialization with string data."""
@@ -85,7 +85,7 @@ class TestD3BubbleChartInitialization:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=sample_text, auto_open=False)
+                chart = D3BubbleViz(data=sample_text, auto_open=False)
                 assert isinstance(chart.counts, dict)
                 assert len(chart.counts) > 0
                 assert chart.html is not None
@@ -97,7 +97,7 @@ class TestD3BubbleChartInitialization:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=sample_counts, auto_open=False)
+                chart = D3BubbleViz(data=sample_counts, auto_open=False)
                 assert chart.counts == sample_counts
                 assert chart.html is not None
 
@@ -109,7 +109,7 @@ class TestD3BubbleChartInitialization:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=doc, auto_open=False)
+                chart = D3BubbleViz(data=doc, auto_open=False)
                 assert isinstance(chart.counts, dict)
                 assert len(chart.counts) > 0
 
@@ -122,7 +122,7 @@ class TestD3BubbleChartInitialization:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=span, auto_open=False)
+                chart = D3BubbleViz(data=span, auto_open=False)
                 assert isinstance(chart.counts, dict)
                 assert len(chart.counts) > 0
 
@@ -135,7 +135,7 @@ class TestD3BubbleChartInitialization:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=tokens, auto_open=False)
+                chart = D3BubbleViz(data=tokens, auto_open=False)
                 assert isinstance(chart.counts, dict)
                 assert len(chart.counts) > 0
 
@@ -147,7 +147,7 @@ class TestD3BubbleChartInitialization:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=data, auto_open=False)
+                chart = D3BubbleViz(data=data, auto_open=False)
                 assert chart.counts["apple"] == 3
                 assert chart.counts["banana"] == 2
                 assert chart.counts["cherry"] == 1
@@ -159,13 +159,13 @@ class TestD3BubbleChartInitialization:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=sample_dataframe, auto_open=False)
+                chart = D3BubbleViz(data=sample_dataframe, auto_open=False)
                 assert isinstance(chart.counts, dict)
                 assert len(chart.counts) > 0
 
 
-class TestD3BubbleChartParameters:
-    """Test D3BubbleChart with different parameter configurations."""
+class TestD3BubbleVizParameters:
+    """Test D3BubbleViz with different parameter configurations."""
 
     def test_custom_title(self, sample_counts, mock_template_content):
         """Test chart with custom title."""
@@ -175,7 +175,7 @@ class TestD3BubbleChartParameters:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=sample_counts, title=title, auto_open=False)
+                chart = D3BubbleViz(data=sample_counts, title=title, auto_open=False)
                 assert chart.title == title
                 assert title in chart.html
 
@@ -187,7 +187,7 @@ class TestD3BubbleChartParameters:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(
+                chart = D3BubbleViz(
                     data=sample_counts, width=width, height=height, auto_open=False
                 )
                 assert chart.width == width
@@ -203,7 +203,7 @@ class TestD3BubbleChartParameters:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(
+                chart = D3BubbleViz(
                     data=sample_counts, margin=margin, auto_open=False
                 )
                 assert chart.margin == margin
@@ -216,7 +216,7 @@ class TestD3BubbleChartParameters:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=sample_counts, color=color, auto_open=False)
+                chart = D3BubbleViz(data=sample_counts, color=color, auto_open=False)
                 assert chart.color == color
                 assert color in chart.html
 
@@ -228,7 +228,7 @@ class TestD3BubbleChartParameters:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=sample_counts, color=colors, auto_open=False)
+                chart = D3BubbleViz(data=sample_counts, color=colors, auto_open=False)
                 assert chart.color == colors
 
     def test_limit_parameter(self, sample_counts, mock_template_content):
@@ -239,7 +239,7 @@ class TestD3BubbleChartParameters:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=sample_counts, limit=limit, auto_open=False)
+                chart = D3BubbleViz(data=sample_counts, limit=limit, auto_open=False)
                 assert len(chart.counts) <= limit
 
     def test_include_d3js_parameter(self, sample_counts, mock_template_content):
@@ -249,14 +249,14 @@ class TestD3BubbleChartParameters:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(
+                chart = D3BubbleViz(
                     data=sample_counts, include_d3js=True, auto_open=False
                 )
                 assert chart.include_d3js is True
 
 
-class TestD3BubbleChartMethods:
-    """Test D3BubbleChart methods."""
+class TestD3BubbleVizMethods:
+    """Test D3BubbleViz methods."""
 
     def test_save_method(self, sample_counts, mock_template_content, tmp_path):
         """Test saving chart to file."""
@@ -265,7 +265,7 @@ class TestD3BubbleChartMethods:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=sample_counts, auto_open=False)
+                chart = D3BubbleViz(data=sample_counts, auto_open=False)
 
                 output_path = tmp_path / "test_chart.html"
                 chart.save(output_path)
@@ -273,7 +273,7 @@ class TestD3BubbleChartMethods:
                 assert output_path.exists()
 
     def test_load_local_asset(self, tmp_path):
-        """Test the D3BubbleChart asset loader."""
+        """Test the D3BubbleViz asset loader."""
         from lexos.visualization.d3_bubbleviz import _load_local_asset
 
         file_path = tmp_path / "asset.js"
@@ -288,7 +288,7 @@ class TestD3BubbleChartMethods:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=sample_counts, auto_open=False)
+                chart = D3BubbleViz(data=sample_counts, auto_open=False)
 
                 asset_path = chart._get_asset_path("test_file.html")
                 expected_path = (
@@ -315,7 +315,7 @@ class TestD3BubbleChartMethods:
                         "/tmp/test.html"
                     )
 
-                    chart = D3BubbleChart(data=sample_counts, auto_open=False)
+                    chart = D3BubbleViz(data=sample_counts, auto_open=False)
                     chart._open()
 
                     mock_browser.assert_called_once()
@@ -332,7 +332,7 @@ class TestD3BubbleChartMethods:
                         "/tmp/test.html"
                     )
 
-                    D3BubbleChart(data=sample_counts, auto_open=True)
+                    D3BubbleViz(data=sample_counts, auto_open=True)
                     mock_browser.assert_called_once()
 
     def test_auto_open_false(self, sample_counts, mock_template_content):
@@ -342,12 +342,12 @@ class TestD3BubbleChartMethods:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open") as mock_browser:
-                D3BubbleChart(data=sample_counts, auto_open=False)
+                D3BubbleViz(data=sample_counts, auto_open=False)
                 mock_browser.assert_not_called()
 
 
-class TestD3BubbleChartErrorHandling:
-    """Test error handling in D3BubbleChart."""
+class TestD3BubbleVizErrorHandling:
+    """Test error handling in D3BubbleViz."""
 
     def test_template_not_found(self, sample_counts):
         """Test handling of missing template file."""
@@ -356,7 +356,7 @@ class TestD3BubbleChartErrorHandling:
             side_effect=FileNotFoundError,
         ):
             with pytest.raises(LexosException, match="Template file not found"):
-                D3BubbleChart(data=sample_counts, auto_open=False)
+                D3BubbleViz(data=sample_counts, auto_open=False)
 
     def test_invalid_save_path(self, sample_counts, mock_template_content):
         """Test error handling for invalid save path."""
@@ -366,15 +366,15 @@ class TestD3BubbleChartErrorHandling:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=sample_counts, auto_open=False)
+                chart = D3BubbleViz(data=sample_counts, auto_open=False)
 
         # Now test the save method without the open patch
         with pytest.raises((FileNotFoundError, PermissionError, OSError)):
             chart.save("/nonexistent/directory/file.html")
 
 
-class TestD3BubbleChartWithDocs:
-    """Test D3BubbleChart with docs parameter for DTM data."""
+class TestD3BubbleVizWithDocs:
+    """Test D3BubbleViz with docs parameter for DTM data."""
 
     def test_with_docs_parameter(self, mock_template_content):
         """Test chart creation with docs parameter."""
@@ -389,12 +389,12 @@ class TestD3BubbleChartWithDocs:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=dtm_data, docs=["doc1"], auto_open=False)
+                chart = D3BubbleViz(data=dtm_data, docs=["doc1"], auto_open=False)
                 assert isinstance(chart.counts, dict)
                 assert len(chart.counts) > 0
 
 
-class TestD3BubbleChartHtmlOutput:
+class TestD3BubbleVizHtmlOutput:
     """Test HTML output generation."""
 
     def test_html_contains_required_elements(
@@ -406,7 +406,7 @@ class TestD3BubbleChartHtmlOutput:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=sample_counts, auto_open=False)
+                chart = D3BubbleViz(data=sample_counts, auto_open=False)
 
                 # Check that HTML contains the data
                 assert "the" in chart.html  # Word from sample_counts
@@ -421,7 +421,7 @@ class TestD3BubbleChartHtmlOutput:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleChart(data=sample_counts, auto_open=False)
+                chart = D3BubbleViz(data=sample_counts, auto_open=False)
 
                 assert "<html>" in chart.html
                 assert "<head>" in chart.html

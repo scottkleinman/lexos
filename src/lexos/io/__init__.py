@@ -1,4 +1,11 @@
-"""__init__.py."""
+"""Public API for the `lexos.io` package.
+
+Phase 1 export surface:
+- BaseLoader
+- DataLoader
+- Loader
+- ParallelLoader
+"""
 
 from lexos.io.base_loader import BaseLoader
 from lexos.io.data_loader import DataLoader
