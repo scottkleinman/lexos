@@ -1,6 +1,9 @@
 """structural_stylometry.py.
 
 Scripts for performing stylometric analysis on structural features like punctuation and whitespace.
+
+Last Update: July 22, 2026
+Last Tested: July 22, 2026
 """
 
 import re

@@ -1,3 +1,9 @@
-"""__init__.py."""
+"""Public API for the `lexos.structural_stylometry` package.
 
-from .structural_stylometry import StructuralAnalyzer
+Phase 1 export surface:
+- StructuralAnalyzer
+"""
+
+from lexos.structural_stylometry.structural_stylometry import StructuralAnalyzer
+
+__all__ = ["StructuralAnalyzer"]
