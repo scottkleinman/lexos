@@ -1,7 +1,9 @@
-"""Public API for the `lexos.topic_modeling` package.
+"""__init__.py.
 
-Phase 1 export surface:
-- Mallet
+Public API for the `lexos.topic_modeling` package.
+
+Last Updated: 2026-07-22
+Last Tested: 2026-07-22
 """
 
 from lexos.topic_modeling.mallet import Mallet

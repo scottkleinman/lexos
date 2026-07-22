@@ -1,13 +1,12 @@
-"""Public API for the `lexos.corpus` package.
+"""__init__.py.
+
+Public API for the `lexos.corpus` package.
 
 The core of the package is the `Corpus` class, which is a collection of
 `Record` objects.
 
-Phase 1 export surface:
-- Corpus
-- Record
-- CorpusStats
-- RecordsDict
+Last Updated: 2026-07-22
+Last Tested: 2026-07-22
 """
 
 from lexos.corpus.corpus import Corpus

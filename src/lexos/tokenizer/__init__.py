@@ -1,7 +1,9 @@
-"""Public API for the `lexos.tokenizer` package.
+"""__init__.py.
 
-Phase 1 export surface:
-- Tokenizer
+Public API for the `lexos.tokenizer` package.
+
+Last Updated: 2026-07-22
+Last Tested: 2026-07-22
 """
 
 from itertools import batched

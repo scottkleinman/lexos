@@ -1,9 +1,9 @@
-"""Top-level API for the Lexos library.
+"""__init__.py.
 
-- Data Management: Corpus, Record
-- Processing: Scrubber, Tokenizer, TextCutter, TokenCutter
-- Analysis: DTM, Kwic, Windows, Mallet, StructuralAnalyzer
-- Visualization: WordCloud, BubbleViz
+Top-level API for the Lexos library.
+
+Last Updated: 2026-07-22
+Last Tested: 2026-07-22
 """
 
 from lexos.corpus import Corpus, Record

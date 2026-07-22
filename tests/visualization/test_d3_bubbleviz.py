@@ -203,9 +203,7 @@ class TestD3BubbleVizParameters:
             return_value=mock_template_content,
         ):
             with patch("webbrowser.open"):
-                chart = D3BubbleViz(
-                    data=sample_counts, margin=margin, auto_open=False
-                )
+                chart = D3BubbleViz(data=sample_counts, margin=margin, auto_open=False)
                 assert chart.margin == margin
 
     def test_custom_color_scheme(self, sample_counts, mock_template_content):

@@ -1,10 +1,9 @@
-"""Public API for the `lexos.milestones` package.
+"""__init__.py.
 
-Phase 1 export surface:
-- LineMilestones
-- SentenceMilestones
-- TokenMilestones
-- StringMilestones
+Public API for the `lexos.milestones` package.
+
+Last Updated: 2026-07-22
+Last Tested: 2026-07-22
 """
 
 from lexos.milestones.span_milestones import LineMilestones, SentenceMilestones

@@ -1,10 +1,9 @@
-"""Public API for the `lexos.filter` package.
+"""__init__.py.
 
-Phase 1 export surface:
-- BaseFilter
-- IsWordFilter
-- IsRomanFilter
-- IsStopwordFilter
+Public API for the `lexos.filter` package.
+
+Last Updated: 2026-07-22
+Last Tested: 2026-07-22
 """
 
 from lexos.filter.filters import (

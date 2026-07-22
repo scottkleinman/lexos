@@ -1,12 +1,12 @@
-"""Public API for the `lexos.topwords` package.
+"""__init__.py.
+
+Public API for the `lexos.topwords` package.
 
 Topwords classes are used to identify keywords and significant terms in a corpus.
 
-Phase 1 export surface:
-- TopWords
-- KeyTerms
-- MannWhitney
-- ZTest
+
+Last Updated: 2026-07-22
+Last Tested: 2026-07-22
 """
 
 import pandas as pd

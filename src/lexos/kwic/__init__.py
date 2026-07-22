@@ -1,7 +1,9 @@
-"""Public API for the `lexos.kwic` package.
+"""__init__.py.
 
-Phase 1 export surface:
-- Kwic
+Public API for the `lexos.kwic` package.
+
+Last Updated: 2026-07-22
+Last Tested: 2026-07-22
 """
 
 import re

@@ -1,8 +1,9 @@
-"""Public API for the `lexos.dtm` package.
+"""__init__.py.
 
-Phase 1 export surface:
-- DTM
-- Vectorizer
+Public API for the `lexos.dtm` package.
+
+Last Updated: 2026-07-22
+Last Tested: 2026-07-22
 """
 
 from typing import Callable, Iterable, Literal, Optional

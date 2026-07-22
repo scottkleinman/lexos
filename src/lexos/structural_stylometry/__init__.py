@@ -1,7 +1,9 @@
-"""Public API for the `lexos.structural_stylometry` package.
+"""__init__.py.
 
-Phase 1 export surface:
-- StructuralAnalyzer
+Public API for the `lexos.structural_stylometry` package.
+
+Last Updated: 2026-07-22
+Last Tested: 2026-07-22
 """
 
 from lexos.structural_stylometry.structural_stylometry import StructuralAnalyzer

@@ -1,9 +1,11 @@
-"""Public API for the `lexos.rolling_windows` package.
+"""__init__.py.
+
+Public API for the `lexos.rolling_windows` package.
 
 The `Windows` class is used to generate rolling windows (segments) over texts.
 
-Phase 1 export surface:
-- Windows
+Last Updated: 22 July, 2026
+Last Tested: 22 July, 2026
 """
 
 import itertools

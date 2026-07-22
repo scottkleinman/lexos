@@ -1,4 +1,8 @@
-"""Test the public API for supplementary Lexos modules."""
+"""Test the public API for supplementary Lexos modules.
+
+Coverage: 100%
+Last Updated: 22 July, 2026
+"""
 
 import pytest
 
@@ -10,6 +14,7 @@ from lexos.tokenizer import Tokenizer
 
 
 def test_dtm_exports():
+    """Test that the DTM and Vectorizer classes are correctly exported from the lexos.dtm module."""
     assert DTM is not None
     assert Vectorizer is not None
     import lexos.dtm
@@ -18,6 +23,7 @@ def test_dtm_exports():
 
 
 def test_tokenizer_exports():
+    """Test that the Tokenizer class is correctly exported from the lexos.tokenizer module."""
     assert Tokenizer is not None
     import lexos.tokenizer
 
@@ -25,6 +31,7 @@ def test_tokenizer_exports():
 
 
 def test_kwic_exports():
+    """Test that the Kwic class is correctly exported from the lexos.kwic module."""
     assert Kwic is not None
     import lexos.kwic
 
@@ -32,6 +39,7 @@ def test_kwic_exports():
 
 
 def test_scrubber_exports():
+    """Test that the Scrubber, Pipe, and scrub functions are correctly exported from the lexos.scrubber module."""
     assert Scrubber is not None
     assert Pipe is not None
     assert scrub is not None
@@ -41,6 +49,7 @@ def test_scrubber_exports():
 
 
 def test_cluster_exports():
+    """Test that the BootstrapConsensus, Dendrogram, and KMeans classes are correctly exported from the lexos.cluster module."""
     assert BootstrapConsensus is not None
     assert Dendrogram is not None
     assert KMeans is not None

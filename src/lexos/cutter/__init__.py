@@ -2,9 +2,8 @@
 
 Cutter classes are used to split texts into segments of a specified length.
 
-Phase 1 export surface:
-- TextCutter
-- TokenCutter
+Last Updated: 2026-07-22
+Last Tested: 2026-07-22
 """
 
 from lexos.cutter.text_cutter import TextCutter

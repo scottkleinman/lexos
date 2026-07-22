@@ -1,9 +1,9 @@
-"""Public API for the `lexos.scrubber` package.
+"""__init__.py.
 
-Phase 1 export surface:
-- Scrubber
-- Pipe
-- scrub
+Public API for the `lexos.scrubber` package.
+
+Last Updated: 2026-07-22
+Last Tested: 2026-07-22
 """
 
 from . import normalize, pipeline, remove, replace

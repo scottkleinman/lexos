@@ -1,4 +1,6 @@
-"""Tests for topwords module.
+"""test_init.py.
+
+Tests for topwords module.
 
 Coverage: 100%
 Last Updated: June 25, 2025

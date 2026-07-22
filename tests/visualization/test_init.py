@@ -1,4 +1,10 @@
-"""Test the public API for lexos.visualization."""
+"""test_init.py.
+
+Test the public API for lexos.visualization.
+
+Coverage: 100%
+Last Updated: 22 July, 2026
+"""
 
 from lexos.visualization import BubbleViz, WordCloud
 

@@ -1,10 +1,11 @@
-"""Public API for the `lexos.visualization` package.
+"""__init__.py.
+
+Public API for the `lexos.visualization` package.
 
 Visualization classes are used to generate visual representations of text data.
 
-Phase 1 export surface:
-- WordCloud
-- BubbleViz
+Last Updated: 2026-07-22
+Last Tested: 2026-07-22
 """
 
 from lexos.visualization.bubbleviz import BubbleViz
