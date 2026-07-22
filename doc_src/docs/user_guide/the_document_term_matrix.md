@@ -9,8 +9,8 @@ A document-term matrix (DTM) is the standard interface for analysis and informat
 Producing a DTM is easy with Lexos. All you need a is list of document tokens and a list of labels for each document (the labels are human-readable names which would otherwise be referenced by numeric indices). In the example below, we will use spaCy docs as the input since we can iterate through their tokens just like a list.
 
 ```python
-from lexos.dtm import DTM
-from lexos.tokenizer import Tokenizer
+from lexos import DTM
+from lexos import Tokenizer
 
 # Define some texts and their labels
 texts = [
@@ -208,7 +208,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 # 1. We also need the Lexos `tokenizer` module
-from lexos.tokenizer import Tokenizer
+from lexos import Tokenizer
 
 # 2. Create a Lexos Tokenizer instance
 lexos_tokenizer = Tokenizer(model="en_core_web_sm")

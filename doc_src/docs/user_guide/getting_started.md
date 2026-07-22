@@ -30,7 +30,7 @@ Lexos workflows can be run conveniently in Jupyter notebooks simply by importing
 
 ```python
 # Import the Lexos Loader class
-from lexos.io.loader import Loader
+from lexos.io import Loader
 
 # Instantiate a Loader object
 loader = Loader()

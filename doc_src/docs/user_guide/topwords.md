@@ -52,7 +52,7 @@ The `KeyTerms` module extracts significant keywords from documents using graph-b
 The `KeyTerms` class accepts either a string or a spaCy `Doc`. Here is an example:
 
 ```python
-from lexos.topwords.keyterms import KeyTerms
+from lexos.topwords import KeyTerms
 
 # Basic usage with a single document
 text = """
@@ -105,7 +105,7 @@ These terms are deemed to be the most distinctive of the target documents.
 Here is an example of how the `ZTest` class is used:
 
 ```python
-from lexos.topwords.ztest import ZTest
+from lexos.topwords import ZTest
 
 # Basic usage with strings
 target = ["This is Shakespeare's unique style.", "More Shakespeare text."]
@@ -145,9 +145,9 @@ Instead of comparing proportions directly (like the z-test), the Mann-Whitney te
 The `MannWhitney` class takes as its input a pandas DataFrame of term frequencies with docs in rows and terms in columns. Any filtering of your terms must be done in advance. The easiest way to produce the input DataFrames is with the Lexos DTM module. Here is an example:
 
 ```python
-from lexos.dtm import DTM
-from lexos.tokenizer import Tokenizer
-from lexos.topwords.mann_whitney import MannWhitney
+from lexos import DTM
+from lexos import Tokenizer
+from lexos.topwords import MannWhitney
 
 texts = [
     "This is a sample text for testing.",
@@ -240,8 +240,8 @@ All methods support three output formats: `dict`, `dataframe`, and `list_of_dict
 As a basic example, we will take four short texts. Although you can perform experiments with raw strings, they will generally be converted to spaCy `Doc` objects internally. So, for efficiency, we will preprocess the texts into spaCy `Docs`. We'll then create an instance of the `ZTest` class for our example. We provide it with no docs because these will be passed to it when we choose what we want to compare. The `ZTest` instance is our calculator. We can swap it out for other classes in the `topwords` module or with our own custom classes. Finally, we create an instance of the `Compare` class and pass it our calculator.
 
 ```python
-from lexos.tokenizer import Tokenizer
-from lexos.topwords.ztest import ZTest
+from lexos import Tokenizer
+from lexos.topwords import ZTest
 from lexos.topwords.compare import Compare
 
 # Load spaCy model

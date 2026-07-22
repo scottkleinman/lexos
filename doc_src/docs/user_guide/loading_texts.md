@@ -52,7 +52,7 @@ The `Loader` class automatically detects the file type based on the file extensi
 Here is an example of how to use `Loader`:
 
 ```python
-from lexos.io.loader import Loader
+from lexos.io import Loader
 
 # Create a Loader instance
 loader = Loader()
@@ -69,7 +69,7 @@ Once texts are loaded, they can be accessed through the `texts` attribute or the
 By default, the `Loader` class assigns names to loaded texts based on the file name, minus the extension. However, custom names can be provided using the `names` parameter when loading files.
 
 ```python
-from lexos.io.loader import Loader
+from lexos.io import Loader
 
 # Create a Loader instance
 loader = Loader(names=["Doc1", "Doc2"])
@@ -107,7 +107,7 @@ For small file counts (<50 files) on fast local storage, the standard `Loader` m
 The `ParallelLoader` API is identical to the standard `Loader`, making it a drop-in replacement:
 
 ```python
-from lexos.io.parallel_loader import ParallelLoader
+from lexos.io import ParallelLoader
 
 # Create a ParallelLoader instance
 loader = ParallelLoader()
@@ -127,7 +127,7 @@ print(loader.df)
 `ParallelLoader` provides several options to customize performance:
 
 ```python
-from lexos.io.parallel_loader import ParallelLoader
+from lexos.io import ParallelLoader
 
 # Customize worker threads and batch size
 loader = ParallelLoader(
@@ -229,7 +229,7 @@ The basic method for loading a file with one document per line is as follows:
 
 ```python
 # Import the DataLoader class
-from lexos.io.data_loader import DataLoader
+from lexos.io import DataLoader
 
 loader = DataLoader()
 loader.load_lineated_text("path/to/file.txt")
@@ -239,7 +239,7 @@ Note that each document will be named "text001", "text002", "text003", etc. unle
 
 ```python
 # Import the DataLoader class
-from lexos.io.data_loader import DataLoader
+from lexos.io import DataLoader
 
 loader = DataLoader(names=["author1", "author2", "author3"])
 loader.load_lineated_text("path/to/file.txt")
@@ -251,7 +251,7 @@ The procedure is similar for CSV and Excel files. However, you must designate wh
 
 ```python
 # Import the DataLoader class
-from lexos.io.data_loader import DataLoader
+from lexos.io import DataLoader
 
 loader = DataLoader()
 loader.load_csv("path/to/file.csv", name_col="name", text_col="content")
@@ -270,7 +270,7 @@ In a JSON-formatted file, each document is a separate object consisting of field
 
 ```python
 # Import the DataLoader class
-from lexos.io.data_loader import DataLoader
+from lexos.io import DataLoader
 
 loader = DataLoader()
 loader.load_json("path/to/file.json", name_field="name", text_field="content")

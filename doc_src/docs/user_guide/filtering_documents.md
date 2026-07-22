@@ -17,7 +17,7 @@ The basic procedure for using filters is as follows:
 from lexos.filter import IsWordFilter
 
 # Create a spaCy doc from your text
-from lexos.tokenizer import Tokenizer
+from lexos import Tokenizer
 
 tokenizer = Tokenizer(model="en_core_web_sm")
 text = "Hello, world! This is a test."
@@ -68,7 +68,7 @@ The `IsWordFilter` class identifies tokens that are words (as opposed to punctua
 ```python
 # Python imports
 from lexos.filter import IsWordFilter
-from lexos.tokenizer import Tokenizer
+from lexos import Tokenizer
 
 # Create a spaCy doc from your text
 tokenizer = Tokenizer(model="en_core_web_sm")
@@ -102,7 +102,7 @@ For example:
 ```python
 # Python imports
 from lexos.filter import IsRomanFilter
-from lexos.tokenizer import Tokenizer
+from lexos import Tokenizer
 
 # Create a spaCy doc from your text
 tokenizer = Tokenizer(model="en_core_web_sm")
@@ -139,7 +139,7 @@ Here are some examples:
 ```python
 # Python imports
 from lexos.filter import IsStopwordFilter
-from lexos.tokenizer import Tokenizer
+from lexos import Tokenizer
 
 # Create tokenizer and doc
 tokenizer = Tokenizer(model="en_core_web_sm")
@@ -161,7 +161,7 @@ for token in doc2:
 ```python
 # Python imports
 from lexos.filter import IsStopwordFilter
-from lexos.tokenizer import Tokenizer
+from lexos import Tokenizer
 
 # Create tokenizer
 tokenizer = Tokenizer(model="en_core_web_sm")
@@ -246,7 +246,7 @@ When you apply a filter with a custom attribute name, the filter adds a custom e
 
 ```python
 from lexos.filter import IsWordFilter
-from lexos.tokenizer import Tokenizer
+from lexos import Tokenizer
 
 tokenizer = Tokenizer(model="en_core_web_sm")
 doc = tokenizer.make_doc("Hello, world!")
@@ -283,7 +283,7 @@ You can apply multiple filters sequentially to progressively refine your results
 
 ```python
 from lexos.filter import IsWordFilter, IsRomanFilter
-from lexos.tokenizer import Tokenizer
+from lexos import Tokenizer
 
 tokenizer = Tokenizer(model="en_core_web_sm")
 doc = tokenizer.make_doc("Chapter IV: The quick brown fox (123) jumps.")
@@ -340,7 +340,7 @@ for token in doc:
 
 ```python
 from lexos.filter import IsStopwordFilter
-from lexos.tokenizer import Tokenizer
+from lexos import Tokenizer
 
 tokenizer = Tokenizer(model="en_core_web_sm")
 

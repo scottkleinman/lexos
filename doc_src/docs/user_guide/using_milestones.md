@@ -10,7 +10,7 @@ Here is a basic example:
 
 ```python
 # Import the StringMilestones class
-from lexos.milestones.string_milestones import StringMilestones
+from lexos.milestones import StringMilestones
 
 # A sample doc
 doc = "The quick brown fox jumps over the lazy dog."
@@ -100,8 +100,8 @@ Let's start by importing the Lexos `Tokenizer` class to create a spaCy Doc objec
 
 ```python
 # Import Tokenizer and TokenMilestones
-from lexos.tokenizer import Tokenizer
-from lexos.milestones.token_milestones import TokenMilestones
+from lexos import Tokenizer
+from lexos.milestones import TokenMilestones
 
 text = "Chapter 1: Introduction. Chapter 2: Methods."
 tokenizer = Tokenizer(model="en_core_web_sm")
@@ -233,7 +233,7 @@ Span milestones are used to group spans together for analysis or visualization. 
 There are three subclasses that inherit from `SpanMilestones`: `LineMilestones`, `SentenceMilestones`, and `CustomMilestones`. The `LineMilestones` class is the easiest to understand. It splits the text on line breaks and generates a list of spaCy `Span` objects. These can be accessed through the `spans` of both the `Milestones` and the `Doc` objects:
 
 ```python
-from lexos.milestones.span_milestones import LineMilestones
+from lexos.milestones import LineMilestones
 
 text = "Chapter 1: Introduction.\nChapter 2: Methods."
 tokenizer = Tokenizer(model="en_core_web_sm")
@@ -274,7 +274,7 @@ print(milestones.to_list())
 The `SentenceMilestones` class works in a similar way:
 
 ```python
-from lexos.milestones.span_milestones import SentenceMilestones
+from lexos.milestones import SentenceMilestones
 
 text = "This is sentence 1. This is sentence 2."
 tokenizer = Tokenizer(model="en_core_web_sm")

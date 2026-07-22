@@ -179,7 +179,7 @@ This is an alternative way of applying the pipeline.
 The Lexos `Scrubber` class also provides a more object-oriented approach, which may be more useful for some workflows. Start by creating an instance of the class. You can then add components to the pipeline with the `add_pipe()` method:
 
 ```python
-from lexos.scrubber import Scrubber
+from lexos import Scrubber
 
 scrubber = Scrubber()
 scrubber.add_pipe("lower_case")

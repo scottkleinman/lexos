@@ -33,7 +33,7 @@ print(normalized_text)
 The example below shows how the components can be used in a Scrubber pipeline.
 
 ```python
-from lexos.scrubber import Scrubber
+from lexos import Scrubber
 from lexos.scrubber.normalize import lower_case, whitespace
 
 scrubber = Scrubber()

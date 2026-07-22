@@ -11,7 +11,7 @@ There are two methods of generating word cloud variants: pure Python approaches 
 Word clouds display each submitted term in your text(s), scaled according to its frequency and laid out in a compact display so that you can easily "eyeball" which terms are most frequent. To produce a basic word cloud, import the `WordCloud` class and submit a simple text.
 
 ```python
-from lexos.visualization.cloud import WordCloud
+from lexos import WordCloud
 
 text = "This is a sample text to demonstrate how to produce a word cloud."
 wc = WordCloud(data=text, title="My Word Cloud")
@@ -29,7 +29,7 @@ Unlike many other word cloud generators, Lexos prefers for you to pre-tokenise y
 
 ```python
 # Import the Lexos Tokenizer class
-from lexos.tokenizer import Tokenizer
+from lexos import Tokenizer
 
 # Create an instance of the Tokenizer class and make a spaCy doc
 tokenizer = Tokenizer(model="en_core_web_sm")
@@ -138,26 +138,26 @@ plt.savefig("wordcloud.png", dpi = 300)
 Bubble charts (also known as packed circle charts or bubble visualisations) arrange terms into labelled circles, which can sometimes be easier to read than traditional word clouds. They are produced in a similar manner.
 
 ```python
-from lexos.visualization.cloud import WordCloud
+from lexos import BubbleViz
 
 text = "This is a sample text to demonstrate how to produce a bubble chart."
-bc = BubbleChart(data=text, title="My Bubble Chart")
+bc = BubbleViz(data=text, title="My Bubble Chart")
 bc.show()
 ```
 
 <figure>
-  <img src="basic_bubblechart.png" alt="Basic bubble chart">
+  <img src="basic_bubbleviz.png" alt="Basic bubble chart">
   <figcaption>Basic bubble chart</figcaption>
 </figure>
 
 Bubble charts must have the same height and width, so the figure dimensions are controlled with the `figsize` keyword with the value in inches.
 
 ```python
-bc = BubbleChart(data=text, figsize=6.5, title="My Bubble Chart")
+bc = BubbleViz(data=text, figsize=6.5, title="My Bubble Chart")
 ```
 
 <figure>
-  <img src="bubblechart_parameters.png" alt="Bubble chart with parameters">
+  <img src="bubbleviz_parameters.png" alt="Bubble chart with parameters">
   <figcaption>Basic bubble chart with parameters</figcaption>
 </figure>
 
@@ -182,7 +182,7 @@ As with word clouds, you can pass additional arguments to `matplotlib`'s `savefi
     # Import matplotlib
     import matplotlib.pyplot as plt
 
-    # Get the term counts from the BubbleChart instance
+    # Get the term counts from the BubbleViz instance
     data = list(bc.counts.keys())
 
     # Create a new figure and axis, setting the figure size
@@ -213,7 +213,7 @@ Multiclouds are grids of word clouds that allow you to compare the term counts i
 
 ```python
 # Import the MultiCloud class
-from lexos.visualization.cloud import MultiCloud
+from lexos.visualization import MultiCloud
 
 texts = [
     "Natural language processing is a fascinating field that combines linguistics, computer science, and artificial intelligence.",
@@ -278,7 +278,7 @@ mc = MultiCloud(data=texts, labels=labels, round=150, title="Sample Multiclouds"
 
 ## Types of Data
 
-In the examples above, we have shown how `WordCloud`, `BubbleChart`, and `MultiCloud` first tokenise the text on whitespace if you use raw text strings. We have also seen that `WordCloud` and `BubbleChart` accept lists of token strings. For `MultiCloud`, you need to submit a list of lists where each list item at the top level is a document and each sublist is a list of tokens. For instance, here is a shortened version of the data we used to produce our multicloud above:
+In the examples above, we have shown how `WordCloud`, `BubbleViz`, and `MultiCloud` first tokenise the text on whitespace if you use raw text strings. We have also seen that `WordCloud` and `BubbleViz` accept lists of token strings. For `MultiCloud`, you need to submit a list of lists where each list item at the top level is a document and each sublist is a list of tokens. For instance, here is a shortened version of the data we used to produce our multicloud above:
 
 ```python
 tokens = [
@@ -287,7 +287,7 @@ tokens = [
 ]
 ```
 
-Each sublist represents a separate document. By default, `WordCloud` and `BubbleChart` will merge these into a single document, whilst `MultiCloud` will generate an individual cloud for each document int he list. We will see below how you can modify this behaviour.
+Each sublist represents a separate document. By default, `WordCloud` and `BubbleViz` will merge these into a single document, whilst `MultiCloud` will generate an individual cloud for each document int he list. We will see below how you can modify this behaviour.
 
 If your data has already been tokenised into spaCy `Doc` objects, you can pass them directly to the visualisation classes (likewise, you can pass spaCy `Span` objects or lists of `Token` objects). However, a better approach is to use spaCy to pre-process your documents, such as by filtering punctuation and stop words, and then pass the tokens as lists of strings. Here is an example where we additionally convert the tokens to lower case.
 
@@ -300,7 +300,7 @@ tokens = [
 
 This allows you to take advantage of spaCy's natural language processing functionality.
 
-Another scenario is where you might have pre-tokenised texts is if you have already generated a document-term matrix with the Lexos `dtm` module. The `WordCloud` and `BubbleChart` classes accept a Lexos `DTM` object, as well as a pandas DataFrame produced by the `DTM.to_df()` method.
+Another scenario is where you might have pre-tokenised texts is if you have already generated a document-term matrix with the Lexos `dtm` module. The `WordCloud` and `BubbleViz` classes accept a Lexos `DTM` object, as well as a pandas DataFrame produced by the `DTM.to_df()` method.
 
 Finally, you may have a pre-generated list of term counts, such as is produced by the Python `collections.Counter` class:
 
@@ -313,14 +313,14 @@ print(counter)
 # {'this': 1, 'is': 1, 'a': 2, 'sample': 1, 'text': 1, 'to': 2, 'demonstrate': 1, 'how': 1, 'produce': 1, 'bubble': 1, 'chart': 1}
 ```
 
-You can pass this dictionary directly to the `data` parameter in the `WordCloud` and `BubbleChart` classes.
+You can pass this dictionary directly to the `data` parameter in the `WordCloud` and `BubbleViz` classes.
 
 ## Limiting the Number of Documents
 
 If you pass a list of documents, a `DTM` object, or a pandas DataFrame, you may want to limit the chart to data from individual documents. You can do this by passing a list of document indexes (beginning with 0) to the `docs` keyword:
 
 ```python
-bc = BubbleChart(data=dtm, docs=[0, 2])
+bc = BubbleViz(data=dtm, docs=[0, 2])
 ```
 
 Only terms from the first and third documents in the document-term matrix will appear in the chart. The `docs` keyword is available in all three classes.
@@ -329,7 +329,7 @@ Only terms from the first and third documents in the document-term matrix will a
 
 ## Generating Dynamic Images
 
-The static images produced by `WordCloud`, `BubbleChart`, and `MultiCloud` are very good for presentations, but they have their limitations, especially for more cluttered data. Because of this, Lexos offers alternative versions that use the Javascript <a href="https://d3js.org/" target="_blank">D3.js</a> library. This allows you produce interactive features such as the ability to hover over the terms in your word cloud to see their counts. D3 visualisations are beautiful and useful for exploring data when static images are hard to read. They are also ideal for embedding in web applications.
+The static images produced by `WordCloud`, `BubbleViz`, and `MultiCloud` are very good for presentations, but they have their limitations, especially for more cluttered data. Because of this, Lexos offers alternative versions that use the Javascript <a href="https://d3js.org/" target="_blank">D3.js</a> library. This allows you produce interactive features such as the ability to hover over the terms in your word cloud to see their counts. D3 visualisations are beautiful and useful for exploring data when static images are hard to read. They are also ideal for embedding in web applications.
 
 The cells below demonstrate how to generate D3 versions of word clouds and bubble charts.
 
@@ -416,10 +416,10 @@ To generate a D3 bubble chart, you use the `D3BubbleChart` class:
 from lexos.visualization.d3_bubbleviz import D3BubbleChart
 
 bc = D3BubbleChart(data=text, title="D3 Bubble Chart")
-bc.save("d3_bubblechart.html)
+bc.save("d3_bubbleviz.html)
 ```
 
-<iframe src="d3_bubblechart.html" width="100%" height="640" frameborder="0" style="padding:0;"></iframe>
+<iframe src="d3_bubbleviz.html" width="100%" height="640" frameborder="0" style="padding:0;"></iframe>
 
 Apart from the standard parameters, `D3BubbleChart` has two extra keywords for styling the chart.
 

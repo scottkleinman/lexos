@@ -118,7 +118,7 @@ The example below shows how the components can used in a Scrubber pipeline. The 
 
 ```python
 from functools import partial
-from lexos.scrubber import Scrubber
+from lexos import Scrubber
 from lexos.scrubber.replace import remove_element, replace_tag
 
 # Create partial functions for specific transformations

@@ -13,7 +13,7 @@ The corpus module allows you to serialize and de-serialize your records to disk,
 Let's start with the foundation: the `Record`. A Record is simply a document with some metadata attached.
 
 ```python
-from lexos.corpus import Record
+from lexos import Record
 
 record = Record(
     name="my_first_doc",
@@ -35,7 +35,7 @@ For more information, see [Working with Records](working_with_records.md).
 A corpus is a collection of records. The simplest way to create a file-based corpus using the `Corpus` class.
 
 ```python
-from lexos.corpus import Corpus
+from lexos import Corpus
 
 corpus = Corpus(corpus_dir="my_collection", name="My Texts")
 
@@ -64,7 +64,7 @@ Your documents are now stored as `Record` objects in the `my_collection` directo
 For loading multiple files into your corpus efficiently, use the `add_from_files()` method. This method provides memory-efficient streaming of files with parallel processing. For 100 files, `add_from_files()` is typically **1.4x faster** than loading files individually. Performance gains increase with larger file counts (1000+ files). It works with plain text files as well as PDFs, DOCX, and ZIP archives.
 
 ```python
-from lexos.corpus import Corpus
+from lexos import Corpus
 
 corpus = Corpus(corpus_dir="my_collection", name="My Texts")
 
@@ -269,7 +269,7 @@ You do not technically need to create a corpus to use it. All you neeed is a lis
 You can then pass this tuple to the `CorpusStats` class, as shown below:
 
 ```python
-from lexos.corpus.corpus_stats import CorpusStats
+from lexos.corpus import CorpusStats
 
 # Prepare your documents
 docs = [

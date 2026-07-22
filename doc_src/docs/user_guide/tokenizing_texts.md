@@ -66,7 +66,7 @@ Each token is spaCy `Token` object which stores all the token's attributes.
 The Lexos API wraps this procedure in the `Tokenizer.make_doc()` method:
 
 ```python
-from lexos.tokenizer import Tokenizer
+from lexos import Tokenizer
 
 tokenizer = Tokenizer()
 doc = tokenizer.make_doc("This is a test.")

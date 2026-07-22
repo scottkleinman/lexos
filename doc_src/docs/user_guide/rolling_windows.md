@@ -27,7 +27,7 @@ Here is a sample setup.
 
 ```python
 # Import the Windows class
-from lexos.rolling_windows import Windows
+from lexos import Windows
 
 # Assume that you have a raw text string
 windows = Windows(input=text, n=1000, window_type="characters", output="strings")

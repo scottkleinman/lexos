@@ -9,7 +9,7 @@ The `record` module provides the `Record` class, which is the building block for
 You can create a record from plain text or a spaCy Doc, and you can attach any metadata you like:
 
 ```python
-from lexos.corpus import Record
+from lexos import Record
 
 record = Record(
     name="example_doc",
@@ -91,7 +91,7 @@ If you use spaCy Docs, any custom token attributes and extensions are preserved 
 
 ```python
 import spacy
-from lexos.corpus import Record
+from lexos import Record
 
 nlp = spacy.load("en_core_web_sm")
 doc = nlp("Lexos makes text analysis easy.")

@@ -8,7 +8,7 @@ Let's say that you have a  long text string that you wanted to break into smalle
 
 ```python
 # Import the TextCutter class
-from lexos.cutter.text_cutter import TextCutter
+from lexos import TextCutter
 
 # Create a sample text
 text = (
@@ -220,7 +220,7 @@ Milestones are specified locations in the text that designate structural or sect
 
 ```python
 # Import the StringMilestones class
-from lexos.milestones.string_milestones import StringMilestones
+from lexos.milestones import StringMilestones
 
 # A sample text
 text = "The quick brown fox jumps over the lazy dog."
@@ -256,7 +256,7 @@ Cutting on milestones works similarly for `TokenCutter` objects, except that the
 
 ```python
 # Import the TokenMilestones class
-from lexos.milestones.token_milestones import TokenMilestones
+from lexos.milestones import TokenMilestones
 
 # Assume this is a spaCy `Doc` object with the text shown
 doc = "The quick brown fox jumps over the lazy dog."

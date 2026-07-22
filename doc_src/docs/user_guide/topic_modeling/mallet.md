@@ -17,7 +17,8 @@ In the examples below, we will use a sample dataset of English-language fiction 
 First, import the `Mallet` class and helper functions from the Lexos `mallet` module.
 
 ```python
-from lexos.topic_modeling.mallet import Mallet, import_docs, import_files, read_file, read_dirs
+from lexos import Mallet
+from lexos.topic_modeling.mallet import import_docs, import_files, read_file, read_dirs
 ```
 
 ---
@@ -173,7 +174,7 @@ Sometimes you need to load an existing model into memory, rather than creating o
 
 ```python
 # Import the Mallet class
-from lexos.topic_modeling.mallet import Mallet
+from lexos import Mallet
 
 # Initialize Mallet model
 mallet_model = Mallet(model_dir="mallet_model")
