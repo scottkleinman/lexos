@@ -55,4 +55,11 @@ def test_cluster_exports():
     assert KMeans is not None
     import lexos.cluster
 
-    assert set(lexos.cluster.__all__) == {"BootstrapConsensus", "Dendrogram", "KMeans"}
+    assert set(lexos.cluster.__all__) == {
+        "BootstrapConsensus",
+        "Clustermap",
+        "Dendrogram",
+        "PlotlyClusterGrid",
+        "PlotlyClustermap",
+        "KMeans",
+    }

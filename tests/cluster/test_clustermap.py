@@ -17,6 +17,8 @@ from lexos.cluster import (
     Clustermap,
     PlotlyClusterGrid,
     PlotlyClustermap,
+)
+from lexos.cluster.clustermap import (
     _create_dendrogram_traces,
     _get_matrix,
     get_matrix,

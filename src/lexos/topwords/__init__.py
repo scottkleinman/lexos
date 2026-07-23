@@ -18,7 +18,7 @@ class TopWords(BaseModel):
 
     def to_df(self):
         """Return a pandas DataFrame representation of the model."""
-        return pd.DataFrame()
+        raise NotImplementedError("Subclasses must implement to_df().")
 
 
 from lexos.topwords.keyterms import KeyTerms
