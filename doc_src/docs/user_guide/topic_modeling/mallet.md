@@ -196,6 +196,16 @@ After training, you can inspect various model properties:
 
 These properties allow you to inspect the model, analyze results, and use outputs for further processing.
 
+!!! note "Setting Metadata Values"
+    In most cases, you will not want to change the metadata values, which are set automatically by class methods. However, in some cases you may wish to add additional information to the model's metadata, such as author or version number. Use the `set_metadata` method to do this.
+
+    ```python
+    mallet_model.set_metadata("author", "John Smith")
+    mallet_model.set_metadata("version", "1.0")
+    ```
+
+    Any values you add with the `set_metadata` method will automatically be saved in the model's `meta.json` file and will be available if you need to reload the model (see below).
+
 ---
 
 ## Display Topics and Top Words
@@ -214,6 +224,27 @@ mallet_model.get_keys(as_df=True)
 ![Topic Keys table](images/topic_keys.png "Topic Keys table")
 
 ---
+
+!!! note "Custom Topic Labels"
+    You can provide custom labels for your topics by adding a `topic_labels` dictionary to the model's metadata. This is useful for replacing the default labels with more topic descriptive titles, especially after using an LLM to generate them. An example of how to use AI-generated labels can be found at the end of this page.
+
+    The dictionary should map topic indices (as strings) to your custom labels. To add them to the model's metadata, use the `set_metadata` method, as shown below:
+
+    ```python
+    custom_labels = {
+        "0": "Military & Strategy",
+        "1": "Classical Literature",
+        "2": "Scientific Discovery"
+    }
+
+    # Add the labels to the model's metadata
+    mallet_model.metadata["topic_labels"] = custom_labels
+    mallet_model.set_metadata("topic_labels", custom_labels)
+
+    These labels will be now displayed in the results of `get_keys` and will be used in all the visualization methods produced by the `Mallet` class.
+
+---
+
 
 ## Display the Top Documents in Each Topic
 
@@ -364,7 +395,6 @@ mallet_model.plot_categories_by_topics_heatmap(
 
 ![Heatmap showing topics by category](images/topic-heatmap.png "Heatmap showing topics by category")
 
-
 !!! Note
     If you make the figure size too small, some topic labels may be omitted. You can mitigate this by reducing the font scale.
 
@@ -426,7 +456,9 @@ mallet_model.plot_topics_over_time(times=times, topic_index=0, show=True)
 
 ---
 
-## Advanced: Infer Topics for New Documents
+## Advanced Features
+
+### Infer Topics for New Documents
 
 Sometimes you want train a model and then feed it new documents after training. To help you do this, Lexos creates an inferencer file when you initially train the model. It will automatically be saved as `inferencer.mallet` in your model's folder, but you can use the `path_to_inferencer` parameter when training your model (or change it in your metadata) if you want to give it a different name or save it somewhere else.
 
@@ -527,3 +559,88 @@ mallet_model.plot_topics_over_time(
 ```
 
 ![Heatmap and topics over time line graph with combined distributions](images/topic0-over-time-combined.png "Topic 0 over time line graph with combined distributions")
+
+---
+
+### Automatic Topic Labelling with LLMs (Experimental)
+
+Lexos supports automatic topic labelling using LLM providers like OpenAI, Google Gemini, and Anthropic Claude, as well as local models via OpenAI-compatible APIs (like Ollama).The LLM labelling feature is experimental and may not work with all models or configurations.
+
+!!! warning
+    Generative AI models can produce idiosyncratic, duplicate, misleading, or incorrect results. It is highly recommended that you inspect the topic labels and modify any generated labels manually, as appropriate.
+
+First, configure the `TopicLabelerConfig`. You must provide either an `api_key` (for cloud providers) or a `base_url` (for local providers). Attempting to create a configuration without one of these will raise a validation error.
+
+By default, the prompt sent to the LLM is as follows:
+
+```txt
+Analyze the following high-frequency words from a topic model cluster:
+Words: [the list of words in the topic]
+Contextual context snippet: [an optional text snippet supplied with the `documents_snippet` parameter]
+Provide 1 concise, clear title/label (3-5 words max) summarizing this topic.
+Return ONLY the plain text label without any preamble or quotes.
+```
+
+You can send a custom prompt to the LLM by providing a string to the `prompt` parameter. The list of words in each topic will be appended to your prompt. You can also provide an optional snippet of text from your documents with the `documents_snippet` parameter, which will be included in the prompt to provide context for the LLM. This is especially useful if your topics are highly abstract or if you want to provide additional context for the LLM to consider when generating labels.
+
+You can further modify the labelling process with the following parameters:
+
+- `max_tokens`: The maximum number of tokens to return in the response. The default is 50 to keep labels short.
+- `temperature`: The temperature for the LLM. The default is 0.1, specifies low creativity. You can increase it to 1 until you find a balance between creativity and consistency in the labels.
+- `timeout`: The timeout for the LLM request in seconds. The default is 120 seconds, which may be too short for some models or prompts (especially if running in a Jupyter notebook). You can increase this if you are experiencing timeouts.
+- `max_retries`: The maximum number of retries for a failed LLM request (such as due to rate limits for cloud-based services).
+- `include_reasoning`: Whether to include the model's reasoning in the response in "thinking" mode. The default is `False`, which is recommended for most models to reduce the number of tokens used and speed up the labelling process. If you are able to accommodate larger numbers of tokens without timeouts, you can set this to `True` for better results.
+
+Depending upon which LLM you choose, you may have to play around with the settings a lot to obtain clean and consistent feedback -- especially when using a local model -- in a reasonable amount of time.
+
+Here is an example of how to use the LLM labeler with a local model.
+
+```python
+from lexos.topic_modeling.mallet.llm_labeler import TopicLabelerConfig, label_mallet_topics
+
+sample_prompt = (
+    f"Analyze the high-frequency words from an LDA topic model cluster in the list below:\n"
+    f"Provide 1 concise, clear label (3-5 words max) summarizing this topic. "
+    f"Return ONLY the plain text label without any preamble or quotes."
+)
+
+# Configure the labeler for a local model
+config = TopicLabelerConfig(
+    provider="local", # Should be local for local models
+    model="llama-3.2-1b-instruct",
+    base_url = "http://172.17.160.1:1234/v1/chat/completions", # Required for local models
+    max_tokens = 512,
+    temperature = 0.25,
+    prompt=sample_prompt
+)
+
+# Specify the path to the topic keys file generated by your trained Mallet model
+topic_keys_path = mallet_model.metadata["path_to_topic_keys"]
+
+# Specify topic numbers to label or None for all topics
+topic_nums = None # Or use a zero-indexed list like [0, 1]
+
+# Generate the topic labels mapping from your trained Mallet model using the LLM labeler
+topic_labels = label_mallet_topics(topic_keys_path=topic_keys_path, config=config, topic_nums=topic_nums)
+```
+
+The output is a dictionary mapping topic indices to the generated labels. You can inspect the labels and modify them as needed.
+
+With a cloud-based model, use a configuration like the one below:
+
+```python
+config = TopicLabelerConfig(
+    provider="gemini",
+    model="gemini-3.6-flash",
+    api_key="your_api_key", # Required for cloud providers
+    max_tokens = 512,
+    temperature = 0.1,
+)
+```
+
+Change any labels you want Once you are satisfied with the labels, you can commit them to your topic model instance by adding them to the metadata "topic_labels" key.
+
+```python
+# Add the labels to the model's metadata
+mallet_model.metadata["topic_labels"] = topic_labels
+```
