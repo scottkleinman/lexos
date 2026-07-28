@@ -1,7 +1,7 @@
 """mallet.py.
 
-Last Updated: July 19, 2026
-Last Tested: July 19, 2026
+Last Updated: July 27, 2026
+Last Tested: July 27, 2026
 
 A fork of Maria Antoniak's Little Mallet Wrapper: https://github.com/maria-antoniak/little-mallet-wrapper.
 
@@ -444,6 +444,7 @@ class Mallet(BaseModel):
                 # Ensure at least 3 columns for consistency (index, weight, keywords)
                 while len(parts) < 3:
                     parts.append("")
+
                 results.append(parts)
             return results
 
@@ -737,13 +738,27 @@ class Mallet(BaseModel):
         output = ""
         for topic in topic_keys:
             keywords = " ".join(topic[2].split()[:num_keys])
-            output += f"Topic {topic[0]}\t{topic[1]}\t{keywords}\n"
+
+            # Use custom labels for the "Topic" column if available
+            custom_labels = self.metadata.get("topic_labels")
+            topic_label = topic[0]
+            if custom_labels and str(topic[0]) in custom_labels:
+                topic_label = custom_labels[str(topic[0])]
+
+            output += f"Topic {topic_label}\t{topic[1]}\t{keywords}\n"
         if as_df:
             data = []
             for topic in topic_keys:
                 keywords = " ".join(topic[2].split()[:num_keys])
+
+                # Use custom labels for the "Topic" column if available
+                custom_labels = self.metadata.get("topic_labels")
+                topic_label = topic[0]
+                if custom_labels and str(topic[0]) in custom_labels:
+                    topic_label = custom_labels[str(topic[0])]
+
                 data.append(
-                    {"Topic": topic[0], "Label": topic[1], "Keywords": keywords}
+                    {"Topic": topic_label, "Weight": topic[1], "Keywords": keywords}
                 )
             df = pd.DataFrame(data)
             show_index = True  # Or False
@@ -989,14 +1004,21 @@ class Mallet(BaseModel):
             )
 
         components = components.loc[:, selected_topics]
-        components.columns = [f"Topic {int(topic)}" for topic in components.columns]
+
+        custom_labels = self.metadata.get("topic_labels", {})
+        components.columns = [
+            custom_labels.get(str(topic), f"Topic {int(topic)}")
+            for topic in components.columns
+        ]
 
         highlight_labels = None
         if highlight_topics is not None:
             highlight_labels = []
             for topic in ensure_list(highlight_topics):
                 if isinstance(topic, int):
-                    highlight_labels.append(f"Topic {topic}")
+                    highlight_labels.append(
+                        custom_labels.get(str(topic), f"Topic {topic}")
+                    )
                 else:
                     highlight_labels.append(topic)
 
@@ -1109,14 +1131,21 @@ class Mallet(BaseModel):
             )
 
         components = components.loc[:, selected_topics]
-        components.columns = [f"Topic {int(topic)}" for topic in components.columns]
+
+        custom_labels = self.metadata.get("topic_labels", {})
+        components.columns = [
+            custom_labels.get(str(topic), f"Topic {int(topic)}")
+            for topic in components.columns
+        ]
 
         # Handle highlighted labels
         highlight_labels = set()
         if highlight_topics is not None:
             for topic in ensure_list(highlight_topics):
                 if isinstance(topic, int):
-                    highlight_labels.add(f"Topic {topic}")
+                    highlight_labels.add(
+                        custom_labels.get(str(topic), f"Topic {topic}")
+                    )
                 else:
                     highlight_labels.add(topic)
 
@@ -1475,6 +1504,14 @@ class Mallet(BaseModel):
         for topic in topics:
             keywords = " ".join(topic_keys[topic][2].split()[:num_keys])
 
+            # Check for custom labels to use in the topic header
+            custom_labels = self.metadata.get("topic_labels")
+            topic_label = str(topic)
+            if custom_labels and topic_label in custom_labels:
+                topic_header = f"{custom_labels[topic_label]}: {keywords}"
+            else:
+                topic_header = f"Topic {topic}: {keywords}"
+
             dicts_to_plot = []
             for _label, _distribution in zip(categories, distributions):
                 if not target_labels or _label in target_labels:
@@ -1482,7 +1519,7 @@ class Mallet(BaseModel):
                         {
                             "Probability": float(_distribution[topic]),
                             "Category": _label,
-                            "Topic": keywords,
+                            "Topic": topic_header,
                         }
                     )
             df_to_plot = pd.DataFrame(dicts_to_plot)
@@ -1541,7 +1578,7 @@ class Mallet(BaseModel):
             plt.xticks(rotation=45, ha="right")
             # Set either the provided title or a sensible default including topic index and top keys
             if title is None:
-                ax.set_title(f"Topic {topic}: {keywords}")
+                ax.set_title(topic_header)
             else:
                 # Use a figure-level title to avoid per-subplot clobbering
                 fig.suptitle(title)
@@ -1612,13 +1649,21 @@ class Mallet(BaseModel):
                     else:
                         keywords = ""
 
+                    # Check for custom labels to use in the topic axis
+                    custom_labels = self.metadata.get("topic_labels")
+                    topic_id = str(_topic)
+                    if custom_labels and topic_id in custom_labels:
+                        topic_display_name = custom_labels[topic_id]
+                    else:
+                        topic_display_name = f"Topic {_topic}"
+
                     if num_keys:
                         if keywords:
-                            _topic_label = f"Topic {_topic}: {keywords}"
+                            _topic_label = f"{topic_display_name}: {keywords}"
                         else:
-                            _topic_label = f"Topic {_topic}"
+                            _topic_label = f"{topic_display_name}"
                     else:
-                        _topic_label = f"Topic {_topic}"
+                        _topic_label = f"{topic_display_name}"
 
                     dicts_to_plot.append(
                         {
@@ -1759,8 +1804,15 @@ class Mallet(BaseModel):
                     "Invalid `round_mask` argument: expected a boolean or integer radius."
                 )
 
-        # Build simple numeric labels for each topic to avoid clutter
-        labels = [f"Topic {i}" for i in range(len(df))]
+        # Build label mappings for each topic based on index and custom labels
+        custom_labels = self.metadata.get("topic_labels")
+        labels = []
+        for i in range(len(df)):
+            topic_id = str(i)
+            if custom_labels and topic_id in custom_labels:
+                labels.append(custom_labels[topic_id])
+            else:
+                labels.append(f"Topic {i}")
 
         # Build figure_opts forwarding and set a white facecolor by default
         figure_opts = kwargs.get("figure_opts", {})
@@ -1864,6 +1916,21 @@ class Mallet(BaseModel):
 
         data_df = pd.DataFrame(data_dicts)
 
+        # Get the topic label/keywords for the title
+        if title is None:
+            try:
+                custom_labels = self.metadata.get("topic_labels", {})
+                topic_id = str(topic_keys[topic_index][0])
+                topic_label = custom_labels.get(topic_id, f"Topic {topic_id}")
+                keywords = " ".join(topic_keys[topic_index][2].split()[:5])
+                title = f"{topic_label}: {keywords}"
+            except Exception:
+                title = (
+                    custom_labels.get(str(topic_index), f"Topic {topic_index}")
+                    if title is None
+                    else title
+                )
+
         sns.set_theme(style="ticks", font_scale=font_scale)
         fig, ax = plt.subplots(figsize=figsize)
         sns.lineplot(data=data_df, x="Time", y="Probability", color=color, ax=ax)
@@ -1873,10 +1940,13 @@ class Mallet(BaseModel):
         # Default title
         if title is None:
             try:
-                keywords = " ".join(topic_keys[topic_index][2].split()[:5])
-                title = f"Topic {topic_index}: {keywords}"
+                custom_labels = self.metadata.get("topic_labels", {})
+                topic_id = str(topic_keys[topic_index][0])
+                topic_label = custom_labels.get(topic_id, f"Topic {topic_id}")
+                label_or_keywords = " ".join(topic_keys[topic_index][2].split()[:5])
+                title = f"{topic_label}: {label_or_keywords}"
             except Exception:
-                title = f"Topic {topic_index}"
+                pass
         if title:
             fig.suptitle(title)
 
@@ -2129,3 +2199,14 @@ class Mallet(BaseModel):
             # User wants to display; we return None in this case for parity with other methods
             return None
         return distributions
+
+    def set_metadata(self, parameter: str, value: Any) -> None:
+        """Set the model parameters from the metadata.
+
+        Args:
+            parameter (str): The name of the parameter to set.
+            value (Any): The value to set for the parameter.
+        """
+        self.metadata[parameter] = value
+        with open(Path(self.model_dir) / "meta.json", "w") as f:
+            f.write(json.dumps(self.metadata))
