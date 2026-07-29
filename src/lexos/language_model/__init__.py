@@ -257,7 +257,7 @@ def export_to_conllu(
     Returns:
         Path to the written output file.
     """
-    # str() keeps installed-name inputs (e.g. "en_core_web_sm") loadable;
+    # Using str() keeps installed-name inputs (e.g. "en_core_web_sm") loadable;
     # wrapping in Path() would force spaCy to treat them as directories.
     nlp = spacy.load(str(model_path))
     output_path = Path(output_path)
@@ -425,7 +425,8 @@ class LanguageModel:
             self.gpu = False
         else:
             self.gpu = gpu
-        self._use_gpu: int = 0 if self.gpu else -1  # spaCy's device-id convention
+        # Device id per spaCy: 0 = GPU, -1 = CPU
+        self._use_gpu: int = 0 if self.gpu else -1
 
         # --- Non-English warning ---
         if lang not in ("en", "xx"):
@@ -590,7 +591,7 @@ class LanguageModel:
         if "corpora" in self.config and "train" in self.config["corpora"]:
             self.config["corpora"]["train"]["max_length"] = 2000
 
-        # tok2vec and transformer are embedding backbones with no scored
+        # Embedding backbones (tok2vec, transformer) produce no scored
         # output, so they intentionally have no entry here.
         _component_metrics: dict[str, list[str]] = {
             "tagger": ["tag_acc"],
