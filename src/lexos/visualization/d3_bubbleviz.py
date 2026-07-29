@@ -1,12 +1,13 @@
 """d3.bubbleviz.py.
 
-Last Updated: 11 August, 2025
-Last Tested: December 5, 2025
+Last Updated: June 28, 2026
+Last Tested: June 28, 2026
 """
 
 import tempfile
 import webbrowser
 from collections import Counter
+from functools import lru_cache
 from pathlib import Path
 from typing import Optional
 
@@ -32,6 +33,12 @@ multi_doc_types = (
     | pd.DataFrame
     | DTM
 )
+
+
+@lru_cache(maxsize=None)
+def _load_local_asset(path: Path) -> str:
+    with open(path, "r", encoding="utf-8") as f:
+        return f.read()
 
 
 class D3BubbleChart(BaseModel):
@@ -96,9 +103,9 @@ class D3BubbleChart(BaseModel):
 
     def _load_template(self) -> str:
         """Load the HTML template for the bubble chart."""
+        template_path = Path(self.template)
         try:
-            with open(self.template) as f:
-                return f.read()
+            return _load_local_asset(template_path)
         except FileNotFoundError:
             raise LexosException(f"Template file not found: {self.template}")
 
@@ -121,8 +128,9 @@ class D3BubbleChart(BaseModel):
 
         # Configure D3.js inclusion
         template.globals["include_d3js"] = self.include_d3js
-        with open(self._get_asset_path("d3.v7.min.js")) as f:
-            d3_js_script = f.read()
+        d3_js_script = ""
+        if self.include_d3js:
+            d3_js_script = _load_local_asset(self._get_asset_path("d3.v7.min.js"))
 
         # Render the template with the instance variables
         self.html = template.render(

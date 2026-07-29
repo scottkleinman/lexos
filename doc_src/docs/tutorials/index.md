@@ -11,7 +11,7 @@ Here is a list of the currently available tutorials, organised by module:
 <ul>
 <li>Dendrograms (Hierarchical Agglomerative Clustering): <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/dendrogram_tutorial.ipynb">📓 Notebook</a> | <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/data.zip">🗄️ Data</a></li>
 <li>Clustermaps (Hierarchical Agglomerative Clustering): <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/clustermap_tutorial.ipynb">📓 Notebook</a> | <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/data.zip">🗄️ Data</a></li>
-<li>Bootstrap Consenus Trees (Hierarchical Agglomerative Clustering): <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/bct_tutorial.ipynb">📓 Notebook</a> | <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/FilesToUse.zip">🗄️ Data</a></li>
+<li>Bootstrap Consenus Trees (Hierarchical Agglomerative Clustering): <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/bct_tutorial.ipynb">📓 Notebook</a> | <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/bct_data.zip">🗄️ Data</a></li>
 <li>K-Means Clustering: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/kmeans_tutorial.ipynb">📓 Notebook</a> | <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/cluster/FilesToUse.zip">🗄️ Data</a></li>
 </ul>
 
@@ -79,16 +79,22 @@ Here is a list of the currently available tutorials, organised by module:
 <li>Scrubbing Markup Tags: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/scrubber/tags_tutorial.ipynb">📓 Notebook</a></li>
 </ul>
 
+## Structural Stylometry
+
+<ul>
+<li>Analyzing Structure: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/structural_stylometry/analyzing_structure.ipynb">📓 Notebook</a></li>
+</ul>
+
 ## Tokenizer
 
 <ul>
-<li>Using Tokenizer: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/tokenizer/tutorial.ipynb">📓 Notebook</a></li>
+<li>Using Tokenizer: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/tokenizer/tutorial.ipynb">📓 Notebook</a> | <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/tokenizer/Austen_Pride.txt">🗄️ Data</a></li>>
 </ul>
 
 ## Topic Modeling
 
 <ul>
-<li>Mallet Topic Modeling Tutorial: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/topic_modeling/mallet_tutorial.ipynb">📓 Notebook</a> | <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/topic_modeling/sample_data.zip">🗄️ Data</a></li>
+<li>Mallet Topic Modeling Tutorial: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/topic_modeling/mallet_tutorial.ipynb">📓 Notebook</a> | 🗄️ Data: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/topic_modeling/litbank_texts.zip">LitBank Texts</a>, <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/topic_modeling/additional_texts.zip">Additional Texts</a></li>
 </ul>
 
 ## TopWords

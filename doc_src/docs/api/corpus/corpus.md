@@ -96,6 +96,12 @@ The corpus module allows you to serialize and de-serialize your records to disk,
       show_root_heading: true
       heading_level: 3
 
+### ::: lexos.corpus.corpus.Corpus.add_from_files
+
+    rendering:
+      show_root_heading: true
+      heading_level: 3
+
 ### ::: lexos.corpus.corpus.Corpus.filter_records
 
     rendering:

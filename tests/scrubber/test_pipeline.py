@@ -1,7 +1,7 @@
 """test_pipeline.py.
 
 Coverage: 100%
-Last Update: 2025-01-14.
+Last Update: 2026-06-26.
 """
 
 from functools import partial

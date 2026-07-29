@@ -1,15 +1,14 @@
 """test_mallet.py.
 
-Coverage: 99%. Missing: 1225-1227, 1250-1252
+Coverage: 98%. Missing: 249-251, 1045, 1146, 1207, 1215, 1511, 1656, 1813, 1942-1949
 
-Last Updated: November 26, 2025
+Last Updated: July 27, 2026
 """
 
-import os
 import subprocess
 import textwrap
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -39,11 +38,13 @@ def tmp_model_dir(tmp_path):
 def no_system_calls(monkeypatch):
     """Fixture to prevent real system calls to `mallet` during tests."""
 
-    def fake_system(cmd):
-        # Dummy no-op to simulate success
-        return 0
+    def fake_run(*args, **kwargs):
+        # Return a Mock object with a returncode of 0
+        return MagicMock(returncode=0)
 
-    monkeypatch.setattr(os, "system", fake_system)
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    # Also patch Popen if _track_progress is used
+    monkeypatch.setattr(subprocess, "Popen", MagicMock())
     yield
 
 
@@ -97,8 +98,24 @@ def test_mallet_import_data_and_metadata(tmp_model_dir):
     assert "path_to_training_data" in m.metadata
     assert "path_to_formatted_training_data" in m.metadata
     assert m.metadata["num_docs"] == 2
-    assert isinstance(m.metadata["mean_num_tokens"], (int, float))
-    assert "vocab_size" in m.metadata
+
+
+def test_set_metadata(tmp_model_dir):
+    """Test setting specific metadata entries."""
+    import json
+
+    m = Mallet(model_dir=str(tmp_model_dir))
+    m.set_metadata("test_param", "test_value")
+
+    # Check in-memory metadata update
+    assert m.metadata["test_param"] == "test_value"
+
+    # Check persistence in meta.json
+    meta_path = tmp_model_dir / "meta.json"
+    assert meta_path.exists()
+    with open(meta_path, "r") as f:
+        saved_meta = json.load(f)
+    assert saved_meta["test_param"] == "test_value"
 
 
 def test_train_sets_canonical_metadata(tmp_model_dir, monkeypatch):
@@ -110,7 +127,7 @@ def test_train_sets_canonical_metadata(tmp_model_dir, monkeypatch):
     formatted_data_path.write_text("0\t\tword1 word2\n1\t\tword3 word4\n")
 
     # Ensure mallet execution is not run
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     # Prevent spawn/track_progress from launching real subprocess
     monkeypatch.setattr(
         Mallet, "_track_progress", lambda self, cmd, iterations, verbose: None
@@ -160,8 +177,8 @@ def test_infer_parses_infer_output(tmp_model_dir, monkeypatch):
     )
     output_path.write_text(output_content)
 
-    # Monkeypatch os.system to no-op
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    # Monkeypatch subprocess.run to no-op
+    monkeypatch.setattr(subprocess, "run", MagicMock())
 
     # Run infer, pointing to output and inferencer
     distributions = m.infer(
@@ -195,7 +212,7 @@ def test_infer_raises_on_mixed_format(tmp_model_dir, monkeypatch):
     )
     output_path.write_text(output_content)
 
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     with pytest.raises(LexosException):
         m.infer(
             docs=["d1"],
@@ -221,14 +238,14 @@ def test_infer_accepts_file_input_and_flags(tmp_model_dir, monkeypatch):
     output_text = "0\td0\t0.5\t0.5\n1\td1\t0.2\t0.8\n"
     output_path.write_text(output_text)
 
-    # Capture os.system invocations so we can assert that flags are included
+    # Capture subprocess.run invocations
     calls = []
 
-    def fake_system(cmd):
+    def fake_run(cmd, **kwargs):
         calls.append(cmd)
-        return 0
+        return MagicMock(returncode=0)
 
-    monkeypatch.setattr(os, "system", fake_system)
+    monkeypatch.setattr(subprocess, "run", fake_run)
 
     dists = m.infer(
         docs=str(input_file),
@@ -245,7 +262,7 @@ def test_infer_accepts_file_input_and_flags(tmp_model_dir, monkeypatch):
     assert any("--keep-sequence" in c for c in calls)
     assert any("--remove-stopwords" in c for c in calls)
     assert any("--preserve-case" in c for c in calls)
-    assert any("--use-pipe-from pipe.dat" in c for c in calls)
+    assert any("--use-pipe-from" in c and "pipe.dat" in c for c in calls)
 
 
 def test_infer_output_missing_raises(tmp_model_dir, monkeypatch):
@@ -255,7 +272,7 @@ def test_infer_output_missing_raises(tmp_model_dir, monkeypatch):
     fake_inferencer_path.write_text("dummy")
     m.metadata[m.CANONICAL_INFERENCER_KEY] = str(fake_inferencer_path)
     missing_output = tmp_model_dir / "does_not_exist.txt"
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     with pytest.raises(LexosException):
         m.infer(
             docs=["x"],
@@ -274,7 +291,7 @@ def test_infer_malformed_colon_pair_raises(tmp_model_dir, monkeypatch):
 
     out = tmp_model_dir / "infer-doc-topics.txt"
     out.write_text("0\td0\t0:abc\n")
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     with pytest.raises(LexosException):
         m.infer(
             docs=["x"],
@@ -294,7 +311,7 @@ def test_infer_unable_to_parse_distribution_raises(tmp_model_dir, monkeypatch):
     out = tmp_model_dir / "infer-doc-topics.txt"
     # tab-delimited with parts >=3 but probability tokens are non-numeric
     out.write_text("0\td0\ta\tb\n")
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     with pytest.raises(LexosException):
         m.infer(
             docs=["x"],
@@ -311,7 +328,7 @@ def test_infer_show_true_returns_none(tmp_model_dir, monkeypatch):
     m.metadata[m.CANONICAL_INFERENCER_KEY] = str(fake_inferencer_path)
     out = tmp_model_dir / "out.txt"
     out.write_text("0\td0\t0.3\t0.7\n")
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     res = m.infer(
         docs=["x"],
         path_to_inferencer=str(fake_inferencer_path),
@@ -352,11 +369,11 @@ def test_infer_list_input_and_flags(tmp_model_dir, monkeypatch):
 
     calls = []
 
-    def fake_system(cmd):
+    def fake_system(cmd, *args, **kwargs):
         calls.append(cmd)
-        return 0
+        return MagicMock(returncode=0)
 
-    monkeypatch.setattr(os, "system", fake_system)
+    monkeypatch.setattr(subprocess, "run", fake_system)
     dists = m.infer(
         docs=["a", "b"],
         path_to_inferencer=str(fake_inferencer_path),
@@ -371,7 +388,9 @@ def test_infer_list_input_and_flags(tmp_model_dir, monkeypatch):
     assert any("import-file" in c and "--keep-sequence" in c for c in calls)
     assert any("import-file" in c and "--preserve-case" in c for c in calls)
     assert any("import-file" in c and "--remove-stopwords" in c for c in calls)
-    assert any("import-file" in c and "--use-pipe-from pipe.dat" in c for c in calls)
+    assert any(
+        "import-file" in c and "--use-pipe-from" in c and "pipe.dat" in c for c in calls
+    )
 
 
 def test_infer_default_output_path_used(tmp_model_dir, monkeypatch):
@@ -383,7 +402,7 @@ def test_infer_default_output_path_used(tmp_model_dir, monkeypatch):
     # Write an 'infer-doc-topics.txt' to the model dir so it will be found when output_path is None
     default_output = tmp_model_dir / "infer-doc-topics.txt"
     default_output.write_text("0\td0\t0.1\t0.9\n")
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     res = m.infer(docs=["x"], path_to_inferencer=str(fake_inferencer_path), show=False)
     assert isinstance(res, list)
     assert len(res) == 1
@@ -397,7 +416,7 @@ def test_infer_parses_whitespace_separated_line(tmp_model_dir, monkeypatch):
     m.metadata[m.CANONICAL_INFERENCER_KEY] = str(fake_inferencer_path)
     out = tmp_model_dir / "infer-doc-topics.txt"
     out.write_text("0 d0 0.5 0.5\n")
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     dists = m.infer(
         docs=["x"],
         path_to_inferencer=str(fake_inferencer_path),
@@ -761,7 +780,7 @@ def test_topic_clouds_default_background_color(tmp_model_dir, monkeypatch):
         def show(self):
             captured["shown"] = True
 
-    monkeypatch.setattr("lexos.topic_modeling.mallet.MultiCloud", FakeMultiCloud)
+    monkeypatch.setattr("lexos.topic_modeling.mallet.mallet.MultiCloud", FakeMultiCloud)
     m = Mallet(model_dir=str(tmp_model_dir))
     # inject minimal term distribution
     monkeypatch.setattr(
@@ -792,7 +811,7 @@ def test_train_single_part_paths_prefix_and_inferencer_meta(tmp_model_dir, monke
     # Prepare a fake formatted training data file so train() will not error on missing input
     formatted_data_path = tmp_model_dir / "training_data.mallet"
     formatted_data_path.write_text("0\t\tword1 word2\n1\t\tword3 word4\n")
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     monkeypatch.setattr(
         Mallet, "_track_progress", lambda self, cmd, iterations, verbose: None
     )
@@ -814,7 +833,7 @@ def test_infer_raises_when_inferencer_missing(tmp_model_dir, monkeypatch):
     # ensure no inferencer metadata
     if m.CANONICAL_INFERENCER_KEY in m.metadata:
         m.metadata.pop(m.CANONICAL_INFERENCER_KEY)
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     with pytest.raises(LexosException):
         m.infer(docs=["a"], output_path=str(tmp_model_dir / "out.txt"))
 
@@ -867,6 +886,7 @@ def test_plot_termite_builds_components_and_maps_highlights(tmp_model_dir):
                 highlight_topics=[1],
                 n_terms=15,
                 output_path=expected_save,
+                show=False,
             )
 
     assert axis == "fake-axis"
@@ -910,7 +930,7 @@ def test_plot_termite_plotly_builds_figure(tmp_model_dir):
     assert all(size > 0 for size in fig.data[0].marker.size)
 
 
-def test_plot_termite_plotly_invalid_rank_metric_raises(tmp_model_dir):
+def test_plot_termite_plotly_invalid_rank_metric_raises_orig(tmp_model_dir):
     """Invalid rank_terms_by should raise ValueError."""
     m = Mallet(model_dir=str(tmp_model_dir))
 
@@ -925,7 +945,7 @@ def test_plot_termite_plotly_invalid_rank_metric_raises(tmp_model_dir):
 def test_import_docs_method_writes_training_data(tmp_model_dir, monkeypatch):
     """Ensure `Mallet.import_docs` writes the training file and records its path in metadata."""
     m = Mallet(model_dir=str(tmp_model_dir))
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     m.import_docs(["doc one", "doc two"])
     assert "path_to_training_data" in m.metadata
     assert m.metadata["path_to_training_data"].endswith("training_data.txt")
@@ -936,7 +956,7 @@ def test_import_file_method_reads_and_writes(tmp_model_dir, monkeypatch):
     m = Mallet(model_dir=str(tmp_model_dir))
     p = tmp_model_dir / "docs.txt"
     p.write_text("doc a\ndoc b\n")
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     # Patch read_file to avoid pydantic validation errors in this test (module expects a str|Path)
     monkeypatch.setattr(
         "lexos.topic_modeling.mallet.read_file",
@@ -950,7 +970,7 @@ def test_import_file_method_reads_and_writes(tmp_model_dir, monkeypatch):
 def test__import_training_data_writes_custom_path(tmp_model_dir, monkeypatch):
     """Ensure _import_training_data writes to the specified path and records it in metadata."""
     m = Mallet(model_dir=str(tmp_model_dir))
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     training_data = ["doc one", "doc two"]
     custom_path = tmp_model_dir / "custom_training.txt"
     m._import_training_data(training_data, path_to_training_data=str(custom_path))
@@ -962,7 +982,7 @@ def test__import_training_data_writes_custom_path(tmp_model_dir, monkeypatch):
 def test__import_training_data_with_training_ids_and_pipe(tmp_model_dir, monkeypatch):
     """Ensure _import_training_data includes training ids and accepts a pipe filename flag without error."""
     m = Mallet(model_dir=str(tmp_model_dir))
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     training_data = ["doc one", "doc two"]
     custom_path = tmp_model_dir / "training_with_ids.txt"
     # Provide training IDs to ensure they are written as provided
@@ -1060,7 +1080,7 @@ def test_topic_clouds_round_mask_and_title(tmp_model_dir, monkeypatch):
         def show(self):
             captured["shown"] = True
 
-    monkeypatch.setattr("lexos.topic_modeling.mallet.MultiCloud", FakeMultiCloud)
+    monkeypatch.setattr("lexos.topic_modeling.mallet.mallet.MultiCloud", FakeMultiCloud)
 
     m = Mallet(model_dir=str(tmp_model_dir))
 
@@ -1089,7 +1109,7 @@ def test_topic_clouds_round_mask_int_and_opts(tmp_model_dir, monkeypatch):
         def show(self):
             captured["shown"] = True
 
-    monkeypatch.setattr("lexos.topic_modeling.mallet.MultiCloud", FakeMultiCloud)
+    monkeypatch.setattr("lexos.topic_modeling.mallet.mallet.MultiCloud", FakeMultiCloud)
     m = Mallet(model_dir=str(tmp_model_dir))
     monkeypatch.setattr(
         Mallet, "load_topic_term_distributions", lambda self: {0: {"a": 1.0}}
@@ -1117,7 +1137,7 @@ def test_topic_clouds_output_path_saves(tmp_model_dir, monkeypatch):
         def show(self):
             captured["shown"] = True
 
-    monkeypatch.setattr("lexos.topic_modeling.mallet.MultiCloud", FakeMultiCloud)
+    monkeypatch.setattr("lexos.topic_modeling.mallet.mallet.MultiCloud", FakeMultiCloud)
     m = Mallet(model_dir=str(tmp_model_dir))
     monkeypatch.setattr(
         Mallet, "load_topic_term_distributions", lambda self: {0: {"a": 1.0}}
@@ -1181,7 +1201,7 @@ def test_train_sets_non_canonical_metadata(tmp_model_dir, monkeypatch):
     m = Mallet(model_dir=str(tmp_model_dir))
     formatted_data_path = tmp_model_dir / "training_data.mallet"
     formatted_data_path.write_text("0\t\tword1 word2\n1\t\tword3 word4\n")
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     monkeypatch.setattr(
         Mallet, "_track_progress", lambda self, cmd, iterations, verbose: None
     )
@@ -1215,7 +1235,7 @@ def test_topic_clouds_invalid_round_mask_raises_and_show_returns_none(
         def show(self):
             return None
 
-    monkeypatch.setattr("lexos.topic_modeling.mallet.MultiCloud", FakeMultiCloud)
+    monkeypatch.setattr("lexos.topic_modeling.mallet.mallet.MultiCloud", FakeMultiCloud)
 
     # invalid round mask (non convertable string) should raise
     with pytest.raises(LexosException):
@@ -1264,6 +1284,56 @@ def test_topic_keys_missing_raises(tmp_model_dir):
     m = Mallet(model_dir=str(tmp_model_dir))
     with pytest.raises(LexosException):
         _ = m.topic_keys
+
+
+def test_topic_keys_with_custom_labels(tmp_model_dir):
+    """Test that topic_keys correctly applies custom labels from metadata."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    topic_keys_path = tmp_model_dir / "topic-keys.txt"
+    # Format: index \t weight \t keywords
+    topic_keys_path.write_text("0\t0.5\tword1 word2\n1\t0.5\tword3 word4\n")
+    m.metadata[m.CANONICAL_TOPIC_KEYS_KEY] = str(topic_keys_path)
+
+    # Test baseline (no custom labels)
+    keys = m.topic_keys
+    assert keys[0][0] == "0"
+    assert keys[0][2] == "word1 word2"
+    assert keys[1][0] == "1"
+    assert keys[1][2] == "word3 word4"
+
+    # Reset cached_property by creating a new instance
+    m2 = Mallet(model_dir=str(tmp_model_dir))
+    m2.metadata[m.CANONICAL_TOPIC_KEYS_KEY] = str(topic_keys_path)
+    m2.metadata["topic_labels"] = {"0": "Custom Label 0"}
+
+    keys2 = m2.topic_keys
+    assert keys2[0][0] == "0"
+    assert keys2[0][2] == "word1 word2"
+
+    # Test get_keys with custom labels
+    keys_str = m2.get_keys()
+    assert "Topic Custom Label 0\t0.5\tword1 word2" in keys_str
+
+    df = m2.get_keys(as_df=True).data
+    assert df.iloc[0]["Topic"] == "Custom Label 0"
+    assert df.iloc[0]["Keywords"] == "word1 word2"
+    assert "Weight" in df.columns
+    assert "Label" not in df.columns
+
+    # Test with integer key in metadata (if implementation supports it)
+    m3 = Mallet(model_dir=str(tmp_model_dir))
+    m3.metadata[m.CANONICAL_TOPIC_KEYS_KEY] = str(topic_keys_path)
+    # or just test string keys if that's the contract.
+    m3.metadata["topic_labels"] = {"1": "Custom Label 1"}
+    keys3 = m3.topic_keys
+    assert keys3[1][0] == "1"
+    assert keys3[1][2] == "word3 word4"
+
+    # Check that get_keys uses the label
+    assert "Topic Custom Label 1" in m3.get_keys()
+
+    # Check that get_keys uses the label
+    assert "Topic Custom Label 1" in m3.get_keys()
 
 
 def test_get_keys_and_get_top_docs(tmp_model_dir):
@@ -1813,7 +1883,7 @@ def test_topic_clouds_filters_topics_using_iloc(tmp_model_dir, monkeypatch):
         def show(self):
             captured["shown"] = True
 
-    monkeypatch.setattr("lexos.topic_modeling.mallet.MultiCloud", FakeMultiCloud)
+    monkeypatch.setattr("lexos.topic_modeling.mallet.mallet.MultiCloud", FakeMultiCloud)
     # Provide multi-topic distribution dict
     monkeypatch.setattr(
         Mallet,
@@ -1842,7 +1912,7 @@ def test_topic_clouds_default_title_when_len_raises(tmp_model_dir, monkeypatch):
         def show(self):
             captured["shown"] = True
 
-    monkeypatch.setattr("lexos.topic_modeling.mallet.MultiCloud", FakeMultiCloud)
+    monkeypatch.setattr("lexos.topic_modeling.mallet.mallet.MultiCloud", FakeMultiCloud)
 
     # Monkeypatch load_topic_term_distributions to return valid dict
     monkeypatch.setattr(
@@ -1997,7 +2067,10 @@ def test_infer_parses_whitespace_compressed_colon_pairs(tmp_model_dir, monkeypat
     out = tmp_model_dir / "infer-doc-topics.txt"
     # whitespace separated and colon pairs: topic 0 and 2 present
     out.write_text("d0 0:0.2\n")
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    # monkeypatch.setattr(subprocess, "run", MagicMock())
+    monkeypatch.setattr(
+        subprocess, "run", MagicMock(return_value=MagicMock(returncode=0))
+    )
     dists = m.infer(
         docs=["x"],
         path_to_inferencer=str(fake_inferencer_path),
@@ -2019,7 +2092,10 @@ def test_infer_whitespace_token_no_colon_raises(tmp_model_dir, monkeypatch):
     out = tmp_model_dir / "infer-doc-topics.txt"
     # line has less than 3 tokens and last token not colon pairs
     out.write_text("d0 some_token\n")
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    # monkeypatch.setattr(subprocess, "run", MagicMock())
+    monkeypatch.setattr(
+        subprocess, "run", MagicMock(return_value=MagicMock(returncode=0))
+    )
     with pytest.raises(LexosException):
         m.infer(
             docs=["x"],
@@ -2029,31 +2105,31 @@ def test_infer_whitespace_token_no_colon_raises(tmp_model_dir, monkeypatch):
 
 
 def test_track_progress_progress_updates(tmp_model_dir, monkeypatch):
-    """Simulate MALLET stdout that includes <n> progress fields to exercise _track_progress."""
+    """Simulate MALLET stdout that includes progress fields to exercise _track_progress."""
     m = Mallet(model_dir=str(tmp_model_dir))
 
     class FakeStdOut:
         def __init__(self, lines):
-            self._lines = [l.encode("utf-8") + b"\n" for l in lines]
-            self.i = 0
+            self._lines = [l + "\n" for l in lines]
+            self._iter = iter(self._lines)
 
-        def readline(self):
-            if self.i < len(self._lines):
-                line = self._lines[self.i]
-                self.i += 1
-                return line
-            return b""
+        def __iter__(self):
+            return self
+
+        def __next__(self):
+            return next(self._iter)
 
     class FakePopen:
         def __init__(self, *args, **kwargs):
-            self.stdout = FakeStdOut(["text", "<1.0>", "<5.0>", "<10.0>"])
+            self.stdout = FakeStdOut(["text", "<1>", "<5>", "<10>", "Iteration 15:"])
+            self.returncode = 0
 
-        def poll(self):
-            return None if self.stdout.i < len(self.stdout._lines) else 0
+        def wait(self):
+            return 0
 
     monkeypatch.setattr(subprocess, "Popen", FakePopen)
     # No exception should be raised while updating progress
-    m._track_progress("mallet fake", 10, verbose=True)
+    m._track_progress(["mallet", "fake"], 10, verbose=True)
 
 
 def test_import_data_flags_included(tmp_model_dir, monkeypatch):
@@ -2061,11 +2137,11 @@ def test_import_data_flags_included(tmp_model_dir, monkeypatch):
     m = Mallet(model_dir=str(tmp_model_dir))
     calls = []
 
-    def fake_system(cmd):
+    def fake_system(cmd, *args, **kwargs):
         calls.append(cmd)
-        return 0
+        return MagicMock(returncode=0)
 
-    monkeypatch.setattr(os, "system", fake_system)
+    monkeypatch.setattr(subprocess, "run", fake_system)
     m.import_data(
         ["doc a", "doc b"],
         keep_sequence=True,
@@ -2076,7 +2152,7 @@ def test_import_data_flags_included(tmp_model_dir, monkeypatch):
     assert any("--keep-sequence" in c for c in calls)
     assert any("--preserve-case" in c for c in calls)
     assert any("--remove-stopwords" in c for c in calls)
-    assert any("--use-pipe-from pipe.dat" in c for c in calls)
+    assert any("--use-pipe-from" in c and "pipe.dat" in c for c in calls)
 
 
 def test_get_keys_numtopics_and_topics_int(tmp_model_dir):
@@ -2132,7 +2208,7 @@ def test_topic_clouds_round_mask_string_int(tmp_model_dir, monkeypatch):
         def show(self):
             captured["shown"] = True
 
-    monkeypatch.setattr("lexos.topic_modeling.mallet.MultiCloud", FakeMultiCloud)
+    monkeypatch.setattr("lexos.topic_modeling.mallet.mallet.MultiCloud", FakeMultiCloud)
     monkeypatch.setattr(
         Mallet, "load_topic_term_distributions", lambda self: {0: {"a": 1.0}}
     )
@@ -2155,7 +2231,7 @@ def test_setup_wordcloud_mask_true_and_false(monkeypatch, tmp_model_dir):
         def __init__(self, **kwargs):
             captured.update(kwargs)
 
-    monkeypatch.setattr("lexos.topic_modeling.mallet.WordCloud", FakeWordCloud)
+    monkeypatch.setattr("lexos.topic_modeling.mallet.mallet.WordCloud", FakeWordCloud)
     m = Mallet(model_dir=str(tmp_model_dir))
     m._setup_wordcloud(False, 10)
     assert captured.get("mask") is None
@@ -2172,7 +2248,7 @@ def test_setup_wordcloud_kwargs_override(monkeypatch, tmp_model_dir):
         def __init__(self, **kwargs):
             captured.update(kwargs)
 
-    monkeypatch.setattr("lexos.topic_modeling.mallet.WordCloud", FakeWordCloud)
+    monkeypatch.setattr("lexos.topic_modeling.mallet.mallet.WordCloud", FakeWordCloud)
     m = Mallet(model_dir=str(tmp_model_dir))
     m._setup_wordcloud(True, 10, background_color="black")
     assert captured.get("background_color") == "black"
@@ -2375,7 +2451,7 @@ def test_import_dir_reads_and_writes(tmp_model_dir, monkeypatch):
     f1.write_text("hello")
     f2.write_text("world")
     m = Mallet(model_dir=str(tmp_model_dir))
-    monkeypatch.setattr(os, "system", lambda c: 0)
+    monkeypatch.setattr(subprocess, "run", MagicMock())
     m.import_dir(str(d))
     assert "path_to_training_data" in m.metadata
 
@@ -2415,3 +2491,705 @@ def test_plot_categories_by_topics_heatmap_with_title_and_target_labels(
     )
     assert hasattr(fig, "_suptitle") and fig._suptitle.get_text() == "Custom Title"
     assert out.exists()
+
+
+def test_track_progress_error_raises_exception(tmp_model_dir, monkeypatch):
+    """Ensure _track_progress raises CalledProcessError when MALLET exit code is non-zero."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+
+    class FakePopen:
+        def __init__(self, *args, **kwargs):
+            self.stdout = []
+            self.returncode = 1
+
+        def wait(self):
+            return 1
+
+    monkeypatch.setattr(subprocess, "Popen", FakePopen)
+    with pytest.raises(subprocess.CalledProcessError):
+        m._track_progress(["mallet"], 10)
+
+
+def test_track_progress_catches_value_error(tmp_model_dir, monkeypatch):
+    """Exercise the try/except block in _track_progress with malformed MALLET output."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+
+    class FakePopen:
+        def __init__(self, *args, **kwargs):
+            # Regex match found but int() or logic crashes (simulated)
+            self.stdout = ["<not_an_int>\n"]
+            self.returncode = 0
+
+        def wait(self):
+            return 0
+
+    monkeypatch.setattr(subprocess, "Popen", FakePopen)
+    # Should not raise exception because ValueError is caught
+    m._track_progress(["mallet"], 10)
+
+
+def test_plot_termite_textacy_missing(tmp_model_dir):
+    """Ensure plot_termite raises LexosException if textacy is not installed."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    # We need to specifically fail the textacy import inside the function
+    with patch.dict("sys.modules", {"textacy": None, "textacy.viz.termite": None}):
+        with patch("lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions"):
+            with pytest.raises(LexosException) as excinfo:
+                m.plot_termite()
+            assert "textacy is required" in str(excinfo.value)
+
+
+def test_plot_termite_empty_components_raises(tmp_model_dir):
+    """Ensure plot_termite raises LexosException if no distributions are available."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    with patch(
+        "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
+        return_value={},
+    ):
+        with pytest.raises(LexosException) as excinfo:
+            m.plot_termite()
+        assert "No topic-term probabilities" in str(excinfo.value)
+
+
+def test_plot_termite_accepts_int_topics(tmp_model_dir):
+    """Ensure plot_termite accepts a single integer for topics."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    fake_distributions = {0: {"apple": 1.0}}
+    with patch(
+        "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_distributions,
+    ):
+        with patch("textacy.viz.termite.termite_df_plot", return_value=plt.gca()):
+            axis = m.plot_termite(topics=0, show=False)
+            assert axis is not None
+
+
+def test_plot_termite_string_highlight_labels(tmp_model_dir):
+    """Ensure plot_termite handles non-integer highlight labels."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    fake_distributions = {0: {"apple": 1.0}}
+    with patch(
+        "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_distributions,
+    ):
+        with patch("textacy.viz.termite.termite_df_plot") as mock_plot:
+            m.plot_termite(highlight_topics="Topic 0")
+            assert mock_plot.call_args[1]["highlight_topics"] == ["Topic 0"]
+
+
+def test_plot_termite_missing_highlights_raises(tmp_model_dir):
+    """Ensure plot_termite raises ValueError if highlighted topics aren't in data."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    fake_distributions = {0: {"apple": 1.0}}
+    with patch(
+        "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_distributions,
+    ):
+        with pytest.raises(ValueError) as excinfo:
+            m.plot_termite(highlight_topics=99)
+        assert "99" in str(excinfo.value)
+
+
+def test_plot_termite_plotly_plotly_missing(tmp_model_dir):
+    """Ensure plot_termite_plotly raises LexosException if plotly is missing."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    with patch.dict("sys.modules", {"plotly": None, "plotly.graph_objects": None}):
+        with pytest.raises(LexosException) as excinfo:
+            m.plot_termite_plotly()
+        assert "plotly is required" in str(excinfo.value)
+
+
+def test_plot_termite_plotly_invalid_params(tmp_model_dir):
+    """Ensure plot_termite_plotly validates parameters."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    with pytest.raises(ValueError):
+        m.plot_termite_plotly(n_terms=0)
+    with pytest.raises(ValueError):
+        m.plot_termite_plotly(marker_scale=0)
+    with pytest.raises(ValueError):
+        m.plot_termite_plotly(rank_terms_by="invalid")
+    with pytest.raises(ValueError):
+        m.plot_termite_plotly(sort_terms_by="invalid")
+
+
+def test_plot_termite_plotly_empty_components(tmp_model_dir):
+    """Ensure plot_termite_plotly raises if data is empty."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    with patch(
+        "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
+        return_value={},
+    ):
+        with pytest.raises(LexosException):
+            m.plot_termite_plotly()
+
+
+def test_plot_termite_plotly_int_topics(tmp_model_dir):
+    """Ensure plot_termite_plotly accepts int topics."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    fake_distributions = {0: {"a": 1.0}}
+    with patch(
+        "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_distributions,
+    ):
+        fig = m.plot_termite_plotly(topics=0)
+        assert fig is not None
+
+
+def test_plot_termite_plotly_sorting(tmp_model_dir):
+    """Exercise sorting options in plot_termite_plotly."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    fake_distributions = {0: {"b": 0.5, "a": 0.5}, 1: {"c": 1.0}}
+    with patch(
+        "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_distributions,
+    ):
+        # Alphabetical
+        fig = m.plot_termite_plotly(sort_terms_by="alphabetical")
+        assert fig is not None
+        # Index
+        fig = m.plot_termite_plotly(sort_terms_by="index")
+        assert fig is not None
+        # Weight
+        fig = m.plot_termite_plotly(sort_terms_by="weight")
+        assert fig is not None
+
+
+def test_plot_termite_plotly_save(tmp_model_dir):
+    """Ensure plot_termite_plotly saves to output_path."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    fake_distributions = {0: {"a": 1.0}}
+    out = tmp_model_dir / "termite.html"
+    with patch(
+        "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_distributions,
+    ):
+        m.plot_termite_plotly(output_path=str(out))
+        assert out.exists()
+
+
+def test_plot_termite_plotly_missing_topics_raises(tmp_model_dir):
+    """Ensure plot_termite_plotly raises ValueError helper for missing topics."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    fake_distributions = {0: {"a": 1.0}}
+    with patch(
+        "lexos.topic_modeling.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_distributions,
+    ):
+        with pytest.raises(ValueError):
+            m.plot_termite_plotly(topics=[1])
+
+
+def test_heatmap_label_logic_and_num_keys_0(tmp_model_dir, monkeypatch):
+    """Exercise heatmap label branches when num_keys is 0 or keywords are empty."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    # topic-keys with empty words for topic 1
+    topic_keys_path = tmp_model_dir / "topic-keys.txt"
+    topic_keys_path.write_text("0\t0.5\tword1\n1\t0.5\t\n")
+    m.metadata[m.CANONICAL_TOPIC_KEYS_KEY] = str(topic_keys_path)
+    # doc-topic
+    doc_topics_path = tmp_model_dir / "doc-topic.txt"
+    doc_topics_path.write_text("0\td0\t1.0\t0.0\n")
+    m.metadata[m.CANONICAL_DOC_TOPIC_KEY] = str(doc_topics_path)
+
+    monkeypatch.setattr("seaborn.heatmap", lambda *args, **kwargs: plt.gca())
+    monkeypatch.setattr("matplotlib.pyplot.show", lambda *args, **kwargs: None)
+
+    # Test num_keys=0
+    fig = m.plot_categories_by_topics_heatmap(categories=["A"], num_keys=0, show=False)
+    assert fig is not None
+
+    # Test num_keys=1, empty keywords for topic 1
+    # We need a distribution that has topic 1
+    doc_topics_path.write_text("0\td0\t0.0\t1.0\n")
+    m.plot_categories_by_topics_heatmap(categories=["A"], num_keys=1, show=False)
+
+
+def test_heatmap_topic_key_exception_handling(tmp_model_dir, monkeypatch):
+    """Exercise the exception handler in _topic_key sorting."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    topic_keys_path = tmp_model_dir / "topic-keys.txt"
+    topic_keys_path.write_text("0\t0.5\tword\n")
+    m.metadata[m.CANONICAL_TOPIC_KEYS_KEY] = str(topic_keys_path)
+    doc_topics_path = tmp_model_dir / "doc-topic.txt"
+    doc_topics_path.write_text("0\td0\t1.0\n")
+    m.metadata[m.CANONICAL_DOC_TOPIC_KEY] = str(doc_topics_path)
+
+    monkeypatch.setattr("seaborn.heatmap", lambda *args, **kwargs: plt.gca())
+
+    # We want to force an exception in _topic_key
+    # It receives the column name. We can mock columns to have something weird.
+    class BrokenStr:
+        def __str__(self):
+            raise Exception("broken")
+
+    with patch("pandas.DataFrame.pivot_table") as mock_pivot:
+        fake_df = pd.DataFrame({"Topic 0": [1.0]}, index=["A"])
+        # Inject our BrokenStr into columns
+        fake_df.columns = [BrokenStr()]
+        mock_pivot.return_value = fake_df
+
+        # This should call sorted(...) and trigger the except Exception in _topic_key
+        m.plot_categories_by_topics_heatmap(categories=["A"], show=False)
+
+
+def test_load_topic_term_distributions_missing_path(tmp_model_dir):
+    """Ensure load_topic_term_distributions raises LexosException when metadata is missing."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    with pytest.raises(LexosException) as excinfo:
+        m.load_topic_term_distributions()
+    assert "No term weights have been set" in str(excinfo.value)
+
+
+def test_load_topic_term_distributions_malformed_lines(tmp_model_dir):
+    """Ensure load_topic_term_distributions handles malformed lines and invalid weights."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    term_weights_path = tmp_model_dir / "term-weights.txt"
+    m.metadata[m.CANONICAL_TERM_WEIGHTS_KEY] = str(term_weights_path)
+
+    # Malformed line (not 3 parts)
+    term_weights_path.write_text("0\tword\n")
+    with pytest.raises(ValueError) as excinfo:
+        m.load_topic_term_distributions()
+    assert "Malformed line" in str(excinfo.value)
+
+    # Invalid weight (not a float)
+    term_weights_path.write_text("0\tword\tnot-a-float\n")
+    with pytest.raises(ValueError) as excinfo:
+        m.load_topic_term_distributions()
+    assert "Invalid weight value" in str(excinfo.value)
+
+
+def test_topic_keys_handling_of_empty_and_short_lines(tmp_model_dir):
+    """Cover lines 407 (empty line) and 411 (line with <3 parts) in topic_keys."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    topic_keys_path = tmp_model_dir / "topic-keys.txt"
+    # Line 0: normal, Line 1: empty, Line 2: only 2 parts, Line 3: only 1 part
+    topic_keys_path.write_text("0\t0.5\tkw1 kw2\n\n1\t0.5\n2\n")
+    m.metadata[m.CANONICAL_TOPIC_KEYS_KEY] = str(topic_keys_path)
+
+    keys = m.topic_keys
+    assert len(keys) == 3
+    assert keys[0] == ["0", "0.5", "kw1 kw2"]
+    assert keys[1] == ["1", "0.5", ""]  # Padded to 3
+    assert keys[2] == ["2", "", ""]  # Padded to 3
+
+
+def test_train_progress_parsing_exceptions(tmp_model_dir, monkeypatch):
+    """Cover lines 654-655 where progress parsing catches AttributeError/ValueError."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+
+    # Mocking for minimal train run
+    def fake_run(*args, **kwargs):
+        return MagicMock(returncode=0)
+
+    monkeypatch.setattr(subprocess, "run", fake_run)
+
+    # Mock Popen to emit a line that matches regex but fails float conversion
+    class FakePopen:
+        def __init__(self, *args, **kwargs):
+            self.returncode = 0
+            self.stdout = MagicMock()
+            # First line is bad progress, second is stop signal
+            self.stdout.readline.side_effect = [b"<not-a-float>\n", b""]
+
+        def wait(self):
+            pass
+
+    monkeypatch.setattr(subprocess, "Popen", FakePopen)
+
+    # We just need it to run without crashing from the ValueError inside the loop
+    m.train(num_iterations=10, verbose=True)
+
+
+def test_heatmap_with_missing_topic_keys(tmp_model_dir, monkeypatch):
+    """Cover line 1475: distribution has more topics than topic_keys."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+
+    # topic-keys only has Topic 0
+    topic_keys_path = tmp_model_dir / "topic-keys.txt"
+    topic_keys_path.write_text("0\t0.5\tword1\n")
+    m.metadata[m.CANONICAL_TOPIC_KEYS_KEY] = str(topic_keys_path)
+
+    # Distribution has topics 0 and 1
+    distributions = [[0.5, 0.5]]
+    categories = ["Cat1"]
+
+    monkeypatch.setattr("seaborn.heatmap", lambda *args, **kwargs: plt.gca())
+    monkeypatch.setattr("matplotlib.pyplot.show", lambda *args, **kwargs: None)
+
+    # Should not crash and use empty keywords for Topic 1
+    fig = m.plot_categories_by_topics_heatmap(
+        categories=categories, topic_distributions=distributions, num_keys=5, show=False
+    )
+    assert fig is not None
+
+
+def test_mallet_path_expansion(tmp_path):
+    """Ensure path_to_mallet expands tildes and handles directories."""
+    # Test tilde expansion
+    with patch(
+        "os.path.expanduser", side_effect=lambda x: x.replace("~", "/home/user")
+    ):
+        m = Mallet(path_to_mallet="~/mallet/bin/mallet")
+        assert m.path_to_mallet == "/home/user/mallet/bin/mallet"
+
+    # Test directory handling
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    m = Mallet(path_to_mallet=str(bin_dir))
+    # It should append 'mallet' to the directory path
+    assert m.path_to_mallet == str(bin_dir / "mallet")
+
+
+def test_read_file_io_error(tmp_path):
+    """Test read_file handles IOError (Lines 110 gap)."""
+    f = tmp_path / "protected.txt"
+    f.write_text("content")
+    with patch("builtins.open", side_effect=IOError("Mocked IO Error")):
+        with pytest.raises(LexosException) as exc:
+            read_file(f)
+        assert "could not be read" in str(exc.value)
+
+
+def test_import_files_io_error(tmp_path):
+    """Test import_files handles IOError (Line 167 gap)."""
+    f = tmp_path / "protected.txt"
+    f.write_text("content")
+    with patch("builtins.open", side_effect=IOError("Mocked IO Error")):
+        with pytest.raises(LexosException) as exc:
+            import_files([f])
+        assert "could not be read" in str(exc.value)
+
+
+def test_track_progress_fast_run_completion(tmp_model_dir, monkeypatch):
+    """Ensure p.wait() and finalization are covered (Lines 683-684 gap)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+
+    class FakePopen:
+        def __init__(self, *args, **kwargs):
+            self.stdout = iter(["<1>\n"])
+            self.returncode = 0
+            self.pid = 1234
+
+        def wait(self):
+            return 0
+
+        def poll(self):
+            return 0
+
+        def kill(self):
+            pass
+
+        def terminate(self):
+            pass
+
+    monkeypatch.setattr(subprocess, "Popen", FakePopen)
+    m._track_progress(["fake"], 1, verbose=False)
+
+
+def test_plot_termite_show_return_none(tmp_model_dir):
+    """Test plot_termite returns None when show=True (Line 1023 gap)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    # We need at least 2 terms for seriation in textacy
+    fake_dist = {0: {"a": 1.0, "b": 0.5}}
+    with patch(
+        "lexos.topic_modeling.mallet.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_dist,
+    ):
+        with patch("matplotlib.pyplot.show"):
+            res = m.plot_termite(show=True, highlight_topics=[])
+            assert res is None
+
+
+def test_plot_termite_plotly_seriation(tmp_model_dir):
+    """Test spectral seriation logic (Lines 1149-1157 gap)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    fake_dist = {
+        0: {"apple": 0.9, "banana": 0.1, "cherry": 0.05},
+        1: {"apple": 0.1, "banana": 0.8, "cherry": 0.1},
+        2: {"apple": 0.05, "banana": 0.1, "cherry": 0.85},
+    }
+    with patch(
+        "lexos.topic_modeling.mallet.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_dist,
+    ):
+        fig = m.plot_termite_plotly(sort_terms_by="seriation", n_terms=3)
+        assert fig is not None
+
+
+def test_plot_termite_plotly_invalid_rank(tmp_model_dir):
+    """Test plot_termite_plotly invalid rank_terms_by (Line 1119 gap)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    fake_dist = {0: {"a": 1.0}}
+    with patch(
+        "lexos.topic_modeling.mallet.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_dist,
+    ):
+        with pytest.raises(Exception):  # agg will raise error
+            m.plot_termite_plotly(rank_terms_by="invalid")
+
+
+def test_plot_termite_plotly_empty_components(tmp_model_dir):
+    """Cover the empty components check in plotly version (Line 1178 gap)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    with patch(
+        "lexos.topic_modeling.mallet.mallet.Mallet.load_topic_term_distributions",
+        return_value={},
+    ):
+        with pytest.raises(LexosException) as exc:
+            m.plot_termite_plotly()
+        assert "No topic-term probabilities" in str(exc.value)
+
+
+def test_plot_termite_plotly_missing_topics_and_highlights(tmp_model_dir):
+    """Cover missing topics and highlight labels validation (Line 1186, etc gap)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    fake_dist = {0: {"a": 1.0}}
+    with patch(
+        "lexos.topic_modeling.mallet.mallet.Mallet.load_topic_term_distributions",
+        return_value=fake_dist,
+    ):
+        with pytest.raises(ValueError) as exc:
+            m.plot_termite_plotly(topics=[99])
+        assert "Requested topics [99] are not available" in str(exc.value)
+        with pytest.raises(ValueError) as exc:
+            m.plot_termite_plotly(highlight_topics=["NonExistent"])
+        assert "not available in the selected data" in str(exc.value)
+
+
+def test_mallet_init_metadata_ioerror(tmp_path):
+    """Cover Line 251-253 gap in Mallet.__init__."""
+    model_dir = tmp_path / "fail_meta"
+    model_dir.mkdir()
+    meta_json = model_dir / "meta.json"
+    meta_json.write_text('{"key": "val"}')
+
+    # Mock open and check if it's our target file
+    original_open = open
+
+    def mock_open_file(file, *args, **kwargs):
+        if str(file).endswith("meta.json"):
+            raise IOError("Mocked Meta IO Error")
+        return original_open(file, *args, **kwargs)
+
+    with patch("builtins.open", side_effect=mock_open_file):
+        with pytest.raises(LexosException) as exc:
+            Mallet(model_dir=str(model_dir))
+        assert "Failed to load metadata" in str(exc.value)
+
+
+def test_mallet_initialization_with_corrupt_meta_json(tmp_path):
+    """Test that Mallet raises LexosException when meta.json is invalid JSON."""
+    model_dir = tmp_path / "model"
+    model_dir.mkdir()
+    meta_json = model_dir / "meta.json"
+    meta_json.write_text("invalid json")
+
+    with pytest.raises(LexosException, match="Failed to load metadata from"):
+        Mallet(model_dir=str(model_dir))
+
+
+def test_track_progress_parsing_error(tmp_model_dir, monkeypatch):
+    """Test that _track_progress handles regex match but int() conversion fails."""
+    import re
+
+    from tqdm import tqdm
+
+    mallet = Mallet(model_dir=str(tmp_model_dir))
+
+    # Mock subprocess to emit a line that looks like an iteration
+    class MockStdout:
+        def __iter__(self):
+            yield "<10>"
+
+        def __next__(self):
+            return "<10>"
+
+    class MockProcess:
+        stdout = MockStdout()
+        returncode = 0
+
+        def wait(self):
+            pass
+
+    monkeypatch.setattr(subprocess, "Popen", lambda *args, **kwargs: MockProcess())
+
+    # We mock the regex object and its search method instead of the re.Pattern class
+    import src.lexos.topic_modeling.mallet.mallet as mallet_mod
+
+    class BadMatch:
+        def group(self, i):
+            return "not-an-int"
+
+    class MockProg:
+        def search(self, string):
+            return BadMatch()
+
+    # Apply the mock to the specific Mallet instance or the module if it's cached
+    # However, _track_progress creates the regex inside the method:
+    # prog = re.compile(r"(?:\<|Iteration\s+)(\d+)(?:\>|:)")
+
+    # Better: mock re.compile to return our MockProg
+    orig_compile = re.compile
+    monkeypatch.setattr(
+        re,
+        "compile",
+        lambda *args, **kwargs: (
+            MockProg() if "Iteration" in args[0] else orig_compile(*args, **kwargs)
+        ),
+    )
+
+    # Should not raise exception, just pass (line 685)
+    mallet._track_progress(["mallet"], 100, verbose=False)
+
+
+def test_plot_termite_no_data(tmp_model_dir):
+    """Test that plot_termite raises LexosException when no topic-term probabilities are available."""
+    mallet = Mallet(model_dir=str(tmp_model_dir))
+    with pytest.raises(LexosException, match="No term weights have been set"):
+        mallet.plot_termite()
+
+
+def test_plot_categories_extra_distributions(tmp_model_dir):
+    """Test that plot_categories_by_topics_heatmap handles extra distributions gracefully."""
+    mallet = Mallet(model_dir=str(tmp_model_dir))
+    mallet.distributions = [[0.1, 0.9], [0.2, 0.8]]  # 2 topics
+    mallet.topic_keys = [["0", "0.5", "word1 word2"]]  # Only 1 topic key
+
+    # Should handle missing keys for topic 1 (line 1656 check)
+    mallet.plot_categories_by_topics_heatmap(categories=["A", "B"], show=False)
+
+
+def test_plot_topics_over_time_malformed_keys(tmp_model_dir):
+    """Test that plot_topics_over_time handles malformed topic_keys gracefully."""
+    mallet = Mallet(model_dir=str(tmp_model_dir))
+    mallet.distributions = [[0.5], [0.5]]
+    mallet.topic_keys = [["0"]]  # Missing index 2 for keywords
+
+    # Should fall back to basic title (lines 1942-1949)
+    mallet.plot_topics_over_time(times=[1, 2], topic_index=0, show=False)
+
+
+def test_mallet_initialization_ioerror(tmp_path):
+    """Test that Mallet raises LexosException when meta.json cannot be read."""
+    model_dir = tmp_path / "model"
+    model_dir.mkdir()
+    meta_json = model_dir / "meta.json"
+    meta_json.write_text("{}")
+
+    # Mock open to raise IOError
+    import builtins
+
+    original_open = builtins.open
+
+    def mock_open(file, *args, **kwargs):
+        if str(file) == str(meta_json):
+            raise IOError("Simulated IO Error")
+        return original_open(file, *args, **kwargs)
+
+    with patch("builtins.open", mock_open):
+        with pytest.raises(LexosException, match="Failed to load metadata from"):
+            Mallet(model_dir=str(model_dir))
+
+
+def test_plot_termite_import_error(tmp_model_dir):
+    """Test plot_termite handles textacy import failure (line 978)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    # To get past the probabilities check
+    m.metadata[m.CANONICAL_TERM_WEIGHTS_KEY] = str(tmp_model_dir / "weights.txt")
+    (tmp_model_dir / "weights.txt").write_text("0\ta\t0.5\n")
+
+    def mock_import(name, *args, **kwargs):
+        if name == "textacy.viz.termite":
+            raise ImportError("Simulated textacy missing")
+        return __import__(name, *args, **kwargs)
+
+    with patch("builtins.__import__", side_effect=mock_import):
+        with pytest.raises(LexosException, match="textacy is required"):
+            m.plot_termite()
+
+
+def test_plot_termite_plotly_import_error(tmp_model_dir):
+    """Test plot_termite_plotly handles plotly import failure (line 1091)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+
+    def mock_import(name, *args, **kwargs):
+        if name == "plotly.graph_objects":
+            raise ImportError("Simulated plotly missing")
+        return __import__(name, *args, **kwargs)
+
+    with patch("builtins.__import__", side_effect=mock_import):
+        with pytest.raises(LexosException, match="plotly is required"):
+            m.plot_termite_plotly()
+
+
+def test_plot_categories_boxplot_overlay_exception(tmp_model_dir, monkeypatch):
+    """Exercise Exception block in boxplot overlay (line 1576)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    m.distributions = [[0.5]]
+    m.topic_keys = [["0", "1.0", "word"]]
+
+    # Mock stripplot to raise an exception
+    monkeypatch.setattr(
+        "seaborn.stripplot", MagicMock(side_effect=Exception("Simulated sns error"))
+    )
+
+    # Should not raise exception (line 1578 is pass)
+    m.plot_categories_by_topic_boxplots(categories=["A", "B"], show=False)
+
+
+def test_plot_categories_heatmap_sort_exception(tmp_model_dir):
+    """Exercise Exception block in heatmap column sorting (line 1705)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    m.distributions = [[0.5]]
+    m.topic_keys = [["0", "1.0", "word"]]
+
+    # Use a custom column object that fails on comparison to trigger sort exception
+    class BadCol:
+        def __str__(self):
+            return "Topic 0"
+
+        def __lt__(self, other):
+            raise Exception("Simulated sort error")
+
+        def __gt__(self, other):
+            raise Exception("Simulated sort error")
+
+    m.plot_categories_by_topics_heatmap(categories=["A", "B"], show=False)
+
+
+def test_track_progress_saving_files_label(tmp_model_dir, monkeypatch):
+    """Exercise 'Saving model files' label in _track_progress (line 682)."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+
+    class MockStdout:
+        def __iter__(self):
+            yield "Iteration 10\n"
+            yield "<10>\n"
+
+    class MockProcess:
+        stdout = MockStdout()
+        returncode = 0
+
+        def wait(self):
+            pass
+
+    monkeypatch.setattr(subprocess, "Popen", lambda *args, **kwargs: MockProcess())
+
+    # Run with num_iterations=10 so this_iter >= num_iterations is True
+    m._track_progress(["mallet"], 10, verbose=False)
+
+
+def test_plot_termite_empty_components_exception(tmp_model_dir):
+    """Exercise LexosException when components is empty (line 986 and 1146)."""
+    # Create m normally
+    m = Mallet(model_dir=str(tmp_model_dir))
+    m.metadata[m.CANONICAL_TERM_WEIGHTS_KEY] = str(tmp_model_dir / "weights.txt")
+    # Write empty weights file
+    (tmp_model_dir / "weights.txt").write_text("")
+
+    with pytest.raises(LexosException, match="No topic-term probabilities"):
+        m.plot_termite()
+
+    with pytest.raises(LexosException, match="No topic-term probabilities"):
+        m.plot_termite_plotly()

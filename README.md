@@ -25,6 +25,16 @@ A full discussion of the use of the API can be found on the website <a href="htt
 
 And more!
 
+### What's New in V0.2.0-Beta
+
+- More advanced topic modelling features, including termite plots, customisable labels, and LLM-generated labels with local or cloud-based models
+- A new Structural Stylometry module that allows you to assess the significance of punctuation and whitespace patterns in your documentation.
+- Better HTML and XML tag handling in Scrubber.
+- Improved plotting functions in Bootstrap Consensus clustering.
+- Silhouette score analysis for KMeans clustering.
+- Innumerable optimisations providing faster processing speeds.
+- Lots of bug fixes scattered throughout the package.
+
 ## ⏳ Installation
 
 ```bash

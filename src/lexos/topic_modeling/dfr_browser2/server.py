@@ -88,7 +88,7 @@ if __name__ == "__main__":
             except KeyboardInterrupt:
                 print("\nServer stopped")
     except OSError as e:
-        if e.errno == 48 or e.errno == 98:  # Address already in use
+        if e.errno in (48, 98, 10048):  # Address already in use (macOS/Linux/Windows)
             print(f"Error: Port {port} is already in use")
             print("Try a different port: python3 server.py <port>")
             sys.exit(1)

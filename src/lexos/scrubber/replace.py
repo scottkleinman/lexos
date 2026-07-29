@@ -1,13 +1,14 @@
 """replace.py.
 
-Last Update: 2025-06-08
-Tested: 2025-06-08
+Last Update: 2026-06-26
+Tested: 2026-06-26
 """
 
 import html
 import re
 import sys
 import unicodedata
+from functools import lru_cache
 from typing import Collection, Optional
 
 from pydantic import ConfigDict, validate_call
@@ -17,6 +18,28 @@ from lexos.util import ensure_list, to_collection
 from . import resources
 
 validation_config = ConfigDict(arbitrary_types_allowed=True)
+
+
+@lru_cache(maxsize=128)
+def _compile_replace_pattern(pattern: str) -> re.Pattern[str]:
+    return re.compile(pattern)
+
+
+@lru_cache(maxsize=64)
+def _get_punctuation_translation_table(exclude: tuple[str, ...]) -> dict[int, str]:
+    if not exclude:
+        return resources.PUNCT_TRANSLATION_TABLE
+
+    exclude_set = set(exclude)
+    return dict.fromkeys(
+        (
+            i
+            for i in range(sys.maxunicode)
+            if unicodedata.category(chr(i)).startswith("P")
+            and chr(i) not in exclude_set
+        ),
+        " ",
+    )
 
 
 @validate_call(config=validation_config)
@@ -109,7 +132,7 @@ def pattern(text: str, *, pattern: Optional[dict | Collection[dict]]) -> str:
     pattern = ensure_list(pattern)
     for pat in pattern:
         k = str(*pat)
-        match = re.compile(k)
+        match = _compile_replace_pattern(k)
         text = re.sub(match, pat[k], text)
     return text
 
@@ -161,17 +184,10 @@ def punctuation(
     else:
         if exclude:
             exclude = ensure_list(exclude)
-            translation_table = dict.fromkeys(
-                (
-                    i
-                    for i in range(sys.maxunicode)
-                    if unicodedata.category(chr(i)).startswith("P")
-                    and chr(i) not in exclude
-                ),
-                " ",
-            )
         else:
-            translation_table = resources.PUNCT_TRANSLATION_TABLE
+            exclude = []
+        exclude_key = tuple(sorted(exclude))
+        translation_table = _get_punctuation_translation_table(exclude_key)
         return text.translate(translation_table)
 
 
@@ -196,7 +212,7 @@ def special_characters(
         text = html.unescape(text)
     else:
         for k, v in ruleset.items():
-            match = re.compile(k)
+            match = _compile_replace_pattern(k)
             text = re.sub(match, v, text)
     return text
 

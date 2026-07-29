@@ -1,7 +1,7 @@
 """test_base_plotter.py.
 
 Coverage: 100%
-Last Updated: February 9, 2025
+Last Updated: June 27, 2026
 """
 
 import pytest

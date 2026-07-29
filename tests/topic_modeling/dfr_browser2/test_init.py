@@ -4,7 +4,6 @@ Tests for the dfr_browser2 Browser class.
 
 Coverage: 100%
 
-
 Last Updated: December 29, 2025
 """
 

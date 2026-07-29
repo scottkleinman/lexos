@@ -2,8 +2,8 @@
 
 Utilities for the Milestones class.
 
-Last Updated: 12/21/2024
-Last Tested: 12/27/2024
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 """
 
 from typing import Any
@@ -18,7 +18,8 @@ class LexosBaseModel(BaseModel):
     """Base model inherits from Pydantic base model but validates spaCy objects."""
 
     model_config = ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 
 

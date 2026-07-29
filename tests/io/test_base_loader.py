@@ -1,7 +1,7 @@
 """test_base_loader.py.
 
 Coverage: 100%
-Last Update: 2025-06-29
+Last Update: 2026-06-27
 """
 
 from typing import Generator, Optional
@@ -29,7 +29,7 @@ def test_texts_field_definition():
 
     # Test field info
     field_info = DataLoader.model_fields["texts"]
-    assert field_info.default == []
+    assert field_info.default_factory is not None
     assert field_info.description == "The list of loaded texts."
 
 

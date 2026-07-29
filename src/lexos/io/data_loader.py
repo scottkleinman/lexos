@@ -1,7 +1,7 @@
 """data_loader.py.
 
-Last Update: 2025-06-29
-Tested: 2025-06-29
+Last Update: 2026-06-27
+Last Tested: 2026-06-27
 """
 
 import io
@@ -64,10 +64,10 @@ class DataLoader(BaseLoader):
             df (pd.DataFrame): The DataFrame to update with.
             mime_type (str): The mime type of the file.
         """
+        new_items = len(df)
         self.names = self.names + df["name"].tolist()
-        length = len(self.names)
-        self.paths = self.paths + [str(path)] * length
-        self.mime_types = self.mime_types + [mime_type] * length
+        self.paths = self.paths + [str(path)] * new_items
+        self.mime_types = self.mime_types + [mime_type] * new_items
         self.texts = self.texts + [decode(text) for text in df["text"].tolist()]
 
     @validate_call(config=model_config)
@@ -87,7 +87,7 @@ class DataLoader(BaseLoader):
         """
         try:
             df = pd.read_csv(path, **kwargs)
-        except BaseException as e:
+        except Exception as e:
             raise LexosException(e)
         if not isinstance(path, (Path, str)):
             path = "csv_string"
@@ -108,7 +108,6 @@ class DataLoader(BaseLoader):
             raise LexosException("".join(err))
         self._update_data(path, df, mime_type)
 
-    # @validate_call(config=model_config)
     def load_dataset(self, dataset: Self) -> None:
         """Load a dataset.
 
@@ -140,7 +139,7 @@ class DataLoader(BaseLoader):
         """
         try:
             df = pd.read_csv(path, **kwargs)
-        except BaseException as e:
+        except Exception as e:
             raise LexosException(e)
         if not isinstance(path, (Path, str)):
             path = "buffer"
@@ -178,7 +177,7 @@ class DataLoader(BaseLoader):
         """
         try:
             df = pd.read_json(path, **kwargs)
-        except BaseException as e:
+        except Exception as e:
             raise LexosException(e)
         if not isinstance(path, (Path, str)):
             path = "json_string"
@@ -216,7 +215,7 @@ class DataLoader(BaseLoader):
                 texts = f.readlines()
         except (FileNotFoundError, IOError, OSError):
             texts = path.split("\n")
-        except BaseException as e:
+        except Exception as e:
             raise LexosException(e)
         if names is None:
             names = [f"text{i + start:{zero_pad}d}" for i in range(len(texts))]

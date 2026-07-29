@@ -61,18 +61,18 @@ RE_BRACKETS_ROUND = re.compile(r"\([^()]*?\)")
 RE_BRACKETS_SQUARE = re.compile(r"\[[^\[\]]*?\]")
 
 RE_BULLET_POINTS = re.compile(
-    # require bullet points as first non-whitespace char on a new line, like a list
+    # Require bullet points as first non-whitespace char on a new line, like a list
     r"((^|\n)\s*?)"
     r"([\u2022\u2023\u2043\u204C\u204D\u2219\u25aa\u25CF\u25E6\u29BE\u29BF\u30fb])",
 )
 
-# source: https://gist.github.com/dperini/729294
+# Source: https://gist.github.com/dperini/729294
 RE_URL: Pattern = re.compile(
     r"(?:^|(?<![\w/.]))"
-    # protocol identifier
+    # Protocol identifier
     # r"(?:(?:https?|ftp)://)"  <-- alt?
     r"(?:(?:https?://|ftp://|www\d{0,3}\.))"
-    # user:pass authentication
+    # User:pass authentication
     r"(?:\S+(?::\S*)?@)?"
     r"(?:"
     # IP address exclusion
@@ -89,16 +89,16 @@ RE_URL: Pattern = re.compile(
     r"(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}"
     r"(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))"
     r"|"
-    # host name
+    # Host name
     r"(?:(?:[a-z\u00a1-\uffff0-9]-?)*[a-z\u00a1-\uffff0-9]+)"
-    # domain name
+    # Domain name
     r"(?:\.(?:[a-z\u00a1-\uffff0-9]-?)*[a-z\u00a1-\uffff0-9]+)*"
     # TLD identifier
     r"(?:\.(?:[a-z\u00a1-\uffff]{2,}))"
     r")"
-    # port number
+    # Port number
     r"(?::\d{2,5})?"
-    # resource path
+    # Resource path
     r"(?:/\S*)?"
     r"(?:$|(?![\w?!+&/]))",
     flags=re.IGNORECASE,
@@ -106,12 +106,12 @@ RE_URL: Pattern = re.compile(
 
 RE_SHORT_URL: Pattern = re.compile(
     r"(?:^|(?<![\w/.]))"
-    # optional scheme
+    # Optional scheme
     r"(?:(?:https?://)?)"
-    # domain
+    # Domain
     r"(?:\w-?)*?\w+(?:\.[a-z]{2,12}){1,3}"
     r"/"
-    # hash
+    # Hash
     r"[^\s.,?!'\"|+]{2,12}"
     r"(?:$|(?![\w?!+&/]))",
     flags=re.IGNORECASE,
@@ -135,9 +135,9 @@ RE_HASHTAG: Pattern = re.compile(
 )
 
 RE_PHONE_NUMBER: Pattern = re.compile(
-    # core components of a phone number
+    # Core components of a phone number
     r"(?:^|(?<=[^\w)]))(\+?1[ .-]?)?(\(?\d{3}\)?[ .-]?)?(\d{3}[ .-]?\d{4})"
-    # extensions, etc.
+    # Extensions, etc.
     r"(\s?(?:ext\.?|[#x-])\s?\d{2,6})?(?:$|(?=\W))",
     flags=re.IGNORECASE,
 )
@@ -170,7 +170,7 @@ RE_HYPHENATED_WORD: Pattern = re.compile(
 )
 
 
-# build mapping of unicode punctuation symbol ordinals to their replacements
+# Build mapping of unicode punctuation symbol ordinals to their replacements
 # and lazy-load the big one, since it's relatively expensive to compute
 
 QUOTE_TRANSLATION_TABLE: dict[int, int] = {

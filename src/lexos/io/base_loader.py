@@ -1,7 +1,7 @@
 """base_loader.py.
 
-Last Update: 2025-12-04
-Tested: 2025-06-29
+Last Update: 2026-06-27
+Last Tested: 2026-06-27
 """
 
 from abc import ABC, abstractmethod
@@ -17,11 +17,15 @@ from lexos.exceptions import LexosException
 class BaseLoader(BaseModel, ABC):
     """BaseLoader."""
 
-    paths: list = Field(default=[], description="The list of paths.")
-    mime_types: list = Field(default=[], description="The list of text mime types.")
-    names: list = Field(default=[], description="The list of text names.")
-    texts: list = Field(default=[], description="The list of loaded texts.")
-    errors: list = Field(default=[], description="The list of loading errors.")
+    paths: list = Field(default_factory=list, description="The list of paths.")
+    mime_types: list = Field(
+        default_factory=list, description="The list of text mime types."
+    )
+    names: list = Field(default_factory=list, description="The list of text names.")
+    texts: list = Field(default_factory=list, description="The list of loaded texts.")
+    errors: list = Field(
+        default_factory=list, description="The list of loading errors."
+    )
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 

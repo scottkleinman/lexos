@@ -1,5 +1,5 @@
 ﻿The Project Gutenberg eBook of Frankenstein; Or, The Modern Prometheus
-    
+
 This ebook is for the use of anyone anywhere in the United States and
 most other parts of the world at no cost and with almost no restrictions
 whatsoever. You may copy it, give it away or re-use it under the terms
@@ -304,7 +304,7 @@ having traversed immense seas, and returned by the most southern cape of
 Africa or America? I dare not expect such success, yet I cannot bear to
 look on the reverse of the picture. Continue for the present to write to
 me by every opportunity: I may receive your letters on some occasions when
-I need them most to support my spirits. I love you very tenderly. 
+I need them most to support my spirits. I love you very tenderly.
 Remember me with affection, should you never hear from me again.
 
 Your affectionate brother,
@@ -1120,7 +1120,7 @@ totally unfitted for the company of strangers. Such were my reflections as
 I commenced my journey; but as I proceeded, my spirits and hopes rose. I
 ardently desired the acquisition of knowledge. I had often, when at home,
 thought it hard to remain during my youth cooped up in one place and had
-longed to enter the world and take my station among other human beings. 
+longed to enter the world and take my station among other human beings.
 Now my desires were complied with, and it would, indeed, have been folly to
 repent.
 
@@ -1596,14 +1596,14 @@ bodily exercise to ease the load that weighed upon my mind. I
 traversed the streets without any clear conception of where I was or
 what I was doing. My heart palpitated in the sickness of fear, and I
 hurried on with irregular steps, not daring to look about me:
- 
+
  Like one who, on a lonely road,
  Doth walk in fear and dread,
  And, having once turned round, walks on,
  And turns no more his head;
  Because he knows a frightful fiend
  Doth close behind him tread.
- 
+
  [Coleridge’s “Ancient Mariner.”]
 
 
@@ -3999,7 +3999,7 @@ in the beginning of the month of August of the same year.
 “One night during my accustomed visit to the neighbouring wood where I
 collected my own food and brought home firing for my protectors, I found on
 the ground a leathern portmanteau containing several articles of dress and
-some books. I eagerly seized the prize and returned with it to my hovel. 
+some books. I eagerly seized the prize and returned with it to my hovel.
 Fortunately the books were written in the language, the elements of which I
 had acquired at the cottage; they consisted of _Paradise Lost_, a volume
 of _Plutarch’s Lives_, and the _Sorrows of Werter_. The
@@ -6036,7 +6036,7 @@ various arguments to banish my despair. Sometimes he thought that I
 felt deeply the degradation of being obliged to answer a charge of
 murder, and he endeavoured to prove to me the futility of pride.
 
-“Alas! My father,” said I, “how little do you know me. 
+“Alas! My father,” said I, “how little do you know me.
 Human beings, their feelings and passions, would indeed be degraded if such
 a wretch as I felt pride. Justine, poor unhappy Justine, was as innocent
 as I, and she suffered the same charge; she died for it; and I am the cause
@@ -7387,7 +7387,7 @@ lost in darkness and distance.
 *** END OF THE PROJECT GUTENBERG EBOOK FRANKENSTEIN; OR, THE MODERN PROMETHEUS ***
 
 
-    
+
 
 Updated editions will replace the previous one—the old editions will
 be renamed.
@@ -7492,7 +7492,7 @@ performed, viewed, copied or distributed:
     at www.gutenberg.org. If you
     are not located in the United States, you will have to check the laws
     of the country where you are located before using this eBook.
-  
+
 1.E.2. If an individual Project Gutenberg™ electronic work is
 derived from texts not protected by U.S. copyright law (does not
 contain a notice indicating that it is posted with permission of the
@@ -7554,7 +7554,7 @@ provided that:
         Gutenberg Literary Archive Foundation at the address specified in
         Section 4, “Information about donations to the Project Gutenberg
         Literary Archive Foundation.”
-    
+
     • You provide a full refund of any money paid by a user who notifies
         you in writing (or by e-mail) within 30 days of receipt that s/he
         does not agree to the terms of the full Project Gutenberg™
@@ -7562,15 +7562,15 @@ provided that:
         copies of the works possessed in a physical medium and discontinue
         all use of and all access to other copies of Project Gutenberg™
         works.
-    
+
     • You provide, in accordance with paragraph 1.F.3, a full refund of
         any money paid for a work or a replacement copy, if a defect in the
         electronic work is discovered and reported to you within 90 days of
         receipt of the work.
-    
+
     • You comply with all other terms of this agreement for free
         distribution of Project Gutenberg™ works.
-    
+
 
 1.E.9. If you wish to charge a fee or distribute a Project
 Gutenberg™ electronic work or group of works on different terms than
@@ -7733,5 +7733,3 @@ This website includes information about Project Gutenberg™,
 including how to make donations to the Project Gutenberg Literary
 Archive Foundation, how to help produce our new eBooks, and how to
 subscribe to our email newsletter to hear about new eBooks.
-
-

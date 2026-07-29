@@ -1,21 +1,24 @@
 """Tests for util.py module.
 
-Coverage: 100%
-Last Update: June 24, 2025
+Coverage: 87%. Missing: 53-62, 157, 329-342, 354
+Last Update: July 15, 2026
 """
 
+import sys
 import tempfile
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
 import spacy
-from spacy.tokens import Doc, Token
+from spacy.tokens import Token
 
 from lexos.exceptions import LexosException
 from lexos.util import (
+    LexosException,
     _decode_bytes,
     _try_decode_bytes_,
+    count_doc_terms,
     ensure_list,
     ensure_path,
     get_encoding,
@@ -27,6 +30,7 @@ from lexos.util import (
     normalize_file,
     normalize_files,
     normalize_strings,
+    safe_recursion_limit,
     strip_doc,
     to_collection,
 )
@@ -73,7 +77,7 @@ def temp_files():
         files["latin1"] = latin1_file
 
         windows_file = tmpdir / "test_windows.txt"
-        windows_file.write_text("line1\r\nline2\r\nline3", encoding="utf-8")
+        windows_file.write_bytes("line1\r\nline2\r\nline3".encode("utf-8"))
         files["windows"] = windows_file
 
         files["tmpdir"] = tmpdir
@@ -133,14 +137,14 @@ def test_ensure_path_with_string():
     """Test ensure_path with string input."""
     result = ensure_path("test/path")
     assert isinstance(result, Path)
-    assert str(result) == "test/path"
+    assert result.as_posix() == "test/path"
 
 
 def test_ensure_path_with_windows_backslash():
     """Test ensure_path converts Windows backslashes."""
     result = ensure_path("test\\path\\file.txt")
     assert isinstance(result, Path)
-    assert str(result) == "test/path/file.txt"
+    assert result.as_posix() == "test/path/file.txt"
 
 
 def test_ensure_path_with_path_object():
@@ -154,6 +158,26 @@ def test_ensure_path_with_non_string():
     """Test ensure_path with non-string, non-Path input."""
     result = ensure_path(42)
     assert result == 42
+
+
+def test_count_doc_terms_small_doc(spacy_nlp):
+    """Test count_doc_terms on a small spaCy Doc uses Counter path correctly."""
+    doc = spacy_nlp("the cat sat on the mat the cat")
+    result = count_doc_terms(doc)
+    assert result["the"] == 3
+    assert result["cat"] == 2
+    assert result["mat"] == 1
+    assert set(result.keys()) == {"the", "cat", "sat", "on", "mat"}
+
+
+def test_count_doc_terms_large_doc(spacy_nlp):
+    """Test count_doc_terms on a large spaCy Doc uses NumPy path correctly."""
+    words = ["apple", "banana", "cherry"] * 350
+    doc = spacy_nlp(" ".join(words))
+    result = count_doc_terms(doc)
+    assert result["apple"] == 350
+    assert result["banana"] == 350
+    assert result["cherry"] == 350
 
 
 # ---------------- Test get_paths ----------------
@@ -290,6 +314,13 @@ def test_load_spacy_model_with_invalid_string():
     with patch("spacy.load", side_effect=OSError("Model not found")):
         with pytest.raises(LexosException, match="Error loading model"):
             load_spacy_model("invalid_model")
+
+
+def test_load_spacy_model_with_other_oserror():
+    """Test load_spacy_model with an OSError other than 'Model not found'."""
+    with patch("spacy.load", side_effect=OSError("Permission denied")):
+        with pytest.raises(LexosException, match="Error loading model"):
+            load_spacy_model("some_model")
 
 
 def test_load_spacy_model_with_invalid_type():
@@ -447,6 +478,26 @@ def test_decode_bytes_encoding_error():
             _decode_bytes(b"test")
 
 
+def test_decode_bytes_unicode_dammit_fallback():
+    """Test _decode_bytes using UnicodeDammit when chardet fails."""
+    # Force chardet to return ascii (which will fail for non-ascii bytes)
+    # causing _try_decode_bytes_ to fall back to UnicodeDammit.
+    with patch("chardet.detect", return_value={"encoding": "ascii"}):
+        data = "Hello 世界".encode("utf-8")
+        result = _decode_bytes(data)
+        # UnicodeDammit might decode it differently depending on heuristics,
+        # but it should return a string and handled without crash.
+        assert isinstance(result, str)
+        assert len(result) > 0
+
+
+def test_decode_bytes_type_error():
+    """Test _decode_bytes with a TypeError to cover the Exception block."""
+    with patch("lexos.util._try_decode_bytes_", side_effect=TypeError("Bad type")):
+        with pytest.raises(LexosException, match="Chardet failed to detect encoding"):
+            _decode_bytes(b"test")
+
+
 # ---------------- Test strip_doc ----------------
 
 
@@ -577,6 +628,23 @@ def test_to_collection_invalid_input_object():
         to_collection(42.5, str, list)  # Float is not string or collection
 
 
+def test_to_collection_unsupported_collection():
+    """Test to_collection with an unsupported collection type to trigger the else block."""
+    with pytest.raises(TypeError, match="values must be .* or a collection thereof"):
+        to_collection({"a": 1}, str, list)
+
+
+def test_safe_recursion_limit_active():
+    """Test that safe_recursion_limit actually changes the limit and restores it."""
+    import sys
+
+    original_limit = sys.getrecursionlimit()
+    target_obs = original_limit + 1000
+    with safe_recursion_limit(target_obs):
+        assert sys.getrecursionlimit() >= target_obs + 500
+    assert sys.getrecursionlimit() == original_limit
+
+
 # ---------------- Integration Tests ----------------
 
 
@@ -678,13 +746,14 @@ def test_error_handling_file_operations(temp_files):
     """Test error handling in file operations."""
     tmpdir = temp_files["tmpdir"]
 
-    # Test with non-existent directory
+    # Test with non-existent source file
     with pytest.raises(FileNotFoundError):
         normalize_file("nonexistent.txt", tmpdir)
 
-    # Test with invalid destination
+    # Test with invalid destination directory
+    invalid_destination = tmpdir / "does_not_exist"
     with pytest.raises((FileNotFoundError, PermissionError, OSError)):
-        normalize_file(temp_files["utf8"], "/invalid/path/")
+        normalize_file(temp_files["utf8"], invalid_destination)
 
 
 # ---------------- Performance and Memory Tests ----------------
@@ -714,3 +783,27 @@ def test_encoding_detection_performance():
     # Should complete in reasonable time (less than 5 seconds)
     assert end_time - start_time < 5.0
     assert isinstance(encoding, str)
+
+
+def test_load_spacy_model_encoding_error():
+    """Test load_spacy_model with OSError that is not 'Model not found'."""
+    with patch("spacy.load", side_effect=OSError("Some other error")):
+        with pytest.raises(LexosException, match="Error loading model"):
+            load_spacy_model("some_model")
+
+
+def test_to_collection_unknown_type():
+    """Test to_collection with an unsupported collection type to trigger the else block."""
+    # Current implementation handles tuple, list, set, frozenset.
+    # If we pass a dict, it should fall into the else block.
+    with pytest.raises(TypeError, match="values must be .* or a collection thereof"):
+        to_collection({"a": 1}, str, list)
+
+
+def test_safe_recursion_limit_active():
+    """Test that safe_recursion_limit actually changes the limit and restores it."""
+    original_limit = sys.getrecursionlimit()
+    target_obs = original_limit + 1000
+    with safe_recursion_limit(target_obs):
+        assert sys.getrecursionlimit() >= target_obs + 500
+    assert sys.getrecursionlimit() == original_limit

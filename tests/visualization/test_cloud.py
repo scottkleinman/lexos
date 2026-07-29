@@ -1,8 +1,8 @@
 """test_cloud.py.
 
-Coverage: 98%. Missing: 278, 358-361, 497
+Coverage: 99%. Missing: 497
 
-Last Update: December 5, 2025
+Last Update: July 9, 2026
 """
 
 import tempfile
@@ -187,7 +187,10 @@ class TestWordCloud:
             patch("matplotlib.pyplot.axis") as mock_axis,
         ):
             wc.show()
-            mock_imshow.assert_called_once_with(wc.cloud, interpolation="bilinear")
+            assert mock_imshow.call_count == 1
+            args, kwargs = mock_imshow.call_args
+            assert np.array_equal(args[0], wc.cloud.to_array())
+            assert kwargs == {"interpolation": "bilinear"}
             mock_axis.assert_called_once_with("off")
 
     def test_wordcloud_show_with_title(self):
@@ -207,7 +210,10 @@ class TestWordCloud:
             wc.show()
 
             # Assert basic matplotlib calls
-            mock_imshow.assert_called_once_with(wc.cloud, interpolation="bilinear")
+            assert mock_imshow.call_count == 1
+            args, kwargs = mock_imshow.call_args
+            assert np.array_equal(args[0], wc.cloud.to_array())
+            assert kwargs == {"interpolation": "bilinear"}
             mock_axis.assert_called_once_with("off")
             mock_figure.assert_called_once_with(**wc.figure_opts)
 
@@ -352,6 +358,36 @@ class TestMultiCloud:
 
         assert "Empty DataFrame provided" in str(exc_info.value)
 
+    def test_multicloud_unsupported_data_type(self):
+        """Test MultiCloud raises on unsupported data types."""
+        from lexos.visualization.cloud import MultiCloud
+
+        multicloud = MultiCloud.model_construct(data=object())
+        with pytest.raises(
+            LexosException, match="Unsupported data type for MultiCloud"
+        ):
+            multicloud._process_data()
+
+    def test_multicloud_show_fallback(self):
+        """Test MultiCloud.show fallback when IPython is unavailable."""
+        mc = MultiCloud(data=SAMPLE_DOCS[:2])
+
+        import builtins
+
+        original_import = builtins.__import__
+
+        def fake_import(name, globals=None, locals=None, fromlist=(), level=0):
+            if name == "IPython.display":
+                raise ImportError
+            return original_import(name, globals, locals, fromlist, level)
+
+        with patch("builtins.__import__", side_effect=fake_import):
+            with patch("lexos.visualization.cloud.plt.figure") as mock_figure:
+                with patch("lexos.visualization.cloud.plt.show") as mock_show:
+                    mc.show()
+                    mock_figure.assert_called_once()
+                    mock_show.assert_called_once()
+
     def test_multicloud_single_document(self):
         """Test MultiCloud with single document."""
         mc = MultiCloud(data=[SAMPLE_DOCS[0]])
@@ -395,7 +431,7 @@ class TestMultiCloud:
         """Test MultiCloud show method."""
         mc = MultiCloud(data=SAMPLE_DOCS[:2])
 
-        # show() should not raise an exception
+        # The show() method should not raise an exception
         mc.show()
 
     def test_multicloud_show_no_figure(self):

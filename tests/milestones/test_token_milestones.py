@@ -1,7 +1,7 @@
 """test_milestones.py.
 
-Coverage: 97%. Missing: 300-307
-Last Update: December 24, 2025
+Coverage: 99%. Missing: 313
+Last Update: June 27, 2026
 """
 
 import re
@@ -34,6 +34,12 @@ def mock_text():
 def mock_doc_with_model(mock_text):
     """Return a mock Doc object."""
     return nlp(mock_text)
+
+
+@pytest.fixture
+def monitored_doc():
+    """Return a real spaCy Doc object for cache tests."""
+    return nlp("This is a Test string with test pattern and TEST variations.")
 
 
 @pytest.fixture
@@ -89,6 +95,17 @@ def test_milestones_initialization_case_insensitive(mock_doc):
 
 def test_milestones_token_extensions(mock_doc):
     """Test Milestones initialization sets token extensions."""
+    _ = TokenMilestones(doc=mock_doc)
+    assert Token.has_extension("milestone_iob")
+    assert Token.has_extension("milestone_label")
+
+
+def test_milestones_token_extensions_registered_when_missing(mock_doc):
+    """Test that TokenMilestones registers extensions when they are missing."""
+    for attr in ("milestone_iob", "milestone_label"):
+        if Token.has_extension(attr):
+            Token.remove_extension(attr)
+
     _ = TokenMilestones(doc=mock_doc)
     assert Token.has_extension("milestone_iob")
     assert Token.has_extension("milestone_label")
@@ -226,6 +243,17 @@ def test_get_phrase_matches_multiple_patterns(milestones):
     patterns = ["test pattern", "TEST variations"]
     spans = milestones._get_phrase_matches(patterns)
     assert len(spans) == 2
+    assert milestones.nlp in TokenMilestones._nlp_cache
+
+
+def test_get_phrase_matches_model_cache(monitored_doc):
+    """Test phrase match model loading cache."""
+    TokenMilestones._nlp_cache.pop("xx_sent_ud_sm", None)
+    milestones = TokenMilestones(doc=monitored_doc)
+    patterns = ["test pattern"]
+    spans = milestones._get_phrase_matches(patterns)
+    assert isinstance(spans, list)
+    assert "xx_sent_ud_sm" in TokenMilestones._nlp_cache
 
 
 def test_get_phrase_matches_empty_patterns(milestones):
@@ -285,6 +313,16 @@ def test_get_rule_matches_invalid_pattern(milestones):
     patterns = [{"INVALID": "test"}]
     with pytest.raises(Exception):
         milestones._get_rule_matches(patterns)
+
+
+def test_get_rule_matches_model_cache(monitored_doc):
+    """Test rule match model loading cache."""
+    TokenMilestones._nlp_cache.pop("xx_sent_ud_sm", None)
+    milestones = TokenMilestones(doc=monitored_doc)
+    patterns = [[{"LOWER": "test"}]]
+    spans = milestones._get_rule_matches(patterns)
+    assert isinstance(spans, list)
+    assert "xx_sent_ud_sm" in TokenMilestones._nlp_cache
 
 
 def test_remove_duplicate_spans_basic(milestones):
@@ -384,6 +422,18 @@ def test_to_spacy_span_fallback(milestones):
     mock_match = milestones.doc.char_span(30, 40)
     with pytest.raises(ValueError):
         _ = milestones._to_spacy_span(mock_match)
+
+
+def test_to_spacy_span_fallback_with_character_map(milestones):
+    """Test _to_spacy_span fallback path using the character map."""
+    doc = nlp("This is a test.")
+    milestones = TokenMilestones(doc=doc)
+    match = re.search("T", doc.text)
+    assert match is not None
+    span = milestones._to_spacy_span(match)
+    assert isinstance(span, Span)
+    assert span.start == 0
+    assert span.end == 1
 
 
 def test_to_spacy_span_null_character_map(milestones):

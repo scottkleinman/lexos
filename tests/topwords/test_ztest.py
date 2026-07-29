@@ -1,9 +1,8 @@
 """Tests for ztest.py module.
 
-Coverage: 99%. Missing: 151
-Line 151 is not covered, but this is (a) an edge case and (b) possibly a pytest bug.
+Coverage: 100%
 
-Last Update: November 8, 2025
+Last Update: July 11, 2026
 """
 
 import pandas as pd
@@ -403,8 +402,8 @@ class TestZScoreCalculation:
             remove_stopwords=False,
         )
 
-        # 'common' and 'word' should have Z-scores close to 0 and be filtered
-        # 'cat' and 'dog' should have non-zero Z-scores
+        # Terms 'common' and 'word' should have Z-scores close to 0 and be filtered
+        # Terms 'cat' and 'dog' should have non-zero Z-scores
         assert all(abs(score) > 0.0 for _, score in ztest.topwords)
 
 
@@ -625,6 +624,59 @@ class TestZTestEdgeCases:
             for term, z_score in ztest.topwords:
                 # Z-score should be 0 for identical documents
                 assert z_score == 0.0
+
+
+# ---------------- Internal Helper Coverage ----------------
+
+
+class TestZTestInternalHelpers:
+    """Direct tests for internal helper methods.
+
+    These tests intentionally call private methods to ensure branch coverage
+    for `_get_doc_tokens`.
+    """
+
+    def test_get_doc_tokens_unigram_branch(self, nlp):
+        """Cover `_get_doc_tokens` branch when ngrams is an int (unigrams)."""
+        target = [nlp("alpha beta gamma")]
+        comparison = [nlp("delta epsilon zeta")]
+
+        ztest = ZTest(
+            target_docs=target,
+            comparison_docs=comparison,
+            topn=10,
+            ngrams=1,
+            remove_stopwords=False,
+            remove_punct=True,
+            remove_digits=False,
+        )
+
+        tokens = ztest._get_doc_tokens(target)
+        assert isinstance(tokens, list)
+        assert tokens == ["alpha", "beta", "gamma"]
+
+    def test_get_doc_tokens_ngram_branch(self, nlp):
+        """Cover `_get_doc_tokens` branch when ngrams is a tuple/range."""
+        target = [nlp("alpha beta gamma delta")]
+        comparison = [nlp("epsilon zeta eta theta")]
+
+        ztest = ZTest(
+            target_docs=target,
+            comparison_docs=comparison,
+            topn=20,
+            ngrams=(2, 3),
+            remove_stopwords=False,
+            remove_punct=True,
+            remove_digits=False,
+        )
+
+        tokens = ztest._get_doc_tokens(target)
+        assert isinstance(tokens, list)
+        assert "alpha beta" in tokens
+        assert "beta gamma" in tokens
+        assert "gamma delta" in tokens
+        assert "alpha beta gamma" in tokens
+        assert "beta gamma delta" in tokens
 
 
 # ---------------- Tokenizer Tests ----------------

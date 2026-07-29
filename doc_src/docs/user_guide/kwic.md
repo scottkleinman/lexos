@@ -33,6 +33,9 @@ This will display
 
 You will notice that the keywords `docs` and `patterns` are plural. This is because the `Kwic` class will also accept multiple documents and lists of patterns. A document, in the case, can be a raw text string, but spaCy `Doc` objects are also accepted. Patterns may be raw strings or regex patterns.
 
+!!! note
+    A current limitation is that all spaCy `Docs` must share the same model. This is due to the way spaCy loads models and the Matcher/PhraseMatcher, which are tied to the vocabulary of the loaded model. If you have `Docs` created with separate models, you will need to create separate instances of the Kwic class for each set of documents created with a specific model.
+
 The `window` keyword will by default provide a window of *n* characters around each keyword found.
 
 The standard output is a pandas DataFrame. You can either display this DataFrame directly, or assign it to a variable for further processing:

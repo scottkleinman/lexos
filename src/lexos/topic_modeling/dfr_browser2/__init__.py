@@ -89,7 +89,7 @@ class Browser(BaseModel):
                 if isinstance(app_cfg, dict) and app_cfg.get("version"):
                     return app_cfg.get("version")
         except Exception:
-            # defensive fallback
+            # Defensive fallback
             pass
         return self.BROWSER_VERSION
 
@@ -351,7 +351,7 @@ class Browser(BaseModel):
                         and src_name in self.filename_map
                         and (self.filename_map[src_name] == fallback_path.name)
                     ):
-                        # key was destination, value was source, so swap
+                        # Key was destination, value was source, so swap
                         dest_filename = src_name
                 else:
                     # If missing, skip
@@ -401,7 +401,7 @@ class Browser(BaseModel):
             # Template uses 'doc_topic_file'
             self.copied_files["doc_topic_file"] = f"data/{dest_filename}"
         elif canonical_for_src == "topic-state.gz":
-            # 'topic-state.gz' canonical group — ensure mapping written even if dest filename doesn't contain keyword
+            # The 'topic-state.gz' canonical group — ensure mapping written even if dest filename doesn't contain keyword
             self.copied_files["topic_state_file"] = f"data/{dest_filename}"
         elif "metadata" in lower:
             self.copied_files["metadata_file"] = f"data/{dest_filename}"

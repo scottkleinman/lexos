@@ -204,7 +204,7 @@ def parse_authors(author_string: str) -> list:
         # Semicolon is unambiguous - always separates authors
         authors = [a.strip() for a in author_string.split(";") if a.strip()]
     elif " and " in author_string.lower():
-        # " and " separates authors
+        # The string " and " separates authors
         authors = [
             a.strip()
             for a in re.split(r"\s+and\s+", author_string, flags=re.IGNORECASE)

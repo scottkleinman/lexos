@@ -2,9 +2,9 @@
 
 Test suite for D3WordCloud and D3MultiCloud classes.
 
-Coverage: 95%. Missing: 151-153, 216-217, 352, 360, 432-433, 461-466
+Coverage: 99%. Missing: 353, 361, 465
 
-Last Updated: December 05, 2025
+Last Updated: June 28, 2026
 """
 
 import json
@@ -621,7 +621,7 @@ class TestD3WordCloudErrorHandling:
 
     def test_template_not_found(self, sample_counts):
         """Test handling of missing template file."""
-        with pytest.raises(FileNotFoundError):
+        with pytest.raises(LexosException, match="Template file not found"):
             D3WordCloud(
                 data=sample_counts,
                 template="nonexistent_template.html",
@@ -1080,6 +1080,108 @@ class TestD3WordCloudUncoveredPaths:
                 # Should not contain d3 library content
                 assert "Mock D3.js library" not in cloud.html
 
+    def test_d3_include_none(
+        self, sample_counts, mock_template_content, mock_d3_script, mock_d3_cloud_script
+    ):
+        """Test D3WordCloud with include_d3js=None uses default behavior."""
+
+        def mock_open_handler(filename, *args, **kwargs):
+            if "d3_cloud_template" in str(filename):
+                return mock_open(read_data=mock_template_content).return_value
+            elif "d3.min.js" in str(filename):
+                return mock_open(read_data=mock_d3_script).return_value
+            elif "d3cloud_bundle.min.js" in str(filename):
+                return mock_open(read_data=mock_d3_cloud_script).return_value
+            else:
+                return mock_open().return_value
+
+        with patch(
+            "lexos.visualization.d3_wordcloud.open", side_effect=mock_open_handler
+        ):
+            with patch("webbrowser.open"):
+                cloud = D3WordCloud(
+                    data=sample_counts, include_d3js=None, auto_open=False
+                )
+                assert "Mock D3.js library content" in cloud.html
+
+    def test_d3_cloud_invalid_string(self, sample_counts, mock_template_content):
+        """Test D3WordCloud with invalid include_d3_cloud string."""
+        with patch(
+            "lexos.visualization.d3_wordcloud.open",
+            return_value=mock_open(read_data=mock_template_content).return_value,
+        ):
+            with patch("webbrowser.open"):
+                cloud = D3WordCloud(
+                    data=sample_counts,
+                    include_d3_cloud="invalid",
+                    auto_open=False,
+                )
+                assert '<script id="d3cloud"></script>' in cloud.html
+
+    def test_d3_cloud_false(self, sample_counts, mock_template_content, mock_d3_script):
+        """Test D3WordCloud with include_d3_cloud=False skips cloud script."""
+
+        def mock_open_handler(filename, *args, **kwargs):
+            if "d3_cloud_template" in str(filename):
+                return mock_open(read_data=mock_template_content).return_value
+            elif "d3.min.js" in str(filename):
+                return mock_open(read_data=mock_d3_script).return_value
+            else:
+                return mock_open().return_value
+
+        with patch(
+            "lexos.visualization.d3_wordcloud.open", side_effect=mock_open_handler
+        ):
+            with patch("webbrowser.open"):
+                cloud = D3WordCloud(
+                    data=sample_counts, include_d3_cloud=False, auto_open=False
+                )
+                assert '<script id="d3cloud"></script>' in cloud.html
+
+    def test_d3_include_none(
+        self, sample_counts, mock_template_content, mock_d3_script, mock_d3_cloud_script
+    ):
+        """Test D3WordCloud with include_d3js=None uses default behavior."""
+
+        def mock_open_handler(filename, *args, **kwargs):
+            if "d3_cloud_template" in str(filename):
+                return mock_open(read_data=mock_template_content).return_value
+            elif "d3.min.js" in str(filename):
+                return mock_open(read_data=mock_d3_script).return_value
+            elif "d3cloud_bundle.min.js" in str(filename):
+                return mock_open(read_data=mock_d3_cloud_script).return_value
+            else:
+                return mock_open().return_value
+
+        with patch(
+            "lexos.visualization.d3_wordcloud.open", side_effect=mock_open_handler
+        ):
+            with patch("webbrowser.open"):
+                cloud = D3WordCloud(
+                    data=sample_counts, include_d3js=None, auto_open=False
+                )
+                assert "Mock D3.js library content" in cloud.html
+
+    def test_d3_cloud_false(self, sample_counts, mock_template_content, mock_d3_script):
+        """Test D3WordCloud with include_d3_cloud=False skips cloud script."""
+
+        def mock_open_handler(filename, *args, **kwargs):
+            if "d3_cloud_template" in str(filename):
+                return mock_open(read_data=mock_template_content).return_value
+            elif "d3.min.js" in str(filename):
+                return mock_open(read_data=mock_d3_script).return_value
+            else:
+                return mock_open().return_value
+
+        with patch(
+            "lexos.visualization.d3_wordcloud.open", side_effect=mock_open_handler
+        ):
+            with patch("webbrowser.open"):
+                cloud = D3WordCloud(
+                    data=sample_counts, include_d3_cloud=False, auto_open=False
+                )
+                assert '<script id="d3cloud"></script>' in cloud.html
+
     def test_d3_include_custom_js_file(
         self, sample_counts, mock_template_content, mock_d3_cloud_script
     ):
@@ -1275,6 +1377,32 @@ class TestD3WordCloudUncoveredPaths:
                 # Should have CDN fallback
                 assert "cdn.jsdelivr.net" in multicloud.html
 
+    def test_multicloud_include_d3_cloud_false(
+        self, mock_multicloud_template, mock_d3_script
+    ):
+        """Test D3MultiCloud with include_d3_cloud=False skips cloud script."""
+
+        def mock_open_handler(filename, *args, **kwargs):
+            if "d3_multicloud_template" in str(filename):
+                return mock_open(read_data=mock_multicloud_template).return_value
+            elif "d3_cloud_template" in str(filename):
+                return mock_open(read_data="<html></html>").return_value
+            elif "d3.min.js" in str(filename):
+                return mock_open(read_data=mock_d3_script).return_value
+            else:
+                return mock_open().return_value
+
+        with patch(
+            "lexos.visualization.d3_wordcloud.open", side_effect=mock_open_handler
+        ):
+            with patch("webbrowser.open"):
+                multicloud = D3MultiCloud(
+                    data_sources=[{"apple": 10}],
+                    include_d3_cloud=False,
+                    auto_open=False,
+                )
+                assert '<script id="d3cloud"></script>' in multicloud.html
+
     def test_multicloud_render_calculates_dimensions(
         self, mock_multicloud_template, mock_d3_script, mock_d3_cloud_script
     ):
@@ -1452,3 +1580,25 @@ class TestD3WordCloudUncoveredPaths:
                 )
                 # Should include D3 (None defaults to True behavior)
                 assert '<script id="d3">' in multicloud.html
+
+    def test_multicloud_d3_js_missing_raises(self, mock_multicloud_template):
+        """Test D3MultiCloud raises when custom D3.js path is missing."""
+
+        def mock_open_handler(filename, *args, **kwargs):
+            if "d3_multicloud_template" in str(filename):
+                return mock_open(read_data=mock_multicloud_template).return_value
+            elif "missing.js" in str(filename):
+                raise FileNotFoundError("missing file")
+            else:
+                return mock_open().return_value
+
+        with patch(
+            "lexos.visualization.d3_wordcloud.open", side_effect=mock_open_handler
+        ):
+            with patch("webbrowser.open"):
+                with pytest.raises(LexosException, match="Script file not found"):
+                    D3MultiCloud(
+                        data_sources=[{"apple": 10}],
+                        include_d3js="missing.js",
+                        auto_open=False,
+                    )

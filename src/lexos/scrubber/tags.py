@@ -7,11 +7,13 @@ and their attributes in HTML or XML documents.
 It supports both exact, contains, and regex matching for selectors and
 attributes, and can filter elements based on attributes and their values.
 
-Last Updated: December 4, 2025
-Last Tested: September 5, 2025
+Last Updated: June 26, 2026
+Last Tested: June 26, 2026
 """
 
+import importlib.util
 import re
+from functools import lru_cache
 from typing import Optional
 
 from bs4 import BeautifulSoup, Comment
@@ -20,8 +22,61 @@ from bs4 import BeautifulSoup, Comment
 from lexos.exceptions import LexosException
 
 
+@lru_cache(maxsize=128)
+def _compile_regex(pattern: str) -> re.Pattern[str]:
+    return re.compile(pattern)
+
+
+def _get_parser(mode: str) -> str:
+    """Return the appropriate BeautifulSoup parser for the given mode."""
+    if mode == "html":
+        return "html.parser"
+    if mode == "xml":
+        if importlib.util.find_spec("lxml") is not None:
+            return "lxml-xml"
+        return "xml"
+    raise LexosException("Mode must be either 'html' or 'xml'.")
+
+
+def _parse_document(text: str, mode: str) -> BeautifulSoup:
+    """Parse HTML or XML text using the appropriate parser.
+
+    For XML mode, BeautifulSoup prefers 'lxml-xml' when available. If
+    parser initialization fails, this function falls back to the built-in
+    'xml' parser before raising the original exception.
+    """
+    parser = _get_parser(mode)
+    try:
+        return BeautifulSoup(text, parser)
+    except Exception:
+        if mode == "xml" and parser == "lxml-xml":
+            return BeautifulSoup(text, "xml")
+        raise
+
+
+def _filter_elements_by_attribute(
+    elements: list,
+    attribute_name: Optional[str],
+    attribute_value: Optional[str],
+    matcher_type: str,
+) -> list:
+    """Filter a list of elements by an attribute name and optional value."""
+    if not attribute_name:
+        return elements
+
+    if attribute_value is not None:
+        return [
+            el
+            for el in elements
+            if el.has_attr(attribute_name)
+            and _match_value(el[attribute_name], attribute_value, matcher_type)
+        ]
+
+    return [el for el in elements if el.has_attr(attribute_name)]
+
+
 def _match_elements(
-    selector: str,
+    selector: Optional[str],
     text: str,
     mode: str = "html",
     matcher_type: Optional[str] = "exact",
@@ -48,8 +103,7 @@ def _match_elements(
         raise LexosException("Mode must be either 'html' or 'xml'.")
 
     # Parse the document
-    parser = "lxml-xml" if mode == "xml" else "html.parser"
-    soup = BeautifulSoup(text, parser)
+    soup = _parse_document(text, mode)
 
     # Find elements matching the selector
     if not selector:
@@ -61,33 +115,15 @@ def _match_elements(
             else soup.find_all(selector)
         )
 
-    # Filter by attribute if specified using attribute_filter
+    # Filter by attribute or attribute_filter
     if attribute_filter:
-        if attribute_value:
-            # Filter elements that have the attribute with the specific value
-            elements = [
-                el
-                for el in elements
-                if el.has_attr(attribute_filter)
-                and _match_value(el[attribute_filter], attribute_value, matcher_type)
-            ]
-        else:
-            # Filter elements that have the attribute regardless of value
-            elements = [el for el in elements if el.has_attr(attribute_filter)]
-
-    # Filter by attribute if specified
-    elif attribute:
-        if attribute_value:
-            # Filter elements that have the attribute with the specific value
-            elements = [
-                el
-                for el in elements
-                if el.has_attr(attribute)
-                and _match_value(el[attribute], attribute_value, matcher_type)
-            ]
-        else:
-            # Filter elements that have the attribute regardless of value
-            elements = [el for el in elements if el.has_attr(attribute)]
+        elements = _filter_elements_by_attribute(
+            elements, attribute_filter, attribute_value, matcher_type
+        )
+    else:
+        elements = _filter_elements_by_attribute(
+            elements, attribute, attribute_value, matcher_type
+        )
 
     return soup, elements
 
@@ -124,7 +160,7 @@ def _match_value(
     elif match_type == "regex":
         # Regex match - pattern is treated as a regex
         try:
-            return re.search(pattern, attribute_value) is not None
+            return _compile_regex(pattern).search(attribute_value) is not None
         except re.error:
             # Invalid regex pattern
             return False
@@ -229,13 +265,8 @@ def remove_comments(text: str, mode: str = "html") -> str:
         >>> remove_comments(xml, mode="xml")
         '<?xml version="1.0"?><root>Data</root>'
     """
-    # Validate mode
-    if mode not in ["html", "xml"]:
-        raise LexosException("Mode must be either 'html' or 'xml'.")
-
     # Parse the document
-    parser = "lxml-xml" if mode == "xml" else "html.parser"
-    soup = BeautifulSoup(text, parser)
+    soup = _parse_document(text, mode)
 
     # Find all comment nodes
     comments = soup.find_all(string=lambda text: isinstance(text, Comment))
@@ -433,11 +464,8 @@ def replace_attribute(
             # Filter elements that have the attribute regardless of value
             elements = [el for el in elements if el.has_attr(attribute_filter)]
 
-    result = []
-
     # Replace attributes in matching elements
     for element in elements:
-        result.append(element)
         if element.has_attr(old_attribute):
             # NOTE: It appears that this block is not needed
             # Only process attributes with the specific value if provided
@@ -462,8 +490,9 @@ def replace_attribute(
                 old_attribute_str = " ".join(element[old_attribute])
                 if matcher_type == "regex":
                     new_values = []
+                    pattern = _compile_regex(attribute_value)
                     for value in element[old_attribute]:
-                        if re.search(attribute_value, value):
+                        if pattern.search(value):
                             new_values.append(replace_value)
                         else:
                             new_values.append(value)

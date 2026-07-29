@@ -7,11 +7,11 @@ repos:
   - id: end-of-file-fixer
   - id: trailing-whitespace
 - repo: https://github.com/astral-sh/uv-pre-commit
-  rev: 0.9.17
+  rev: 0.11.19
   hooks:
     - id: uv-lock
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.14.8
+  rev: v0.15.16
   hooks:
     - id: ruff-check
       args: [ --fix ]
@@ -20,6 +20,13 @@ repos:
       types_or: [ python ] # Add jupyter to run on notebooks
 - repo: local
   hooks:
+    - id: comment-capitalization
+      name: Enforce capitalization of inline comments (py/js)
+      entry: uv run python tools/check_comment_caps.py
+      language: system
+      files: ^(?!tests/).*\.py$
+      pass_filenames: true
+      always_run: true
     - id: validate-python-headers
       name: Validate Python file headers
       entry: uv run python .validate_headers.py

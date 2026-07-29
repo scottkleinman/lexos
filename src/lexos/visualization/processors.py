@@ -2,14 +2,15 @@
 
 This module contains functions to process data from various source types into term frequency dictionaries.
 
-Last Update: August 11, 2025
-Last Tested: December 5, 2025
+Last Updated: July 10, 2026
+Last Tested: July 10, 2026
 """
 
 from collections import Counter
 from itertools import chain
 from typing import Any, Iterator, Optional
 
+import numpy as np
 import pandas as pd
 from pydantic import ConfigDict, Field, validate_call
 from spacy.schemas import DocJSONSchema
@@ -17,7 +18,7 @@ from spacy.tokens import Doc, Span, Token
 
 from lexos.dtm import DTM
 from lexos.exceptions import LexosException
-from lexos.util import ensure_list
+from lexos.util import count_doc_terms, ensure_list
 
 
 @validate_call(config=ConfigDict(allow_arbitrary_types=True))
@@ -47,7 +48,7 @@ def process_data(
 
     # Handle spaCy objects
     elif isinstance(data, (Doc, Span)):
-        counts = Counter([token.text for token in data])
+        counts = count_doc_terms(data)
 
     # Handle dictionary input (already in correct format)
     elif isinstance(data, dict):
@@ -146,7 +147,8 @@ def filter_docs(
 
 @validate_call(
     config=ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 )
 def process_dataframe(
@@ -161,20 +163,17 @@ def process_dataframe(
     Returns:
         Counter: A Counter object with the terms as keys and the counts as values.
     """
-    # Filter the documents
+    # Filter the documents and compute row sums directly
     df = filter_docs(df, ensure_list(docs))
-    # Add the counts
-    df = df.copy()
-    df["counts"] = df.sum(axis=1)
-    # Remove terms with zero counts
-    df = df.query("counts > 0")
-    # Return the counts as a Counter
-    return Counter(df["counts"].to_dict())
+    counts_series = df.sum(axis=1)
+    counts_series = counts_series[counts_series > 0]
+    return Counter(counts_series.to_dict())
 
 
 @validate_call(
     config=ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 )
 def process_dtm(
@@ -189,19 +188,39 @@ def process_dtm(
     Returns:
         dict[str, int]: A dictionary with the terms as keys and the counts as values.
     """
-    df = dtm.to_df()
-    # Filter the documents
-    df = filter_docs(df, ensure_list(docs))
-    return process_dataframe(df)
+    if dtm.doc_term_matrix is None:
+        raise LexosException("DTM has no document-term matrix.")
+
+    selected_rows = None
+    if docs is not None:
+        docs = ensure_list(docs)
+        if docs and isinstance(docs[0], str):
+            docs = [dtm.labels.index(doc_idx) for doc_idx in docs]
+        selected_rows = docs
+
+    matrix = dtm.doc_term_matrix
+    if selected_rows is not None:
+        matrix = matrix[selected_rows, :]
+
+    if hasattr(matrix, "toarray"):
+        counts = np.asarray(matrix.sum(axis=0)).ravel()
+    else:
+        counts = np.asarray(matrix.sum(axis=0)).ravel()
+
+    terms = dtm.vectorizer.terms_list if hasattr(dtm.vectorizer, "terms_list") else []
+    return Counter(
+        {terms[i]: int(counts[i]) for i in range(len(terms)) if counts[i] > 0}
+    )
 
 
 @validate_call(
     config=ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 )
 def process_list(
-    data: list[list[Doc | Span] | list[str] | list[Token]],
+    data: list[Any],
     docs: Optional[int | list[int]],
 ) -> Counter:
     """Process a list of docs, spans, strings, or tokens.
@@ -233,7 +252,8 @@ def process_list(
 
 @validate_call(
     config=ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 )
 def process_docs(
@@ -261,7 +281,8 @@ def process_docs(
 
 @validate_call(
     config=ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 )
 def process_item(
@@ -287,7 +308,8 @@ def process_item(
 
 @validate_call(
     config=ConfigDict(
-        arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+        arbitrary_types_allowed=True,
+        json_schema_extra=DocJSONSchema.model_json_schema(),
     )
 )
 def multicloud_processor(

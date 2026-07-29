@@ -2,7 +2,7 @@
 
 Coverage: 99%. Missing:  428, 436
 
-Last Updated: December 24, 2025
+Last Updated: July 9, 2026
 """
 
 import csv
@@ -15,6 +15,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import pytest
+
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 from lexos.topic_modeling.dfr_browser2.prepare_data import (
     compute_mds,
@@ -751,6 +753,12 @@ def test_cli_basic_usage(tmp_path: Path, sample_state_file: Path):
     output_dir.mkdir()
 
     # Run the script as a command-line tool
+    env = os.environ.copy()
+    env["PYTHONPATH"] = (
+        str(PROJECT_ROOT / "src") + os.pathsep + env.get("PYTHONPATH", "")
+    )
+    env["PYTHONIOENCODING"] = "utf-8"
+
     result = subprocess.run(
         [
             sys.executable,
@@ -762,6 +770,7 @@ def test_cli_basic_usage(tmp_path: Path, sample_state_file: Path):
         ],
         capture_output=True,
         text=True,
+        env=env,
     )
 
     # Check successful execution
@@ -778,6 +787,12 @@ def test_cli_with_all_flag(tmp_path: Path, sample_state_file: Path):
     output_dir = tmp_path / "cli_all_output"
     output_dir.mkdir()
 
+    env = os.environ.copy()
+    env["PYTHONPATH"] = (
+        str(PROJECT_ROOT / "src") + os.pathsep + env.get("PYTHONPATH", "")
+    )
+    env["PYTHONIOENCODING"] = "utf-8"
+
     result = subprocess.run(
         [
             sys.executable,
@@ -790,6 +805,7 @@ def test_cli_with_all_flag(tmp_path: Path, sample_state_file: Path):
         ],
         capture_output=True,
         text=True,
+        env=env,
     )
 
     assert result.returncode == 0
@@ -807,6 +823,12 @@ def test_cli_with_top_words(tmp_path: Path, sample_state_file: Path):
     output_dir = tmp_path / "cli_topwords_output"
     output_dir.mkdir()
 
+    env = os.environ.copy()
+    env["PYTHONPATH"] = (
+        str(PROJECT_ROOT / "src") + os.pathsep + env.get("PYTHONPATH", "")
+    )
+    env["PYTHONIOENCODING"] = "utf-8"
+
     result = subprocess.run(
         [
             sys.executable,
@@ -820,6 +842,7 @@ def test_cli_with_top_words(tmp_path: Path, sample_state_file: Path):
         ],
         capture_output=True,
         text=True,
+        env=env,
     )
 
     assert result.returncode == 0

@@ -1,31 +1,25 @@
 """whitespace_counter.py.
 
-Last Update: December 20, 2025
-Last Tested: December 20, 2025
+Last Update: June 27, 2026
+Last Tested:June 27, 2026
 
 This module provides a whitespace tokenizer that captures line breaks and counts runs of spaces.
 """
 
 import re
-from typing import Iterable
+from itertools import batched
+from typing import Iterable, Optional
 
-import spacy
 from pydantic import validate_call
 from spacy.tokens import Doc, Token
 
-from lexos.exceptions import LexosException
 from lexos.tokenizer import Tokenizer
-
-try:
-    default_model = spacy.load("xx_sent_ud_sm")
-except ImportError:
-    raise LexosException(
-        "The default model is not available. Please run `python -m spacy download xx_sent_ud_sm` from the command line."
-    )
 
 
 class WhitespaceCounter(Tokenizer):
     """Whitespace tokenizer that captures line breaks and counts runs of spaces."""
+
+    _token_widths_pattern = re.compile(r"([^\s\n]+)|(\n)|([ ]{2,})|([ ])")
 
     def _get_token_widths(self, text: str) -> tuple[list[str], list[int]]:
         """Get the widths of tokens in a doc.
@@ -36,11 +30,9 @@ class WhitespaceCounter(Tokenizer):
         Returns:
             tuple[list[str], list[int]]: A tuple containing the tokens and widths.
         """
-        # Pattern: words, line breaks, or runs of spaces
-        pattern = re.compile(r"([^\s\n]+)|(\n)|([ ]{2,})|([ ])")
         tokens = []
         widths = []
-        for match in pattern.finditer(text):
+        for match in self._token_widths_pattern.finditer(text):
             word, newline, multi_space, single_space = match.groups()
             if word:
                 tokens.append(word)
@@ -58,7 +50,7 @@ class WhitespaceCounter(Tokenizer):
 
     @validate_call
     def make_doc(
-        self, text: str, max_length: int = None, disable: list[str] = []
+        self, text: str, max_length: int = None, disable: Optional[Iterable[str]] = None
     ) -> Doc:
         """Return a doc from a text.
 
@@ -74,6 +66,7 @@ class WhitespaceCounter(Tokenizer):
         if max_length:
             self.max_length = max_length
             self.nlp.max_length = max_length
+        disable = list(disable) if disable else []
         if disable:
             self.nlp.select_pipes(disable=disable)
         tokens, widths = self._get_token_widths(text)
@@ -93,7 +86,7 @@ class WhitespaceCounter(Tokenizer):
         self,
         texts: Iterable[str],
         max_length: int = None,
-        disable: Iterable[str] = [],
+        disable: Optional[Iterable[str]] = None,
         chunk_size: int = 1000,
     ) -> Iterable[Doc]:
         """Return a generator of docs from an iterable of texts, processing in chunks.
@@ -111,23 +104,14 @@ class WhitespaceCounter(Tokenizer):
             self.max_length = max_length
             self.nlp.max_length = max_length
 
+        disable = list(disable) if disable else []
         if not Token.has_extension("width"):
             Token.set_extension("width", default=0)
         enabled_pipes = [
             (name, proc) for name, proc in self.nlp.pipeline if name not in disable
         ]
 
-        def chunker(iterable, size):
-            chunk = []
-            for item in iterable:
-                chunk.append(item)
-                if len(chunk) == size:
-                    yield chunk
-                    chunk = []
-            if chunk:
-                yield chunk
-
-        for text_chunk in chunker(texts, chunk_size):
+        for text_chunk in batched(texts, chunk_size):
             docs = []
             for text in text_chunk:
                 tokens, widths = self._get_token_widths(text)

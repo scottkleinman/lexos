@@ -1,7 +1,7 @@
 """pipeline.py.
 
-Last Update: 2025-01-16
-Tested: 2025-01-16
+Last Update: 2026-06-26
+Tested: 2026-06-26
 """
 
 from functools import partial, update_wrapper
@@ -79,4 +79,12 @@ def make_pipeline_from_tuple(funcs: tuple) -> tuple:
     Returns:
         tuple: A pipeline composed of the functions in `funcs`.
     """
-    return make_pipeline(*[eval(x) if isinstance(x, str) else x for x in funcs])
+    resolved_funcs = []
+    for item in funcs:
+        if isinstance(item, str):
+            if not item.isidentifier():
+                raise NameError(f"Invalid function name: {item}")
+            resolved_funcs.append(globals()[item])
+        else:
+            resolved_funcs.append(item)
+    return make_pipeline(*resolved_funcs)

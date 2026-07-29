@@ -2,9 +2,9 @@
 
 Test suite for the Record class in lexos.corpus.record.
 
-Coverage: 100%
+Coverage: 95%. Missing: 24-28, 37-39, 57, 60-62, 330-332, 371-373, 381-382, 407, 697
 
-Last Update: March 14, 2026
+Last Update: July 10, 2026
 """
 
 import tempfile

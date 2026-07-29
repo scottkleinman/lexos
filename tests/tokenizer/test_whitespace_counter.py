@@ -1,7 +1,8 @@
 """test_whitespace_counter.py.
 
 Coverage: 100%
-Last Updated: December 20, 2025
+Last Updated: June 27, 2026
+
 """
 
 import pytest
@@ -352,27 +353,12 @@ class TestModelImportError:
     """Test handling of model import errors."""
 
     def test_import_error_raises_lexos_exception(self):
-        """Test that ImportError when loading default model raises LexosException."""
-        # We need to test the module-level import error that occurs
-        # when spacy.load fails. This requires reloading the module
-        # with a mocked spacy.load that raises ImportError.
-        import sys
+        """Test that ImportError when loading the model raises LexosException."""
         from unittest.mock import patch
 
-        # Remove the module from cache to force reimport
-        if "lexos.tokenizer.whitespace_counter" in sys.modules:
-            del sys.modules["lexos.tokenizer.whitespace_counter"]
-
-        # Mock spacy.load to raise ImportError
         with patch("spacy.load", side_effect=ImportError("Model not found")):
             with pytest.raises(
                 LexosException,
-                match="The default model is not available. Please run `python -m spacy download xx_sent_ud_sm`",
+                match="Error loading model xx_sent_ud_sm. Please check the name and try again. You may need to install the model on your system.",
             ):
-                # This will trigger the module-level code that calls spacy.load
-                import lexos.tokenizer.whitespace_counter  # noqa: F401
-
-        # Clean up: reload the module properly for other tests
-        if "lexos.tokenizer.whitespace_counter" in sys.modules:
-            del sys.modules["lexos.tokenizer.whitespace_counter"]
-        import lexos.tokenizer.whitespace_counter  # noqa: F401
+                WhitespaceCounter()

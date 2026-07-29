@@ -2,15 +2,13 @@
 
 Test suite for the Kwic class.
 
-Coverage: 97%. Missing: 270-276
-The missing lines are for invalid sorting locales, which should not be possible to submit because of Pydantic validation.
+Coverage: 100%
 
-Last Update: July 28, 2025
+Last Update: July 13, 2026
 """
 
 import pandas as pd
 import pytest
-import spacy
 from natsort import ns
 from pydantic import ValidationError
 
@@ -140,6 +138,82 @@ class TestKwic:
 
         assert isinstance(results, pd.DataFrame)
         assert len(results) >= 1  # Should find "fox" and "foxes"
+
+    def test_characters_matcher_literal_special_pattern(self, kwic_instance):
+        """Test literal matching when use_regex is False for special characters."""
+        text = ["a+b a+b aab"]
+
+        results = kwic_instance(
+            docs=text,
+            patterns=["a+b"],
+            matcher="characters",
+            use_regex=False,
+            window=5,
+            as_df=True,
+        )
+
+        assert isinstance(results, pd.DataFrame)
+        assert len(results) == 2
+        assert all(result == "a+b" for result in results["keyword"])
+
+    def test_characters_matcher_literal_regex_like_pattern(self, kwic_instance):
+        """Test literal matching for a regex-like pattern when use_regex is False."""
+        text = ["dee. dee. deep"]
+
+        results = kwic_instance(
+            docs=text,
+            patterns=["dee."],
+            matcher="characters",
+            use_regex=False,
+            window=5,
+            as_df=True,
+        )
+
+        assert isinstance(results, pd.DataFrame)
+        assert len(results) == 2
+        assert all(result == "dee." for result in results["keyword"])
+
+    def test_characters_matcher_regex_vs_literal(self, kwic_instance):
+        """Test regex matching versus literal matching with escaped and literal patterns."""
+        text = ["dee. dee. deep"]
+
+        regex_results = kwic_instance(
+            docs=text,
+            patterns=[r"dee\."],
+            matcher="characters",
+            use_regex=True,
+            window=5,
+            as_df=True,
+        )
+
+        literal_results = kwic_instance(
+            docs=text,
+            patterns=["dee."],
+            matcher="characters",
+            use_regex=False,
+            window=5,
+            as_df=True,
+        )
+
+        assert isinstance(regex_results, pd.DataFrame)
+        assert isinstance(literal_results, pd.DataFrame)
+        assert len(regex_results) == 2
+        assert len(literal_results) == 2
+        assert list(literal_results["keyword"]) == ["dee.", "dee."]
+        assert list(regex_results["keyword"]) == ["dee.", "dee."]
+
+    def test_character_matcher_alias(self, kwic_instance, sample_texts):
+        """Test that matcher='character' is accepted as alias for 'characters'."""
+        results = kwic_instance(
+            docs=sample_texts,
+            patterns=["quick"],
+            matcher="character",
+            window=10,
+            as_df=True,
+        )
+
+        assert isinstance(results, pd.DataFrame)
+        assert len(results) > 0
 
     def test_characters_matcher_window_size(self, kwic_instance, sample_texts):
         """Test character-based matching with different window sizes."""
@@ -349,6 +423,23 @@ class TestKwic:
             assert isinstance(result[1], str)  # context_before
             assert isinstance(result[2], str)  # keyword
             assert isinstance(result[3], str)  # context_after
+
+    def test_return_as_list_with_sorting(self, kwic_instance, sample_texts):
+        """Test returning sorted results as list instead of DataFrame."""
+        results = kwic_instance(
+            docs=sample_texts,
+            patterns=["the", "a"],
+            matcher="characters",
+            sort_by="keyword",
+            ascending=True,
+            window=10,
+            as_df=False,
+        )
+
+        assert isinstance(results, list)
+        if len(results) > 1:
+            keywords = [item[2] for item in results]
+            assert keywords == sorted(keywords, key=str.lower)
 
     def test_sorting_by_keyword(self, kwic_instance, sample_texts):
         """Test sorting results by keyword."""
@@ -585,3 +676,11 @@ class TestKwic:
         # assert "Valid algorithms for `alg` are:" in error_message
         # assert "ns." in error_message  # This ensures line 270 was executed
         # assert "natsort.readthedocs.io" in error_message
+
+    def test_validate_sorting_algorithm_raises_exception(self):
+        """Test the internal validator raises LexosException for an invalid sorting algorithm."""
+        kwic = Kwic()
+        kwic.alg = "INVALID_ALGORITHM"
+
+        with pytest.raises(LexosException, match="Invalid sorting algorithm"):
+            kwic._validate_sorting_algorithm()

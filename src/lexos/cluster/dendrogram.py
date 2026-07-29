@@ -1,7 +1,7 @@
 """dendrogram.py.
 
-Last Updated: July 25, 2025
-Last Tested: December 5, 2025
+Last Updated: July 15, 2026
+Last Tested: July 15, 2026
 """
 
 from pathlib import Path
@@ -18,6 +18,7 @@ from scipy.spatial.distance import pdist
 
 from lexos.dtm import DTM
 from lexos.exceptions import LexosException
+from lexos.util import safe_recursion_limit
 
 
 class Dendrogram(BaseModel):
@@ -137,34 +138,34 @@ class Dendrogram(BaseModel):
                 "The number of labels must match the number of documents."
             )
 
-        # Generate the pairwise distance and linkage matrices
-        X = pdist(matrix, metric=self.metric)
-        Z = sch.linkage(X, self.method)
+        # Generate the linkage matrix directly from the observation matrix
+        Z = sch.linkage(matrix, method=self.method, metric=self.metric)
 
         # Generate the dendrogram
         fig, ax = plt.subplots(figsize=self.figsize)
         if self.title:
             plt.title(self.title)
-        sch.dendrogram(
-            Z,
-            labels=self.labels,
-            truncate_mode=self.truncate_mode,
-            color_threshold=self.color_threshold,
-            get_leaves=self.get_leaves,
-            orientation=self.orientation,
-            count_sort=self.count_sort,
-            distance_sort=self.distance_sort,
-            show_leaf_counts=self.show_leaf_counts,
-            no_plot=self.no_plot,
-            no_labels=self.no_labels,
-            leaf_rotation=self.leaf_rotation,
-            leaf_font_size=self.leaf_font_size,
-            leaf_label_func=self.leaf_label_func,
-            show_contracted=self.show_contracted,
-            link_color_func=self.link_color_func,
-            ax=self.ax,
-            above_threshold_color=self.above_threshold_color,
-        )
+        with safe_recursion_limit(matrix_length):
+            sch.dendrogram(
+                Z,
+                labels=self.labels,
+                truncate_mode=self.truncate_mode,
+                color_threshold=self.color_threshold,
+                get_leaves=self.get_leaves,
+                orientation=self.orientation,
+                count_sort=self.count_sort,
+                distance_sort=self.distance_sort,
+                show_leaf_counts=self.show_leaf_counts,
+                no_plot=self.no_plot,
+                no_labels=self.no_labels,
+                leaf_rotation=self.leaf_rotation,
+                leaf_font_size=self.leaf_font_size,
+                leaf_label_func=self.leaf_label_func,
+                show_contracted=self.show_contracted,
+                link_color_func=self.link_color_func,
+                ax=self.ax,
+                above_threshold_color=self.above_threshold_color,
+            )
         self.fig = fig
         plt.close()
 
@@ -192,31 +193,15 @@ class Dendrogram(BaseModel):
 
         # Raw array/list input
         else:
-            matrix = self.dtm
-
-            # List input
-            if isinstance(matrix, list):
-                if len(matrix) < 2:
-                    raise LexosException(shape_error)
-                if not all(isinstance(x, (int, float)) for row in matrix for x in row):
-                    raise LexosException(type_error)
-
-            # NumPy array input
-            elif isinstance(matrix, np.ndarray):
-                # Consolidated NumPy array checks
-                if matrix.shape[0] < 2:
-                    raise LexosException(shape_error)
-                if not np.issubdtype(matrix.dtype, np.number):
-                    raise LexosException(type_error)
-            # You might want an 'else' here if there are other unsupported types
-            else:
+            matrix = np.asarray(self.dtm)
+            if matrix.ndim != 2:
                 raise LexosException("Unsupported document-term matrix type.")
+            if matrix.shape[0] < 2:
+                raise LexosException(shape_error)
+            if not np.issubdtype(matrix.dtype, np.number):
+                raise LexosException(type_error)
 
-        # Make sure we have a matrix length for list input
-        if isinstance(matrix, list):
-            matrix_length = len(matrix)
-        else:
-            matrix_length = matrix.shape[0]
+        matrix_length = matrix.shape[0]
 
         # Check labels vs matrix row count
         if self.labels and len(self.labels) != matrix_length:

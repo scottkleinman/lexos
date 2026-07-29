@@ -1,6 +1,5 @@
-#!/usr/bin/env python3
-"""
-Simple HTTP server for SPA with HTML5 history routing.
+"""Simple HTTP server for SPA with HTML5 history routing.
+
 All requests are served index.html to allow client-side routing.
 
 Usage:

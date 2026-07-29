@@ -2,11 +2,8 @@
 
 Lexos KMeans clustering module for document-term matrices.
 
-Last Updated: 2025-12-04
-Last Tested: 2025-12-05
-
-# TODO:
-- Implement silhouette score? See https://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_silhouette_analysis.html
+Last Updated: 2026-06-29
+Last Tested: 2026-06-28
 """
 
 from pathlib import Path
@@ -24,6 +21,7 @@ from sklearn.cluster import (
     KMeans as sklearn_KMeans,
 )
 from sklearn.decomposition import PCA
+from sklearn.metrics import silhouette_samples, silhouette_score
 from wasabi import msg
 
 from lexos.dtm import DTM
@@ -61,28 +59,35 @@ class KMeans(BaseModel):
         """Initialize KMeans clustering with the provided parameters."""
         super().__init__(**data)
 
-        # Get a valid matrix from the input DTM or DataFrame
-        matrix = self._get_valid_matrix()
-
-        if self.k is None:
+        if self.k is None or self.k <= 0:
             raise LexosException(
                 "Number of clusters 'k' must be specified for KMeans clustering."
             )
+
+        self._matrix = self._get_valid_matrix()
+
         try:
-            _kmeans = sklearn_KMeans(
-                n_clusters=self.k,
-                init=self.init,
-                max_iter=self.max_iter,
-                n_init=self.n_init,
-                tol=self.tol,
-                random_state=self.random_state,
-            )
+            _kmeans = self._build_sklearn_kmeans(n_clusters=self.k)
+            self.cluster_assignments = _kmeans.fit_predict(self._matrix)
         except Exception as e:
             raise LexosException(f"KMeans clustering failed: {e}")
-        try:
-            self.cluster_assignments = _kmeans.fit_predict(matrix)
-        except Exception as e:
-            raise LexosException(f"KMeans clustering failed: {e}")
+
+    def _build_sklearn_kmeans(
+        self,
+        n_clusters: int,
+        random_state: Optional[int] = None,
+    ) -> sklearn_KMeans:
+        """Build a sklearn KMeans instance with the lexos KMeans parameters."""
+        return sklearn_KMeans(
+            n_clusters=n_clusters,
+            init=self.init,
+            max_iter=self.max_iter,
+            n_init=self.n_init,
+            tol=self.tol,
+            random_state=random_state
+            if random_state is not None
+            else self.random_state,
+        )
 
     def _get_valid_matrix(self) -> np.ndarray:
         """Convert the input into a valid NumPy matrix format.
@@ -90,22 +95,30 @@ class KMeans(BaseModel):
         Supports DTM (Lexos), pandas DataFrame, or NumPy array.
         Raises an error for unsupported formats or too few documents.
         """
+        if (
+            getattr(self, "_matrix", None) is not None
+            and getattr(self, "_matrix_source", None) is self.dtm
+        ):
+            return self._matrix
+
         if isinstance(self.dtm, DTM):
             df = self.dtm.to_df().T
+            matrix = df.values
         elif isinstance(self.dtm, pd.DataFrame):
-            df = self.dtm.T
+            matrix = self.dtm.T.values
         elif isinstance(self.dtm, np.ndarray):
-            df = pd.DataFrame(self.dtm)
+            matrix = np.asarray(self.dtm)
         else:
             raise LexosException(
                 "Unsupported input: must be DTM, DataFrame, or ndarray."
             )
 
-        # Must have more than 1 document to cluster
-        if df.shape[0] < 2:
+        if matrix.shape[0] < 2:
             raise LexosException("Need at least 2 documents for clustering.")
 
-        return df.values
+        self._matrix = matrix
+        self._matrix_source = self.dtm
+        return matrix
 
     @validate_call(config=model_config)
     def elbow_plot(
@@ -146,14 +159,7 @@ class KMeans(BaseModel):
         inertias = []
         for k in adjusted_range:
             try:
-                model = sklearn_KMeans(
-                    n_clusters=k,
-                    init=self.init,
-                    max_iter=self.max_iter,
-                    n_init=self.n_init,
-                    tol=self.tol,
-                    random_state=42,
-                )
+                model = self._build_sklearn_kmeans(n_clusters=k, random_state=42)
                 model.fit(matrix)
                 inertias.append(model.inertia_)
             except Exception as e:
@@ -162,11 +168,10 @@ class KMeans(BaseModel):
         # Use the "maximum distance to line" method to detect elbow
         point1 = np.array([adjusted_range[0], inertias[0]])
         point2 = np.array([adjusted_range[-1], inertias[-1]])
+        normal = np.linalg.norm(point2 - point1)
 
         def distance_to_line(p):
-            return np.linalg.norm(
-                np.cross(point2 - point1, point1 - p)
-            ) / np.linalg.norm(point2 - point1)
+            return np.linalg.norm(np.cross(point2 - point1, point1 - p)) / normal
 
         distances = [
             distance_to_line(np.array([k, inertia]))
@@ -323,6 +328,143 @@ class KMeans(BaseModel):
             return fig
 
     @validate_call(config=model_config)
+    def silhouette_plot(
+        self,
+        show: bool = True,
+        save_path: Optional[str | Path] = None,
+        title: Optional[str] = None,
+        figsize: tuple[int, int] = (10, 7),
+    ) -> Optional[plt.Figure]:
+        """Generate a silhouette analysis plot for the current clustering.
+
+        Args:
+            show (bool): Whether to display the plot.
+            save_path (Optional[str | Path]): Optional file path to save the plot.
+            title (Optional[str]): Optional title for the plot.
+            figsize (tuple[int, int]): Size of the figure.
+
+        Returns:
+            Optional[plt.Figure]: The Matplotlib figure object, or None if shown.
+        """
+        if self.cluster_assignments is None:
+            raise LexosException("You must run clustering before silhouette analysis.")
+
+        if self.k is None or self.k <= 0:
+            raise LexosException(
+                "Number of clusters 'k' must be specified for KMeans clustering."
+            )
+
+        matrix = self._get_valid_matrix()
+
+        if matrix.shape[0] != len(self.cluster_assignments) and matrix.shape[1] == len(
+            self.cluster_assignments
+        ):
+            matrix = matrix.T
+
+        try:
+            silhouette_avg = silhouette_score(matrix, self.cluster_assignments)
+            sample_silhouette_values = silhouette_samples(
+                matrix, self.cluster_assignments
+            )
+        except Exception as e:
+            raise LexosException(f"Failed to compute silhouette analysis: {e}")
+
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=figsize)
+        fig.suptitle(
+            title
+            or f"Silhouette analysis for KMeans clustering (avg = {silhouette_avg:.2f})"
+        )
+
+        ax1.set_xlim([-0.1, 1])
+        ax1.set_ylim([0, len(matrix) + (self.k + 1) * 10])
+        y_lower = 10
+
+        for i in range(self.k):
+            ith_cluster_silhouette_values = sample_silhouette_values[
+                self.cluster_assignments == i
+            ]
+            ith_cluster_silhouette_values.sort()
+            size_cluster_i = ith_cluster_silhouette_values.shape[0]
+            if size_cluster_i == 0:
+                continue
+
+            y_upper = y_lower + size_cluster_i
+            color = plt.cm.nipy_spectral(float(i) / self.k)
+            ax1.fill_betweenx(
+                np.arange(y_lower, y_upper),
+                0,
+                ith_cluster_silhouette_values,
+                facecolor=color,
+                edgecolor=color,
+                alpha=0.7,
+            )
+            ax1.text(-0.05, y_lower + 0.5 * size_cluster_i, str(i))
+            y_lower = y_upper + 10
+
+        ax1.axvline(x=silhouette_avg, color="red", linestyle="--")
+        ax1.set_title("Silhouette plot")
+        ax1.set_xlabel("Silhouette coefficient values")
+        ax1.set_ylabel("Cluster")
+        ax1.set_yticks([])
+        ax1.set_xticks(np.arange(-0.1, 1.1, 0.2))
+
+        pca = PCA(n_components=2)
+        reduced = pca.fit_transform(matrix)
+
+        valid_centers = []
+        for i in range(self.k):
+            mask = self.cluster_assignments == i
+            if np.any(mask):
+                valid_centers.append((i, reduced[mask].mean(axis=0)))
+
+        centers = np.array([center for _, center in valid_centers])
+
+        colors = plt.cm.nipy_spectral(self.cluster_assignments.astype(float) / self.k)
+        ax2.scatter(
+            reduced[:, 0],
+            reduced[:, 1],
+            marker="o",
+            s=30,
+            c=colors,
+            edgecolor="k",
+            alpha=0.7,
+        )
+        if centers.size > 0:
+            ax2.scatter(
+                centers[:, 0],
+                centers[:, 1],
+                marker="o",
+                c="white",
+                edgecolor="k",
+                s=200,
+                alpha=1,
+            )
+        for i, c in valid_centers:
+            ax2.scatter(
+                c[0],
+                c[1],
+                marker=f"${i}$",
+                s=50,
+                edgecolor="k",
+            )
+
+        ax2.set_title("Cluster visualization")
+        ax2.set_xlabel("PC1")
+        ax2.set_ylabel("PC2")
+
+        fig.tight_layout(rect=[0, 0, 1, 0.95])
+
+        self.fig = fig
+
+        if save_path:
+            fig.savefig(save_path)
+
+        if show:
+            plt.show()
+            return None
+        return fig
+
+    @validate_call(config=model_config)
     def to_csv(self, path: str | Path, **kwargs: Any) -> None:
         """Export a CSV of PCA coordinates and cluster labels.
 
@@ -391,14 +533,8 @@ class KMeans(BaseModel):
             )
 
         # Fit KMeans on reduced data for plotting
-        kmeans = sklearn_KMeans(
-            n_clusters=self.k,
-            init=self.init,
-            max_iter=self.max_iter,
-            n_init=self.n_init,
-            tol=self.tol,
-            random_state=42,
-        ).fit(reduced)
+        kmeans = self._build_sklearn_kmeans(n_clusters=self.k, random_state=42)
+        kmeans.fit(reduced)
 
         centroids = kmeans.cluster_centers_
 

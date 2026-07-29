@@ -1,7 +1,7 @@
 """__init__.py.
 
-Last Update: 8 September, 2025
-Last Tested: 9 September, 2025
+Last Updated: July 9, 2026
+Last Tested: July 9, 2026
 
 Credits:
 
@@ -19,12 +19,13 @@ from spacy.tokens import Doc, Span, Token
 
 from lexos.exceptions import LexosException
 
-doc_schema = DocJSONSchema.schema()
+doc_schema = DocJSONSchema.model_json_schema()
 Tokenized = Doc | Span | list[Span | Token]
 
 validation_config = ConfigDict(
     arbitrary_types_allowed=True, json_schema_extra=doc_schema
 )
+_UNSET = object()
 
 
 class Windows(BaseModel):
@@ -76,10 +77,7 @@ class Windows(BaseModel):
             None,
             description="The type of window to generate: `characters`, `spans`, or `tokens`.",
         ),
-        alignment_mode: Optional[str] = Field(
-            None,
-            description="The alignment mode for the window.",
-        ),
+        alignment_mode: Optional[str] | object = _UNSET,
         output: Optional[str] = Field(
             None,
             description="The output type for the windows.",
@@ -90,18 +88,25 @@ class Windows(BaseModel):
             input=input,
             n=n,
             window_type=window_type,
-            alignment_mode=alignment_mode,
             output=output,
             windows=None,
         )
+        if alignment_mode is not _UNSET:
+            self.alignment_mode = alignment_mode
         if self.window_type not in ["characters", "spans", "tokens"]:
             raise LexosException("Window type must be 'characters' or 'tokens'.")
+        if self.alignment_mode not in [None, "strict", "contract", "expand"]:
+            raise LexosException(
+                "Alignment mode must be None, 'strict', 'contract', or 'expand'."
+            )
         if self.output not in ["spans", "strings", "tokens"]:
             raise LexosException("Output must be 'spans', 'strings' or 'tokens'.")
         if isinstance(self.input, str):
             self.windows = self._get_string_windows(self.input)
         elif isinstance(self.input, list):
-            if isinstance(self.input[0], str):
+            if not self.input:
+                self.windows = iter([])
+            elif isinstance(self.input[0], str):
                 self.windows = self._get_string_windows(self.input)
             elif isinstance(self.input[0], Token):
                 self.windows = self._get_token_list_windows(self.input)
@@ -135,23 +140,57 @@ class Windows(BaseModel):
         if isinstance(input, Span):
             input = input.as_doc()
         if self.window_type == "characters":
-            length = len(input.text)
-        else:
-            length = len(input)
-        boundaries = [(i, i + self.n) for i in range(length) if i + self.n <= length]
-        for start, end in boundaries:
-            if self.alignment_mode == "strict":
-                span = input[start:end]
-            else:
-                span = input.char_span(start, end, self.alignment_mode)
-            if span is not None:
-                if self.output == "strings":
-                    if span.text != "":
-                        yield span.text
-                elif self.output == "tokens":
-                    yield [token for token in span if token.text != ""]
+            text = input.text
+            output = self.output
+            alignment_mode = self.alignment_mode
+            n = self.n
+            length = len(text)
+            last_start = length - n
+            if last_start >= 0:
+                if alignment_mode == "strict":
+                    if output != "strings":
+                        raise LexosException(
+                            "Character windows with strict alignment only support output='strings'."
+                        )
+                    for start in range(last_start + 1):
+                        end = start + n
+                        yield text[start:end]
+                    return
+
+                mode = "expand" if alignment_mode is None else alignment_mode
+                for start in range(last_start + 1):
+                    end = start + n
+                    span = input.char_span(start, end, alignment_mode=mode)
+                    if span is not None:
+                        if output == "strings":
+                            if span.text != "":
+                                yield span.text
+                        elif output == "tokens":
+                            yield [token for token in span if token.text != ""]
+                        else:
+                            yield span
+            return
+
+        output = self.output
+        alignment_mode = self.alignment_mode
+        n = self.n
+        length = len(input)
+        last_start = length - n
+        if last_start >= 0:
+            for start in range(last_start + 1):
+                end = start + n
+                if alignment_mode in [None, "strict"]:
+                    span = input[start:end]
                 else:
-                    yield span
+                    span = input.char_span(start, end, alignment_mode=alignment_mode)
+                if span is not None:
+                    if output == "strings":
+                        if span.text != "":
+                            yield span.text
+                    elif output == "tokens":
+                        yield [token for token in span if token.text != ""]
+                    else:
+                        yield span
 
     def _get_span_list_windows(
         self, input: list[Span]
@@ -164,25 +203,25 @@ class Windows(BaseModel):
         Yields:
             Iterator[list[Span | str | Token]]: A generator of windows.
         """
-        if self.output not in ["spans", "strings", "tokens"]:
+        output = self.output
+        n = self.n
+        if output not in ["spans", "strings", "tokens"]:
             raise LexosException("Output must be 'strings', or 'tokens'.")
         if self.window_type != "characters":
             length = len(input)
-            boundaries = [
-                (i, i + self.n) for i in range(length) if i + self.n <= length
-            ]
-            for start, end in boundaries:
-                slice = input[start:end]
-                if slice is not None:
-                    if self.output == "strings":
-                        yield [token.text for token in slice]
-                    elif self.output == "tokens":  # assuming self.output == "tokens"
-                        yield [token for token in slice]
-                    # appears to be unreachable code as output must be 'strings' or 'tokens'
-                    else:
-                        yield slice
+            last_start = length - n
+            if last_start >= 0:
+                for start in range(last_start + 1):
+                    end = start + n
+                    slice = input[start:end]
+                    if slice is not None:
+                        if output == "strings":
+                            yield [token.text for token in slice]
+                        elif output == "tokens":
+                            yield [token for token in slice]
+                        else:
+                            yield slice
         else:
-            # Merge spans into a single Doc object
             input = Doc.from_docs([span.as_doc() for span in input])
             yield from self._get_doc_windows(input)
 
@@ -213,22 +252,23 @@ class Windows(BaseModel):
         Yields:
             Iterator[list[str | Token]]: A generator of windows.
         """
-        if self.output not in ["strings", "tokens"]:
+        output = self.output
+        n = self.n
+        if output not in ["strings", "tokens"]:
             raise LexosException("Output must be 'strings' or 'tokens'.")
         if self.window_type != "characters":
             length = len(input)
-            boundaries = [
-                (i, i + self.n) for i in range(length) if i + self.n <= length
-            ]
-            for start, end in boundaries:
-                slice = input[start:end]
-                if slice is not None:
-                    if self.output == "strings":
-                        yield [token.text for token in slice]
-                    else:
-                        yield [token for token in slice]
+            last_start = length - n
+            if last_start >= 0:
+                for start in range(last_start + 1):
+                    end = start + n
+                    slice = input[start:end]
+                    if slice is not None:
+                        if output == "strings":
+                            yield [token.text for token in slice]
+                        else:
+                            yield [token for token in slice]
         else:
-            # Merge tokens into a single Doc object
             words = [token.text for token in input]
             spaces = [True if token.whitespace_ else False for token in input]
             input = Doc(input[0].vocab, words=words, spaces=spaces)

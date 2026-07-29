@@ -1,7 +1,7 @@
 """Tests for filters.py module.
 
-Coverage: 99%. Missing: 333
-Last Updated: December 26, 2025
+Coverage: 99%. Missing: 306, 470
+Last Updated: June 27, 2026
 """
 
 import pytest
@@ -168,6 +168,16 @@ class TestBaseFilter:
         filter_obj(sample_doc, base_matcher)
         tokens = filter_obj.filtered_tokens
         assert isinstance(tokens, list)
+
+    def test_matched_tokens_no_matches(self):
+        """Test matched_tokens property when no matches exist."""
+        filter_obj = BaseFilter()
+        assert filter_obj.matched_tokens == []
+
+    def test_filtered_tokens_no_matches(self):
+        """Test filtered_tokens property when no matches exist."""
+        filter_obj = BaseFilter()
+        assert filter_obj.filtered_tokens == []
 
     def test_set_extensions(self):
         """Test _set_extensions method behavior."""
@@ -870,6 +880,17 @@ class TestIsWordFilter:
 
         assert not filter_obj.is_word(token)
 
+    def test_is_word_with_text_and_digits_excluded(self, spacy_nlp):
+        """Test is_word with mixed text when digits are excluded."""
+        if not spacy_nlp:
+            pytest.skip("spaCy model not available")
+
+        filter_obj = IsWordFilter(exclude_digits=True)
+        doc = spacy_nlp("hello123 world")
+        token = doc[0]
+
+        assert not filter_obj.is_word(token)
+
     def test_is_word_mixed_alphanumeric_digits_excluded(self, spacy_nlp):
         """Test is_word method with mixed alphanumeric when digits excluded."""
         if not spacy_nlp:
@@ -929,6 +950,14 @@ class TestIsWordFilter:
             if token.text.strip() == "":  # Find whitespace token
                 assert not filter_obj.is_word(token)
                 break
+
+    def test_stopword_filter_modifies_vocab(self, stopword_doc):
+        """Test stopword filter vocab modification path."""
+        filter_obj = IsStopwordFilter(stopwords=["the"], remove=False)
+        result_doc = filter_obj(stopword_doc)
+        assert isinstance(result_doc, Doc)
+        assert filter_obj.matches is not None
+        assert isinstance(filter_obj.matches, list)
 
     def test_call_with_doc(self, mixed_content_doc):
         """Test IsWordFilter call with doc."""

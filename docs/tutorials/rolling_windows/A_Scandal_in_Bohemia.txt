@@ -1090,7 +1090,7 @@
      "What a woman--oh, what a woman!" cried the King of Bohemia, when we
      had all three read this epistle. "Did I not tell you how quick and
      resolute she was? Would she not have made an admirable queen? Is it
-     not a pity that she was not on my level?" 
+     not a pity that she was not on my level?"
 
      "From what I have seen of the lady she seems indeed to be on a very
      different level to your Majesty," said Holmes coldly. "I am sorry
@@ -1149,9 +1149,3 @@
      additional information about it.
 
      This text comes from the collection's version 3.1.
-
-
-
-
-
-

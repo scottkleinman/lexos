@@ -115,7 +115,7 @@ For test functions, only a "Summary" line is required. The other sections can be
 
 ### Inline Code Comments
 
-Code comments do not need to be extensive. However, if your code includes complex logic or aspects that may be unintuitive at first glance (or even included a subtle bug that you ended up fixing), you should leave a comment that provides more context. Comments should preferably begin with a capital letter.
+Code comments do not need to be extensive. However, if your code includes complex logic or aspects that may be unintuitive at first glance (or even included a subtle bug that you ended up fixing), you should leave a comment that provides more context. Comments should preferably begin with a capital letter. This is enforced at the [pre-commit stage](#using-pre-commit).
 
 ```diff
 token_index = indices[value]
@@ -339,7 +339,7 @@ Code prepared for the Lexos project should undergo linting and formatting to det
 Lexos uses two tools for checking for linting and formatting errors:
 
 - <code><a href="https://docs.astral.sh/ruff/" target="_blank">ruff</a></code>: an opinionated linter and formatter
-- code><a href="https://pre-commit.com/" target="_blank">pre-commit</a></code>: a tool for running tests and fixing errors before code is committed to the project repository
+- <code><a href="https://pre-commit.com/" target="_blank">pre-commit</a></code>: a tool for running tests and fixing errors before code is committed to the project repository
 
 Code you write should be compatible with our the default `ruff` rules and the Lexos `pre-commit` hooks. It should not cause any errors or warnings.
 
@@ -391,7 +391,7 @@ As a further check, you should run <code><a href="https://pre-commit.com/" targe
 Start by installing the Lexos `pre-commit` hooks in your environment with
 
 ```bash
-uv run pre-commit install`
+uv run pre-commit install
 ```
 
 Lexos pre-commit hooks include:

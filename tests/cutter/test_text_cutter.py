@@ -1,7 +1,7 @@
 """test_text_cutter.py.
 
 Coverage: 100%
-Last updated: 23 December, 2025
+Last updated: 9 July, 2026
 """
 
 from pathlib import Path
@@ -537,10 +537,13 @@ def test_save_mismatched_names_chunks(cutter_for_save, output_dir):
         cutter_for_save.save(output_dir, names=["single_name"])
 
 
-def test_save_invalid_output_dir(cutter_for_save):
+def test_save_invalid_output_dir(cutter_for_save, tmp_path):
     """Test error with invalid output directory."""
+    invalid_output = tmp_path / "not_a_dir.txt"
+    invalid_output.write_text("not a directory")
+
     with pytest.raises(Exception):
-        cutter_for_save.save("/invalid/path/here")
+        cutter_for_save.save(invalid_output)
 
 
 def test_merge_basic(cutter):

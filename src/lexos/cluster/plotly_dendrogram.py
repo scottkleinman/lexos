@@ -1,7 +1,7 @@
 """plotly_dendrogram.py.
 
-Last Updated: July 7, 2025
-Last Tested: December 5, 2025
+Last Updated: July 15, 2026
+Last Tested: July 15, 2026
 
 Information here about how to add truncate mode: https://stackoverflow.com/questions/70801281/how-can-i-plot-a-truncated-dendrogram-plot-using-plotly
 """
@@ -9,8 +9,7 @@ Information here about how to add truncate mode: https://stackoverflow.com/quest
 from pathlib import Path
 from typing import Optional
 
-import matplotlib.pyplot as plt
-import numpy as np  # Added numpy import
+import numpy as np
 import pandas as pd
 import scipy.cluster.hierarchy as sch
 from numpy.typing import ArrayLike
@@ -21,6 +20,7 @@ from scipy.spatial.distance import pdist
 
 from lexos.dtm import DTM
 from lexos.exceptions import LexosException
+from lexos.util import safe_recursion_limit
 
 
 class PlotlyDendrogram(BaseModel):
@@ -139,16 +139,17 @@ class PlotlyDendrogram(BaseModel):
                 self.labels = [f"Doc{i + 1}" for i in range(matrix.shape[0])]
 
         # Create the figure
-        self.fig = create_dendrogram(
-            matrix,
-            labels=self.labels,
-            distfun=distfun,
-            linkagefun=linkagefun,
-            orientation=self.orientation,
-            colorscale=self.colorscale,
-            hovertext=self.hovertext,
-            color_threshold=self.color_threshold,
-        )
+        with safe_recursion_limit(matrix.shape[0]):
+            self.fig = create_dendrogram(
+                matrix,
+                labels=self.labels,
+                distfun=distfun,
+                linkagefun=linkagefun,
+                orientation=self.orientation,
+                colorscale=self.colorscale,
+                hovertext=self.hovertext,
+                color_threshold=self.color_threshold,
+            )
 
         # Set the standard layout
         self.fig.update_layout(
@@ -178,19 +179,19 @@ class PlotlyDendrogram(BaseModel):
         # Only works for bottom and left orientation.
         # Add an invisible scatter point to extend the margin.
         if self.orientation in ["bottom", "left"]:
-            x_value = max([max(data["x"]) for data in self.fig.data])
+            x_value = max(
+                np.max(data["x"]) for data in self.fig.data if len(data["x"]) > 0
+            )
             dummy_scatter = Scatter(
                 x=[x_value], y=[0], mode="markers", opacity=0, hoverinfo="skip"
             )
-            self.fig.add_trace(trace=dummy_scatter)
+            self.fig.add_trace(dummy_scatter)
 
         # Move labels for top and right orientation
         if self.orientation == "top":
             self.fig.update_xaxes(side="top")
         if self.orientation == "right":
             self.fig.update_yaxes(side="right")
-
-        plt.close()
 
     def _get_valid_matrix(self):
         """Get a valid matrix based on the data type of the dtm."""  # End of _get_valid_matrix docstring

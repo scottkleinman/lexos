@@ -2,27 +2,64 @@
 
 This file contains helper functions used by multiple modules.
 
-Last Updated: June 24, 2025
-Lasty Tested: June 24, 2025
+Last Updated: July 15, 2026
+Last Tested: July 15, 2026
 """
 
+import sys
+from collections import Counter
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Collection, TypeVar
 
 import chardet
+import numpy as np
 import spacy
 from bs4 import (
     UnicodeDammit,  # type: ignore - this import is correct, but Pylance fails to recognize it
 )
 from pydantic_core import PydanticCustomError
 from pydantic_extra_types.color import Color
+from spacy.attrs import ORTH
 from spacy.language import Language
-from spacy.tokens import Doc
+from spacy.tokens import Doc, Span
 
 import lexos.constants as constants
 from lexos.exceptions import LexosException
 
 AnyVal = TypeVar("AnyVal")
+
+# Threshold (in tokens) above which np.unique on doc.to_array([ORTH]) is faster
+# than collections.Counter.
+_DOC_TERM_COUNT_THRESHOLD = 1000
+
+
+def count_doc_terms(doc: Doc | Span) -> Counter:
+    """Count tokens in a spaCy Doc or Span using the fastest available method.
+
+    For documents with fewer than `_DOC_TERM_COUNT_THRESHOLD` tokens,
+    `collections.Counter` over `token.text` is used.  Above that threshold
+    the NumPy path (`doc.to_array([ORTH])` + `np.unique`) is substantially
+    faster — roughly 7× at 10,000 tokens and 16× at 50,000 tokens.
+
+    Benchmarked on spaCy 3.8 + NumPy 2 (July 2026).
+
+    Args:
+        doc (Doc | Span): A spaCy Doc or Span object.
+
+    Returns:
+        Counter: Token text counts.
+    """
+    if len(doc) >= _DOC_TERM_COUNT_THRESHOLD:
+        ids = doc.to_array([ORTH]).ravel()
+        unique_ids, counts = np.unique(ids, return_counts=True)
+        return Counter(
+            {
+                doc.vocab.strings[int(uid)]: int(cnt)
+                for uid, cnt in zip(unique_ids, counts)
+            }
+        )
+    return Counter(token.text for token in doc)
 
 
 def ensure_list(item: Any) -> list:
@@ -169,7 +206,7 @@ def normalize_files(
         filepath = ensure_path(filepath)
         with open(filepath, "rb") as f:
             doc = f.read()
-        with open(destination_dir / filepath.name, "w") as f:
+        with open(destination_dir / filepath.name, "w", encoding="utf-8") as f:
             f.write(normalize(doc))
 
 
@@ -186,7 +223,7 @@ def normalize_file(filepath: Path | str, destination_dir: Path | str = ".") -> N
     destination_dir = ensure_path(destination_dir)
     with open(filepath, "rb") as f:
         doc = f.read()
-    with open(destination_dir / Path(filepath.name), "w") as f:
+    with open(destination_dir / Path(filepath.name), "w", encoding="utf-8") as f:
         f.write(normalize(doc))
 
 
@@ -276,7 +313,7 @@ def strip_doc(doc: Doc) -> Doc:
     Note: If the final token has trailing whitespace, this will be preserved.
           You can remove the space with:
 
-          ```python
+          ``python
           words = [t.text for t in doc]
           spaces = [t.whitespace_ for t in doc]
           spaces[-1] = ""
@@ -297,7 +334,7 @@ def strip_doc(doc: Doc) -> Doc:
 
     # Find last non-whitespace token
     end_idx = len(doc) - 1
-    for i in range(len(doc) - 1, -1, -1):  # list(doc)[::-1]
+    for i in range(len(doc) - 1, -1, -1):  # Replaces list(doc)[::-1]
         if not doc[i].is_space:
             end_idx = i
             break
@@ -326,11 +363,11 @@ def to_collection(
 
     Args:
         val (AnyVal | Collection[AnyVal]): Value or values to validate and cast.
-        val_type (type[Any] | tuple[type[Any], ...]): Type of each value in collection, e.g. ``int`` or ``(str, bytes)``.
-        col_type (type[Any]): Type of collection to return, e.g. ``tuple`` or ``set``.
+        val_type (type[Any] | tuple[type[Any], ...]): Type of each value in collection, e.g. `int` or `(str, bytes)`.
+        col_type (type[Any]): Type of collection to return, e.g. `tuple` or `set`.
 
     Returns:
-        Collection[AnyVal]: Collection of type ``col_type`` with values all of type ``val_type``.
+        Collection[AnyVal]: Collection of type `col_type` with values all of type `val_type`.
 
     Raises:
         TypeError: An invalid value was passed.
@@ -348,3 +385,17 @@ def to_collection(
         raise TypeError(
             f"values must be {val_type} or a collection thereof, not {type(val)}"
         )
+
+
+@contextmanager
+def safe_recursion_limit(n_observations: int):
+    """Temporarily increase recursion limit based on the number of tree leaves."""
+    old_limit = sys.getrecursionlimit()
+    # A binary tree of N leaves can have a depth up to N.
+    # We add a buffer of 500 for standard stack usage.
+    required_limit = max(old_limit, n_observations + 500)
+    sys.setrecursionlimit(required_limit)
+    try:
+        yield
+    finally:
+        sys.setrecursionlimit(old_limit)

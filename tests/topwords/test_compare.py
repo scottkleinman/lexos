@@ -1,8 +1,8 @@
 """Tests for compare.py module.
 
-Coverage: 99%. Missing: 200
+Coverage: 99%. Missing: 199
 
-Last Update: November 14, 2025
+Last Update: July 11, 2026
 """
 
 import pandas as pd
