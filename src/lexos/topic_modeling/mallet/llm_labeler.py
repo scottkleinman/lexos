@@ -13,7 +13,7 @@ Last Tested: 28 July, 2026
 """
 
 import time
-from typing import Optional
+from typing import Any, Optional, Protocol
 
 import requests
 from pydantic import BaseModel, Field, model_validator
@@ -355,3 +355,222 @@ def label_mallet_topics(
                 topic_labels[topic_id] = f"Topic {topic_id} (Labelling failed: {e})"
 
     return topic_labels
+
+
+### Alternative Approach: Using Protocols for LLM Labeling
+
+# The code below defines a protocol for a client that labels topics using LLMs. This allows for more flexibility in implementing different clients for various LLM providers while adhering to a common interface (TopicLabeler). But it really leaves the user to implement the actual logic for labeling topics in the `label_topics` method of the client class, as well as all the configuration and API handling. This is useful if you want to support multiple LLM providers with different APIs and authentication methods. It's questionable whether any wrapper class is neeeded, since the TopicLabelerClient class already handles the labeling process. But if you want to separate the concerns of configuration and labeling, you can use this approach.
+
+
+class LabelerClient(Protocol, BaseModel):
+    """Protocol for a client that labels topics using LLMs."""
+
+    response: Optional[dict[int | str, Any]] = Field(
+        None, description="The response from the LLM provider after generating a label."
+    )
+
+    def label_topics(
+        self, topic_keys_path: str, topic_nums: Optional[int | list[int]] = None
+    ):
+        """Sends a structured prompt to the selected model provider and returns the generated labels.
+
+        The response is stored in the `response` attribute of the client instance for later retrieval.
+        """
+        ...
+
+
+class LocalClient(LabelerClient):
+    """A local client that labels topics using a local LLM model."""
+
+    provider: str = Field(
+        ..., description="The LLM provider to use (e.g., 'openai', 'gemini', 'claude')."
+    )
+    model: str = Field(..., description="The specific model to use from the provider.")
+    base_url: Optional[str] = Field(
+        None,
+        description="Base URL for the LLM provider's API, if different from the default.",
+    )
+    n_terms: Optional[int] = Field(
+        15, description="Number of top terms to consider from the topic model cluster."
+    )
+    temperature: Optional[float] = Field(
+        0.1, description="Default to low creativity for clean labeling."
+    )
+    max_tokens: Optional[int] = Field(
+        50, description="Default to short, concise outputs."
+    )
+    documents_snippet: Optional[str] = Field(
+        "", description="Optional snippet of contextual context from the documents."
+    )
+    prompt: Optional[str] = Field(
+        None, description="Optional custom prompt to override the default prompt."
+    )
+    include_reasoning: Optional[bool] = Field(
+        False,
+        description="Whether to request reasoning (thinking) from models that support it.",
+    )
+    timeout: Optional[int] = Field(
+        120, description="Timeout in seconds for API requests to the LLM provider."
+    )
+    max_retries: Optional[int] = Field(
+        5,
+        description="Maximum number of retries for API requests in case of rate limiting.",
+    )
+
+    def label_topics(
+        self, topic_keys_path: str, topic_nums: Optional[int | list[int]] = None
+    ):
+        """Labels topics using a local LLM model."""
+        # Implement the logic to label topics using a local LLM model
+        # For example, you might call a local API or run a subprocess that interacts with the model
+        topic_labels = {}
+        topic_nums = ensure_list(topic_nums) if topic_nums is not None else None
+
+        # Read the file lines first to count them for the progress bar
+        with open(topic_keys_path, "r", encoding="utf-8") as f:
+            lines = [line for line in f if line.strip()]
+        if not topic_nums or len(topic_nums) == 0:
+            total = len(lines)
+        else:
+            total = len(topic_nums)
+
+        pbar = tqdm(
+            lines, total=total, desc="Labeling Topics", unit="Topic", leave=True
+        )
+        for line in pbar:
+            # Mallet topic keys format: [topic_id] [weight] [word1] [word2] ...
+            parts = line.strip().split("\t")
+            if len(parts) >= 3:
+                topic_id = int(parts[0])
+                if topic_nums is not None and topic_id not in topic_nums:
+                    continue
+
+                # Update postfix instead of description to keep a single line
+                pbar.set_postfix({"Topic": topic_id})
+
+                # Grab top n_terms keywords representing the cluster
+                top_words = parts[2].split(" ")[: self.n_terms]
+
+                # Fetch generated label from LLM
+                try:
+                    label = self.generate_label(top_words=top_words)
+                    topic_labels[topic_id] = (
+                        label.strip('"').strip("'").replace("\\", "")
+                    )
+                except Exception as e:
+                    # Fallback gracefully to old index notation if an API error occurs
+                    topic_labels[topic_id] = f"Topic {topic_id} (Labelling failed: {e})"
+
+        return topic_labels
+
+    def generate_label(self, top_words: list[str]) -> str:
+        """Sends a structured prompt to the selected model provider.
+
+        Args:
+            top_words (list[str]): List of high-frequency words from a topic model cluster.
+            prompt (str): The prompt to send to the LLM.
+
+        Returns:
+            str: The generated label for the topic.
+        """
+        # Define headers for the request
+        headers = {"Content-Type": "application/json"}
+
+        # Define payload for the request
+        payload = {
+            "model": self.model,
+            "messages": [{"role": "user", "content": None}],
+            "temperature": self.temperature,
+            "max_tokens": self.max_tokens,  # Supported universally by OpenAI/Ollama/vLLM
+        }
+
+        # Base delay in seconds
+        delay = 2.0
+
+        # Handle reasoning/thinking mode for models that support it
+        # Note: Some providers use 'reasoning_effort', others use 'include_reasoning'
+        if self.include_reasoning:
+            payload["include_reasoning"] = True
+            # For OpenAI o1/o3 models:
+            if "o1" in self.model or "o3" in self.model:
+                payload["reasoning_effort"] = "medium"
+
+        for attempt in range(self.max_retries):
+            # Set the content of the message to the generated prompt
+            payload["messages"][0]["content"] = self.generate_prompt(top_words)
+
+            # Make the POST request to the LLM provider
+            try:
+                response = requests.post(
+                    self.base_url, headers=headers, json=payload, timeout=self.timeout
+                )
+
+                # Catch standard HTTP rate limiting codes
+                if response.status_code == 429:
+                    if attempt == self.max_retries - 1:
+                        raise Exception(
+                            "OpenAI/Local API rate limit reached repeatedly. Halting."
+                        )
+
+                    print(f"\n[Rate Limited] Provider busy. Retrying in {delay}s...")
+                    time.sleep(delay)
+                    delay *= 2  # Double the wait time (2s -> 4s -> 8s...)
+                    continue
+
+                response.raise_for_status()
+                res_json = response.json()
+                content = res_json["choices"][0]["message"].get("content", "")
+
+                # Handle specific models (like Gemma 4 QAT) that return empty content
+                # but put the response in reasoning_content or other fields if max_tokens is reached
+                if (
+                    not content
+                    and "reasoning_content" in res_json["choices"][0]["message"]
+                ):
+                    content = res_json["choices"][0]["message"]["reasoning_content"]
+
+                return content.strip()
+
+            except requests.exceptions.RequestException as e:
+                # If it's a network glitch rather than a 429, retry up to max_retries
+                if attempt == self.max_retries - 1:
+                    raise e
+                time.sleep(delay)
+                delay *= 2
+
+    def generate_prompt(self, top_words: list[str]) -> str:
+        """Generates a structured prompt for the selected model provider.
+
+        Args:
+            top_words (list[str]): List of high-frequency words from a topic model cluster.
+
+        Returns:
+            str: The generated prompt for the LLM.
+        """
+        if self.prompt is None:
+            prompt = (
+                f"Analyze the following high-frequency words from a topic model cluster:\n"
+                f"Words: {', '.join(top_words)}\n"
+                f"Contextual context snippet: {self.documents_snippet}\n\n"
+                f"Provide 1 concise, clear title/label (3-5 words max) summarizing this topic. "
+                f"Return ONLY the plain text label without any preamble or quotes."
+            )
+        else:
+            prompt = self.prompt
+            prompt += f"\nWords: {', '.join(top_words)}\nContextual context snippet: {self.documents_snippet}"
+        return prompt
+
+
+class TopicLabeler(BaseModel):
+    """Generic class for labeling topics using LLMs."""
+
+    client: LabelerClient = Field(
+        ..., description="An instance of class that inherits from LabelerClient."
+    )
+    labels: Optional[dict[int | str, Any]] = Field(
+        None, description="The response from the LLM provider after generating a label."
+    )
+
+    def __init__(self, **data):
+        """Initializes the TopicLabeler with a client that implements the LabelerClient protocol."""
+        self.labels = self.client.label_topics()
