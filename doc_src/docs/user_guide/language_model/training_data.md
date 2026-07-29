@@ -77,7 +77,7 @@ If no treebank exists for your language, historical period, or domain, you will 
 | [Prodigy](https://prodi.gy/) | Commercial tool from Explosion (creators of spaCy); tight spaCy integration; can auto-annotate with your model, display predictions for correction, and export training data; designed for fast keyboard-driven correction; requires a licence — SpaCy offers many helpful tools like this worth checking out, though most aren't free-use |
 | [brat](https://brat.nlplab.org/) | Simpler and general-purpose; good for getting started; requires some setup for UD |
 
-For new UD annotation projects, **INCEpTION** or **Arborator Grew** are the recommended free tools — both support the UD annotation guidelines natively. **Prodigy** is especially useful if you are running the iterative bootstrap-and-correct workflow described in [Building a Specialized Model: Iterative Workflow](advanced_workflow.ipynb) — it wraps the auto-annotate-and-correct loop into a single UI built for speed.
+For new UD annotation projects, **INCEpTION** or **Arborator Grew** are the recommended free tools — both support the UD annotation guidelines natively. **Prodigy** is especially useful if you are running the iterative bootstrap-and-correct workflow described in [Building a Specialized Model: Iterative Workflow](../../tutorials/language_model/advanced_workflow.ipynb) — it wraps the auto-annotate-and-correct loop into a single UI built for speed.
 
 ### UD annotation guidelines
 
@@ -110,7 +110,7 @@ If hand annotation from scratch is too slow, use the model to accelerate the pro
 3. Add the corrected sentences to your training set and retrain
 4. Repeat — each round improves accuracy and speeds up correction
 
-For full instructions on running this workflow — including how to export annotations from your model, how to correct CONLL-U data, and how to combine rounds — see [Building a Specialized Model: Iterative Workflow](advanced_workflow.ipynb).
+For full instructions on running this workflow — including how to export annotations from your model, how to correct CONLL-U data, and how to combine rounds — see [Building a Specialized Model: Iterative Workflow](../../tutorials/language_model/advanced_workflow.ipynb).
 
 ---
 

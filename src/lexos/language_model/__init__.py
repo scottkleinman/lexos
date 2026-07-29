@@ -5,8 +5,8 @@ on custom corpora. Handles directory setup, config generation (including
 fine-tuning via component sourcing), data conversion, training, and evaluation
 without requiring the user to edit config files or use the command line.
 
-Last Updated: 2026-06-23
-Last Tested: 2026-06-11
+Last Updated: July 29, 2026
+Last Tested: July 29, 2026
 """
 
 import importlib.util
@@ -108,6 +108,7 @@ def _get_tok2vec_width(source: str) -> int:
             raise LexosException(f"No config.cfg found at {source_path}")
     else:
         import spacy.util as _spacy_util
+
         try:
             pkg_path = _spacy_util.get_package_path(source)
             candidates = sorted(pkg_path.glob("*/config.cfg"))
@@ -127,10 +128,10 @@ def _get_tok2vec_width(source: str) -> int:
     raw = Config().from_disk(cfg_path)
     width = (
         raw.get("components", {})
-           .get("tok2vec", {})
-           .get("model", {})
-           .get("encode", {})
-           .get("width")
+        .get("tok2vec", {})
+        .get("model", {})
+        .get("encode", {})
+        .get("width")
     )
     if width is None:
         raise LexosException(
@@ -256,7 +257,9 @@ def export_to_conllu(
     Returns:
         Path to the written output file.
     """
-    nlp = spacy.load(Path(model_path))
+    # str() keeps installed-name inputs (e.g. "en_core_web_sm") loadable;
+    # wrapping in Path() would force spaCy to treat them as directories.
+    nlp = spacy.load(str(model_path))
     output_path = Path(output_path)
     msg = Printer()
     sent_id = 0
@@ -276,7 +279,9 @@ def export_to_conllu(
                 f.write(f"# sent_id = auto-{sent_id}\n")
                 f.write(f"# text = {text_comment}\n")
                 # Build spaCy-index → output-row-number map for correct head refs.
-                index_map: dict[int, int] = {t.i: row for row, t in enumerate(tokens, 1)}
+                index_map: dict[int, int] = {
+                    t.i: row for row, t in enumerate(tokens, 1)
+                }
                 for j, token in enumerate(tokens, 1):
                     if token.head == token:
                         head = 0
@@ -402,7 +407,9 @@ class LanguageModel:
         self.model_dir = Path(model_dir)
         self.lang = lang
         self.base_model = base_model
-        self.components = components if components is not None else FULL_UD_PIPELINE.copy()
+        self.components = (
+            components if components is not None else FULL_UD_PIPELINE.copy()
+        )
         self.config: Config | None = None
 
         # --- GPU setup ---
@@ -438,13 +445,17 @@ class LanguageModel:
         self._training_dir = self.model_dir / "training" / lang
 
         msg = Printer()
-        for d in [self._assets_dir, self._corpus_dir, self._metrics_dir, self._training_dir]:
+        for d in [
+            self._assets_dir,
+            self._corpus_dir,
+            self._metrics_dir,
+            self._training_dir,
+        ]:
             d.mkdir(parents=True, exist_ok=True)
 
         if self._config_path.exists() and not force:
             msg.warn(
-                f"{self._config_path} already exists. "
-                "Pass force=True to regenerate it."
+                f"{self._config_path} already exists. Pass force=True to regenerate it."
             )
             self.config = Config().from_disk(self._config_path)
             return
@@ -685,7 +696,9 @@ class LanguageModel:
             # Test path is discovered automatically at evaluate() time.
             if label in ("train", "dev"):
                 spacy_path = str(
-                    (self._corpus_dir / Path(filepath).with_suffix(".spacy").name).resolve()
+                    (
+                        self._corpus_dir / Path(filepath).with_suffix(".spacy").name
+                    ).resolve()
                 )
                 # Set both [paths] and [corpora.*.path] directly. Thinc serialises
                 # the resolved value of ${paths.train} (null at first save), so the
@@ -699,7 +712,9 @@ class LanguageModel:
 
         msg.good(f"Assets copied to {self._assets_dir}")
 
-    def convert_assets(self, *, n_sents: int = 10, merge_subtokens: bool = True) -> None:
+    def convert_assets(
+        self, *, n_sents: int = 10, merge_subtokens: bool = True
+    ) -> None:
         """Convert CONLL-U files in assets/ to spaCy's binary format in corpus/.
 
         Groups every ``n_sents`` sentences into a single spaCy Doc.  Larger
@@ -826,6 +841,13 @@ class LanguageModel:
         if not skip_validation:
             self.validate()
         timer = _Timer()
+        # Acquire the GPU (or configure CPU) before building the pipeline,
+        # exactly as spaCy's `train` CLI does. init_nlp() and spacy_train() do
+        # NOT call require_gpu themselves — spaCy's loop.train docstring says
+        # "Make sure to call require_gpu" — so without this, gpu=True silently
+        # trains on CPU: thinc stays on NumpyOps and the transformer is never
+        # moved onto the GPU.
+        setup_gpu(self._use_gpu)
         config = load_config(self._config_path)
         nlp = init_nlp(config, use_gpu=self._use_gpu)
         spacy_train(
@@ -1085,7 +1107,9 @@ def debug_model(
         "print_prediction": P3,
     }
     with show_validation_error(config_path):
-        raw_config = load_config(config_path, overrides=config_overrides, interpolate=False)
+        raw_config = load_config(
+            config_path, overrides=config_overrides, interpolate=False
+        )
     config = raw_config.interpolate()
     allocator = config["training"]["gpu_allocator"]
     if use_gpu >= 0 and allocator:

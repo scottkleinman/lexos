@@ -14,14 +14,14 @@ Users interact with the `LanguageModel` class and `split_conllu` utility — the
 
 The fastest path to a trained model is the step-by-step tutorial notebook:
 
-- **[Fine-tuning a Language Model for Your Texts](tutorial.ipynb)** — the main tutorial; covers the complete workflow from data preparation to a packaged model
+- **[Fine-tuning a Language Model for Your Texts](../../tutorials/language_model/tutorial.ipynb)** — the main tutorial; covers the complete workflow from data preparation to a packaged model
 
 Supplementary guides for specific setup tasks:
 
 - **[Getting Training Data](training_data.md)** — where to find CONLL-U treebanks, how to annotate your own data, and the iterative bootstrap method
 - **[Choosing and Setting Up Base Models](base_models.md)** — how to find or train a suitable source model for your language and annotation scheme
-- **[Building a Specialized Model: Iterative Workflow](advanced_workflow.ipynb)** — for users with no existing training data, or who want to improve a model they have already trained
-- **[Fine-tuning MacBERTh: Transformer-based Training](transformer_tutorial.ipynb)** — training with a pre-trained transformer backbone instead of the CNN; best accuracy for historical English (requires a GPU)
+- **[Building a Specialized Model: Iterative Workflow](../../tutorials/language_model/advanced_workflow.ipynb)** — for users with no existing training data, or who want to improve a model they have already trained
+- **[Transformer-based Training](../../tutorials/language_model/transformer_tutorial.ipynb)** — fine-tuning a pre-trained transformer backbone instead of the CNN for higher accuracy (requires a GPU); MacBERTh, a historical-English model, is the worked example
 - **[Tuning Training Settings](training_settings.md)** — learning rates, early stopping, batch sizes, and data normalization for both CNN and transformer pipelines
 
 ---
@@ -224,7 +224,7 @@ This installs `cupy-cuda12x` and the required NVIDIA CUDA libraries. The warning
 
 ---
 
-## Transformer-based training (MacBERTh)
+## Transformer-based training
 
 The module can train the same five-component UD pipeline on top of a pre-trained transformer instead of the CNN backbone. The bundled `transformer_ud.cfg` recipe defaults to [MacBERTh](https://huggingface.co/emanjavacas/MacBERTh), a BERT model pre-trained on ~3.9B tokens of historical English (1450–1950) — the best available starting point for Early Modern and other historical English text.
 
@@ -243,7 +243,7 @@ Notes:
 - The first training run downloads the transformer weights (~450 MB for MacBERTh) from Hugging Face and caches them.
 - To use a different transformer, edit `model.config["components"]["transformer"]["model"]["name"]` and `save_config()`.
 
-The full walkthrough — including GPU checks, VRAM guidance, and a score comparison against the CNN pipeline — is in [Fine-tuning MacBERTh: Transformer-based Training](transformer_tutorial.ipynb).
+The full walkthrough — including GPU checks, VRAM guidance, and a score comparison against the CNN pipeline — is in [Transformer-based Training](../../tutorials/language_model/transformer_tutorial.ipynb).
 
 ---
 

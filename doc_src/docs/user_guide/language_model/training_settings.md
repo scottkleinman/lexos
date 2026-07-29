@@ -1,12 +1,12 @@
 # Tuning Training Settings
 
-This guide explains the training settings that most affect model quality — learning rate, early stopping, batching — and when data normalization helps or hurts. It applies to both the CNN pipeline (main tutorial) and the transformer pipeline (MacBERTh tutorial); where they differ, both values are given.
+This guide explains the training settings that most affect model quality — learning rate, early stopping, batching — and when data normalization helps or hurts. It applies to both the CNN pipeline (main tutorial) and the transformer pipeline; where they differ, both values are given.
 
 ---
 
 ## How settings work
 
-Training is controlled entirely by `config.cfg` in your model directory. `LanguageModel` maintains an in-memory copy as `model.config` (a nested dict). Edit values, save, and retrain:
+Training is controlled entirely by `config.cfg` in your model directory. `LanguageModel` maintains an in-memory copy as `model.config`. Edit values, save, and retrain:
 
 ```python
 model.config["training"]["max_steps"] = 5000
@@ -22,22 +22,20 @@ model.train()
 
 The learning rate controls how much each training step changes the model's weights. Too high and training destroys useful information faster than it learns; too low and training crawls.
 
-| Pipeline | Default | Sensible range |
+| Pipeline | Default | Recommended range |
 | --- | --- | --- |
-| CNN, from scratch | `0.001` (flat) | 5e-4 – 2e-3 |
-| CNN, fine-tuning via `base_model=` | `0.001` (flat) | 1e-4 – 5e-4 |
-| Transformer | 5e-5 peak, warmup schedule | 2e-5 – 1e-4 |
+| CNN (scratch or fine-tuning) | `0.001` (flat) | 0.0005 – 0.002 |
+| Transformer | `0.00005` peak, warmup schedule | 0.00002 – 0.00005 |
+
+Both defaults are spaCy's own recommended values — identical to what `spacy init config` generates — so there is nothing to change for a first run. The CNN rate applies to scratch training and `base_model=` fine-tuning alike (spaCy uses the same default for both), and its range is the practical tuning window around that default. The transformer range is the fine-tuning grid recommended by the BERT authors (Devlin et al. 2019); spaCy's default sits at its top.
 
 **CNN** — a single flat rate at `[training.optimizer] learn_rate`.
 
 **Transformer** — a `warmup_linear.v1` schedule at `[training.optimizer.learn_rate]`: the rate climbs from zero over `warmup_steps` (default 250), then decays linearly to zero at `total_steps`. Keep `total_steps` equal to `max_steps`.
 
-> **Catastrophic forgetting.** Pre-trained weights — sourced CNN components and transformers alike — encode knowledge you paid nothing for. A high learning rate overwrites it in the first few hundred steps and you end up worse than where you started. Symptoms: dev scores spike early then collapse, or a fine-tuned model scores *below* its own base model. The fix is a lower learning rate (and for transformers, warmup, which protects the weights while the randomly-initialized task heads settle down).
-
-**Two corrections to common misconceptions** (both appeared in an earlier draft of the transformer workflow):
-
-- spaCy's optimizer has **no `transformer_lr` parameter** — there is no built-in per-component learning rate. The whole network trains at one (scheduled) rate. The per-component knob that does exist is `grad_factor` on each `TransformerListener`, which scales the gradients a task head sends back into the transformer (leave at `1.0` unless you know why you're changing it).
-- There is **no `weight_decay` parameter** either. Weight decay is spelled `L2 = 0.01` with `L2_is_weight_decay = true` in `[training.optimizer]` — which is exactly what the bundled recipes set.
+> **Catastrophic forgetting.** When fine-tuning — sourced CNN components or a transformer — a learning rate that is too high overwrites the pre-trained weights faster than the model learns from your data. You are experiencing it if the fine-tuned model scores *below* its own base model, or if dev scores peak in the first few evaluations and then decline. The fix: lower the learning rate and retrain. Drop the CNN rate to `0.0001`–`0.0005`, or the transformer's `initial_rate` to `0.00002`.
+>
+> spaCy's own guidance on forgetting ([pseudo-rehearsal](https://explosion.ai/blog/pseudo-rehearsal-catastrophic-forgetting)) recommends **rehearsal data** rather than a different learning rate: mix general-domain text annotated by the base model into your training data, so the model keeps seeing what it already knows. Reach for that when the fine-tuned model must stay accurate on ordinary text as well as your target domain; if you only care about the target domain, the lower learning rate alone is usually enough.
 
 ---
 

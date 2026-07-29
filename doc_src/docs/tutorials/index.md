@@ -52,6 +52,14 @@ Here is a list of the currently available tutorials, organised by module:
 <li>Keywords in Context (KWIC): <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/v0.1.0-beta.1/doc_src/docs/tutorials/kwic/tutorial.ipynb">📓 Notebook</a></li>
 </ul>
 
+## Language Model
+
+<ul>
+<li>Fine-tuning a Language Model for Your Texts: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/main/doc_src/docs/tutorials/language_model/tutorial.ipynb">📓 Notebook</a> | <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/main/doc_src/docs/tutorials/language_model/wt_sanitized.conllu">🗄️ Data</a></li>
+<li>Building a Specialized Model (Iterative Workflow): <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/main/doc_src/docs/tutorials/language_model/advanced_workflow.ipynb">📓 Notebook</a></li>
+<li>Transformer-based Training: <a target="_blank" href="https://github.com/scottkleinman/lexos/blob/main/doc_src/docs/tutorials/language_model/transformer_tutorial.ipynb">📓 Notebook</a></li>
+</ul>
+
 ## Milestones
 
 <ul>

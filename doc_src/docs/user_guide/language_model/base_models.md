@@ -100,13 +100,13 @@ The two-step process:
 1. **Train a base model** on the related UD treebank (this step — follow the main tutorial with `base_model` omitted)
 2. **Fine-tune** on your specific UD data, sourcing all components from the `model-best` produced in step 1 (follow the main tutorial again, passing that path as `base_model`)
 
-**For step 1, follow the [main tutorial](tutorial.ipynb).** Pass the following:
+**For step 1, follow the [main tutorial](../../tutorials/language_model/tutorial.ipynb).** Pass the following:
 
 - **`data`** — the related UD treebank. See [Getting Training Data](training_data.md) to find one.
 - **`base_model`** — omit it entirely, or omit only the components with no suitable source. Any component not specified trains from scratch.
 
 After training, the `model-best` directory is your base model. Pass its path as `base_model` when you run the main tutorial again on your specific data.
 
-**Don't have specific UD data yet?** Use the trained base model to bootstrap your own domain-specific annotations: the model pre-annotates new text, you correct the output, and you iterate. See [Building a Specialized Model: Iterative Workflow](advanced_workflow.ipynb) for the full process.
+**Don't have specific UD data yet?** Use the trained base model to bootstrap your own domain-specific annotations: the model pre-annotates new text, you correct the output, and you iterate. See [Building a Specialized Model: Iterative Workflow](../../tutorials/language_model/advanced_workflow.ipynb) for the full process.
 
 **Multilingual fallback:** if no spaCy model exists for your language at all, use `lang="xx"` (spaCy's multilingual code). Results will depend on the quantity and quality of your training data.
