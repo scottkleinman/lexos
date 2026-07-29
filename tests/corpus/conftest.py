@@ -3,10 +3,10 @@
 Cleans up files and directories that corpus tests can leave behind in this
 directory when pytest is invoked from here rather than the project root:
 
-- ``corpus_metadata.json``  – written by Corpus.__init__ to ``corpus_dir``
-- ``corpus.db``             – written by SQLiteCorpus/create_corpus to ``corpus_dir``
-- ``corpus/``               – the default ``corpus_dir="corpus"`` subdirectory,
-                              which contains the above two files plus ``data/``
+- `corpus_metadata.json`  – written by Corpus.__init__ to `corpus_dir`
+- `corpus.db`             – written by SQLiteCorpus/create_corpus to `corpus_dir`
+- `corpus/`               – the default `corpus_dir="corpus"` subdirectory,
+                              which contains the above two files plus `data/`
 """
 
 import shutil

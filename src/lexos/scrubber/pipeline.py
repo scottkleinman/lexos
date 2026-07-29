@@ -64,7 +64,7 @@ def make_pipeline(*funcs: Callable[[str], str]) -> Callable[[str], str]:
         *funcs (Callable[[str], str): A series of functions to be applied to the text.
 
     Returns:
-        Callable[[str], str]: Pipeline composed of ``*funcs`` that applies each in sequential order.
+        Callable[[str], str]: Pipeline composed of `*funcs` that applies each in sequential order.
     """
     return functoolz.compose_left(*funcs)
 

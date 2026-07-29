@@ -2,13 +2,13 @@
 
 Provides session-scoped cleanup for the `test_corpus/` directory that several
 inline test methods in test_integration.py create by passing the hardcoded
-relative path ``corpus_dir="test_corpus"`` to SQLiteCorpus/create_corpus.
-All those instances use ``sqlite_path=":memory:"`` so no database file is
+relative path `corpus_dir="test_corpus"` to SQLiteCorpus/create_corpus.
+All those instances use `sqlite_path=":memory:"` so no database file is
 written, but the Corpus base class still creates the directory tree
-(``test_corpus/``, ``test_corpus/data/``, ``test_corpus/corpus_metadata.json``)
+(`test_corpus/`, `test_corpus/data/`, `test_corpus/corpus_metadata.json`)
 in the current working directory at test runtime.
 
-Also removes ``corpus.db``, ``corpus_metadata.json``, and the ``corpus/``
+Also removes `corpus.db`, `corpus_metadata.json`, and the `corpus/`
 subdirectory that can appear here when pytest is run from this directory
 directly rather than from the project root.
 """

@@ -111,7 +111,12 @@ Only the "Args" section is required. Note that type hints should be reproduced i
 
 For test functions, only a "Summary" line is required. The other sections can be provided optionally if they help to explain the function's behaviour.
 
+!!! warning
+    When referring to code in docstrings, use **single** backticks to format the code (e.g. `my_function`), except in code blocks. This is the convention expected by MkDocs for formatting Markdown. Note that many AI tools default to double backticks (Sphinx-formatting style).
+
 ## Comments
+
+As with docstrings, references to code in comments should be formatted with single backticks (e.g. `my_function`).
 
 ### Inline Code Comments
 
