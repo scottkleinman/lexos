@@ -91,8 +91,8 @@ def _get_tok2vec_width(source: str) -> int:
     Supports both local directory paths and installed spaCy package names.
 
     Args:
-        source: An installed spaCy model name (e.g. ``"en_core_web_sm"``) or a
-            local path to a model directory containing ``config.cfg``.
+        source: An installed spaCy model name (e.g. `"en_core_web_sm"`) or a
+            local path to a model directory containing `config.cfg`.
 
     Returns:
         The integer width of the tok2vec encoder's output.
@@ -144,7 +144,7 @@ def _get_tok2vec_width(source: str) -> int:
 def _patch_tok2vec_width(component_cfg: dict[str, Any], width: int) -> None:
     """Replace the tok2vec width variable reference with a concrete integer.
 
-    Thinc stores ``${components.tok2vec.model.encode.width}`` as a literal
+    Thinc stores `${components.tok2vec.model.encode.width}` as a literal
     string until interpolation.  When tok2vec is sourced that config path
     disappears, so we walk the component dict and substitute the integer.
 
@@ -193,7 +193,7 @@ def split_conllu(
             that evaluate manually or with an external test set.
 
     Returns:
-        Dict with keys ``"train"``, ``"dev"``, and (if include_test) ``"test"``
+        Dict with keys `"train"`, `"dev"`, and (if include_test) `"test"`
         mapping to the Path of each written file.  The return value is designed
         to be unpacked directly into :meth:`LanguageModel.copy_assets`::
 
@@ -243,13 +243,13 @@ def export_to_conllu(
 ) -> Path:
     """Run a trained model on texts and write predictions to a CONLL-U file.
 
-    Each element of ``texts`` can be a single sentence or a longer passage;
+    Each element of `texts` can be a single sentence or a longer passage;
     the model's sentence segmenter splits passages into individual sentences
     automatically.
 
     Args:
         model_path: Path to a trained spaCy model directory, or an installed
-            model name (e.g. ``"en_core_web_sm"``).
+            model name (e.g. `"en_core_web_sm"`).
         texts: List of strings to annotate.  Each element may contain multiple
             sentences — the model's sentence segmenter handles splitting.
         output_path: Path where the CONLL-U output file will be written.
@@ -346,8 +346,8 @@ class LanguageModel:
         ├── training/{lang}/    trained model checkpoints
         └── metrics/{lang}/     evaluation output (JSON)
 
-    The config is generated automatically unless a ``recipe`` path is supplied.
-    When ``base_model`` is provided the config uses spaCy's component-sourcing
+    The config is generated automatically unless a `recipe` path is supplied.
+    When `base_model` is provided the config uses spaCy's component-sourcing
     mechanism to warm-start from existing model weights instead of training from
     random initialisation.
     """
@@ -367,12 +367,12 @@ class LanguageModel:
 
         Args:
             model_dir: Root folder for all model artefacts.
-            lang: BCP-47 language code (default ``"en"``).  Use ``"xx"`` for
+            lang: BCP-47 language code (default `"en"`).  Use `"xx"` for
                 a language-agnostic multilingual model.
-            gpu: Use GPU for training (default ``False`` — CPU).  Set to
-                ``True`` to enable GPU (device 0).  Requires cupy and the CUDA
+            gpu: Use GPU for training (default `False` — CPU).  Set to
+                `True` to enable GPU (device 0).  Requires cupy and the CUDA
                 libraries; see README.md for setup instructions.  If
-                ``gpu=True`` but no NVIDIA GPU is detected, falls back to CPU
+                `gpu=True` but no NVIDIA GPU is detected, falls back to CPU
                 with a warning.
             components: spaCy pipeline components to train.  Defaults to the
                 full Universal Dependencies pipeline
@@ -381,28 +381,28 @@ class LanguageModel:
             base_model: Starting point for fine-tuning.  Three forms are
                 accepted:
 
-                - ``None`` — train from random initialisation (scratch).
-                - ``str`` — source every component from this model
-                  (installed name like ``"en_core_web_sm"`` or a local path).
-                - ``dict[str, str]`` — map each component name to its own
+                - `None` — train from random initialisation (scratch).
+                - `str` — source every component from this model
+                  (installed name like `"en_core_web_sm"` or a local path).
+                - `dict[str, str]` — map each component name to its own
                   source model, e.g.
                   ``{"tok2vec": "en_core_web_sm", "tagger": "en_core_web_sm",
                   "morphologizer": "training/UD_English-EWT/model-best", ...}``.
                   Components absent from the dict are initialised from scratch.
                   Mixed factory/source configurations are supported even when
-                  ``tok2vec`` is sourced — the module reads the tok2vec output
-                  width from the source model's ``config.cfg`` and patches it
+                  `tok2vec` is sourced — the module reads the tok2vec output
+                  width from the source model's `config.cfg` and patches it
                   into factory-defined component configs automatically.
 
-            recipe: Path to a ``.cfg`` file, or the filename of a bundled
-                recipe (e.g. ``"transformer_ud.cfg"``, resolved against the
-                module's ``recipes/`` folder).  When provided, the file is
-                loaded as-is, ``base_model`` is ignored for config generation,
-                and ``components`` is replaced by the recipe's
-                ``[nlp] pipeline``.  Transformer-based training is only
-                available through recipes — ``base_model`` sourcing is
+            recipe: Path to a `.cfg` file, or the filename of a bundled
+                recipe (e.g. `"transformer_ud.cfg"`, resolved against the
+                module's `recipes/` folder).  When provided, the file is
+                loaded as-is, `base_model` is ignored for config generation,
+                and `components` is replaced by the recipe's
+                `[nlp] pipeline`.  Transformer-based training is only
+                available through recipes — `base_model` sourcing is
                 specific to tok2vec pipelines.
-            force: Overwrite an existing ``config.cfg`` if one already exists.
+            force: Overwrite an existing `config.cfg` if one already exists.
         """
         self.model_dir = Path(model_dir)
         self.lang = lang
@@ -487,18 +487,18 @@ class LanguageModel:
     def _load_recipe(self, recipe: str, msg: Printer) -> None:
         """Load a config from a recipe file path.
 
-        The recipe's ``[nlp] pipeline`` becomes ``self.components`` so that
+        The recipe's `[nlp] pipeline` becomes `self.components` so that
         validation output and the score-weight calculation reflect the actual
         pipeline being trained, not the constructor default.
 
         Args:
-            recipe: Path to a ``.cfg`` file, or the filename of a bundled
-                recipe in the module's ``recipes/`` folder.
+            recipe: Path to a `.cfg` file, or the filename of a bundled
+                recipe in the module's `recipes/` folder.
             msg: Printer used for status output.
 
         Raises:
             LexosException: If the recipe file cannot be found, or if the
-                recipe uses a transformer component and ``spacy-transformers``
+                recipe uses a transformer component and `spacy-transformers`
                 is not installed.
         """
         recipe_path = Path(recipe)
@@ -547,9 +547,9 @@ class LanguageModel:
 
         Loads default_ud.cfg as the structural base (providing corpora,
         training, and initialize sections), then replaces each component block
-        with a ``source = "..."`` entry.  For factory-defined components
+        with a `source = "..."` entry.  For factory-defined components
         alongside a sourced tok2vec, the broken
-        ``${components.tok2vec.model.encode.width}`` variable reference is
+        `${components.tok2vec.model.encode.width}` variable reference is
         replaced with the actual integer read from the source model's config.
         """
         base = Config().from_disk(_RECIPES_DIR / "default_ud.cfg")
@@ -577,11 +577,11 @@ class LanguageModel:
         """Set values that spaCy's config generator leaves unset or unusable.
 
         Specifically:
-        - ``corpora.train.max_length = 2000`` prevents runaway memory use on
+        - `corpora.train.max_length = 2000` prevents runaway memory use on
           very long documents during training.
-        - ``training.before_update = null`` silences spaCy's debug warning
+        - `training.before_update = null` silences spaCy's debug warning
           about the missing key.
-        - ``training.score_weights`` assigns equal weight to each active
+        - `training.score_weights` assigns equal weight to each active
           component's accuracy metric so the best-model checkpoint reflects
           overall pipeline quality.
         """
@@ -661,9 +661,9 @@ class LanguageModel:
     ) -> None:
         """Copy CONLL-U data files into the model's assets folder.
 
-        Accepts local paths or URLs (via ``smart_open``).  Also updates
-        ``config["paths"]["train"]`` and ``config["paths"]["dev"]`` to point
-        at the expected post-conversion ``.spacy`` files so that ``train()``
+        Accepts local paths or URLs (via `smart_open`).  Also updates
+        `config["paths"]["train"]` and `config["paths"]["dev"]` to point
+        at the expected post-conversion `.spacy` files so that `train()`
         can find them automatically.
 
         The return value of :func:`split_conllu` can be unpacked directly::
@@ -718,7 +718,7 @@ class LanguageModel:
     ) -> None:
         """Convert CONLL-U files in assets/ to spaCy's binary format in corpus/.
 
-        Groups every ``n_sents`` sentences into a single spaCy Doc.  Larger
+        Groups every `n_sents` sentences into a single spaCy Doc.  Larger
         groups give the model more context during training but use more memory.
 
         Args:
@@ -754,11 +754,11 @@ class LanguageModel:
 
         Verifies that:
 
-        - Assets exist in ``assets/{lang}/`` and are non-empty.
-        - Converted ``.spacy`` corpus files are present (warns if missing, since
-          ``convert_assets()`` may not have been called yet).
-        - The config file exists and passes spaCy's ``debug_config`` check.
-        - Training data passes spaCy's ``debug_data`` check (if corpus exists).
+        - Assets exist in `assets/{lang}/` and are non-empty.
+        - Converted `.spacy` corpus files are present (warns if missing, since
+          `convert_assets()` may not have been called yet).
+        - The config file exists and passes spaCy's `debug_config` check.
+        - Training data passes spaCy's `debug_data` check (if corpus exists).
 
         Raises:
             LexosException: If any check fails.  All failures are reported
@@ -826,17 +826,17 @@ class LanguageModel:
     def train(self, *, skip_validation: bool = False) -> None:
         """Train the model using the current config.
 
-        Reads ``config.cfg`` from disk (so any manual edits to that file are
+        Reads `config.cfg` from disk (so any manual edits to that file are
         respected), runs a preflight check via :meth:`validate` (unless
-        ``skip_validation=True``), then initialises the spaCy pipeline and
+        `skip_validation=True`), then initialises the spaCy pipeline and
         runs the training loop.  Progress is logged to stdout.
 
-        The trained model is saved to ``training/{lang}/model-best`` (best dev
-        score) and ``training/{lang}/model-last`` (final step).
+        The trained model is saved to `training/{lang}/model-best` (best dev
+        score) and `training/{lang}/model-last` (final step).
 
         Args:
             skip_validation: Skip the pre-training preflight check (default
-                ``False``).  Set to ``True`` to skip validation and go straight
+                `False`).  Set to `True` to skip validation and go straight
                 to training.
         """
         if not skip_validation:
@@ -871,19 +871,19 @@ class LanguageModel:
     ) -> None:
         """Evaluate a trained model against a test set.
 
-        Defaults to CPU (``gpu=False``).  Pass ``gpu=True`` to use GPU if
+        Defaults to CPU (`gpu=False`).  Pass `gpu=True` to use GPU if
         available — evaluation is fast and rarely needs it, but the option
         is there.
 
         Results are printed to stdout and saved as JSON to
-        ``metrics/{lang}/{lang}.json``.
+        `metrics/{lang}/{lang}.json`.
 
         Args:
             model: Path to a trained model directory.  Defaults to
-                ``training/{lang}/model-best``.
-            test_file: Path to the test ``.spacy`` file.  If omitted,
-                searches ``corpus/{lang}/`` for a file matching ``*test*.spacy``.
-            gpu: Use GPU for evaluation (default ``False`` — CPU).
+                `training/{lang}/model-best`.
+            test_file: Path to the test `.spacy` file.  If omitted,
+                searches `corpus/{lang}/` for a file matching `*test*.spacy`.
+            gpu: Use GPU for evaluation (default `False` — CPU).
             silent: Suppress console output (results are still saved to disk).
         """
         if model is None:
@@ -922,15 +922,15 @@ class LanguageModel:
     ) -> None:
         """Package a trained model as a pip-installable distribution.
 
-        Creates a source distribution (``.tar.gz``) that can be installed with
-        ``pip install`` and then loaded by package name with ``spacy.load()``.
+        Creates a source distribution (`.tar.gz`) that can be installed with
+        `pip install` and then loaded by package name with `spacy.load()`.
 
         Args:
             input_dir: Path to a trained model directory (e.g.
-                ``training/en/model-best``).
+                `training/en/model-best`).
             output_dir: Directory where the package will be written.
-            name: Short name for the package (e.g. ``"shakespeare_sm"``).
-            version: Semantic version string (e.g. ``"1.0.0"``).
+            name: Short name for the package (e.g. `"shakespeare_sm"`).
+            version: Semantic version string (e.g. `"1.0.0"`).
             force: Overwrite an existing package with the same name/version.
             silent: Suppress console output.
         """
@@ -986,9 +986,9 @@ def debug_config(
     blocking — you may need to fix errors one round at a time.
 
     Args:
-        config_path: Path to the ``.cfg`` file to validate.
+        config_path: Path to the `.cfg` file to validate.
         overrides: Dict of config key overrides to test (e.g.
-            ``{"training.max_steps": 100}``).
+            `{"training.max_steps": 100}`).
         code_path: Path to a Python file containing custom registered functions.
         show_funcs: Print all registered functions used by the config.
         show_vars: Print all config variables and their resolved values.
@@ -1023,11 +1023,11 @@ def debug_data(
     """Analyse and validate training and dev data, reporting stats and issues.
 
     Useful for catching problems like missing labels, data imbalance, or
-    invalid annotations before a long training run.  Raises ``LexosException``
+    invalid annotations before a long training run.  Raises `LexosException`
     if spaCy's data checker finds errors.
 
     Args:
-        config_path: Path to the ``.cfg`` file that references the data.
+        config_path: Path to the `.cfg` file that references the data.
         overrides: Dict of config key overrides.
         code_path: Path to a Python file with custom registered functions.
         ignore_warnings: Show only errors, not warnings.
@@ -1076,9 +1076,9 @@ def debug_model(
     """Inspect a trained model's internal layer structure and weights.
 
     Args:
-        config_path: Path to the ``.cfg`` file.
+        config_path: Path to the `.cfg` file.
         config_overrides: Dict of config key overrides.
-        component: Pipeline component to inspect (default ``"tagger"``).
+        component: Pipeline component to inspect (default `"tagger"`).
         layers: Layer IDs to examine in detail.
         dimensions: Print layer dimensions.
         parameters: Print parameter counts.
@@ -1088,7 +1088,7 @@ def debug_model(
         P1: Print model state after initialisation.
         P2: Print model state after training.
         P3: Print final predictions.
-        use_gpu: GPU device ID or ``-1`` for CPU.
+        use_gpu: GPU device ID or `-1` for CPU.
     """
     if config_overrides is None:
         config_overrides = {}
@@ -1139,7 +1139,7 @@ def fill_config(
     Useful for debugging or understanding what a minimal config expands to.
 
     Args:
-        config_path: Path to the partial ``.cfg`` file to fill.
+        config_path: Path to the partial `.cfg` file to fill.
         output_file: Path where the filled config will be written.
         pretraining: Include pretraining config section.
         diff: Print a visual diff of changes made.

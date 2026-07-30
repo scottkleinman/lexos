@@ -55,7 +55,12 @@ nav:
         - Getting Training Data: user_guide/language_model/training_data.md
         - Choosing and Setting Up Base Models: user_guide/language_model/base_models.md
         - Tuning Training Settings: user_guide/language_model/training_settings.md
-  - Tutorials: tutorials/index.md
+  - Tutorials:
+      - Overview: tutorials/index.md
+      - Language Model:
+          - Overview: tutorials/language_model/tutorial.ipynb
+          - Advanced Workflow: tutorials/language_model/advanced_workflow.ipynb
+          - Transformer Training: tutorials/language_model/transformer_tutorial.ipynb
   - API:
       - Overview: api/index.md
       - cluster:
