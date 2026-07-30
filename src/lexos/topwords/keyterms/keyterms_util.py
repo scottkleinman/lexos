@@ -1,7 +1,7 @@
 """keyterms_util.py.
 
 Last Updated: June 28, 2026
-Last Tested: June 28
+Last Tested: June 28, 2026
 
 Usage:
 
@@ -17,6 +17,7 @@ from lexos.topwords.keyterms.keyterms_util import (
 import re
 import unicodedata
 from typing import Callable, Iterable
+
 from spacy.tokens import Doc, Span, Token
 
 

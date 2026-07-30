@@ -1,28 +1,32 @@
-"""Tests for SGRank keyterm extraction module.
+"""test_sgrank.py.
 
-Coverage target: high-value behavior for public API and helper utilities.
+Tests for SGRank keyterm extraction module.
+
+Coverage: 28%. Missing: 90-91, 103, 111, 160-190, 200-225, 246-281, 289-300, 318-338, 354-362
+
+Last Updated: July 30, 2026
 """
 
 import collections
 
+import pandas as pd
 import pytest
 import spacy
-import pandas as pd
 from pydantic_core._pydantic_core import ValidationError as PydanticValidationError
 
+from lexos.topwords.keyterms.keyterms_util import (
+    _to_term_sequence,
+    terms_to_strings,
+)
 from lexos.topwords.keyterms.sgrank import (
-    SGRank,
     Candidate,
+    SGRank,
     _build_weighted_graph,
     _compute_term_weights,
     _get_candidates,
     _score_candidate_phrases,
     _validate_sgrank_args,
     sgrank,
-)
-from lexos.topwords.keyterms.keyterms_util import (
-    _to_term_sequence,
-    terms_to_strings,
 )
 
 

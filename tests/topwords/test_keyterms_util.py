@@ -1,7 +1,10 @@
-"""Tests for keyterms_util shared utility module.
+"""test_keyterms_util.py.
 
-Coverage target: Major uses of the utilities file functions used for
-textrank.py, scake.py, sgrank and yake.py so far.
+Tests for keyterms_util shared utility module.
+
+Coverage: 31%. Missing: 42-60, 73, 85-88, 93-95
+
+Last Updated: July 30, 2026
 """
 
 import math

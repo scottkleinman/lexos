@@ -1,6 +1,10 @@
-"""Tests for TextRank keyterm extraction module.
+"""test_textrank.py.
 
-Coverage target: high-value behavior for public API and helper utilities.
+Tests for TextRank keyterm extraction module.
+
+Coverage: 31%. Missing: 91-93, 108, 116, 177-215, 226-252, 257-265, 274-282, 289-296, 322-377, 397-402
+
+Last Updated: July 30, 2026
 """
 
 import math
