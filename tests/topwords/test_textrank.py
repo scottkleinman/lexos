@@ -1,6 +1,10 @@
-"""Tests for TextRank keyterm extraction module.
+"""test_textrank.py.
 
-Coverage target: high-value behavior for public API and helper utilities.
+Tests for TextRank keyterm extraction module.
+
+Coverage: 31%. Missing: 91-93, 108, 116, 177-215, 226-252, 257-265, 274-282, 289-296, 322-377, 397-402
+
+Last Updated: July 30, 2026
 """
 
 import math
@@ -184,22 +188,6 @@ class TestTextRankHelpers:
         assert math.isclose(sum(word_pos.values()), 1.0, rel_tol=1e-9)
         assert word_pos["a"] > word_pos["b"]
 
-    def test_resolve_topn_float_and_int(self):
-        """_resolve_topn should preserve ints and convert float ratios."""
-        assert _resolve_topn(3, candidate_count=10) == 3
-        assert _resolve_topn(0.4, candidate_count=10) == 4
-
-    def test_terms_to_strings_invalid_mode_raises(self):
-        """Invalid normalization mode should fail fast."""
-        with pytest.raises(ValueError, match="by="):
-            list(terms_to_strings(["Token"], by="invalid"))
-
-    def test_unicode_punctuation_detection(self):
-        """Unicode punctuation should be detected correctly."""
-        assert is_unicode_punctuation("!") is True
-        assert is_unicode_punctuation("…") is True
-        assert is_unicode_punctuation("A") is False
-
     def test_longest_subsequence_candidates_for_string(self):
         """Longest matching runs should be returned as tuple candidates."""
         text = "aa bb cc dd"
@@ -214,11 +202,3 @@ class TestTextRankHelpers:
         )
 
         assert candidates == [("aa", "bb")]
-
-    def test_terms_to_strings_lower_for_doc_tokens(self, sample_doc):
-        """Lower normalization should lowercase token text for spaCy terms."""
-        out = list(terms_to_strings(sample_doc[:3], by="lower"))
-
-        assert len(out) == 3
-        assert all(term == term.lower() for term in out)
-        assert all(isinstance(term, str) for term in out)

@@ -1,4 +1,11 @@
-"""Tests for YAKE keyterm extraction module."""
+"""test_yake.py.
+
+Tests for YAKE keyterm extraction module.
+
+Coverage: 18%. Missing: 88-90, 106, 118, 148-223, 246-276, 288-318, 343-373, 394-445, 464-469, 496-507, 532-560, 585-602, 614-616, 632-647, 663, 676-678, 690-692, 704-711, 724-731, 744-751
+
+Last Updated: July 30, 2026
+"""
 
 import pandas as pd
 import pytest
@@ -26,6 +33,7 @@ class BareToken:
     """Minimal token-like object without POS attributes."""
 
     def __init__(self, text: str):
+        """Initialize a BareToken with text."""
         self.text = text
         self.is_stop = False
         self.is_punct = False
