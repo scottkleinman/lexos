@@ -32,6 +32,7 @@ And more!
 - Better HTML and XML tag handling in Scrubber.
 - Improved plotting functions in Bootstrap Consensus clustering.
 - Silhouette score analysis for KMeans clustering.
+- Language model training features.
 - Innumerable optimisations providing faster processing speeds.
 - Lots of bug fixes scattered throughout the package.
 
