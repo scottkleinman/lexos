@@ -2,7 +2,7 @@
 
 Tests for SGRank keyterm extraction module.
 
-Coverage: 28%. Missing: 90-91, 103, 111, 160-190, 200-225, 246-281, 289-300, 318-338, 354-362
+Coverage: 98%. Missing: 296, 330
 
 Last Updated: July 30, 2026
 """
@@ -340,3 +340,55 @@ class TestSGRankHelpers:
 
         assert scores["apple"] == 0.7
         assert len(scores) == 1
+
+    def test_validate_args_invalid_ngrams_int(self):
+        """Test invalid ngrams integer < 1 (Line 172)."""
+        with pytest.raises(ValueError, match="ngrams"):
+            _validate_sgrank_args(None, 0, 10, 5)
+
+    def test_validate_args_invalid_ngrams_iterable(self):
+        """Test invalid ngrams iterable (Line 180)."""
+        # Empty iterable
+        with pytest.raises(ValueError, match="ngrams"):
+            _validate_sgrank_args(None, [], 10, 5)
+        # Non-int or < 1
+        with pytest.raises(TypeError):
+            _validate_sgrank_args(None, [1, "2"], 10, 5)
+        with pytest.raises(ValueError, match="ngrams"):
+            _validate_sgrank_args(None, [1, 0], 10, 5)
+
+    def test_sgrank_no_terms_early_exit(self):
+        """Test sgrank early exit if no terms found (Line 204)."""
+        assert sgrank("   ") == []
+
+    def test_sgrank_no_candidates_early_exit(self):
+        """Test sgrank early exit if no candidates found (Line 213)."""
+        # If we include stopwords and punct in include_pos, it might still skip them if they are in the default stopword list
+        # But _is_valid(tok) has if tok.is_stop or tok.is_punct or tok.is_space: return False
+        # So symbols should be ignored.
+        assert sgrank("! ! !", include_pos=None) == []
+
+    def test_build_weighted_graph_empty_exit(self):
+        """Test sgrank early exit if graph has no nodes (Line 296)."""
+        # If all candidates have same text, no edges added.
+        # But wait, apple apple apple will produce "apple" unigram.
+        # PageRank on a single node graph?
+        # Actually, "apple" alone has no co-occurrences, so edge_weights is empty.
+        # graph.number_of_nodes() will be 0 if no edges were added and we only add edges?
+        # Let's check _build_weighted_graph code: it ONLY adds weighted edges.
+        # So a single-word candidate list will result in 0 nodes.
+        assert sgrank("apple", include_pos=None) == []
+
+    def test_build_weighted_graph_distance_overlap(self):
+        """Test _build_weighted_graph distance <= 0 branch (Line 330)."""
+        c1 = Candidate("a", 0, 1, 0)
+        c2 = Candidate("b", 0, 1, 0)  # Same index
+        graph = _build_weighted_graph([c1, c2], {"a": 1.0, "b": 1.0}, 10)
+        assert graph.number_of_edges() == 0
+
+    def test_score_candidate_phrases_none_score(self):
+        """Test _score_candidate_phrases line 358 (score is None)."""
+        # Candidate not present in word_scores
+        c = Candidate("a", 0, 1, 0)
+        scores = _score_candidate_phrases([c], {})
+        assert scores == {}

@@ -102,7 +102,7 @@ def scake(
 
     Args:
         doc (Doc | str): spaCy `Doc` or plain string from which to extract keyterms.
-            If a `Doc`, it should be sentence-segmented for best results.
+            If a `Doc` and it has sentence boundaries, they will be used.
         normalize (Literal["orth", "lower", "lemma"] | None): If "lemma", lemmatize
             terms; if "lower", lowercase terms; if None, use the orthographic forms
             that appear in `doc`; if a callable, must accept a `Token` and return a str.

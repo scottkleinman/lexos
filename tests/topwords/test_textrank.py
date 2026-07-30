@@ -2,7 +2,7 @@
 
 Tests for TextRank keyterm extraction module.
 
-Coverage: 31%. Missing: 91-93, 108, 116, 177-215, 226-252, 257-265, 274-282, 289-296, 322-377, 397-402
+Coverage: 96%. Missing: 188, 229, 241, 249, 364
 
 Last Updated: July 30, 2026
 """

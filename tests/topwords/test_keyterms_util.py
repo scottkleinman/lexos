@@ -2,7 +2,7 @@
 
 Tests for keyterms_util shared utility module.
 
-Coverage: 31%. Missing: 42-60, 73, 85-88, 93-95
+Coverage: 96%. Missing: 54
 
 Last Updated: July 30, 2026
 """

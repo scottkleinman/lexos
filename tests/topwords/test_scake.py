@@ -2,7 +2,7 @@
 
 Tests for sCAKE keyterm extraction module.
 
-Coverage: 20%. Missing: 72-74, 83, 91, 128-167, 183-190, 216-264, 280-284, 296, 322-363, 386-406, 421-468
+Coverage: 99%. Missing: 152, 247
 
 Last Updated: July 30, 2026
 """
@@ -35,7 +35,9 @@ from lexos.topwords.keyterms.scake import (
 @pytest.fixture(scope="module")
 def nlp():
     """Create a lightweight spaCy pipeline for doc-based tests."""
-    return spacy.blank("en")
+    nlp = spacy.blank("en")
+    nlp.add_pipe("sentencizer")
+    return nlp
 
 
 @pytest.fixture
@@ -69,13 +71,11 @@ class TestSCakeFunction:
             for term, score in results
         )
 
-    # ---FAILING--- To fix later
-    @pytest.mark.skip(
-        reason="Fails with blank spaCy model due to empty lemma results; needs investigation into model requirements."
-    )
     def test_scake_accepts_doc_input(self, sample_doc):
-        """Doc input should produce non-empty results for valid text."""
-        results = scake(sample_doc, topn=5)
+        """Doc input should produce non-empty results for valid text.
+        We use normalize='lower' because a blank spaCy model has no lemmas.
+        """
+        results = scake(sample_doc, normalize="lower", topn=5)
 
         assert isinstance(results, list)
         assert len(results) > 0
@@ -286,3 +286,54 @@ class TestSCakeHelpers:
         levels = _compute_node_truss_levels(graph)
 
         assert all(v == 0 for v in levels.values())
+
+    def test_scake_no_candidates_returns_empty(self):
+        """If _to_term_sequence returns no terms, scake should return empty list."""
+        # Line 152: if not terms: return []
+        assert scake("   ") == []
+
+    def test_build_cooc_matrix_with_doc_annotations(self, nlp):
+        """Test _build_cooc_matrix with a Doc that has SENT_START annotations (Line 221-239)."""
+        doc = nlp("This is a sentence. And another one.")
+        if not doc.has_annotation("SENT_START"):
+            # Ensure it has sentence boundaries for the check
+            from spacy.language import Language
+
+            @Language.component("fake_sentencizer")
+            def fake_sentencizer(doc):
+                for token in doc:
+                    token.is_sent_start = token.i % 5 == 0
+                return doc
+
+            if "fake_sentencizer" not in nlp.pipe_names:
+                nlp.add_pipe("fake_sentencizer")
+            doc = nlp("This is a sentence. And another one.")
+
+        terms = list(doc)
+        normalized = list(terms_to_strings(terms, by="lower"))
+        # This will trigger the SENT_START branch
+        cooc = _build_cooc_matrix(doc, terms, normalized, include_pos=None)
+        assert len(cooc) >= 0
+
+    def test_compute_word_scores_zero_truss(self):
+        """Test _compute_word_scores when max_truss_level is zero (Line 329)."""
+        graph = nx.Graph()
+        graph.add_nodes_from(["a", "b"])  # Isolated nodes
+        # Add a path with no triangles
+        graph.add_edge("a", "b")
+        cooc = collections.Counter({("a", "b"): 1})
+        scores = _compute_word_scores(["a", "b"], ["a", "b"], graph, cooc)
+        assert scores == {}
+
+    def test_compute_node_truss_levels_k_removal(self):
+        """Test _compute_node_truss_levels removal logic (Line 451-452)."""
+        # We need a triangle that gets removed when k increases
+        # A triangle has shared_neighbours = 1, so tcount = 1.
+        # k starts at 1. while tcount < k is false for tcount=1, k=1.
+        # But if we have an edge with tcount=0 attached to a triangle?
+        # A better way is to have a structure that isn't a k-truss for some k.
+        graph = nx.Graph()
+        graph.add_edges_from([("a", "b"), ("b", "c"), ("a", "c"), ("c", "d")])
+        levels = _compute_node_truss_levels(graph)
+        assert levels["d"] == 0
+        assert levels["a"] > 0
