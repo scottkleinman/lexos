@@ -7,6 +7,10 @@ The `topic_modeling` module implements Lexos topic modeling functionality. Curre
 
 See [Mallet](mallet.md) for API details.
 
+### LLM Topic Labeling
+
+An experimental module for topic labeling using large language models. See [LLM Topic Labeling](mallet.md#llm-topic-labeling) for API details.
+
 ## DFR Browser 2
 
 See [DFR Browser 2](dfr_browser2.md) for API details.
