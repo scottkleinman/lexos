@@ -8,7 +8,11 @@ The Lexos Python library stands on the shoulders of many giants, including (but 
 
 Both the Lexos web app and the Lexos Python library were developed over many years with the help of many students at Wheaton College, MA under the direction of Professor Mark LeBlanc. Thanks go out to Wheaton College's many years of support for students to work on the project. Students who made contributions to the Lexos Python library are listed below:
 
-> Gabriel Albernaz, Will Allan, Kshitij Kesharwani, Toushar Koushik, Colin Martin-Brown, Jack Murphy, Hanna Ondrasek, Viviana Schroeder, Kevin Smith, Aaron Stange, Jeffrey Stewart, Thea West
+> 2024: Jack Murphy, Jeffrey Stewart
+>
+> 2025: Gabriel Albernaz, Will Allan, Kshitij Kesharwani, Toushar Koushik, Colin Martin-Brown, Hanna Ondrasek, Viviana Schroeder, Kevin Smith, Aaron Stange, Thea West
+>
+> 2026: Gabriel Albernaz, Zeira Dodson, Aaron Stange, Jonathan Vasquez
 
 Parts of the `rolling_windows` module received a a code review by <a href="https://dhcodereview.github.io/" target="_blank">DHTech</a>, by Cole Crawford (Harvard University) and Ryan Muther (Harvard University), facilitated by Julia Damerow (Arizona State University).
 
