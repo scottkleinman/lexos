@@ -112,7 +112,7 @@ class KeyTerms(TopWords):
                 topn=self.topn,
             )
         elif self.method == "scake":
-            # scake doesn't accept ngrams parameter
+            # Note that scake doesn't accept ngrams parameter
             results = extract.keyterms.scake(
                 doc,
                 normalize=self.normalize,

@@ -103,7 +103,7 @@ def test_has_nvidia_gpu_no_smi(monkeypatch):
     import lexos.language_model as lm
 
     original = lm._has_nvidia_gpu
-    lm._has_nvidia_gpu = lambda: (__import__("shutil").which("nvidia-smi") is not None)
+    lm._has_nvidia_gpu = lambda: __import__("shutil").which("nvidia-smi") is not None
     assert not lm._has_nvidia_gpu()
     lm._has_nvidia_gpu = original
 

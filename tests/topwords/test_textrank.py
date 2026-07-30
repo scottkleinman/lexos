@@ -196,8 +196,9 @@ class TestTextRankHelpers:
         candidates = list(
             get_longest_subsequence_candidates(
                 text,
-                match_func=lambda tok: isinstance(tok, str)
-                and tok[0].lower() in {"a", "b"},
+                match_func=lambda tok: (
+                    isinstance(tok, str) and tok[0].lower() in {"a", "b"}
+                ),
             )
         )
 

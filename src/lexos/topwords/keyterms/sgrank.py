@@ -126,12 +126,12 @@ def sgrank(
     This comment is just taken straight from textacy, will adjust later
 
     Args:
-        doc: spaCy ``Doc`` from which to extract keyterms.
+        doc: spaCy `Doc` from which to extract keyterms.
         normalize: If "lemma", lemmatize terms; if "lower", lowercase terms; if None,
-            use the form of terms as they appeared in ``doc``; if a callable,
-            must accept a ``Span`` and return a str,
+            use the form of terms as they appeared in `doc`; if a callable,
+            must accept a `Span` and return a str,
             e.g. :func:`textacy.spacier.utils.get_normalized_text()`
-        ngrams: n of which n-grams to include. For example, ``(1, 2, 3, 4, 5, 6)`` (default)
+        ngrams: n of which n-grams to include. For example, `(1, 2, 3, 4, 5, 6)` (default)
             includes all ngrams from 1 to 6; `2` if only bigrams are wanted
         include_pos: One or more POS tags with which to filter for good candidate keyterms.
             If None, include tokens of all POS tags
@@ -141,16 +141,16 @@ def sgrank(
             the larger number of co-occurrence combinations that must be counted.
         topn: Number of top-ranked terms to return as keyterms.
             If int, represents the absolute number; if float, must be in the open interval
-            (0.0, 1.0), and is converted to an integer by ``int(round(len(candidates) * topn))``
-        idf: Mapping of ``normalize(term)`` to inverse document frequency
+            (0.0, 1.0), and is converted to an integer by `int(round(len(candidates) * topn))`
+        idf: Mapping of `normalize(term)` to inverse document frequency
             for re-weighting of unigrams (n-grams with n > 1 have df assumed = 1).
             Results are typically better with idf information.
 
     Returns:
-        Sorted list of top ``topn`` key terms and their corresponding SGRank scores
+        Sorted list of top `topn` key terms and their corresponding SGRank scores
 
     Raises:
-        ValueError: if ``topn`` is a float but not in (0.0, 1.0] or ``window_size`` < 2
+        ValueError: if `topn` is a float but not in (0.0, 1.0] or `window_size` < 2
 
     References:
         Danesh, Sumner, and Martin. "SGRank: Combining Statistical and Graphical
