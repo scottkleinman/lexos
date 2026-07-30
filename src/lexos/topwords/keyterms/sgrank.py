@@ -1,7 +1,7 @@
 """sgrank.py.
 
-Last Updated: 
-Last Tested: 
+Last Updated: July 28, 2026
+Last Tested: july 30, 2026
 
 Usage:
 
@@ -281,13 +281,22 @@ def _get_candidates(
 
     return candidates
 
-#come back to this
 def _compute_term_weights(
     candidates: list[Candidate],
     idf: Optional[dict[str, float]],
-    ) -> dict[str, float]:
-
-    #to be done
+) -> dict[str, float]:
+    """Compute a modified tf-idf weight for each candidate."""
+    text_counts: collections.Counter[str] = collections.Counter(
+        c.text for c in candidates
+    )
+ 
+    term_weights: dict[str, float] = {}
+    for text, count in text_counts.items():
+        if idf is not None and " " not in text:
+            term_weights[text] = count * idf.get(text, 1.0)
+        else:
+            term_weights[text] = float(count)
+ 
     return term_weights
 
 
@@ -330,12 +339,26 @@ def _build_weighted_graph(
     )
     return graph
 
-#come back to this
+
 def _score_candidate_phrases(
     candidates: list[Candidate],
     word_scores: dict[str, float],
 ) -> dict[str, float]:
-    """Score each unique candidate phrase."""
+    """Score each unique candidate phrase.
 
-    #to be done
+    Args:
+        candidates: All candidate occurrences from `_get_candidates`.
+        word_scores: Scores keyed by candidate text, from `_build_weighted_graph`.
+ 
+    Returns:
+        dict[str, float]: Mapping of candidate text to its final SGRank score.
+    """
+    candidate_scores: dict[str, float] = {}
+    for c in candidates:
+        score = word_scores.get(c.text)
+        if score is None:
+            continue
+        existing = candidate_scores.get(c.text)
+        if existing is None or score > existing:
+            candidate_scores[c.text] = score
     return candidate_scores
