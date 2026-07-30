@@ -184,7 +184,6 @@ class TestTextRankHelpers:
         assert math.isclose(sum(word_pos.values()), 1.0, rel_tol=1e-9)
         assert word_pos["a"] > word_pos["b"]
 
-   
     def test_longest_subsequence_candidates_for_string(self):
         """Longest matching runs should be returned as tuple candidates."""
         text = "aa bb cc dd"

@@ -25,6 +25,7 @@ from lexos.topwords.keyterms.keyterms_util import (
     terms_to_strings,
 )
 
+
 @pytest.fixture(scope="module")
 def nlp():
     """Create a lightweight spaCy pipeline for doc-based tests."""
@@ -226,9 +227,7 @@ class TestSGRankHelpers:
     def test_validate_args_float_topn_invalid_raises(self):
         """Float topn outside (0, 1] should raise a ValueError."""
         with pytest.raises(ValueError, match="topn"):
-            _validate_sgrank_args(
-                include_pos=None, ngrams=1, window_size=10, topn=2.0
-            )
+            _validate_sgrank_args(include_pos=None, ngrams=1, window_size=10, topn=2.0)
 
     def test_candidate_fields_accessible_by_name(self):
         """Candidate fields should be accessible by name."""
@@ -240,12 +239,14 @@ class TestSGRankHelpers:
         assert c.count == 3
 
     def test_get_candidates_returns_list_of_candidates(self, nlp):
-        """ The _get_candidates should return a list of Candidate objects."""
+        """The _get_candidates should return a list of Candidate objects."""
         doc = nlp("machine learning is great")
         terms = list(doc)
         normalized = list(terms_to_strings(terms, by="lower"))
 
-        candidates = _get_candidates(terms, normalized, include_pos=None, ngram_sizes=(1,))
+        candidates = _get_candidates(
+            terms, normalized, include_pos=None, ngram_sizes=(1,)
+        )
 
         assert isinstance(candidates, list)
         assert all(isinstance(c, Candidate) for c in candidates)
@@ -256,7 +257,9 @@ class TestSGRankHelpers:
         terms = list(doc)
         normalized = list(terms_to_strings(terms, by="lower"))
 
-        candidates = _get_candidates(terms, normalized, include_pos=None, ngram_sizes=(1,))
+        candidates = _get_candidates(
+            terms, normalized, include_pos=None, ngram_sizes=(1,)
+        )
 
         idxs = [c.idx for c in candidates]
         assert idxs == sorted(idxs)
@@ -267,7 +270,9 @@ class TestSGRankHelpers:
         terms = list(doc)
         normalized = list(terms_to_strings(terms, by="lower"))
 
-        candidates = _get_candidates(terms, normalized, include_pos=None, ngram_sizes=(2,))
+        candidates = _get_candidates(
+            terms, normalized, include_pos=None, ngram_sizes=(2,)
+        )
 
         assert any(c.length == 2 for c in candidates)
 
@@ -277,7 +282,9 @@ class TestSGRankHelpers:
         terms = _to_term_sequence(text)
         normalized = list(terms_to_strings(terms, by="lower"))
 
-        candidates = _get_candidates(terms, normalized, include_pos=None, ngram_sizes=(1,))
+        candidates = _get_candidates(
+            terms, normalized, include_pos=None, ngram_sizes=(1,)
+        )
 
         assert len(candidates) > 0
 

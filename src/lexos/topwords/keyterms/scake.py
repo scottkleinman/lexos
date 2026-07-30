@@ -39,21 +39,24 @@ validation_config = ConfigDict(
     arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
 )
 
+
 class SCake(TopWords):
     """Extracts keyterms using the sCAKE (Semantic Connectivity Aware Keyword Extraction) algorithm."""
 
     doc: str | Doc = Field(..., description="The raw text or spaCy doc to analyze.")
     normalize: Optional[Literal["orth", "lower", "lemma"]] = Field(
-        default="lemma", description="How to normalize tokens for candidate selection.",
+        default="lemma",
+        description="How to normalize tokens for candidate selection.",
     )
 
     include_pos: Optional[str | Collection[str]] = Field(
-        default=("NOUN", "PROPN", "ADJ"), description="POS tags to include for candidate selection.",
+        default=("NOUN", "PROPN", "ADJ"),
+        description="POS tags to include for candidate selection.",
     )
 
     topn: Optional[int | float] = Field(
         10,
-        gt=0, 
+        gt=0,
         description="The number of top keyterms to return (int or float ratio of candidates).",
     )
 
@@ -66,7 +69,6 @@ class SCake(TopWords):
 
     def __init__(self, **kwargs) -> None:
         """Initialize the SCake object and extract keyterms."""
-
         super().__init__(**kwargs)
         # Extract keyterms and put them in field
         self.keyterms = scake(
@@ -115,6 +117,7 @@ def scake(
     Returns:
         list[tuple[str, float]]: Sorted list of top `topn` key terms and their
             corresponding sCAKE scores.
+
     Notes:
         1. normalize the arguemnts
         2. then make the co-occurence matrix
@@ -124,7 +127,7 @@ def scake(
     """
     include_pos_set, topn = _validate_scake_args(include_pos, topn)
 
-    # Convert str input to term sequence 
+    # Convert str input to term sequence
     terms = _to_term_sequence(doc)
     if not terms:
         return []
@@ -157,7 +160,9 @@ def scake(
         phrase = " ".join(candidate)
         score = sum(word_scores.get(word, 0.0) for word in candidate)
         candidate_scores[phrase] = score
-        sorted_candidate_scores = sorted(candidate_scores.items(), key=itemgetter(1, 0), reverse=True)
+        sorted_candidate_scores = sorted(
+            candidate_scores.items(), key=itemgetter(1, 0), reverse=True
+        )
 
     return get_filtered_topn_terms(sorted_candidate_scores, topn, match_threshold=0.8)
 
@@ -166,7 +171,7 @@ def _validate_scake_args(
     include_pos: Optional[str | Collection[str]],
     topn: int | float,
 ) -> tuple[Optional[set[str]], int | float]:
-    """validate and transform sCAKE arguments.
+    """Validate and transform sCAKE arguments.
 
     Args:
         include_pos: POS tag filter passed by the user.
@@ -181,7 +186,7 @@ def _validate_scake_args(
         raise ValueError(
             f"topn={topn} is invalid; must be an int, or a float between 0.0 and 1.0"
         )
-    
+
     return include_pos_set, topn
 
 
@@ -194,8 +199,8 @@ def _build_cooc_matrix(
     """Builds a co-occurrence counter over sentence windows.
 
     For spaCy docs, inputs the algorithm over adjacent sentence pairs
-    For plain-string inputs/ normal docs(which have no sentence boundaries) the entire 
-    token sequence is treated as a single window so that the algorithm still 
+    For plain-string inputs/ normal docs(which have no sentence boundaries) the entire
+    token sequence is treated as a single window so that the algorithm still
     produces meaningful co-occurrences
 
     Args:
@@ -237,7 +242,7 @@ def _build_cooc_matrix(
                 if w1_w2[0] != w1_w2[1]
             )
     else:
-         # No sentence boundaries so we must treat the whole token sequence as one window.
+        # No sentence boundaries so we must treat the whole token sequence as one window.
         if isinstance(doc, Doc):
             window_words = [
                 norm
@@ -291,17 +296,19 @@ def _is_valid_tok_str(tok: str) -> bool:
     return not (is_unicode_punctuation(tok) or tok.isspace())
 
 
-def _compute_word_scores( 
+def _compute_word_scores(
     terms: list[Token | str],
     normalized_terms: list[str],
     graph: nx.Graph,
     cooc_mat: collections.Counter[tuple[str, str]],
 ) -> dict[str, float]:
-    """Computes per-word sCAKE scores based on
-        - truss level
-        - semantic strength
-        - semantic connectivity
-        - positional weight
+    """Computes per-word sCAKE scores based on truss level, semantic strength, semantic connectivity, and positional weight.
+
+    Combines:
+    - truss level
+    - semantic strength
+    - semantic connectivity
+    - positional weight
 
     Args:
         terms: Token/string sequence produced by `_to_term_sequence`.
@@ -350,13 +357,11 @@ def _compute_word_scores(
     word_scores: dict[str, float] = {}
     for w in word_strs:
         word_scores[w] = (
-            word_pos[w]
-            * max_truss_levels[w]
-            * sem_strengths[w]
-            * sem_connectivities[w]
+            word_pos[w] * max_truss_levels[w] * sem_strengths[w] * sem_connectivities[w]
         )
-    
+
     return word_scores
+
 
 def _get_candidates(
     terms: list[Token | str],
@@ -400,8 +405,9 @@ def _get_candidates(
         candidates.add(tuple(run))
     return candidates
 
+
 def _compute_node_truss_levels(graph: nx.Graph) -> dict[str, int]:
-    """Computes the maximum k-truss level for each node in the graph
+    """Computes the maximum k-truss level for each node in the graph.
 
     The k-truss level of a node is the maximum k such that the node belongs
     to a k-truss subgraph (every edge is in at least k-1 triangles(its part of a set))
@@ -417,7 +423,9 @@ def _compute_node_truss_levels(graph: nx.Graph) -> dict[str, int]:
 
     triangle_counts: dict[tuple, int] = {}
     for edge in graph.edges():
-        shared_neighbours = set(graph.neighbors(edge[0])) & set(graph.neighbors(edge[1]))
+        shared_neighbours = set(graph.neighbors(edge[0])) & set(
+            graph.neighbors(edge[1])
+        )
         triangle_counts[edge] = len(shared_neighbours)
 
     k = 1

@@ -19,6 +19,7 @@ import unicodedata
 from typing import Callable, Iterable
 from spacy.tokens import Doc, Span, Token
 
+
 def terms_to_strings(
     terms: Iterable[Span | Token | str],
     by: str | Callable[[Span | Token | str], str] | None,
@@ -57,6 +58,7 @@ def terms_to_strings(
     for term in terms_:
         yield term
 
+
 def is_unicode_punctuation(ch: str) -> bool:
     """Return True if `ch` is a Unicode punctuation character.
 
@@ -68,6 +70,7 @@ def is_unicode_punctuation(ch: str) -> bool:
     """
     # 'P' stands for Punctuation categories (Pc, Pd, Pe, Pf, Pi, Po, Ps)
     return bool(ch) and all(unicodedata.category(char).startswith("P") for char in ch)
+
 
 def _to_term_sequence(doc: Doc | str) -> list[Token | str]:
     """Convert input into an ordered term sequence used by all processing stages.
@@ -82,6 +85,7 @@ def _to_term_sequence(doc: Doc | str) -> list[Token | str]:
         # Keep punctuation as separate tokens so candidate extraction can filter it.
         return re.findall(r"\w+|[^\w\s]", doc, flags=re.UNICODE)
     return list(doc)
+
 
 def _resolve_topn(topn: int | float, candidate_count: int) -> int:
     """Resolve a float ratio topn into an absolute integer count."""

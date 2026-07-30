@@ -17,6 +17,7 @@ from lexos.topwords.keyterms.keyterms_util import (
     terms_to_strings,
 )
 
+
 @pytest.fixture(scope="module")
 def nlp():
     """Create a lightweight spaCy pipeline for token-based tests."""
@@ -62,7 +63,7 @@ class TestToTermSequence:
         assert "does" in result
         assert "this" in result
         assert "work" in result
-   
+
     def test_string_keeps_punctuation_as_separate_token(self):
         """Punctuation characters should appear as their own tokens."""
         result = _to_term_sequence("hi, jax")

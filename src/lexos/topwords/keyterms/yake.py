@@ -749,5 +749,3 @@ def _pos_allowed(term: TermLike, include_pos: Optional[set[str]]) -> bool:
         # Compatibility fix: if POS is unavailable, skip POS filtering.
         return True
     return pos_val in include_pos
-
-

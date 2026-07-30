@@ -1,7 +1,7 @@
 """sgrank.py.
 
 Last Updated: July 28, 2026
-Last Tested: july 30, 2026
+Last Tested: July 30, 2026
 
 Usage:
 
@@ -40,8 +40,8 @@ validation_config = ConfigDict(
 
 
 class Candidate(NamedTuple):
-    """A single candidate keyterm in the document.
-    """
+    """A single candidate keyterm in the document."""
+
     text: str
     idx: int
     length: int
@@ -121,8 +121,7 @@ def sgrank(
     topn: int | float = 10,
     idf: Optional[dict[str, float]] = None,
 ) -> list[tuple[str, float]]:
-    """
-    Extract key terms from a document using the SGRank algorithm. 
+    """Extract key terms from a document using the SGRank algorithm.
 
     This comment is just taken straight from textacy, will adjust later
 
@@ -168,9 +167,7 @@ def sgrank(
     normalized_terms = list(terms_to_strings(terms, normalize))
 
     # Gather every valid n-gram candidate and its position in the doc.
-    candidates = _get_candidates(
-        terms, normalized_terms, include_pos_set, ngram_sizes
-    )
+    candidates = _get_candidates(terms, normalized_terms, include_pos_set, ngram_sizes)
     if not candidates:
         return []
 
@@ -183,7 +180,7 @@ def sgrank(
         return []
     word_scores = nx.pagerank(graph, alpha=0.85, weight="weight")
 
-    #Score thefull candidate phrases and limit overlapping candidates.
+    # Score thefull candidate phrases and limit overlapping candidates.
     candidate_scores = _score_candidate_phrases(candidates, word_scores)
     topn = _resolve_topn(topn, len(candidate_scores))
     sorted_candidate_scores = sorted(
@@ -199,7 +196,7 @@ def _validate_sgrank_args(
     window_size: int,
     topn: int | float,
 ) -> tuple[Optional[set[str]], tuple[int, ...], int | float]:
-    """Validate SGRank arguments"""
+    """Validate and transform SGRank arguments."""
     include_pos_set = to_set(include_pos) if include_pos else None
 
     if isinstance(ngrams, int):
@@ -265,7 +262,9 @@ def _get_candidates(
                 continue
             for i in range(run_len - n + 1):
                 text = " ".join(run_terms[i : i + n])
-                candidates.append(Candidate(text=text, idx=start + i, length=n, count=0))
+                candidates.append(
+                    Candidate(text=text, idx=start + i, length=n, count=0)
+                )
 
     for i, (tok, norm) in enumerate(zip(terms, normalized_terms)):
         if _is_valid(tok):
@@ -281,6 +280,7 @@ def _get_candidates(
 
     return candidates
 
+
 def _compute_term_weights(
     candidates: list[Candidate],
     idf: Optional[dict[str, float]],
@@ -289,14 +289,14 @@ def _compute_term_weights(
     text_counts: collections.Counter[str] = collections.Counter(
         c.text for c in candidates
     )
- 
+
     term_weights: dict[str, float] = {}
     for text, count in text_counts.items():
         if idf is not None and " " not in text:
             term_weights[text] = count * idf.get(text, 1.0)
         else:
             term_weights[text] = float(count)
- 
+
     return term_weights
 
 
@@ -334,9 +334,7 @@ def _build_weighted_graph(
             edge_weights[(c1.text, c2.text)] += weight
 
     graph = nx.Graph()
-    graph.add_weighted_edges_from(
-        (t1, t2, w) for (t1, t2), w in edge_weights.items()
-    )
+    graph.add_weighted_edges_from((t1, t2, w) for (t1, t2), w in edge_weights.items())
     return graph
 
 
@@ -349,7 +347,7 @@ def _score_candidate_phrases(
     Args:
         candidates: All candidate occurrences from `_get_candidates`.
         word_scores: Scores keyed by candidate text, from `_build_weighted_graph`.
- 
+
     Returns:
         dict[str, float]: Mapping of candidate text to its final SGRank score.
     """

@@ -40,6 +40,7 @@ validation_config = ConfigDict(
     arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
 )
 
+
 class TextRank(TopWords):
     """Extracts keyterms using the TextRank algorithm."""
 
@@ -263,6 +264,7 @@ def _build_position_bias(normalized_terms: Sequence[str]) -> dict[str, float]:
             word_pos[word] *= inv_sum_word_pos
     return word_pos
 
+
 def _score_candidates(
     candidate_counts: collections.Counter[tuple[str, ...]],
     word_scores: dict[str, float],
@@ -279,6 +281,7 @@ def _score_candidates(
         )
     return candidate_scores
 
+
 def _rank_candidate_scores(
     candidate_scores: dict[str, float], topn: int
 ) -> list[tuple[str, float]]:
@@ -291,6 +294,7 @@ def _rank_candidate_scores(
             key=lambda item: (item[1], item[0]),
         )
     return sorted(candidate_scores.items(), key=itemgetter(1, 0), reverse=True)
+
 
 def _get_candidate_counts(
     terms: Sequence[Token | str],
@@ -371,6 +375,7 @@ def _get_candidate_counts(
     _consume_run(valid_run)
 
     return candidate_counts
+
 
 def get_longest_subsequence_candidates(
     doc: Doc | str,

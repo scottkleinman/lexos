@@ -60,9 +60,11 @@ class TestSCakeFunction:
         assert isinstance(results, list)
         assert len(results) <= 5
         assert all(isinstance(item, tuple) and len(item) == 2 for item in results)
-        assert all(isinstance(term, str) and isinstance(score, float)for term, score in results)
+        assert all(
+            isinstance(term, str) and isinstance(score, float)
+            for term, score in results
+        )
 
-    
     # ---FAILING--- To fix later
     def test_scake_accepts_doc_input(self, sample_doc):
         """Doc input should produce non-empty results for valid text."""
@@ -120,6 +122,7 @@ class TestSCakeFunction:
         scores = [score for _, score in results]
         assert scores == sorted(scores, reverse=True)
 
+
 class TestSCakeClass:
     """Test the SCake Pydantic model wrapper."""
 
@@ -165,6 +168,7 @@ class TestSCakeClass:
 
         assert dict_terms == df_terms
 
+
 class TestSCakeHelpers:
     """Test sCAKE-specific private helper functions."""
 
@@ -195,7 +199,6 @@ class TestSCakeHelpers:
         with pytest.raises(ValueError, match="topn"):
             _validate_scake_args(include_pos=None, topn=2.0)
 
-
     def test_is_valid_tok_doc_allows_token_when_no_pos(self, nlp):
         """Tokens with no POS tag should pass POS filtering."""
         doc = nlp("learning")
@@ -211,7 +214,7 @@ class TestSCakeHelpers:
     def test_is_valid_tok_str_rejects_punctuation_and_whitespace(self):
         """Punctuation strings should be rejected."""
         assert _is_valid_tok_str("!") is False
-        assert _is_valid_tok_str("…") is False 
+        assert _is_valid_tok_str("…") is False
         assert _is_valid_tok_str(" ") is False
         assert _is_valid_tok_str("\t") is False
 
@@ -237,7 +240,7 @@ class TestSCakeHelpers:
         assert len(cooc) == 0
 
     def test_get_candidates_returns_set_of_tuples(self, nlp):
-        """ The _get_candidates should return a set of string tuples."""
+        """The _get_candidates should return a set of string tuples."""
         doc = nlp("machine learning is great")
         terms = list(doc)
         normalized = list(terms_to_strings(terms, by="lower"))
@@ -276,4 +279,3 @@ class TestSCakeHelpers:
         levels = _compute_node_truss_levels(graph)
 
         assert all(v == 0 for v in levels.values())
-        
