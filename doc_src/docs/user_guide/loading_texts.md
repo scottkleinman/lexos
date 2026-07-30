@@ -182,7 +182,7 @@ loader = ParallelLoader(max_workers=8)  # Always use 8 workers
 
 ### Progress Tracking
 
-By default, `ParallelLoader` displays a <a href="https://github.com/Textualize/rich" target="_blank">Rich progress bar</a> showing the loading progress:
+By default, `ParallelLoader` displays a [Rich progress bar](https://github.com/Textualize/rich){target="_blank"} showing the loading progress:
 
 ```python
 loader = ParallelLoader(show_progress=True)

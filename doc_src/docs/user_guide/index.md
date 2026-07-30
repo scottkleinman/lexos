@@ -6,7 +6,7 @@ The User Guide is divided into several sections, each focusing on a specific asp
 
 ## Requirements
 
-The Lexos library requires Python 3.12 or later. If you are running Lexos on your own machine, it is recommended to use a virtual environment to manage dependencies and avoid conflicts with other Python packages. For development, we use the `uv` package manager, which simplifies dependency management and packaging. You can install it by following the instructions on the <code><a href="https://docs.astral.sh/uv/" target="_blank">uv</a></code> website. However, Lexos should work in any Python 3.12+ environment.
+The Lexos library requires Python 3.12 or later. If you are running Lexos on your own machine, it is recommended to use a virtual environment to manage dependencies and avoid conflicts with other Python packages. For development, we use the `uv` package manager, which simplifies dependency management and packaging. You can install it by following the instructions on the [`uv`](https://docs.astral.sh/uv/){target=\"_blank\"} website. However, Lexos should work in any Python 3.12+ environment.
 
 ## Installation
 

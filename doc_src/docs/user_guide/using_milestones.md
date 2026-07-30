@@ -201,7 +201,7 @@ for token in doc:
 ```
 
 !!! note
-    See spaCy's <a href="https://spacy.io/usage/rule-based-matching" target="_blank">Rule-Based Matching documentation</a> for a complete explanation of the syntax for formulating matching patterns. Note that your case-sensitivity setting may override any case handling in your search pattern(s).
+    See spaCy's [Rule-Based Matching documentation](https://spacy.io/usage/rule-based-matching){target="_blank"} for a complete explanation of the syntax for formulating matching patterns. Note that your case-sensitivity setting may override any case handling in your search pattern(s).
 
 ### Removing and Resetting Milestones
 
@@ -292,7 +292,7 @@ print(list(doc.sents))
 # [This is sentence 1., This is sentence 12]
 ```
 
-Note that the `Doc` object already has a `sents` attribute that contains a generator sentence spans. This is generated automatically *if and only if* your language model has a sentence segmenter. If it does not, you cannot use the `SentenceMilestones` class and will need to rely on the custom approach discussed below. See the <a href="https://spacy.io/usage/linguistic-features#sbd" target="_blank">spaCy documentation</a> for further information on creating Doc objects with sentence segmentation in the pipeline.
+Note that the `Doc` object already has a `sents` attribute that contains a generator sentence spans. This is generated automatically *if and only if* your language model has a sentence segmenter. If it does not, you cannot use the `SentenceMilestones` class and will need to rely on the custom approach discussed below. See the [spaCy documentation](https://spacy.io/usage/linguistic-features#sbd){target="_blank"} for further information on creating Doc objects with sentence segmentation in the pipeline.
 
 The `CustomMilestones` class can be used to generate milestones based on arbitrary spans. A good way to demonstrate this is to reproduce the sentence segments shown above.
 

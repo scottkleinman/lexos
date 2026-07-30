@@ -19,7 +19,7 @@ Each function has parameters that allow you to specify how the function should b
 In order to keep the functions simple, each function call can perform only a single transformation. To perform multiple transformations, it is necessary to call functions multiple times (or construct a pipeline that calls the functions iteratively). You may have to get to know your text's markup fairly well or inspect the results after each transformation in order to achieve the desired effects. When calling `tags` functions multiple times, the order in which the functions are called can make a considerable difference in the output.
 
 !!! note
-    Under the hood, Lexos uses the Python <a href="https://beautiful-soup-4.readthedocs.io/en/latest/" target="_blank">BeautifulSoup</a> library to parse and transform the string before returning the output as a new string.
+    Under the hood, Lexos uses the Python [BeautifulSoup](https://beautiful-soup-4.readthedocs.io/en/latest/){target="_blank"} library to parse and transform the string before returning the output as a new string.
 
 ## Removing Elements and Replacing Tag Names
 

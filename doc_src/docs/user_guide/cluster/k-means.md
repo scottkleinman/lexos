@@ -136,6 +136,6 @@ kmeans.save(path="myimage.png") # Saves as a .png file
 kmeans.save(path="myimage.html", html=True) # Saves as an HTML file
 ```
 
-Under the hood, `save()` calls Plotly's <code><a href="https://plotly.github.io/plotly.py-docs/generated/plotly.io.image_html.html" target="_blank">write_image()</a></code> and <code><a href="https://plotly.github.io/plotly.py-docs/generated/plotly.io.write_html.html" target="_blank">write_html()</a></code>, and it will accept any keywords taken by those methods.
+Under the hood, `save()` calls Plotly's [`write_image()`](https://plotly.github.io/plotly.py-docs/generated/plotly.io.image_html.html){target=\"_blank\"} and [`write_html()`](https://plotly.github.io/plotly.py-docs/generated/plotly.io.write_html.html){target=\"_blank\"}, and it will accept any keywords taken by those methods.
 
-You can also call `to_csv()` to export your data to a CSV file of PCA coordinates and cluster labels. `Kmeans.to_csv()` accepts any parameter taken by the Pandas<code><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html" target="_blank">to_csv()</a></code> method.
+You can also call `to_csv()` to export your data to a CSV file of PCA coordinates and cluster labels. `Kmeans.to_csv()` accepts any parameter taken by the Pandas[`to_csv()`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html){target=\"_blank\"} method.

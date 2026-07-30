@@ -33,7 +33,7 @@ Scrubber components are divided into four categories:
 Follow the links above to read about the functions in each of Scrubber's components. To learn more about how the `scrubber` module works, take a look at the documentation on its [internal components](scrubber/internal_components.md).
 
 !!! note "Developer's Note"
-    Many of the functions and resources in Scrubber are built on top of the preprocessing functions in the Python <a href="https://github.com/chartbeat-labs/textacy/" target="_blank">Textacy</a> library, although sometimes with modifications. Textacy is installed with Lexos, so it can also be imported and called directly if necessary.
+    Many of the functions and resources in Scrubber are built on top of the preprocessing functions in the Python [Textacy](https://github.com/chartbeat-labs/textacy/){target="_blank"} library, although sometimes with modifications. Textacy is installed with Lexos, so it can also be imported and called directly if necessary.
 
 ## Loading Components
 
@@ -87,7 +87,7 @@ scrubber_components.register("title_case", func=title_case)
 To use a custom scrubbing function, you must register it _before_ you call `get_component()` or `get_components()`.
 
 !!! note "Developer's Note"
-    The Scrubber component registry is managed using the Python <a href="https://github.com/explosion/catalogue" target="_blank">catalogue</a> library, which also allows you to register functions with a decorator.
+    The Scrubber component registry is managed using the Python [catalogue](https://github.com/explosion/catalogue){target="_blank"} library, which also allows you to register functions with a decorator.
 
     ```python
     @scrubber_functions.register("title_case")

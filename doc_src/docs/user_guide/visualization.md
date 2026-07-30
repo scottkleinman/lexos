@@ -82,7 +82,7 @@ wc.show()
 !!! important
     The `limit` parameter will select the ten *most common* terms, not the *first* ten tokens in the token list.
 
-Under the hood, Lexos uses the Python <code><a href="https://amueller.github.io/word_cloud/" target="_blank">WordCloud</a></code> and <code><a href="https://matplotlib.org/" target="_blank">matplotlib</a></code> to create the word cloud. You can pass options to `WordCloud` with the `opts` keyword, the value of which should be a dictionary of options and their values. You can pass options to `matplotlib` with the `figure_opts` keyword, which also takes a dictionary. A full discussion of the available options is beyond the scope of this tutorial, and you are encouraged to consult the `WordCloud` and `matplotlib` documentation for ways to customise your word cloud. Here, we'll just provide a simple example showing how to change the background colour.
+Under the hood, Lexos uses the Python [`WordCloud`](https://amueller.github.io/word_cloud/){target=\"_blank\"} and [`matplotlib`](https://matplotlib.org/){target=\"_blank\"} to create the word cloud. You can pass options to `WordCloud` with the `opts` keyword, the value of which should be a dictionary of options and their values. You can pass options to `matplotlib` with the `figure_opts` keyword, which also takes a dictionary. A full discussion of the available options is beyond the scope of this tutorial, and you are encouraged to consult the `WordCloud` and `matplotlib` documentation for ways to customise your word cloud. Here, we'll just provide a simple example showing how to change the background colour.
 
 ```python
 # Define an options dictionary
@@ -127,7 +127,7 @@ wc.save("wordcloud.png")
 wc.save("wordcloud.jpg")
 ```
 
-The `save` method accepts any arguments allowed by `matplotlib`'s <code><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html" target="_blank">savefig</a></code> method:
+The `save` method accepts any arguments allowed by `matplotlib`'s [`savefig`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html){target=\"_blank\"} method:
 
 ```python
 plt.savefig("wordcloud.png", dpi = 300)
@@ -329,7 +329,7 @@ Only terms from the first and third documents in the document-term matrix will a
 
 ## Generating Dynamic Images
 
-The static images produced by `WordCloud`, `BubbleChart`, and `MultiCloud` are very good for presentations, but they have their limitations, especially for more cluttered data. Because of this, Lexos offers alternative versions that use the Javascript <a href="https://d3js.org/" target="_blank">D3.js</a> library. This allows you produce interactive features such as the ability to hover over the terms in your word cloud to see their counts. D3 visualisations are beautiful and useful for exploring data when static images are hard to read. They are also ideal for embedding in web applications.
+The static images produced by `WordCloud`, `BubbleChart`, and `MultiCloud` are very good for presentations, but they have their limitations, especially for more cluttered data. Because of this, Lexos offers alternative versions that use the Javascript [D3.js](https://d3js.org/){target="_blank"} library. This allows you produce interactive features such as the ability to hover over the terms in your word cloud to see their counts. D3 visualisations are beautiful and useful for exploring data when static images are hard to read. They are also ideal for embedding in web applications.
 
 The cells below demonstrate how to generate D3 versions of word clouds and bubble charts.
 
@@ -384,10 +384,10 @@ The `D3WordCloud` class provides a number of other parameters for customising th
 - `angle_from`: The starting angle for the word cloud. The default is -60°.
 - `angle_to`: The ending angle for the word cloud. The default is 60°.
 - `background_color`: The background color of the word cloud. The default is white.
-- `colorscale`: The name of a categorical d3 scale to use for the word cloud. The default is d3.scale.category20b". For other colorscales, see the <a href="https://d3js.org/d3-scale" target="_blank">d3-scale</a> documentation.
+- `colorscale`: The name of a categorical d3 scale to use for the word cloud. The default is d3.scale.category20b". For other colorscales, see the [d3-scale](https://d3js.org/d3-scale){target="_blank"} documentation.
 
 !!! note
-    The available options are based on the exceptional <a href="https://www.jasondavies.com/wordcloud/" target="_blank">word cloud generator</a> produced by Jason Davies.
+    The available options are based on the exceptional [word cloud generator](https://www.jasondavies.com/wordcloud/){target="_blank"} produced by Jason Davies.
 
 You can also generate a multicloud in D3:
 
@@ -424,7 +424,7 @@ bc.save("d3_bubblechart.html)
 Apart from the standard parameters, `D3BubbleChart` has two extra keywords for styling the chart.
 
 - `margin`: A dictionary with the keys "top", "right", "bottom", and "left", used to configure the margin around the chart in pixels.
-- `color`: The colour scheme for the chart, either the name D3 colour scheme or a list of custom colours. The default is "schemeCategory10". For other colour schemes, see the <a href="https://d3js.org/d3-scale" target="_blank">d3-scale</a> documentation.
+- `color`: The colour scheme for the chart, either the name D3 colour scheme or a list of custom colours. The default is "schemeCategory10". For other colour schemes, see the [d3-scale](https://d3js.org/d3-scale){target="_blank"} documentation.
 
 ### Customising D3 Visualisations
 

@@ -113,7 +113,7 @@ Another common metric is **cosine similarity**. Imagine each document as an arro
 
 **Cityblock distance** also called Manhattan distance is another common metric. Imagine moving on a city grid where you can only go along streets (no diagonal shortcuts). This distance is the sum of the absolute differences for each term between two documents. This metric is useful when the individual differences in term counts are important.
 
-Many other metrics are available (e.g., "jaccard", "chebyshev") from the Python scipy package, which Lexos runs under the hood. You can find a full list in the <code><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html" target="_blank">SciPy documentation</a></code>.
+Many other metrics are available (e.g., "jaccard", "chebyshev") from the Python scipy package, which Lexos runs under the hood. You can find a full list in the [`SciPy documentation`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html){target=\"_blank\"}.
 
 The table below provides some additional guidance on how to choose a distance metric.
 
@@ -149,7 +149,7 @@ Here is a procedure to use as a starting point:
 
 Lexos does not offer any numerical criteria for evaluating the quality of hierarchical clusters. However, you can count the number of leaves at your cutoff point and use that as the *k* value in a k-means clustering analysis to provide comparative evidence.
 
-In addition, Lexos does not offer a method of drawing the dendrogram showing the cut. SciPy provides the `fcluster` method for cutting dendrograms, and we will hopefully implement it in the future. This <a href="https://stackoverflow.com/questions/70801281/how-can-i-plot-a-truncated-dendrogram-plot-using-plotly" target="_blank">Stack Overflow discussion</a> provides information on how to add truncate mode.
+In addition, Lexos does not offer a method of drawing the dendrogram showing the cut. SciPy provides the `fcluster` method for cutting dendrograms, and we will hopefully implement it in the future. This [Stack Overflow discussion](https://stackoverflow.com/questions/70801281/how-can-i-plot-a-truncated-dendrogram-plot-using-plotly){target="_blank"} provides information on how to add truncate mode.
 
 ### Cluster Robustness
 
@@ -202,7 +202,7 @@ In addition to the `title`, `metric`, and `method` keywords, `Clustermap` takes 
 - `labels`: A list of descriptive names for your documents. These will appear as the leaves (endpoints) on your tree. If not supplied, the labels from your Lexos `DTM` or Pandas DataFrame will be used.
 - `z_score`: Standardizes the values within each row (documents) or column (terms). If the value is set to `None`, the heatmap shows raw frequencies (or whatever your DTM contains). The setting `0` standardizes each row (document) by subtracting its mean and dividing by its standard deviation. This highlights how *terms vary within a single document* relative to that document's average term frequency. Useful for comparing patterns across documents regardless of their length. The setting `1` standardizes each column (term) by subtracting its mean and dividing by its standard deviation. This highlights how *a single term's frequency varies across different documents* relative to that term's average frequency. Useful for seeing which documents use a term more or less than average.
 - `standard_scale`: Similar to `z_score`, but scales to a specific range (usually 0 to 1). The setting `0` scales each row (document) so its minimum value is 0 and its maximum is 1. The setting `1` scales each column (term) so its minimum is 0 and its maximum is 1.
-- `cmap`: Sets the color scheme (colormap) for the heatmap. It determines which colors represent low values and which represent high values. The default setting "vlag" is a diverging colormap (red/blue), which is good for showing values around a center point (especially after `z_score` scaling). Other good general-purpose colormaps are "viridis" and "coolwarm". You can find listings of other <code><a href="https://matplotlib.org/stable/gallery/color/colormap_reference.html" target="_blank">matplotlib</a></code> and <code><a href="https://seaborn.pydata.org/tutorial/color_palettes.html" target="_blank">seaborn</a></code> colormaps online.
+- `cmap`: Sets the color scheme (colormap) for the heatmap. It determines which colors represent low values and which represent high values. The default setting "vlag" is a diverging colormap (red/blue), which is good for showing values around a center point (especially after `z_score` scaling). Other good general-purpose colormaps are "viridis" and "coolwarm". You can find listings of other [`matplotlib`](https://matplotlib.org/stable/gallery/color/colormap_reference.html){target=\"_blank\"} and [`seaborn`](https://seaborn.pydata.org/tutorial/color_palettes.html){target=\"_blank\"} colormaps online.
 - `hide_upper`: Setting the value to `True` removes the dendrogram above the heatmap. Useful if you are not interested in the clustering of columns/terms.
 - `hide_side`: Setting the value to `True` removes the dendrogram to the left of the heatmap. Useful if you are not interested in the clustering of rows/documents.
 - `row_cluster`: Perform clustering on rows (documents). Default is `True`. Along with `col_cluster`, this setting is useful if you have a specific ordering in mind for comparison, or if you've pre-computed a linkage.
@@ -212,9 +212,9 @@ In addition to the `title`, `metric`, and `method` keywords, `Clustermap` takes 
 - `title`: Adds a title to your dendrogram plot.
 - `figsize`: A tuple `(width, height)` in inches to set the size of the overall figure. For example, `(12, 8)` for a wider and taller plot.
 
-The `Clustermap` instance can be further customized with any  <code><a href="https://seaborn.pydata.org/generated/seaborn.clustermap.html" target="_blank">Seaborn.clustermap</a></code> parameter.
+The `Clustermap` instance can be further customized with any  [`Seaborn.clustermap`](https://seaborn.pydata.org/generated/seaborn.clustermap.html){target=\"_blank\"} parameter.
 
-After you've generated your clustermap, you'll likely want to save it as an image for reports or presentations. The `save()` method lets you do this easily. Just provide a file path, and it'll save the image. You can specify different file formats by changing the extension (e.g., `.png`, `.jpg`, `.pdf`, `.svg`). The `save()` method wraps the `matplotlib` <code><a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html" target="_blank">savefig</a></code> function and accepts any of its keywords.
+After you've generated your clustermap, you'll likely want to save it as an image for reports or presentations. The `save()` method lets you do this easily. Just provide a file path, and it'll save the image. You can specify different file formats by changing the extension (e.g., `.png`, `.jpg`, `.pdf`, `.svg`). The `save()` method wraps the `matplotlib` [`savefig`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html){target=\"_blank\"} function and accepts any of its keywords.
 
 ### Using Plotly¤
 
@@ -241,7 +241,7 @@ cm = PlotlyClustermap(dtm=dtm, title="My Clustermap")
 All the options for Plotly dendrograms are available with the following differences:
 
 - `figsize` is measured in pixels.
-- `colorscale` is the name of a built-in <a href="https://plotly.com/python/builtin-colorscales/" target="_blank">Plotly colorscale</a>. This is applied to the heatmap and converted internally to a list of colours to apply to the dendrograms.
+- `colorscale` is the name of a built-in [Plotly colorscale](https://plotly.com/python/builtin-colorscales/){target="_blank"}. This is applied to the heatmap and converted internally to a list of colours to apply to the dendrograms.
 
 Two additional parameters, `hide_upper` and `hide_side` allow you to hide the individual dendrograms.
 
@@ -256,9 +256,9 @@ Two additional parameters, `hide_upper` and `hide_side` allow you to hide the in
 
   Open the HTML file in a web browser, and you may get the behaviour you need. See below for other options for saving your Plotly clustermaps.
 
-You have several option for saving your Plotly clustermaps. In the Plotly toolbar, there is a "Download plot as png" option to save the plot as a static `.png` file. You can also save the the image to a static file programmatically by calling `PlotlyClustermap.write_image()`. Just provide a file name (including the extension), and it will save the image. You can choose different file formats by changing the extension (e.g., `.png`, `.jpg`, `.pdf`, `.svg`). This is a wrapper around Plotly's <code><a href="https://plotly.github.io/plotly.py-docs/generated/plotly.io.write_image.html" target="_blank">write_image()</a></code> function and accepts all the same arguments.
+You have several option for saving your Plotly clustermaps. In the Plotly toolbar, there is a "Download plot as png" option to save the plot as a static `.png` file. You can also save the the image to a static file programmatically by calling `PlotlyClustermap.write_image()`. Just provide a file name (including the extension), and it will save the image. You can choose different file formats by changing the extension (e.g., `.png`, `.jpg`, `.pdf`, `.svg`). This is a wrapper around Plotly's [`write_image()`](https://plotly.github.io/plotly.py-docs/generated/plotly.io.write_image.html){target=\"_blank\"} function and accepts all the same arguments.
 
-Plotly figures are highly interactive when saved as HTML, allowing you to zoom, pan, and hover over data points in your saved file. If you wish to save your diagram as an HTML file, call `PlotlyClustermap.write_html()`. This is a wrapper around Plotly's <code><a href="https://plotly.github.io/plotly.py-docs/generated/plotly.io.write_html.html" target="_blank">write_html()</a></code> function and accepts all the same arguments.
+Plotly figures are highly interactive when saved as HTML, allowing you to zoom, pan, and hover over data points in your saved file. If you wish to save your diagram as an HTML file, call `PlotlyClustermap.write_html()`. This is a wrapper around Plotly's [`write_html()`](https://plotly.github.io/plotly.py-docs/generated/plotly.io.write_html.html){target=\"_blank\"} function and accepts all the same arguments.
 
 Note that `write_image()` and `write_html()` have parallel `to_image()` and `to_html()` methods that allow you to assign the results to a variable, rather than saving to a file.
 

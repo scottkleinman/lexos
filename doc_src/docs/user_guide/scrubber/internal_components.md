@@ -3,7 +3,7 @@
 Using Scrubber components is made easier by an understanding of the underlying architecture and resources used by the individual functions. This page provides some additional for information to help you understand Scrubber's inner workings.
 
 !!! note "Developer's Note"
-    Many of the functions and resources in Scrubber are built on top of the preprocessing functions in the Python <a href="https://github.com/chartbeat-labs/textacy/" target="_blank">Textacy</a> library, although sometimes with modifications. Textacy is installed with Lexos, so it can also be called directly where that is useful.
+    Many of the functions and resources in Scrubber are built on top of the preprocessing functions in the Python [Textacy](https://github.com/chartbeat-labs/textacy/){target="_blank"} library, although sometimes with modifications. Textacy is installed with Lexos, so it can also be called directly where that is useful.
 
 ## The Registry
 
@@ -19,7 +19,7 @@ def title_case(text: str) -> str:
 scrubber_components.register("title_case", func=title_case)
 ```
 
-The registry is implemented using the Python <a href="https://github.com/explosion/catalogue" target="_blank">catalogue</a> library. See the `catalogue` documentation for further details about how to work with the registry.
+The registry is implemented using the Python [catalogue](https://github.com/explosion/catalogue){target="_blank"} library. See the `catalogue` documentation for further details about how to work with the registry.
 
 ## Resources
 

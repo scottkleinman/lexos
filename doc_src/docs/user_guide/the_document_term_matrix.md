@@ -40,7 +40,7 @@ docs = [
 ```
 
 !!! note "Developer's Note"
-    Lexos uses Textacy's <a href="https://textacy.readthedocs.io/en/latest/api_reference/representations.html#textacy.representations.vectorizers.Vectorizer" target="_blank">Vectorizer</a> as the default vectorizer. It is possible to use Textacy directly to produce a DTM. For instance, the following method will produce a a DTM containing the raw term counts for each document.
+    Lexos uses Textacy's [Vectorizer](https://textacy.readthedocs.io/en/latest/api_reference/representations.html#textacy.representations.vectorizers.Vectorizer){target="_blank"} as the default vectorizer. It is possible to use Textacy directly to produce a DTM. For instance, the following method will produce a a DTM containing the raw term counts for each document.
 
     ```python
     from textacy.representations.vectorizers import Vectorizer
@@ -61,7 +61,7 @@ When you create an instance of the `DTM` class, you automatically assign it a ve
 - It then counts the occurrences of each term in each document, resulting in a sparse matrix where rows represent documents and columns represent terms.
 
 !!! note "About Sparse Matrixes"
-    Since each document only contains a small subset of all terms in the corpus, a document-term matrix can be very large and mostly filled with zeros. A sparse matrix is useful for storage, especially with large corpora, because it only stores nonzero values. Lexos uses data structures from the `scipy.sparse` library to store the DTM as a sparse matrix to make computations faster, which allows you to work with large corpora without running into memory issues. You can learn more about the <code><a href="https://docs.scipy.org/doc/scipy/reference/sparse.html" target="_blank">scipy.sparse</a></code> library.
+    Since each document only contains a small subset of all terms in the corpus, a document-term matrix can be very large and mostly filled with zeros. A sparse matrix is useful for storage, especially with large corpora, because it only stores nonzero values. Lexos uses data structures from the `scipy.sparse` library to store the DTM as a sparse matrix to make computations faster, which allows you to work with large corpora without running into memory issues. You can learn more about the [`scipy.sparse`](https://docs.scipy.org/doc/scipy/reference/sparse.html){target=\"_blank\"} library.
 
     If you need a dense (regular) matrix for certain operations or compatibility with other libraries, you can convert the sparse DataFrame to a dense one by calling:
 
@@ -110,7 +110,7 @@ The vectorizer is configured by default to generate a matrix of raw counts. Howe
 
 !!! note "What Settings Should I Choose?
 
-    If you only want raw counts, just use the default settings. Changing an of the other settings will implement various types of weighting functions. The <a href="https://github.com/chartbeat-labs/textacy/blob/f08ecbc46020f514b8cbb024778ec4f80456291f/src/textacy/representations/vectorizers.py#L163" target="_blank">Textacy source code</a> provides helpful advice, which is partially reproduced here.
+    If you only want raw counts, just use the default settings. Changing an of the other settings will implement various types of weighting functions. The [Textacy source code](https://github.com/chartbeat-labs/textacy/blob/f08ecbc46020f514b8cbb024778ec4f80456291f/src/textacy/representations/vectorizers.py#L163){target="_blank"} provides helpful advice, which is partially reproduced here.
 
     > In general, weights may consist of a local component (term frequency),
     a global component (inverse document frequency), and a normalization
@@ -120,7 +120,7 @@ The vectorizer is configured by default to generate a matrix of raw counts. Howe
     and some may be better for particular use cases than others. When in doubt,
     though, just go with something standard.
 
-    One of the most commonly-used weighting settings is <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf" target="_blank">term frequency-inverse document frequency (TF-IDF)</a>, which measures the importance of a term to a document in a collection of documents, adjusted for the fact that some terms appear more frequently than others. The Lexos web app's implementation of TF-IDF has the following settings:
+    One of the most commonly-used weighting settings is [term frequency-inverse document frequency (TF-IDF)](https://en.wikipedia.org/wiki/Tf%E2%80%93idf){target="_blank"}, which measures the importance of a term to a document in a collection of documents, adjusted for the fact that some terms appear more frequently than others. The Lexos web app's implementation of TF-IDF has the following settings:
 
     - `tf_type="log"`
     - `idf_type="smooth"`
@@ -135,7 +135,7 @@ Once you have generated your DTM, you can extract useful information from its pr
 - `sorted_term_counts`: Returns a sorted dictionary of terms and their total counts across all documents in the DTM.
 
 !!! note
-    By default, terms are sorted according to the rules of language used by your operating system. You can set the DTM to use a different sorting algorithm with the `alg` keyword, which takes a `natsorted.ns.LOCALE` object. For further information, see the <a href="https://natsort.readthedocs.io/en/5.1.0/ns_class.html" target="_blank">natsort</a> documentation.
+    By default, terms are sorted according to the rules of language used by your operating system. You can set the DTM to use a different sorting algorithm with the `alg` keyword, which takes a `natsorted.ns.LOCALE` object. For further information, see the [natsort](https://natsort.readthedocs.io/en/5.1.0/ns_class.html){target="_blank"} documentation.
 
 Perhaps the most useful method of the `DTM` class is `to_df()`, which converts the matrix to a pandas DataFrame for display or for further manipulation. As a DataFrame, the output can be modified using the full range of options available in the pandas API. However, `to_df()` provides parameters that can ease the process:
 
@@ -176,7 +176,7 @@ df.Total.plot(
 )
 ```
 
-See the Pandas <code><a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html" target="_blank">DataFrame.plot</a></code> documentation for the complete range of keywords.
+See the Pandas [`DataFrame.plot`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html){target=\"_blank\"} documentation for the complete range of keywords.
 
 !!! note
 
@@ -198,7 +198,7 @@ Lexos word clouds and bubble charts are also ideal for visualising DTMs. Word cl
 
 ## Advanced Usage with `scikit-learn` Vectorizers
 
-The popular machine-learning library `scikit-learn` (`sklearn`) provides its own vectorizer classes, such as <code><a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html" target="_blank">CountVectorizer</a></code> and <code><a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html" target="_blank">TfidfVectorizer</a></code>, which often form components of machine-learning pipelines. However, these tokenizers use simple regex patterns, rather than language models, to tokenize documents. In the example below, we'll show how you can use the scikit-learn's `CountVectorizer` as part of a pipeline for training a scikit-learn logistic regression model whilst still leveraging language-specific knowledge available in a document tokenised with Lexos.
+The popular machine-learning library `scikit-learn` (`sklearn`) provides its own vectorizer classes, such as [`CountVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html){target=\"_blank\"} and [`TfidfVectorizer`](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html){target=\"_blank\"}, which often form components of machine-learning pipelines. However, these tokenizers use simple regex patterns, rather than language models, to tokenize documents. In the example below, we'll show how you can use the scikit-learn's `CountVectorizer` as part of a pipeline for training a scikit-learn logistic regression model whilst still leveraging language-specific knowledge available in a document tokenised with Lexos.
 
 ```python
 # Scikit-learn imports

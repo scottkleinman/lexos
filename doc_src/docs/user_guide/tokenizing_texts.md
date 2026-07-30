@@ -52,7 +52,7 @@ There are some trade-offs to using language models. Because the algorithm does m
 
 ## SpaCy `Docs`
 
-Lexos uses the <a href="https://spacy.io/" target="_blank">spaCy</a> Natural Language Processing (NLP) library for loading language models and tokenizing texts. Because spaCy has excellent documentation and fairly wide acceptance in the Digital Humanities community, it is a good tool to use under the bonnet. SpaCy has a growing number of language models for a variety of languages, as well as wrappers for loading models from other common NLP libraries such as Stanford Stanza.
+Lexos uses the [spaCy](https://spacy.io/){target="_blank"} Natural Language Processing (NLP) library for loading language models and tokenizing texts. Because spaCy has excellent documentation and fairly wide acceptance in the Digital Humanities community, it is a good tool to use under the bonnet. SpaCy has a growing number of language models for a variety of languages, as well as wrappers for loading models from other common NLP libraries such as Stanford Stanza.
 
 In spaCy, texts are parsed into spaCy `Doc` objects consisting of sequences of annotated tokens.
 
@@ -74,7 +74,7 @@ doc = tokenizer.make_doc("This is a test.")
 
 This returns a `Doc` object.
 
-By default the tokenizer uses spaCy's "<a href="https://spacy.io/models/xx#xx_sent_ud_sm" target="_blank">xx_sent_ud_sm</a>" language model, which has been trained for tokenization and sentence segmentation on multiple languages. This model performs statistical sentence segmentation and possesses general rules for token segmentation that work well for a variety of languages. The default model has been chosen to be as language-agnostic as possible, so it can be used for many languages without requiring a specific model. However, it is not guaranteed to work well for all languages.
+By default the tokenizer uses spaCy's "[xx_sent_ud_sm](https://spacy.io/models/xx#xx_sent_ud_sm){target="_blank"}" language model, which has been trained for tokenization and sentence segmentation on multiple languages. This model performs statistical sentence segmentation and possesses general rules for token segmentation that work well for a variety of languages. The default model has been chosen to be as language-agnostic as possible, so it can be used for many languages without requiring a specific model. However, it is not guaranteed to work well for all languages.
 
 If you were making a document from a text in a language which rquired a more language-specific model, you would specify the model to be used. For instance, to use spaCy's small English model trained on web texts, instantiate the `Tokenizer` class and use the `model` keyword argument to specify the model (it must be installed in your Python environment):
 
@@ -128,7 +128,7 @@ As mentioned above, you can use a Python list comprehension to filter the the co
 non_punct_tokens = [token.text for token in doc if not token.is_punct]
 ```
 
-The example above leverages the built-in `is_punct` attribute to indicate whether the token is defined as (or predicted to be) a punctuation mark in the language model. SpaCy docs have a number of built-in attributes, which are described in the <a href="https://spacy.io/api/doc#attributes" target="_blank">spaCy API reference</a>.
+The example above leverages the built-in `is_punct` attribute to indicate whether the token is defined as (or predicted to be) a punctuation mark in the language model. SpaCy docs have a number of built-in attributes, which are described in the [spaCy API reference](https://spacy.io/api/doc#attributes){target="_blank"}.
 
 !!! note
     It is possible to extend spaCy's Doc object with its extension attribute. For instance, if you wanted to have an `is_fruit` attribute, you could create an extension and then access it using the underscore prefix, as shown below:
@@ -139,7 +139,7 @@ The example above leverages the built-in `is_punct` attribute to indicate whethe
         print(token._.is_fruit)
     ```
 
-    For information on creating custom extensions, see the <a href="https://spacy.io/usage/processing-pipelines#custom-components-attributes" target="_blank">spaCy documentation</a>.
+    For information on creating custom extensions, see the [spaCy documentation](https://spacy.io/usage/processing-pipelines#custom-components-attributes){target="_blank"}.
 
 ### Handling Stop Words
 
@@ -167,12 +167,12 @@ doc = tokenizer.make_doc(text, disable=["parser", "ner"])
 
 Check the model's documentation for the names of the components it includes by default.
 
-It is also possible to include custom pipeline components, which can be inserted at any point in the pipeline order. Custom components are supplied with the `pipeline_components` parameter, which takes a dictionary containing the keyword "custom". The value is a list of dictionaries where each dictionary contains information about the component as described in <a href="https://spacy.io/api/language/#add_pipe" target="_blank">spaCy's documentation</a>.
+It is also possible to include custom pipeline components, which can be inserted at any point in the pipeline order. Custom components are supplied with the `pipeline_components` parameter, which takes a dictionary containing the keyword "custom". The value is a list of dictionaries where each dictionary contains information about the component as described in [spaCy's documentation](https://spacy.io/api/language/#add_pipe){target="_blank"}.
 
 !!! note
     The `pipeline_components` dict also contains `disable` and `exclude` keywords. The values are lists of components which will be merged with any components supplied in the `disable` or `exclude` paramaters of `make_doc()` and `make_docs()`.
 
-The ability to add custom pipeline components is valuable for certain language- or application-specific scenarios. However, it also opens Lexos up to the wealth of third-part pipeline components available through the <a href="https://spacy.io/universe/category/pipeline" target="_blank">spaCy Universe</a>.
+The ability to add custom pipeline components is valuable for certain language- or application-specific scenarios. However, it also opens Lexos up to the wealth of third-part pipeline components available through the [spaCy Universe](https://spacy.io/universe/category/pipeline){target="_blank"}.
 
 ## Custom Tokenizers
 
@@ -240,14 +240,14 @@ for ngram in ngrams:
 The `from_doc()` function yields a generator, so, if you wish to view it as a list, you need to call `list(ngrams)` on the output shown above. The size of the ngrams is specified by the `size` parameter, which defaults to 2. Setting it to 3, for instance, will result in the ngrams "The end is", "end is nigh", "is nigh ."
 
 !!! note
-    The `from_doc()` function is a wrapper for the `textacy.extract.basics.ngrams` method, which is part of the <a href="https://textacy.readthedocs.io/en/latest/" target="_blank">Textacy</a> library. You can call Textacy directly as shown below:
+    The `from_doc()` function is a wrapper for the `textacy.extract.basics.ngrams` method, which is part of the [Textacy](https://textacy.readthedocs.io/en/latest/){target="_blank"} library. You can call Textacy directly as shown below:
 
     ```python
     import textacy.extract.basics.ngrams as ng
     ngrams = ng(doc, 2, min_freq=2)
     ```
 
-    The `min_freq` parameter removes ngrams that do not occur at least two times. This can cut down on the size of the generated ngrams. Textacy has a lot of additional options, which are documented in the Textacy API reference under <code><a href="https://textacy.readthedocs.io/en/latest/api_reference/extract.html#textacy.extract.basics.ngrams" target="_blank">textacy.extract.basics.ngrams</a></code>. The Lexos `Ngrams.from_doc()` method accepts the same parameters as Textacy's method with a few additional options (see the [API documentation](../api/tokenizer/ngrams.md)).
+    The `min_freq` parameter removes ngrams that do not occur at least two times. This can cut down on the size of the generated ngrams. Textacy has a lot of additional options, which are documented in the Textacy API reference under [`textacy.extract.basics.ngrams`](https://textacy.readthedocs.io/en/latest/api_reference/extract.html#textacy.extract.basics.ngrams){target=\"_blank\"}. The Lexos `Ngrams.from_doc()` method accepts the same parameters as Textacy's method with a few additional options (see the [API documentation](../api/tokenizer/ngrams.md)).
 
 There is also a `Ngrams.from_docs()` method that accepts a list of `Doc` objects and returns a list of ngram generators.
 

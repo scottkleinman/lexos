@@ -13,8 +13,8 @@ The `topwords` module helps you answer questions like:
 A "topword" is a term that is highly ranked according to some statistical metric. Since there are numerous ways to measure statistical significance, Lexos provides three different Python classes for extracting topwords: `KeyTerms`, `ZTest`, `MannWhitney`.
 
 - `KeyTerms` extracts significant keywords from individual documents using graph-based ranking algorithms.
-- `ZTest` identifies statistically over-represented words in target documents compared to comparison documents by calculating their <a href="https://en.wikipedia.org/wiki/Standard_score" target="_blank">z-score</a>.
-- `MannWhitney` implements the <a href="https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test" target="_blank">Mann-Whitney U test</a> (also called the Wilcoxon rank-sum test) to compare two groups of documents to determine if they differ significantly.
+- `ZTest` identifies statistically over-represented words in target documents compared to comparison documents by calculating their [z-score](https://en.wikipedia.org/wiki/Standard_score){target="_blank"}.
+- `MannWhitney` implements the [Mann-Whitney U test](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test){target="_blank"} (also called the Wilcoxon rank-sum test) to compare two groups of documents to determine if they differ significantly.
 
 !!! Note
     Each of these classes inherits from a basic `TopWords` class to define a common API for all topwords methods, creating a plugin-like architecture for additional methods to be added. Currently, this plugin structure is a bit limited. Each class is expected to have a `to_df()` method, but no other common elements are expected.
@@ -47,7 +47,7 @@ The `KeyTerms` module extracts significant keywords from documents using graph-b
 | `yake` | Yet Another Keyword Extractor | Multilingual documents |
 
 !!! Note
-    `KeyTerms` implements these algorithms using the Python <a href="https://textacy.readthedocs.io/en/latest/api_reference/extract.html#keyterms" target="_blank">Textacy</a> library. Further documentation about their use can be found there.
+    `KeyTerms` implements these algorithms using the Python [Textacy](https://textacy.readthedocs.io/en/latest/api_reference/extract.html#keyterms){target="_blank"} library. Further documentation about their use can be found there.
 
 The `KeyTerms` class accepts either a string or a spaCy `Doc`. Here is an example:
 

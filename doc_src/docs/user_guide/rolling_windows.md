@@ -119,7 +119,7 @@ Rolling ratios compares the frequencies of exactly **two** patterns. A statistic
 
 ## Plotting the Results
 
-Once you have a pandas DataFrame, you can also use the pandas interface to save it, for instance, as a CSV file: `calculator.to_df().to_csv("filename")`. You can also the built-in pandas plotting function to generate charts based on the results. See <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html" target="_blanket">pandas.DataFrame.plot</a> for further information.
+Once you have a pandas DataFrame, you can also use the pandas interface to save it, for instance, as a CSV file: `calculator.to_df().to_csv("filename")`. You can also the built-in pandas plotting function to generate charts based on the results. See [pandas.DataFrame.plot](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.plot.html){target="_blank"} for further information.
 
 ### Plotter Classes
 

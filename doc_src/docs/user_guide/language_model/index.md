@@ -1,6 +1,6 @@
-# language_model
+# Training Language Models
 
-A Python wrapper around spaCy's training workflow for fine-tuning language models on custom corpora. The module is designed for any language or domain where a generic pre-built model is insufficient — historical varieties, specialised domains, low-resource languages, or any text where higher annotation accuracy matters.
+The `language_model` module Python wrapper around spaCy's training workflow for fine-tuning language models on custom corpora. The module is designed for any language or domain where a generic pre-built model is insufficient — historical varieties, specialised domains, low-resource languages, or any text where higher annotation accuracy matters.
 
 The module connects directly to the Lexos tokenizer: once a model is trained and packaged, pass its path to `tokenizer.make_doc()` and it will be used for all linguistic feature assignment.
 
@@ -14,7 +14,7 @@ Users interact with the `LanguageModel` class and `split_conllu` utility — the
 
 The fastest path to a trained model is the step-by-step tutorial notebook:
 
-- **[Fine-tuning a Language Model for Your Texts](../../tutorials/language_model/tutorial.ipynb)** — the main tutorial; covers the complete workflow from data preparation to a packaged model
+- **[Fine-tuning a Language Model for Your Texts](../../tutorials/language_model/tutorial.ipynb){target="_blank"}** — the main tutorial; covers the complete workflow from data preparation to a packaged model
 
 Supplementary guides for specific setup tasks:
 

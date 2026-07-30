@@ -83,7 +83,7 @@ This will find any token containing a character followed by "ingle" (and the sea
 |---:|:------|:---------------------------------|:----------|:-----------------------|
 |  0 | Doc 1 | universally acknowledged, that a | single    | man in possession of a |
 
-We can also perform more sophisticated token-based searches using spaCy's rule-matching syntax. To use it, we set the `matcher` parameter to "rule". See the <a href="https://spacy.io/usage/rule-based-matching#matcher" target="_blank">spaCy documentation</a> for details of how to construct rules for token-based matching.
+We can also perform more sophisticated token-based searches using spaCy's rule-matching syntax. To use it, we set the `matcher` parameter to "rule". See the [spaCy documentation](https://spacy.io/usage/rule-based-matching#matcher){target="_blank"} for details of how to construct rules for token-based matching.
 
 ```python
 pattern1 = [{"LOWER": "truth"}, {"LOWER": "universally"}, {"LOWER": "acknowledged"}]

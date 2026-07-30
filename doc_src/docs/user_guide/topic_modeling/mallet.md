@@ -2,11 +2,11 @@
 
 ## Overview
 
-Topic modeling is a statistical method for discovering abstract themes or "topics" within a collection of documents. <a href="https://mimno.github.io/Mallet/topics.html" target="_blank">MALLET</a> is a mature tool for topic modeling used widely in the Humanities. It is a Java package that needs to be installed separately from Lexos. The Lexos `mallet` module provides a straightforward wrapper for running MALLET, managing outputs, and creating visualizations of your topic model.
+Topic modeling is a statistical method for discovering abstract themes or "topics" within a collection of documents. [MALLET](https://mimno.github.io/Mallet/topics.html){target="_blank"} is a mature tool for topic modeling used widely in the Humanities. It is a Java package that needs to be installed separately from Lexos. The Lexos `mallet` module provides a straightforward wrapper for running MALLET, managing outputs, and creating visualizations of your topic model.
 
-For more on topic modeling and installing MALLET, see Shawn Graham, Scott Weingart, and Ian Milligan's tutorial <a href="https://programminghistorian.org/en/lessons/topic-modeling-and-mallet" target="_blank">Getting Started with Topic Modeling and MALLET</a>.
+For more on topic modeling and installing MALLET, see Shawn Graham, Scott Weingart, and Ian Milligan's tutorial [Getting Started with Topic Modeling and MALLET](https://programminghistorian.org/en/lessons/topic-modeling-and-mallet){target="_blank"}.
 
-The Lexos `mallet` module integrates Maria Antoniak's <a href="https://github.com/maria-antoniak/little-mallet-wrapper" target="_blank">Litte Mallet Wrapper</a> functions with a slightly simplified API that manages file paths. For more advanced methods of exploring a topic model, see the Lexos integration of [DFR Browser 2](dfr_browser2.md).
+The Lexos `mallet` module integrates Maria Antoniak's [Litte Mallet Wrapper](https://github.com/maria-antoniak/little-mallet-wrapper){target="_blank"} functions with a slightly simplified API that manages file paths. For more advanced methods of exploring a topic model, see the Lexos integration of [DFR Browser 2](dfr_browser2.md).
 
 In the examples below, we will use a sample dataset of English-language fiction from David Bamman's [LitBank](https://github.com/DBamman/litbank). Additional texts were collected by Allen Riddell for [TAToM: Text Analysis with Topic Models for the Humanities and Social Sciences](https://github.com/ariddell/tatom).
 
@@ -417,7 +417,7 @@ The `topic_clouds()` method in the Mallet class generates word clouds for each t
 
 **Customization:**
 
-- Pass `opts` in `**kwargs` to control word cloud appearance (e.g., background color, colormap). Accepts arguments for the Python <a href="https://amueller.github.io/word_cloud/generated/wordcloud.WordCloud.html#wordcloud.WordCloud" target="_blank">wordcloud</a> package.
+- Pass `opts` in `**kwargs` to control word cloud appearance (e.g., background color, colormap). Accepts arguments for the Python [wordcloud](https://amueller.github.io/word_cloud/generated/wordcloud.WordCloud.html#wordcloud.WordCloud){target="_blank"} package.
 - Pass `figure_opts` in `**kwargs` to control figure-level options using `matplotlib` (e.g., facecolor).
 
 ```python
