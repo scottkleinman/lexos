@@ -42,36 +42,40 @@ of the Lexos API modules:
             <td>A set of functions for handling input-output processes.</td>
         </tr>
         <tr class="row-odd">
+            <td><a class="" href="language_model/" title="api_lexos.language_model"><code>language_model</code></a></td>
+            <td>Fine-tunes spaCy language models on custom corpora.</td>
+        </tr>
+        <tr class="row-even">
             <td><a class="" href="milestones/" title="api_lexos.milestones"><code>milestones</code></a></td>
             <td>Sets structural divisions in documents.</td>
         </tr>
-        <tr class="row-even">
+        <tr class="row-odd">
             <td><a class="" href="rolling-windows/" title="api_lexos.rolling_windows"><code>rolling_windows</code></a></td>
             <td>Analyzes documents by calculating term frequencies over sliding token windows.</td>
         </tr>
-        <tr class="row-odd">
+        <tr class="row-even">
             <td><a class="" href="scrubber/" title="api_lexos.scrubber"><code>scrubber</code></a></td>
             <td>A destructive preprocessor normally used on texts before
             they are tokenised.</td>
         </tr>
-        <tr class="row-even">
+        <tr class="row-odd">
             <td><a class="" href="structural_stylometry/" title="api_lexos.structural_stylometry"><code>structural_stylometry</code></a></td>
             <td>A set of functions for analyzing the structural style of texts.</td>
         </tr>
-        <tr class="row-odd">
+        <tr class="row-even">
             <td><a class="" href="tokenizer/" title="api_lexos.tokenizer"><code>tokenizer</code></a></td>
             <td>A set of functions used to convert texts into spaCy tokenised
             <a href="https://spacy.io/" target="_blank">spaCy</a> docs and to manipulate those docs.</td>
         </tr>
-        <tr class="row-even">
+        <tr class="row-odd">
             <td><a class="" href="topic-modeling/" title="api_lexos.topic_modeling"><code>topic_modeling</code></a></td>
             <td>Provides methods for creating and visualizing topic models.</td>
         </tr>
-        <tr class="row-odd">
+        <tr class="row-even">
             <td><a class="" href="util/" title="api_lexos.util"><code>util</code></a></td>
             <td>A set of utility functions available to all modules.</td>
         </tr>
-        <tr class="row-even">
+        <tr class="row-odd">
             <td><a class="" href="visualization/" title="api_lexos.visualization"><code>visualization</code></a></td>
             <td>A set of functions for visualising data generated from documents.</td>
         </tr>

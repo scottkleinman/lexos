@@ -5,6 +5,13 @@ site_url: https://lexos.github.io/en/latest/
 not_in_nav: |
   development/ai-policy.md
 
+# Training output and bundled model binaries must not be copied into the
+# built site (the transformer tutorial's output alone is ~800 MB).
+exclude_docs: |
+  tutorials/language_model/winter_tale/
+  tutorials/language_model/winter_tale_trf/
+  tutorials/language_model/pretrained/
+
 nav:
   - Home: index.md
   - Installation: installation.md
@@ -43,6 +50,11 @@ nav:
       - Topic Modelling:
         - Topic Modeling with MALLET: user_guide/topic_modeling/mallet.md
         - Exploring MALLET Topic Models with DFR Browser 2: user_guide/topic_modeling/dfr_browser2.md
+      - Training Language Models:
+        - The Language Model module: user_guide/language_model/index.md
+        - Getting Training Data: user_guide/language_model/training_data.md
+        - Choosing and Setting Up Base Models: user_guide/language_model/base_models.md
+        - Tuning Training Settings: user_guide/language_model/training_settings.md
   - Tutorials: tutorials/index.md
   - API:
       - Overview: api/index.md
@@ -83,6 +95,7 @@ nav:
           - loader: api/io/loader.md
           - parallel_loader: api/io/parallel_loader.md
       - kwic: api/kwic/index.md
+      - language_model: api/language_model/index.md
       - milestones:
           - Overview: api/milestones/index.md
           - span_milestones: api/milestones/span_milestones.md
