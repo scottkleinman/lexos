@@ -64,7 +64,7 @@ Topic modeling is a statistical method for discovering abstract themes or "topic
 
 `llm_labeler` is an experimental module for using LLMs to automatically label topics produced by MALLET. It requires an existing MALLET `topic-keys.txt` file.
 
-### ::: lexos.topic_modeling.mallet.llm_labeler.TopicLabelerClient.label_mallet_topics
+### ::: lexos.topic_modeling.mallet.llm_labeler.label_mallet_topics
     rendering:
       show_root_heading: true
       heading_level: 3
