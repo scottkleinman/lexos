@@ -147,7 +147,7 @@ def textrank(
             unigram extraction.
         window_size (int): Size of sliding window in which term co-occurrences are
             determined.
-        edge_weighting (str: {"count", "binary"}): : If "count", the nodes for
+        edge_weighting (str): If "count", the nodes for
             all co-occurring terms are connected by edges with weight equal to
             the number of times they co-occurred within a sliding window;
             if "binary", all such edges have weight = 1.
