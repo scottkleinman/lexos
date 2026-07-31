@@ -119,11 +119,11 @@ def scake(
             corresponding sCAKE scores.
 
     Notes:
-        1. normalize the arguemnts
-        2. then make the co-occurence matrix
-        3. makes a graph based on the matrix
-        4. compute the scores based on the graph
-        5. get the key phrases and return topn
+        1. Normalize the arguments
+        2. Then make the co-occurrence matrix.
+        3. Make a graph based on the matrix.
+        4. Compute the scores based on the graph.
+        5. Get the key phrases and return topn.
     """
     include_pos_set, topn = _validate_scake_args(include_pos, topn)
 
