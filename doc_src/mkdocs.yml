@@ -143,6 +143,18 @@ nav:
           - Overview: api/topic_modeling/index.md
           - mallet: api/topic_modeling/mallet.md
           - dfr_browser2: api/topic_modeling/dfr_browser2.md
+      - topwords:
+          - Overview: api/topwords/index.md
+          - compare: api/topwords/compare.md
+          - mann_whitney: api/topwords/mann_whitney.md
+          - ztest: api/topwords/ztest.md
+          - keyterms:
+              - Overview: api/topwords/keyterms/index.md
+              - keyterms_util: api/topwords/keyterms/keyterms_util.md
+              - scake: api/topwords/keyterms/scake.md
+              - sgrank: api/topwords/keyterms/sgrank.md
+              - textrank: api/topwords/keyterms/textrank.md
+              - yake: api/topwords/keyterms/yake.md
       - util: api/util.md
       - visualization:
           - Overview: api/visualization/index.md
