@@ -25,9 +25,9 @@ Each of these classes is implemented as a submodule of `topwords`.
 
 ## Submodules
 
-### KeyTerms
+### Keyterms
 
-The `KeyTerms` module extracts significant keywords from documents using graph-based ranking algorithms. Ranking algorithms build a graph where words are nodes and their co-occurrences create edges, then rank words by their importance in the network. Unlike statistical tests that compare document sets, `KeyTerms` analyzes individual documents to identify their most "central" or important terms.
+The `keyterms` submodule extracts significant keywords from documents using graph-based ranking algorithms. Ranking algorithms build a graph where words are nodes and their co-occurrences create edges, then rank words by their importance in the network. Unlike statistical tests that compare document sets, `keyterms` analyzes individual documents to identify their most "central" or important terms.
 
 **Common Use Cases:**
 
@@ -40,19 +40,24 @@ The `KeyTerms` module extracts significant keywords from documents using graph-b
 **Available Algorithms:**
 
 | Algorithm | Description | Best For |
-|-----------|-------------|----------|
-| `textrank` | PageRank applied to words (default) | General purpose, most documents |
-| `sgrank` | Statistical selection, positional ranking | Longer documents, academic papers |
-| `scake` | Single candidate keyword extraction | Short documents, tweets |
-| `yake` | Yet Another Keyword Extractor | Multilingual documents |
+| ----------- | ------------- | ---------- |
+| `TextRank` | PageRank applied to words (default) | General purpose, most documents |
+| `SGRank` | Statistical selection, positional ranking | Longer documents, academic papers |
+| `SCake` | Single candidate keyword extraction | Short documents, tweets |
+| `Yake` | Yet Another Keyword Extractor | Multilingual documents |
 
 !!! Note
-    `KeyTerms` implements these algorithms using the Python [Textacy](https://textacy.readthedocs.io/en/latest/api_reference/extract.html#keyterms){target="_blank"} library. Further documentation about their use can be found there.
+    Lexos now provides dedicated classes and function APIs for each algorithm in `lexos.topwords.keyterms`:
 
-The `KeyTerms` class accepts either a string or a spaCy `Doc`. Here is an example:
+    - `lexos.topwords.keyterms.textrank.TextRank` and `lexos.topwords.keyterms.textrank.textrank`
+    - `lexos.topwords.keyterms.sgrank.SGRank` and `lexos.topwords.keyterms.sgrank.sgrank`
+    - `lexos.topwords.keyterms.scake.SCake` and `lexos.topwords.keyterms.scake.scake`
+    - `lexos.topwords.keyterms.yake.Yake` and `lexos.topwords.keyterms.yake.yake`
+
+All keyterms classes accept either a string or a spaCy `Doc` as `doc`. Here is an example with `TextRank`:
 
 ```python
-from lexos.topwords.keyterms import KeyTerms
+from lexos.topwords.keyterms.textrank import TextRank
 
 # Basic usage with a single document
 text = """
@@ -61,13 +66,12 @@ algorithms that learn from data. Deep learning uses neural networks with
 multiple layers to process complex patterns.
 """
 
-kt = KeyTerms(
-    document=text,
-    method="textrank",
+kt = TextRank(
+    doc=text,
     topn=10,
-    model="xx_sent_ud_sm",
     ngrams=1,
-    normalize="lemma"
+    normalize="lemma",
+    include_pos=("NOUN", "PROPN", "ADJ"),
 )
 
 # Access keyterms directly
@@ -78,12 +82,20 @@ print(kt.keyterms)
 results_df = kt.to_df()
 ```
 
-The code above shows the default settings. If you wish to use ngrams, you can set `ngrams=2` (or 3, 4, etc.). You can also count multiple ngrams with a tuple. For instance, `ngrams=(1, 2)` will count both single terms and bigrams. Note, however, that the `scake` method does not accept ngrams.
+If you prefer a function call, each algorithm module also exports a function:
 
-The default `normalize` setting counts all variant forms of a lemma (if the language model supports lemma). You can also set `normalize="lower"` to make counts case-insensitive. You can also turn off normalization with `normalize=None`.
+```python
+from lexos.topwords.keyterms.yake import yake
+
+keyterms = yake(doc=text, ngrams=(1, 2, 3), topn=10)
+```
+
+`TextRank`, `SGRank`, and `Yake` support configurable `ngrams`; `SCake` does not expose an `ngrams` parameter.
+
+For normalization, most extractors default to lemmatized forms (`normalize="lemma"`). You can usually set `normalize="lower"` for case-insensitive forms or `normalize=None` / `"orth"` to use surface forms.
 
 !!! Note
-    The `KeyTerms` class accepts a string or spaCy `Doc` (automatically converting strings to `Docs` using the chosen language model). However, it does not currently accept lists of strings or `Docs`. Since, strings are internally converted to `Docs`, you may find it more efficient to preprocess string data with the Lexos `tokenizer` module.
+    These `keyterms` extractors operate on a single document at a time. If you are working with many raw strings, you may find it more efficient to preprocess them first with the Lexos `tokenizer` module.
 
 ---
 
