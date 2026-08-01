@@ -107,7 +107,8 @@ en-core-web-sm = { url = "https://github.com/explosion/spacy-models/releases/dow
 [tool.uv]
 override-dependencies = [
     "urllib3>=2.7.0",  # Address vulnerabilities in spaCy, MkDocs, and derivative libraries
-    "pillow>=12.3.0"
+    "pillow>=12.3.0",
+    "soupsieve>=2.8.4"
 ]
 
 [tool.ruff.lint]
