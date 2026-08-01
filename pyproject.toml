@@ -10,7 +10,7 @@ authors = [
 requires-python = ">=3.12"
 dependencies = [
     "biopython>=1.85",
-    "bs4>=0.0.2",
+    "beautifulsoup4>=4.13.0",
     "chardet>=5.2.0",
     "cytoolz>=1.0.1",
     "kaleido>=1.0.0",
@@ -27,7 +27,7 @@ dependencies = [
     "puremagic>=2.0.0b2",
     "pydantic>=2.10.4",
     "pydantic-extra-types>=2.10.2",
-    "pypdf>=5.1.0",
+    "pypdf>=6.14.2",
     "python-docx>=1.1.2",
     "rich>=13.9.4",
     "ruff>=0.11.12",
@@ -105,7 +105,10 @@ xx-sent-ud-sm = { url = "https://github.com/explosion/spacy-models/releases/down
 en-core-web-sm = { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl" }
 
 [tool.uv]
-override-dependencies = ["urllib3>=2.7.0"] # Address vulnerabilities in spaCy, MkDocs, and derivative libraries
+override-dependencies = [
+    "urllib3>=2.7.0",  # Address vulnerabilities in spaCy, MkDocs, and derivative libraries
+    "pillow>=12.3.0"
+]
 
 [tool.ruff.lint]
 # Enable all `pydocstyle` rules, limiting to those that adhere to the
