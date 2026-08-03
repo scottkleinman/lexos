@@ -1,0 +1,310 @@
+name: Versioned Docs
+
+'on':
+  push:
+    branches:
+      - main
+      - docs-source
+    paths:
+      - "src/**"
+      - "doc_src/**"
+      - "pyproject.toml"
+      - ".github/workflows/docs-versioned.yml"
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: "Manual operation to run"
+        required: true
+        type: choice
+        options:
+          - backfill
+          - alias-repair
+          - rollback
+      source_ref:
+        description: "Source ref to build from (branch, tag, or SHA)"
+        required: true
+        default: "main"
+        type: string
+      version_label:
+        description: "Version label for backfill deploy (optional; defaults to source ref basename)"
+        required: false
+        default: ""
+        type: string
+      target_version:
+        description: "Existing version to point alias at (for alias-repair/rollback)"
+        required: false
+        default: ""
+        type: string
+      alias_name:
+        description: "Alias to repair"
+        required: false
+        default: "stable"
+        type: choice
+        options:
+          - stable
+          - stable-beta
+          - dev
+      force_overwrite:
+        description: "Allow overwriting an existing version label"
+        required: true
+        default: false
+        type: boolean
+      docs_source_branch:
+        description: "Branch that contains doc_src and docs config"
+        required: true
+        default: "docs-source"
+        type: string
+      reason:
+        description: "Required: why this manual run is needed"
+        required: true
+        type: string
+      change_summary:
+        description: "Required: summary of expected docs/alias impact"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: versioned-docs-gh-pages
+  cancel-in-progress: false
+
+env:
+  DEFAULT_DOCS_SOURCE_BRANCH: docs-source
+  DEV_VERSION: dev
+  STABLE_ALIAS: stable
+  PRERELEASE_ALIAS: stable-beta
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Determine publish context
+        id: ctx
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          event_name="${{ github.event_name }}"
+          operation=""
+          source_ref=""
+          version_label=""
+          alias_to_update=""
+          update_default="false"
+          docs_source_branch="${DEFAULT_DOCS_SOURCE_BRANCH}"
+
+          if [[ "${event_name}" == "push" ]]; then
+            operation="push-sync"
+            source_ref="main"
+            version_label="${DEV_VERSION}"
+            alias_to_update="${DEV_VERSION}"
+          elif [[ "${event_name}" == "release" ]]; then
+            operation="release"
+            source_ref="${{ github.event.release.tag_name }}"
+            version_label="${{ github.event.release.tag_name }}"
+
+            if [[ "${{ github.event.release.prerelease }}" == "true" ]]; then
+              alias_to_update="${PRERELEASE_ALIAS}"
+            else
+              alias_to_update="${STABLE_ALIAS}"
+              update_default="true"
+            fi
+          else
+            operation="${{ inputs.operation }}"
+            source_ref="${{ inputs.source_ref }}"
+            docs_source_branch="${{ inputs.docs_source_branch }}"
+
+            if [[ "${operation}" == "backfill" ]]; then
+              version_label="${{ inputs.version_label }}"
+              if [[ -z "${version_label}" ]]; then
+                version_label="${source_ref##*/}"
+              fi
+              alias_to_update=""
+            fi
+          fi
+
+          echo "event_name=${event_name}" >> "$GITHUB_OUTPUT"
+          echo "operation=${operation}" >> "$GITHUB_OUTPUT"
+          echo "source_ref=${source_ref}" >> "$GITHUB_OUTPUT"
+          echo "version_label=${version_label}" >> "$GITHUB_OUTPUT"
+          echo "alias_to_update=${alias_to_update}" >> "$GITHUB_OUTPUT"
+          echo "update_default=${update_default}" >> "$GITHUB_OUTPUT"
+          echo "docs_source_branch=${docs_source_branch}" >> "$GITHUB_OUTPUT"
+
+      - name: Enforce strict manual audit inputs
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          reason="${{ inputs.reason }}"
+          summary="${{ inputs.change_summary }}"
+          operation="${{ steps.ctx.outputs.operation }}"
+          target_version="${{ inputs.target_version }}"
+
+          if [[ -z "${reason// }" ]]; then
+            echo "Manual runs require a non-empty reason."
+            exit 1
+          fi
+
+          if [[ -z "${summary// }" ]]; then
+            echo "Manual runs require a non-empty change summary."
+            exit 1
+          fi
+
+          if [[ "${operation}" == "alias-repair" || "${operation}" == "rollback" ]]; then
+            if [[ -z "${target_version}" ]]; then
+              echo "target_version is required for alias-repair and rollback operations."
+              exit 1
+            fi
+          fi
+
+      - name: Checkout docs source branch
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ steps.ctx.outputs.docs_source_branch }}
+          path: docs-src
+          fetch-depth: 0
+
+      - name: Checkout source ref
+        if: ${{ steps.ctx.outputs.operation == 'push-sync' || steps.ctx.outputs.operation == 'release' || steps.ctx.outputs.operation == 'backfill' }}
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ steps.ctx.outputs.source_ref }}
+          path: source
+          fetch-depth: 0
+
+      - name: Checkout main for alias operations
+        if: ${{ steps.ctx.outputs.operation == 'alias-repair' || steps.ctx.outputs.operation == 'rollback' }}
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          path: source
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+      - name: Install Python 3.13
+        run: uv python install 3.13
+
+      - name: Sync docs tooling dependencies
+        working-directory: source
+        run: uv sync --group dev
+
+      - name: Configure git identity for mike
+        shell: bash
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Guard release/backfill version overwrite
+        if: ${{ steps.ctx.outputs.operation == 'release' || steps.ctx.outputs.operation == 'backfill' }}
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+
+          version_label="${{ steps.ctx.outputs.version_label }}"
+          existing_versions="$(uv run --project . mike list --config-file ../docs-src/doc_src/mkdocs.yml | awk '{if ($1 == "*") {print $2} else {print $1}}')"
+
+          if printf '%s\n' "${existing_versions}" | grep -Fx "${version_label}" >/dev/null 2>&1; then
+            if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.force_overwrite }}" == "true" ]]; then
+              echo "Version ${version_label} exists, but force_overwrite=true allows replacing it."
+            else
+              echo "Version ${version_label} already exists. Refusing to overwrite without manual force_overwrite=true."
+              exit 1
+            fi
+          fi
+
+      - name: Deploy dev or release version
+        if: ${{ steps.ctx.outputs.operation == 'push-sync' || steps.ctx.outputs.operation == 'release' }}
+        shell: bash
+        working-directory: source
+        env:
+          MKDOCSTRINGS_PYTHON_PATH: ${{ github.workspace }}/source/src
+        run: |
+          set -euo pipefail
+
+          version_label="${{ steps.ctx.outputs.version_label }}"
+          alias_to_update="${{ steps.ctx.outputs.alias_to_update }}"
+
+          if [[ -n "${alias_to_update}" ]]; then
+            uv run --project . mike deploy --config-file ../docs-src/doc_src/mkdocs.yml --push --update-aliases "${version_label}" "${alias_to_update}"
+          else
+            uv run --project . mike deploy --config-file ../docs-src/doc_src/mkdocs.yml --push "${version_label}"
+          fi
+
+      - name: Deploy manual backfill version
+        if: ${{ steps.ctx.outputs.operation == 'backfill' }}
+        shell: bash
+        working-directory: source
+        env:
+          MKDOCSTRINGS_PYTHON_PATH: ${{ github.workspace }}/source/src
+        run: |
+          set -euo pipefail
+
+          version_label="${{ steps.ctx.outputs.version_label }}"
+          uv run --project . mike deploy --config-file ../docs-src/doc_src/mkdocs.yml --push "${version_label}"
+
+      - name: Apply alias repair
+        if: ${{ steps.ctx.outputs.operation == 'alias-repair' }}
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+
+          alias_name="${{ inputs.alias_name }}"
+          target_version="${{ inputs.target_version }}"
+
+          uv run --project . mike alias --config-file ../docs-src/doc_src/mkdocs.yml --push "${target_version}" "${alias_name}"
+
+          if [[ "${alias_name}" == "${STABLE_ALIAS}" ]]; then
+            uv run --project . mike set-default --config-file ../docs-src/doc_src/mkdocs.yml --push "${STABLE_ALIAS}"
+          fi
+
+      - name: Apply rollback
+        if: ${{ steps.ctx.outputs.operation == 'rollback' }}
+        shell: bash
+        working-directory: source
+        run: |
+          set -euo pipefail
+
+          target_version="${{ inputs.target_version }}"
+
+          uv run --project . mike alias --config-file ../docs-src/doc_src/mkdocs.yml --push "${target_version}" "${STABLE_ALIAS}"
+          uv run --project . mike set-default --config-file ../docs-src/doc_src/mkdocs.yml --push "${STABLE_ALIAS}"
+
+      - name: Set default alias for stable releases
+        if: ${{ steps.ctx.outputs.update_default == 'true' }}
+        shell: bash
+        working-directory: source
+        run: |
+          uv run --project . mike set-default --config-file ../docs-src/doc_src/mkdocs.yml --push "${STABLE_ALIAS}"
+
+      - name: Publish run summary
+        shell: bash
+        run: |
+          {
+            echo "## Versioned Docs Publish Summary"
+            echo ""
+            echo "- Actor: ${{ github.actor }}"
+            echo "- Trigger: ${{ github.event_name }}"
+            echo "- Operation: ${{ steps.ctx.outputs.operation }}"
+            echo "- Docs source branch: ${{ steps.ctx.outputs.docs_source_branch }}"
+            echo "- Source ref: ${{ steps.ctx.outputs.source_ref }}"
+            echo "- Version label: ${{ steps.ctx.outputs.version_label }}"
+            echo "- Alias updated: ${{ steps.ctx.outputs.alias_to_update }}"
+            echo "- Default updated: ${{ steps.ctx.outputs.update_default }}"
+
+            if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+              echo "- Reason: ${{ inputs.reason }}"
+              echo "- Change summary: ${{ inputs.change_summary }}"
+              echo "- force_overwrite: ${{ inputs.force_overwrite }}"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
