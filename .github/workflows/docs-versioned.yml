@@ -48,6 +48,7 @@ name: Versioned Docs
         options:
           - stable
           - stable-beta
+          - latest
           - dev
       force_overwrite:
         description: "Allow overwriting an existing version label"
@@ -97,6 +98,7 @@ jobs:
           source_ref=""
           version_label=""
           alias_to_update=""
+          update_latest_alias="false"
           update_default="false"
           docs_source_branch="${DEFAULT_DOCS_SOURCE_BRANCH}"
 
@@ -113,6 +115,7 @@ jobs:
                 alias_to_update="${STABLE_ALIAS}"
                 update_default="true"
               fi
+              update_latest_alias="true"
             else
               operation="push-sync"
               source_ref="main"
@@ -130,6 +133,7 @@ jobs:
               alias_to_update="${STABLE_ALIAS}"
               update_default="true"
             fi
+            update_latest_alias="true"
           else
             operation="${{ inputs.operation }}"
             source_ref="${{ inputs.source_ref }}"
@@ -149,6 +153,7 @@ jobs:
           echo "source_ref=${source_ref}" >> "$GITHUB_OUTPUT"
           echo "version_label=${version_label}" >> "$GITHUB_OUTPUT"
           echo "alias_to_update=${alias_to_update}" >> "$GITHUB_OUTPUT"
+          echo "update_latest_alias=${update_latest_alias}" >> "$GITHUB_OUTPUT"
           echo "update_default=${update_default}" >> "$GITHUB_OUTPUT"
           echo "docs_source_branch=${docs_source_branch}" >> "$GITHUB_OUTPUT"
 
@@ -292,6 +297,16 @@ jobs:
 
           uv run --project . --with mike mike set-default --config-file doc_src/mkdocs.yml --push "${default_target}"
 
+      - name: Update latest alias
+        if: ${{ steps.ctx.outputs.update_latest_alias == 'true' }}
+        shell: bash
+        working-directory: docs-src
+        run: |
+          set -euo pipefail
+
+          version_label="${{ steps.ctx.outputs.version_label }}"
+          uv run --project . --with mike mike alias --config-file doc_src/mkdocs.yml --push "${version_label}" latest
+
       - name: Apply alias repair
         if: ${{ steps.ctx.outputs.operation == 'alias-repair' }}
         shell: bash
@@ -340,6 +355,7 @@ jobs:
             echo "- Source ref: ${{ steps.ctx.outputs.source_ref }}"
             echo "- Version label: ${{ steps.ctx.outputs.version_label }}"
             echo "- Alias updated: ${{ steps.ctx.outputs.alias_to_update }}"
+            echo "- latest updated: ${{ steps.ctx.outputs.update_latest_alias }}"
             echo "- Default updated: ${{ steps.ctx.outputs.update_default }}"
 
             if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
