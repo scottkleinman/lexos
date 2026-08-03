@@ -5,6 +5,8 @@ name: Versioned Docs
     branches:
       - main
       - docs-source
+    tags:
+      - "v*"
     paths:
       - "src/**"
       - "doc_src/**"
@@ -99,10 +101,24 @@ jobs:
           docs_source_branch="${DEFAULT_DOCS_SOURCE_BRANCH}"
 
           if [[ "${event_name}" == "push" ]]; then
-            operation="push-sync"
-            source_ref="main"
-            version_label="${DEV_VERSION}"
-            alias_to_update="${DEV_VERSION}"
+            if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+              operation="release-tag"
+              source_ref="${GITHUB_REF_NAME}"
+              version_label="${GITHUB_REF_NAME}"
+
+              # Pre-release tags route to stable-beta; final tags route to stable.
+              if [[ "${GITHUB_REF_NAME}" == *-* ]]; then
+                alias_to_update="${PRERELEASE_ALIAS}"
+              else
+                alias_to_update="${STABLE_ALIAS}"
+                update_default="true"
+              fi
+            else
+              operation="push-sync"
+              source_ref="main"
+              version_label="${DEV_VERSION}"
+              alias_to_update="${DEV_VERSION}"
+            fi
           elif [[ "${event_name}" == "release" ]]; then
             operation="release"
             source_ref="${{ github.event.release.tag_name }}"
@@ -172,7 +188,7 @@ jobs:
           fetch-depth: 0
 
       - name: Checkout source ref
-        if: ${{ steps.ctx.outputs.operation == 'push-sync' || steps.ctx.outputs.operation == 'release' || steps.ctx.outputs.operation == 'backfill' }}
+        if: ${{ steps.ctx.outputs.operation == 'push-sync' || steps.ctx.outputs.operation == 'release' || steps.ctx.outputs.operation == 'release-tag' || steps.ctx.outputs.operation == 'backfill' }}
         uses: actions/checkout@v5
         with:
           ref: ${{ steps.ctx.outputs.source_ref }}
@@ -204,7 +220,7 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Guard release/backfill version overwrite
-        if: ${{ steps.ctx.outputs.operation == 'release' || steps.ctx.outputs.operation == 'backfill' }}
+        if: ${{ steps.ctx.outputs.operation == 'release' || steps.ctx.outputs.operation == 'release-tag' || steps.ctx.outputs.operation == 'backfill' }}
         shell: bash
         working-directory: docs-src
         run: |
@@ -223,7 +239,7 @@ jobs:
           fi
 
       - name: Deploy dev or release version
-        if: ${{ steps.ctx.outputs.operation == 'push-sync' || steps.ctx.outputs.operation == 'release' }}
+        if: ${{ steps.ctx.outputs.operation == 'push-sync' || steps.ctx.outputs.operation == 'release' || steps.ctx.outputs.operation == 'release-tag' }}
         shell: bash
         working-directory: docs-src
         env:
@@ -253,7 +269,7 @@ jobs:
           uv run --project . --with mike mike deploy --config-file doc_src/mkdocs.yml --push "${version_label}"
 
       - name: Ensure default version exists
-        if: ${{ steps.ctx.outputs.operation == 'push-sync' || steps.ctx.outputs.operation == 'release' || steps.ctx.outputs.operation == 'backfill' }}
+        if: ${{ steps.ctx.outputs.operation == 'push-sync' || steps.ctx.outputs.operation == 'release' || steps.ctx.outputs.operation == 'release-tag' || steps.ctx.outputs.operation == 'backfill' }}
         shell: bash
         working-directory: docs-src
         run: |
