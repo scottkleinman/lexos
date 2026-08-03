@@ -252,6 +252,30 @@ jobs:
           version_label="${{ steps.ctx.outputs.version_label }}"
           uv run --project . --with mike mike deploy --config-file doc_src/mkdocs.yml --push "${version_label}"
 
+      - name: Ensure default version exists
+        if: ${{ steps.ctx.outputs.operation == 'push-sync' || steps.ctx.outputs.operation == 'release' || steps.ctx.outputs.operation == 'backfill' }}
+        shell: bash
+        working-directory: docs-src
+        run: |
+          set -euo pipefail
+
+          # mike serves the site root via the configured default version.
+          # If no default is set yet, GitHub Pages root can return 404.
+          if uv run --project . --with mike mike list --config-file doc_src/mkdocs.yml | awk 'NR>1 {if ($1 == "*") found=1} END {exit !found}'; then
+            echo "Default version already configured."
+            exit 0
+          fi
+
+          if uv run --project . --with mike mike list --config-file doc_src/mkdocs.yml | awk 'NR>1 {v=($1=="*"?$2:$1); if (v=="stable") found=1} END {exit !found}'; then
+            default_target="${STABLE_ALIAS}"
+          elif [[ -n "${{ steps.ctx.outputs.alias_to_update }}" ]]; then
+            default_target="${{ steps.ctx.outputs.alias_to_update }}"
+          else
+            default_target="${{ steps.ctx.outputs.version_label }}"
+          fi
+
+          uv run --project . --with mike mike set-default --config-file doc_src/mkdocs.yml --push "${default_target}"
+
       - name: Apply alias repair
         if: ${{ steps.ctx.outputs.operation == 'alias-repair' }}
         shell: bash
