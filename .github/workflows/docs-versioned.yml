@@ -234,7 +234,7 @@ jobs:
           version_label="${{ steps.ctx.outputs.version_label }}"
           alias_to_update="${{ steps.ctx.outputs.alias_to_update }}"
 
-          if [[ -n "${alias_to_update}" ]]; then
+          if [[ -n "${alias_to_update}" && "${alias_to_update}" != "${version_label}" ]]; then
             uv run --project . --with mike mike deploy --config-file doc_src/mkdocs.yml --push --update-aliases "${version_label}" "${alias_to_update}"
           else
             uv run --project . --with mike mike deploy --config-file doc_src/mkdocs.yml --push "${version_label}"
