@@ -1,6 +1,6 @@
 site_name: Lexos Documentation
 site_dir: "../docs"
-site_url: https://lexos.github.io/en/latest/
+site_url: https://lexos.github.io/en/
 
 not_in_nav: |
   development/ai-policy.md
@@ -244,6 +244,9 @@ extra_css:
 # - javascripts/mark.es6.min.js
 
 extra:
+  version:
+    provider: mike
+    default: stable
   social:
     - icon: fontawesome/solid/globe
       link: http://lexos.wheatoncollege.edu/
@@ -264,6 +267,8 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
+          paths:
+            - !ENV [MKDOCSTRINGS_PYTHON_PATH, ../src]
           options:
             # docstring_options:
             #   ignore_init_summary: true
