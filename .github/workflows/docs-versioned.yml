@@ -1,4 +1,4 @@
-name: Versioned Docs # test
+name: Versioned Docs
 
 'on':
   push:
