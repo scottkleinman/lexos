@@ -1,4 +1,4 @@
-# Lexos Documentation (Test)
+# Lexos Documentation (Test2)
 
 Documentation for Lexos takes three forms:
 
