@@ -194,7 +194,7 @@ jobs:
         run: uv python install 3.13
 
       - name: Sync docs tooling dependencies
-        working-directory: source
+        working-directory: docs-src
         run: uv sync --group dev
 
       - name: Configure git identity for mike
@@ -206,12 +206,12 @@ jobs:
       - name: Guard release/backfill version overwrite
         if: ${{ steps.ctx.outputs.operation == 'release' || steps.ctx.outputs.operation == 'backfill' }}
         shell: bash
-        working-directory: source
+        working-directory: docs-src
         run: |
           set -euo pipefail
 
           version_label="${{ steps.ctx.outputs.version_label }}"
-          existing_versions="$(uv run --project . mike list --config-file ../docs-src/doc_src/mkdocs.yml | awk '{if ($1 == "*") {print $2} else {print $1}}')"
+          existing_versions="$(uv run --project . --with mike mike list --config-file doc_src/mkdocs.yml | awk '{if ($1 == "*") {print $2} else {print $1}}')"
 
           if printf '%s\n' "${existing_versions}" | grep -Fx "${version_label}" >/dev/null 2>&1; then
             if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.force_overwrite }}" == "true" ]]; then
@@ -225,7 +225,7 @@ jobs:
       - name: Deploy dev or release version
         if: ${{ steps.ctx.outputs.operation == 'push-sync' || steps.ctx.outputs.operation == 'release' }}
         shell: bash
-        working-directory: source
+        working-directory: docs-src
         env:
           MKDOCSTRINGS_PYTHON_PATH: ${{ github.workspace }}/source/src
         run: |
@@ -235,57 +235,57 @@ jobs:
           alias_to_update="${{ steps.ctx.outputs.alias_to_update }}"
 
           if [[ -n "${alias_to_update}" ]]; then
-            uv run --project . mike deploy --config-file ../docs-src/doc_src/mkdocs.yml --push --update-aliases "${version_label}" "${alias_to_update}"
+            uv run --project . --with mike mike deploy --config-file doc_src/mkdocs.yml --push --update-aliases "${version_label}" "${alias_to_update}"
           else
-            uv run --project . mike deploy --config-file ../docs-src/doc_src/mkdocs.yml --push "${version_label}"
+            uv run --project . --with mike mike deploy --config-file doc_src/mkdocs.yml --push "${version_label}"
           fi
 
       - name: Deploy manual backfill version
         if: ${{ steps.ctx.outputs.operation == 'backfill' }}
         shell: bash
-        working-directory: source
+        working-directory: docs-src
         env:
           MKDOCSTRINGS_PYTHON_PATH: ${{ github.workspace }}/source/src
         run: |
           set -euo pipefail
 
           version_label="${{ steps.ctx.outputs.version_label }}"
-          uv run --project . mike deploy --config-file ../docs-src/doc_src/mkdocs.yml --push "${version_label}"
+          uv run --project . --with mike mike deploy --config-file doc_src/mkdocs.yml --push "${version_label}"
 
       - name: Apply alias repair
         if: ${{ steps.ctx.outputs.operation == 'alias-repair' }}
         shell: bash
-        working-directory: source
+        working-directory: docs-src
         run: |
           set -euo pipefail
 
           alias_name="${{ inputs.alias_name }}"
           target_version="${{ inputs.target_version }}"
 
-          uv run --project . mike alias --config-file ../docs-src/doc_src/mkdocs.yml --push "${target_version}" "${alias_name}"
+          uv run --project . --with mike mike alias --config-file doc_src/mkdocs.yml --push "${target_version}" "${alias_name}"
 
           if [[ "${alias_name}" == "${STABLE_ALIAS}" ]]; then
-            uv run --project . mike set-default --config-file ../docs-src/doc_src/mkdocs.yml --push "${STABLE_ALIAS}"
+            uv run --project . --with mike mike set-default --config-file doc_src/mkdocs.yml --push "${STABLE_ALIAS}"
           fi
 
       - name: Apply rollback
         if: ${{ steps.ctx.outputs.operation == 'rollback' }}
         shell: bash
-        working-directory: source
+        working-directory: docs-src
         run: |
           set -euo pipefail
 
           target_version="${{ inputs.target_version }}"
 
-          uv run --project . mike alias --config-file ../docs-src/doc_src/mkdocs.yml --push "${target_version}" "${STABLE_ALIAS}"
-          uv run --project . mike set-default --config-file ../docs-src/doc_src/mkdocs.yml --push "${STABLE_ALIAS}"
+          uv run --project . --with mike mike alias --config-file doc_src/mkdocs.yml --push "${target_version}" "${STABLE_ALIAS}"
+          uv run --project . --with mike mike set-default --config-file doc_src/mkdocs.yml --push "${STABLE_ALIAS}"
 
       - name: Set default alias for stable releases
         if: ${{ steps.ctx.outputs.update_default == 'true' }}
         shell: bash
-        working-directory: source
+        working-directory: docs-src
         run: |
-          uv run --project . mike set-default --config-file ../docs-src/doc_src/mkdocs.yml --push "${STABLE_ALIAS}"
+          uv run --project . --with mike mike set-default --config-file doc_src/mkdocs.yml --push "${STABLE_ALIAS}"
 
       - name: Publish run summary
         shell: bash
