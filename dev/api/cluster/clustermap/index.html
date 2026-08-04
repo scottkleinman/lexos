@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.7.7">
     
     
       
@@ -7855,7 +7855,7 @@
 
 
               <details class="mkdocstrings-source">
-                <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+                <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
                 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-73"> 73</a></span>
 <span class="normal"><a href="#__codelineno-0-74"> 74</a></span>
 <span class="normal"><a href="#__codelineno-0-75"> 75</a></span>
@@ -8103,7 +8103,7 @@
 <span class="normal"><a href="#__codelineno-0-317">317</a></span>
 <span class="normal"><a href="#__codelineno-0-318">318</a></span>
 <span class="normal"><a href="#__codelineno-0-319">319</a></span>
-<span class="normal"><a href="#__codelineno-0-320">320</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-73"><a id="__codelineno-0-73" name="__codelineno-0-73"></a><span class="k">class</span> <span class="nc">Clustermap</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-320">320</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-73"><a id="__codelineno-0-73" name="__codelineno-0-73"></a><span class="k">class</span><span class="w"> </span><span class="nc">Clustermap</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 </span><span id="__span-0-74"><a id="__codelineno-0-74" name="__codelineno-0-74"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Clustermap.&quot;&quot;&quot;</span>
 </span><span id="__span-0-75"><a id="__codelineno-0-75" name="__codelineno-0-75"></a>
 </span><span id="__span-0-76"><a id="__codelineno-0-76" name="__codelineno-0-76"></a>    <span class="n">dtm</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="n">DTM</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -8187,7 +8187,7 @@
 </span><span id="__span-0-154"><a id="__codelineno-0-154" name="__codelineno-0-154"></a>
 </span><span id="__span-0-155"><a id="__codelineno-0-155" name="__codelineno-0-155"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="__span-0-156"><a id="__codelineno-0-156" name="__codelineno-0-156"></a>
-</span><span id="__span-0-157"><a id="__codelineno-0-157" name="__codelineno-0-157"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span><span id="__span-0-157"><a id="__codelineno-0-157" name="__codelineno-0-157"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="__span-0-158"><a id="__codelineno-0-158" name="__codelineno-0-158"></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-159"><a id="__codelineno-0-159" name="__codelineno-0-159"></a>        <span class="o">**</span><span class="n">data</span><span class="p">,</span>
 </span><span id="__span-0-160"><a id="__codelineno-0-160" name="__codelineno-0-160"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -8262,7 +8262,7 @@
 </span><span id="__span-0-229"><a id="__codelineno-0-229" name="__codelineno-0-229"></a>        <span class="c1"># Do not automatically display -- require fig.show()</span>
 </span><span id="__span-0-230"><a id="__codelineno-0-230" name="__codelineno-0-230"></a>        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="p">)</span>
 </span><span id="__span-0-231"><a id="__codelineno-0-231" name="__codelineno-0-231"></a>
-</span><span id="__span-0-232"><a id="__codelineno-0-232" name="__codelineno-0-232"></a>    <span class="k">def</span> <span class="nf">_get_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListedColormap</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-232"><a id="__codelineno-0-232" name="__codelineno-0-232"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_get_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListedColormap</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-233"><a id="__codelineno-0-233" name="__codelineno-0-233"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the row and column colors for the clustermap.</span>
 </span><span id="__span-0-234"><a id="__codelineno-0-234" name="__codelineno-0-234"></a>
 </span><span id="__span-0-235"><a id="__codelineno-0-235" name="__codelineno-0-235"></a><span class="sd">        Notes:</span>
@@ -8300,7 +8300,7 @@
 </span><span id="__span-0-267"><a id="__codelineno-0-267" name="__codelineno-0-267"></a>
 </span><span id="__span-0-268"><a id="__codelineno-0-268" name="__codelineno-0-268"></a>        <span class="k">return</span> <span class="n">col_colors</span><span class="p">,</span> <span class="n">row_colors</span>
 </span><span id="__span-0-269"><a id="__codelineno-0-269" name="__codelineno-0-269"></a>
-</span><span id="__span-0-270"><a id="__codelineno-0-270" name="__codelineno-0-270"></a>    <span class="k">def</span> <span class="nf">_set_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+</span><span id="__span-0-270"><a id="__codelineno-0-270" name="__codelineno-0-270"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_set_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 </span><span id="__span-0-271"><a id="__codelineno-0-271" name="__codelineno-0-271"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the attributes of the class.</span>
 </span><span id="__span-0-272"><a id="__codelineno-0-272" name="__codelineno-0-272"></a>
 </span><span id="__span-0-273"><a id="__codelineno-0-273" name="__codelineno-0-273"></a><span class="sd">        Args:</span>
@@ -8310,7 +8310,7 @@
 </span><span id="__span-0-277"><a id="__codelineno-0-277" name="__codelineno-0-277"></a>            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-278"><a id="__codelineno-0-278" name="__codelineno-0-278"></a>                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 </span><span id="__span-0-279"><a id="__codelineno-0-279" name="__codelineno-0-279"></a>
-</span><span id="__span-0-280"><a id="__codelineno-0-280" name="__codelineno-0-280"></a>    <span class="k">def</span> <span class="nf">_set_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-0-280"><a id="__codelineno-0-280" name="__codelineno-0-280"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_set_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-0-281"><a id="__codelineno-0-281" name="__codelineno-0-281"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the labels for the clustermap.&quot;&quot;&quot;</span>
 </span><span id="__span-0-282"><a id="__codelineno-0-282" name="__codelineno-0-282"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
 </span><span id="__span-0-283"><a id="__codelineno-0-283" name="__codelineno-0-283"></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtm</span><span class="p">,</span> <span class="n">DTM</span><span class="p">):</span>
@@ -8320,7 +8320,7 @@
 </span><span id="__span-0-287"><a id="__codelineno-0-287" name="__codelineno-0-287"></a>            <span class="k">else</span><span class="p">:</span>
 </span><span id="__span-0-288"><a id="__codelineno-0-288" name="__codelineno-0-288"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Doc</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtm</span><span class="p">)]</span>
 </span><span id="__span-0-289"><a id="__codelineno-0-289" name="__codelineno-0-289"></a>
-</span><span id="__span-0-290"><a id="__codelineno-0-290" name="__codelineno-0-290"></a>    <span class="k">def</span> <span class="nf">_validate_linkage_matrices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-0-290"><a id="__codelineno-0-290" name="__codelineno-0-290"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_linkage_matrices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-0-291"><a id="__codelineno-0-291" name="__codelineno-0-291"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate the linkage matrices.&quot;&quot;&quot;</span>
 </span><span id="__span-0-292"><a id="__codelineno-0-292" name="__codelineno-0-292"></a>        <span class="c1"># TODO: raise a LexosException if hierarchy.is_valid_linkage fails</span>
 </span><span id="__span-0-293"><a id="__codelineno-0-293" name="__codelineno-0-293"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_linkage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -8334,7 +8334,7 @@
 </span><span id="__span-0-301"><a id="__codelineno-0-301" name="__codelineno-0-301"></a>            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 </span><span id="__span-0-302"><a id="__codelineno-0-302" name="__codelineno-0-302"></a>                <span class="k">raise</span> <span class="n">LexosException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid `col_linkage` value: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="__span-0-303"><a id="__codelineno-0-303" name="__codelineno-0-303"></a>
-</span><span id="__span-0-304"><a id="__codelineno-0-304" name="__codelineno-0-304"></a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+</span><span id="__span-0-304"><a id="__codelineno-0-304" name="__codelineno-0-304"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 </span><span id="__span-0-305"><a id="__codelineno-0-305" name="__codelineno-0-305"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the figure to a file.</span>
 </span><span id="__span-0-306"><a id="__codelineno-0-306" name="__codelineno-0-306"></a>
 </span><span id="__span-0-307"><a id="__codelineno-0-307" name="__codelineno-0-307"></a><span class="sd">        Args:</span>
@@ -8343,7 +8343,7 @@
 </span><span id="__span-0-310"><a id="__codelineno-0-310" name="__codelineno-0-310"></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="__span-0-311"><a id="__codelineno-0-311" name="__codelineno-0-311"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </span><span id="__span-0-312"><a id="__codelineno-0-312" name="__codelineno-0-312"></a>
-</span><span id="__span-0-313"><a id="__codelineno-0-313" name="__codelineno-0-313"></a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-0-313"><a id="__codelineno-0-313" name="__codelineno-0-313"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-0-314"><a id="__codelineno-0-314" name="__codelineno-0-314"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Show the figure if it is hidden.</span>
 </span><span id="__span-0-315"><a id="__codelineno-0-315" name="__codelineno-0-315"></a>
 </span><span id="__span-0-316"><a id="__codelineno-0-316" name="__codelineno-0-316"></a><span class="sd">        This is a helper method. You can also reference the figure</span>
@@ -8953,7 +8953,7 @@
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-157">157</a></span>
 <span class="normal"><a href="#__codelineno-0-158">158</a></span>
 <span class="normal"><a href="#__codelineno-0-159">159</a></span>
@@ -9027,7 +9027,7 @@
 <span class="normal"><a href="#__codelineno-0-227">227</a></span>
 <span class="normal"><a href="#__codelineno-0-228">228</a></span>
 <span class="normal"><a href="#__codelineno-0-229">229</a></span>
-<span class="normal"><a href="#__codelineno-0-230">230</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-157"><a id="__codelineno-0-157" name="__codelineno-0-157"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-230">230</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-157"><a id="__codelineno-0-157" name="__codelineno-0-157"></a><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="__span-0-158"><a id="__codelineno-0-158" name="__codelineno-0-158"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-159"><a id="__codelineno-0-159" name="__codelineno-0-159"></a>    <span class="o">**</span><span class="n">data</span><span class="p">,</span>
 </span><span id="__span-0-160"><a id="__codelineno-0-160" name="__codelineno-0-160"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -9169,7 +9169,7 @@
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-304">304</a></span>
 <span class="normal"><a href="#__codelineno-0-305">305</a></span>
 <span class="normal"><a href="#__codelineno-0-306">306</a></span>
@@ -9177,7 +9177,7 @@
 <span class="normal"><a href="#__codelineno-0-308">308</a></span>
 <span class="normal"><a href="#__codelineno-0-309">309</a></span>
 <span class="normal"><a href="#__codelineno-0-310">310</a></span>
-<span class="normal"><a href="#__codelineno-0-311">311</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-304"><a id="__codelineno-0-304" name="__codelineno-0-304"></a><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-311">311</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-304"><a id="__codelineno-0-304" name="__codelineno-0-304"></a><span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 </span><span id="__span-0-305"><a id="__codelineno-0-305" name="__codelineno-0-305"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the figure to a file.</span>
 </span><span id="__span-0-306"><a id="__codelineno-0-306" name="__codelineno-0-306"></a>
 </span><span id="__span-0-307"><a id="__codelineno-0-307" name="__codelineno-0-307"></a><span class="sd">    Args:</span>
@@ -9209,7 +9209,7 @@ Jupyter notebook.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-313">313</a></span>
 <span class="normal"><a href="#__codelineno-0-314">314</a></span>
 <span class="normal"><a href="#__codelineno-0-315">315</a></span>
@@ -9217,7 +9217,7 @@ Jupyter notebook.</p>
 <span class="normal"><a href="#__codelineno-0-317">317</a></span>
 <span class="normal"><a href="#__codelineno-0-318">318</a></span>
 <span class="normal"><a href="#__codelineno-0-319">319</a></span>
-<span class="normal"><a href="#__codelineno-0-320">320</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-313"><a id="__codelineno-0-313" name="__codelineno-0-313"></a><span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-320">320</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-313"><a id="__codelineno-0-313" name="__codelineno-0-313"></a><span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-0-314"><a id="__codelineno-0-314" name="__codelineno-0-314"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Show the figure if it is hidden.</span>
 </span><span id="__span-0-315"><a id="__codelineno-0-315" name="__codelineno-0-315"></a>
 </span><span id="__span-0-316"><a id="__codelineno-0-316" name="__codelineno-0-316"></a><span class="sd">    This is a helper method. You can also reference the figure</span>
@@ -9254,7 +9254,7 @@ Jupyter notebook.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-157">157</a></span>
 <span class="normal"><a href="#__codelineno-0-158">158</a></span>
 <span class="normal"><a href="#__codelineno-0-159">159</a></span>
@@ -9328,7 +9328,7 @@ Jupyter notebook.</p>
 <span class="normal"><a href="#__codelineno-0-227">227</a></span>
 <span class="normal"><a href="#__codelineno-0-228">228</a></span>
 <span class="normal"><a href="#__codelineno-0-229">229</a></span>
-<span class="normal"><a href="#__codelineno-0-230">230</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-157"><a id="__codelineno-0-157" name="__codelineno-0-157"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-230">230</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-157"><a id="__codelineno-0-157" name="__codelineno-0-157"></a><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="__span-0-158"><a id="__codelineno-0-158" name="__codelineno-0-158"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-159"><a id="__codelineno-0-159" name="__codelineno-0-159"></a>    <span class="o">**</span><span class="n">data</span><span class="p">,</span>
 </span><span id="__span-0-160"><a id="__codelineno-0-160" name="__codelineno-0-160"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -9470,7 +9470,7 @@ Jupyter notebook.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-304">304</a></span>
 <span class="normal"><a href="#__codelineno-0-305">305</a></span>
 <span class="normal"><a href="#__codelineno-0-306">306</a></span>
@@ -9478,7 +9478,7 @@ Jupyter notebook.</p>
 <span class="normal"><a href="#__codelineno-0-308">308</a></span>
 <span class="normal"><a href="#__codelineno-0-309">309</a></span>
 <span class="normal"><a href="#__codelineno-0-310">310</a></span>
-<span class="normal"><a href="#__codelineno-0-311">311</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-304"><a id="__codelineno-0-304" name="__codelineno-0-304"></a><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-311">311</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-304"><a id="__codelineno-0-304" name="__codelineno-0-304"></a><span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 </span><span id="__span-0-305"><a id="__codelineno-0-305" name="__codelineno-0-305"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Save the figure to a file.</span>
 </span><span id="__span-0-306"><a id="__codelineno-0-306" name="__codelineno-0-306"></a>
 </span><span id="__span-0-307"><a id="__codelineno-0-307" name="__codelineno-0-307"></a><span class="sd">    Args:</span>
@@ -9510,7 +9510,7 @@ Jupyter notebook.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-313">313</a></span>
 <span class="normal"><a href="#__codelineno-0-314">314</a></span>
 <span class="normal"><a href="#__codelineno-0-315">315</a></span>
@@ -9518,7 +9518,7 @@ Jupyter notebook.</p>
 <span class="normal"><a href="#__codelineno-0-317">317</a></span>
 <span class="normal"><a href="#__codelineno-0-318">318</a></span>
 <span class="normal"><a href="#__codelineno-0-319">319</a></span>
-<span class="normal"><a href="#__codelineno-0-320">320</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-313"><a id="__codelineno-0-313" name="__codelineno-0-313"></a><span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-320">320</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-313"><a id="__codelineno-0-313" name="__codelineno-0-313"></a><span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-0-314"><a id="__codelineno-0-314" name="__codelineno-0-314"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Show the figure if it is hidden.</span>
 </span><span id="__span-0-315"><a id="__codelineno-0-315" name="__codelineno-0-315"></a>
 </span><span id="__span-0-316"><a id="__codelineno-0-316" name="__codelineno-0-316"></a><span class="sd">    This is a helper method. You can also reference the figure</span>
@@ -9573,7 +9573,7 @@ Jupyter notebook.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-232">232</a></span>
 <span class="normal"><a href="#__codelineno-0-233">233</a></span>
 <span class="normal"><a href="#__codelineno-0-234">234</a></span>
@@ -9610,7 +9610,7 @@ Jupyter notebook.</p>
 <span class="normal"><a href="#__codelineno-0-265">265</a></span>
 <span class="normal"><a href="#__codelineno-0-266">266</a></span>
 <span class="normal"><a href="#__codelineno-0-267">267</a></span>
-<span class="normal"><a href="#__codelineno-0-268">268</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-232"><a id="__codelineno-0-232" name="__codelineno-0-232"></a><span class="k">def</span> <span class="nf">_get_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListedColormap</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-268">268</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-232"><a id="__codelineno-0-232" name="__codelineno-0-232"></a><span class="k">def</span><span class="w"> </span><span class="nf">_get_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ListedColormap</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-233"><a id="__codelineno-0-233" name="__codelineno-0-233"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the row and column colors for the clustermap.</span>
 </span><span id="__span-0-234"><a id="__codelineno-0-234" name="__codelineno-0-234"></a>
 </span><span id="__span-0-235"><a id="__codelineno-0-235" name="__codelineno-0-235"></a><span class="sd">    Notes:</span>
@@ -9699,7 +9699,7 @@ Jupyter notebook.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-270">270</a></span>
 <span class="normal"><a href="#__codelineno-0-271">271</a></span>
 <span class="normal"><a href="#__codelineno-0-272">272</a></span>
@@ -9708,7 +9708,7 @@ Jupyter notebook.</p>
 <span class="normal"><a href="#__codelineno-0-275">275</a></span>
 <span class="normal"><a href="#__codelineno-0-276">276</a></span>
 <span class="normal"><a href="#__codelineno-0-277">277</a></span>
-<span class="normal"><a href="#__codelineno-0-278">278</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-270"><a id="__codelineno-0-270" name="__codelineno-0-270"></a><span class="k">def</span> <span class="nf">_set_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-278">278</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-270"><a id="__codelineno-0-270" name="__codelineno-0-270"></a><span class="k">def</span><span class="w"> </span><span class="nf">_set_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 </span><span id="__span-0-271"><a id="__codelineno-0-271" name="__codelineno-0-271"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the attributes of the class.</span>
 </span><span id="__span-0-272"><a id="__codelineno-0-272" name="__codelineno-0-272"></a>
 </span><span id="__span-0-273"><a id="__codelineno-0-273" name="__codelineno-0-273"></a><span class="sd">    Args:</span>
@@ -9738,7 +9738,7 @@ Jupyter notebook.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-280">280</a></span>
 <span class="normal"><a href="#__codelineno-0-281">281</a></span>
 <span class="normal"><a href="#__codelineno-0-282">282</a></span>
@@ -9747,7 +9747,7 @@ Jupyter notebook.</p>
 <span class="normal"><a href="#__codelineno-0-285">285</a></span>
 <span class="normal"><a href="#__codelineno-0-286">286</a></span>
 <span class="normal"><a href="#__codelineno-0-287">287</a></span>
-<span class="normal"><a href="#__codelineno-0-288">288</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-280"><a id="__codelineno-0-280" name="__codelineno-0-280"></a><span class="k">def</span> <span class="nf">_set_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-288">288</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-280"><a id="__codelineno-0-280" name="__codelineno-0-280"></a><span class="k">def</span><span class="w"> </span><span class="nf">_set_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-0-281"><a id="__codelineno-0-281" name="__codelineno-0-281"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the labels for the clustermap.&quot;&quot;&quot;</span>
 </span><span id="__span-0-282"><a id="__codelineno-0-282" name="__codelineno-0-282"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
 </span><span id="__span-0-283"><a id="__codelineno-0-283" name="__codelineno-0-283"></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtm</span><span class="p">,</span> <span class="n">DTM</span><span class="p">):</span>
@@ -9777,7 +9777,7 @@ Jupyter notebook.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-290">290</a></span>
 <span class="normal"><a href="#__codelineno-0-291">291</a></span>
 <span class="normal"><a href="#__codelineno-0-292">292</a></span>
@@ -9790,7 +9790,7 @@ Jupyter notebook.</p>
 <span class="normal"><a href="#__codelineno-0-299">299</a></span>
 <span class="normal"><a href="#__codelineno-0-300">300</a></span>
 <span class="normal"><a href="#__codelineno-0-301">301</a></span>
-<span class="normal"><a href="#__codelineno-0-302">302</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-290"><a id="__codelineno-0-290" name="__codelineno-0-290"></a><span class="k">def</span> <span class="nf">_validate_linkage_matrices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-302">302</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-290"><a id="__codelineno-0-290" name="__codelineno-0-290"></a><span class="k">def</span><span class="w"> </span><span class="nf">_validate_linkage_matrices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-0-291"><a id="__codelineno-0-291" name="__codelineno-0-291"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate the linkage matrices.&quot;&quot;&quot;</span>
 </span><span id="__span-0-292"><a id="__codelineno-0-292" name="__codelineno-0-292"></a>    <span class="c1"># TODO: raise a LexosException if hierarchy.is_valid_linkage fails</span>
 </span><span id="__span-0-293"><a id="__codelineno-0-293" name="__codelineno-0-293"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_linkage</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -10107,7 +10107,7 @@ Jupyter notebook.</p>
 
 
               <details class="mkdocstrings-source">
-                <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+                <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
                 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-542"> 542</a></span>
 <span class="normal"><a href="#__codelineno-0-543"> 543</a></span>
 <span class="normal"><a href="#__codelineno-0-544"> 544</a></span>
@@ -10752,7 +10752,7 @@ Jupyter notebook.</p>
 <span class="normal"><a href="#__codelineno-0-1183">1183</a></span>
 <span class="normal"><a href="#__codelineno-0-1184">1184</a></span>
 <span class="normal"><a href="#__codelineno-0-1185">1185</a></span>
-<span class="normal"><a href="#__codelineno-0-1186">1186</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-542"><a id="__codelineno-0-542" name="__codelineno-0-542"></a><span class="k">class</span> <span class="nc">PlotlyClustermap</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-1186">1186</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-542"><a id="__codelineno-0-542" name="__codelineno-0-542"></a><span class="k">class</span><span class="w"> </span><span class="nc">PlotlyClustermap</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 </span><span id="__span-0-543"><a id="__codelineno-0-543" name="__codelineno-0-543"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Plotly version of the Clustermap.&quot;&quot;&quot;</span>
 </span><span id="__span-0-544"><a id="__codelineno-0-544" name="__codelineno-0-544"></a>
 </span><span id="__span-0-545"><a id="__codelineno-0-545" name="__codelineno-0-545"></a>    <span class="n">dtm</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ArrayLike</span> <span class="o">|</span> <span class="n">DTM</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
@@ -10853,7 +10853,7 @@ Jupyter notebook.</p>
 </span><span id="__span-0-640"><a id="__codelineno-0-640" name="__codelineno-0-640"></a>
 </span><span id="__span-0-641"><a id="__codelineno-0-641" name="__codelineno-0-641"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="__span-0-642"><a id="__codelineno-0-642" name="__codelineno-0-642"></a>
-</span><span id="__span-0-643"><a id="__codelineno-0-643" name="__codelineno-0-643"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span><span id="__span-0-643"><a id="__codelineno-0-643" name="__codelineno-0-643"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="__span-0-644"><a id="__codelineno-0-644" name="__codelineno-0-644"></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-645"><a id="__codelineno-0-645" name="__codelineno-0-645"></a>        <span class="o">**</span><span class="n">data</span><span class="p">,</span>
 </span><span id="__span-0-646"><a id="__codelineno-0-646" name="__codelineno-0-646"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -11234,7 +11234,7 @@ Jupyter notebook.</p>
 </span><span id="__span-0-1021"><a id="__codelineno-0-1021" name="__codelineno-0-1021"></a>        <span class="c1"># Adjust layout if upper dendrogram is hidden</span>
 </span><span id="__span-0-1022"><a id="__codelineno-0-1022" name="__codelineno-0-1022"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_adjust_layout_for_hidden_upper</span><span class="p">()</span>
 </span><span id="__span-0-1023"><a id="__codelineno-0-1023" name="__codelineno-0-1023"></a>
-</span><span id="__span-0-1024"><a id="__codelineno-0-1024" name="__codelineno-0-1024"></a>    <span class="k">def</span> <span class="nf">_adjust_layout_for_hidden_upper</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-1024"><a id="__codelineno-0-1024" name="__codelineno-0-1024"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_adjust_layout_for_hidden_upper</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-1025"><a id="__codelineno-0-1025" name="__codelineno-0-1025"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Adjust the layout when the upper dendrogram is hidden to move components up.&quot;&quot;&quot;</span>
 </span><span id="__span-0-1026"><a id="__codelineno-0-1026" name="__codelineno-0-1026"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide_upper</span><span class="p">:</span>
 </span><span id="__span-0-1027"><a id="__codelineno-0-1027" name="__codelineno-0-1027"></a>            <span class="k">return</span>
@@ -11306,7 +11306,7 @@ Jupyter notebook.</p>
 </span><span id="__span-0-1093"><a id="__codelineno-0-1093" name="__codelineno-0-1093"></a>        <span class="k">if</span> <span class="n">updates</span><span class="p">:</span>
 </span><span id="__span-0-1094"><a id="__codelineno-0-1094" name="__codelineno-0-1094"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">updates</span><span class="p">)</span>
 </span><span id="__span-0-1095"><a id="__codelineno-0-1095" name="__codelineno-0-1095"></a>
-</span><span id="__span-0-1096"><a id="__codelineno-0-1096" name="__codelineno-0-1096"></a>    <span class="k">def</span> <span class="nf">_set_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-0-1096"><a id="__codelineno-0-1096" name="__codelineno-0-1096"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_set_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-0-1097"><a id="__codelineno-0-1097" name="__codelineno-0-1097"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the labels for the clustermap.&quot;&quot;&quot;</span>
 </span><span id="__span-0-1098"><a id="__codelineno-0-1098" name="__codelineno-0-1098"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
 </span><span id="__span-0-1099"><a id="__codelineno-0-1099" name="__codelineno-0-1099"></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtm</span><span class="p">,</span> <span class="n">DTM</span><span class="p">):</span>
@@ -11317,7 +11317,7 @@ Jupyter notebook.</p>
 </span><span id="__span-0-1104"><a id="__codelineno-0-1104" name="__codelineno-0-1104"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;Doc</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtm</span><span class="p">)]</span>
 </span><span id="__span-0-1105"><a id="__codelineno-0-1105" name="__codelineno-0-1105"></a>
 </span><span id="__span-0-1106"><a id="__codelineno-0-1106" name="__codelineno-0-1106"></a>    <span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">)</span>
-</span><span id="__span-0-1107"><a id="__codelineno-0-1107" name="__codelineno-0-1107"></a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-1107"><a id="__codelineno-0-1107" name="__codelineno-0-1107"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-1108"><a id="__codelineno-0-1108" name="__codelineno-0-1108"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Save a static image of the figure to disk.</span>
 </span><span id="__span-0-1109"><a id="__codelineno-0-1109" name="__codelineno-0-1109"></a>
 </span><span id="__span-0-1110"><a id="__codelineno-0-1110" name="__codelineno-0-1110"></a><span class="sd">        Alias of `write_image()`</span>
@@ -11328,7 +11328,7 @@ Jupyter notebook.</p>
 </span><span id="__span-0-1115"><a id="__codelineno-0-1115" name="__codelineno-0-1115"></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="__span-0-1116"><a id="__codelineno-0-1116" name="__codelineno-0-1116"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </span><span id="__span-0-1117"><a id="__codelineno-0-1117" name="__codelineno-0-1117"></a>
-</span><span id="__span-0-1118"><a id="__codelineno-0-1118" name="__codelineno-0-1118"></a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-0-1118"><a id="__codelineno-0-1118" name="__codelineno-0-1118"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-0-1119"><a id="__codelineno-0-1119" name="__codelineno-0-1119"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Show the clustermap.&quot;&quot;&quot;</span>
 </span><span id="__span-0-1120"><a id="__codelineno-0-1120" name="__codelineno-0-1120"></a>        <span class="n">config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
 </span><span id="__span-0-1121"><a id="__codelineno-0-1121" name="__codelineno-0-1121"></a>            <span class="n">displaylogo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -11337,7 +11337,7 @@ Jupyter notebook.</p>
 </span><span id="__span-0-1124"><a id="__codelineno-0-1124" name="__codelineno-0-1124"></a>        <span class="p">)</span>
 </span><span id="__span-0-1125"><a id="__codelineno-0-1125" name="__codelineno-0-1125"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
 </span><span id="__span-0-1126"><a id="__codelineno-0-1126" name="__codelineno-0-1126"></a>
-</span><span id="__span-0-1127"><a id="__codelineno-0-1127" name="__codelineno-0-1127"></a>    <span class="k">def</span> <span class="nf">to_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_sync</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="__span-0-1127"><a id="__codelineno-0-1127" name="__codelineno-0-1127"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_sync</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span id="__span-0-1128"><a id="__codelineno-0-1128" name="__codelineno-0-1128"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an HTML representation of the figure with optional synchronization.</span>
 </span><span id="__span-0-1129"><a id="__codelineno-0-1129" name="__codelineno-0-1129"></a>
 </span><span id="__span-0-1130"><a id="__codelineno-0-1130" name="__codelineno-0-1130"></a><span class="sd">        Wrapper from the Plotly Figure to_html method.</span>
@@ -11358,7 +11358,7 @@ Jupyter notebook.</p>
 </span><span id="__span-0-1145"><a id="__codelineno-0-1145" name="__codelineno-0-1145"></a>
 </span><span id="__span-0-1146"><a id="__codelineno-0-1146" name="__codelineno-0-1146"></a>        <span class="k">return</span> <span class="n">html</span>
 </span><span id="__span-0-1147"><a id="__codelineno-0-1147" name="__codelineno-0-1147"></a>
-</span><span id="__span-0-1148"><a id="__codelineno-0-1148" name="__codelineno-0-1148"></a>    <span class="k">def</span> <span class="nf">to_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+</span><span id="__span-0-1148"><a id="__codelineno-0-1148" name="__codelineno-0-1148"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
 </span><span id="__span-0-1149"><a id="__codelineno-0-1149" name="__codelineno-0-1149"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a static image of the figure.</span>
 </span><span id="__span-0-1150"><a id="__codelineno-0-1150" name="__codelineno-0-1150"></a>
 </span><span id="__span-0-1151"><a id="__codelineno-0-1151" name="__codelineno-0-1151"></a><span class="sd">        Args:</span>
@@ -11373,7 +11373,7 @@ Jupyter notebook.</p>
 </span><span id="__span-0-1160"><a id="__codelineno-0-1160" name="__codelineno-0-1160"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">to_image</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </span><span id="__span-0-1161"><a id="__codelineno-0-1161" name="__codelineno-0-1161"></a>
 </span><span id="__span-0-1162"><a id="__codelineno-0-1162" name="__codelineno-0-1162"></a>    <span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">)</span>
-</span><span id="__span-0-1163"><a id="__codelineno-0-1163" name="__codelineno-0-1163"></a>    <span class="k">def</span> <span class="nf">write_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-1163"><a id="__codelineno-0-1163" name="__codelineno-0-1163"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">write_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-1164"><a id="__codelineno-0-1164" name="__codelineno-0-1164"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Save an HTML representation of the figure to disk.</span>
 </span><span id="__span-0-1165"><a id="__codelineno-0-1165" name="__codelineno-0-1165"></a>
 </span><span id="__span-0-1166"><a id="__codelineno-0-1166" name="__codelineno-0-1166"></a><span class="sd">        Args:</span>
@@ -11386,7 +11386,7 @@ Jupyter notebook.</p>
 </span><span id="__span-0-1173"><a id="__codelineno-0-1173" name="__codelineno-0-1173"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </span><span id="__span-0-1174"><a id="__codelineno-0-1174" name="__codelineno-0-1174"></a>
 </span><span id="__span-0-1175"><a id="__codelineno-0-1175" name="__codelineno-0-1175"></a>    <span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">)</span>
-</span><span id="__span-0-1176"><a id="__codelineno-0-1176" name="__codelineno-0-1176"></a>    <span class="k">def</span> <span class="nf">write_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-1176"><a id="__codelineno-0-1176" name="__codelineno-0-1176"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">write_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-1177"><a id="__codelineno-0-1177" name="__codelineno-0-1177"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Save a static image of the figure to disk.</span>
 </span><span id="__span-0-1178"><a id="__codelineno-0-1178" name="__codelineno-0-1178"></a>
 </span><span id="__span-0-1179"><a id="__codelineno-0-1179" name="__codelineno-0-1179"></a><span class="sd">        Args:</span>
@@ -12131,7 +12131,7 @@ Jupyter notebook.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-643"> 643</a></span>
 <span class="normal"><a href="#__codelineno-0-644"> 644</a></span>
 <span class="normal"><a href="#__codelineno-0-645"> 645</a></span>
@@ -12511,7 +12511,7 @@ Jupyter notebook.</p>
 <span class="normal"><a href="#__codelineno-0-1019">1019</a></span>
 <span class="normal"><a href="#__codelineno-0-1020">1020</a></span>
 <span class="normal"><a href="#__codelineno-0-1021">1021</a></span>
-<span class="normal"><a href="#__codelineno-0-1022">1022</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-643"><a id="__codelineno-0-643" name="__codelineno-0-643"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-1022">1022</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-643"><a id="__codelineno-0-643" name="__codelineno-0-643"></a><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="__span-0-644"><a id="__codelineno-0-644" name="__codelineno-0-644"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-645"><a id="__codelineno-0-645" name="__codelineno-0-645"></a>    <span class="o">**</span><span class="n">data</span><span class="p">,</span>
 </span><span id="__span-0-646"><a id="__codelineno-0-646" name="__codelineno-0-646"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -12960,7 +12960,7 @@ Jupyter notebook.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1106">1106</a></span>
 <span class="normal"><a href="#__codelineno-0-1107">1107</a></span>
 <span class="normal"><a href="#__codelineno-0-1108">1108</a></span>
@@ -12972,7 +12972,7 @@ Jupyter notebook.</p>
 <span class="normal"><a href="#__codelineno-0-1114">1114</a></span>
 <span class="normal"><a href="#__codelineno-0-1115">1115</a></span>
 <span class="normal"><a href="#__codelineno-0-1116">1116</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1106"><a id="__codelineno-0-1106" name="__codelineno-0-1106"></a><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">)</span>
-</span><span id="__span-0-1107"><a id="__codelineno-0-1107" name="__codelineno-0-1107"></a><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-1107"><a id="__codelineno-0-1107" name="__codelineno-0-1107"></a><span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-1108"><a id="__codelineno-0-1108" name="__codelineno-0-1108"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Save a static image of the figure to disk.</span>
 </span><span id="__span-0-1109"><a id="__codelineno-0-1109" name="__codelineno-0-1109"></a>
 </span><span id="__span-0-1110"><a id="__codelineno-0-1110" name="__codelineno-0-1110"></a><span class="sd">    Alias of `write_image()`</span>
@@ -13003,7 +13003,7 @@ Jupyter notebook.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1118">1118</a></span>
 <span class="normal"><a href="#__codelineno-0-1119">1119</a></span>
 <span class="normal"><a href="#__codelineno-0-1120">1120</a></span>
@@ -13011,7 +13011,7 @@ Jupyter notebook.</p>
 <span class="normal"><a href="#__codelineno-0-1122">1122</a></span>
 <span class="normal"><a href="#__codelineno-0-1123">1123</a></span>
 <span class="normal"><a href="#__codelineno-0-1124">1124</a></span>
-<span class="normal"><a href="#__codelineno-0-1125">1125</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1118"><a id="__codelineno-0-1118" name="__codelineno-0-1118"></a><span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-1125">1125</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1118"><a id="__codelineno-0-1118" name="__codelineno-0-1118"></a><span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-0-1119"><a id="__codelineno-0-1119" name="__codelineno-0-1119"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Show the clustermap.&quot;&quot;&quot;</span>
 </span><span id="__span-0-1120"><a id="__codelineno-0-1120" name="__codelineno-0-1120"></a>    <span class="n">config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
 </span><span id="__span-0-1121"><a id="__codelineno-0-1121" name="__codelineno-0-1121"></a>        <span class="n">displaylogo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -13112,7 +13112,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1127">1127</a></span>
 <span class="normal"><a href="#__codelineno-0-1128">1128</a></span>
 <span class="normal"><a href="#__codelineno-0-1129">1129</a></span>
@@ -13132,7 +13132,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-1143">1143</a></span>
 <span class="normal"><a href="#__codelineno-0-1144">1144</a></span>
 <span class="normal"><a href="#__codelineno-0-1145">1145</a></span>
-<span class="normal"><a href="#__codelineno-0-1146">1146</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1127"><a id="__codelineno-0-1127" name="__codelineno-0-1127"></a><span class="k">def</span> <span class="nf">to_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_sync</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-1146">1146</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1127"><a id="__codelineno-0-1127" name="__codelineno-0-1127"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_sync</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span id="__span-0-1128"><a id="__codelineno-0-1128" name="__codelineno-0-1128"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an HTML representation of the figure with optional synchronization.</span>
 </span><span id="__span-0-1129"><a id="__codelineno-0-1129" name="__codelineno-0-1129"></a>
 </span><span id="__span-0-1130"><a id="__codelineno-0-1130" name="__codelineno-0-1130"></a><span class="sd">    Wrapper from the Plotly Figure to_html method.</span>
@@ -13229,7 +13229,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1148">1148</a></span>
 <span class="normal"><a href="#__codelineno-0-1149">1149</a></span>
 <span class="normal"><a href="#__codelineno-0-1150">1150</a></span>
@@ -13242,7 +13242,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-1157">1157</a></span>
 <span class="normal"><a href="#__codelineno-0-1158">1158</a></span>
 <span class="normal"><a href="#__codelineno-0-1159">1159</a></span>
-<span class="normal"><a href="#__codelineno-0-1160">1160</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1148"><a id="__codelineno-0-1148" name="__codelineno-0-1148"></a><span class="k">def</span> <span class="nf">to_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-1160">1160</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1148"><a id="__codelineno-0-1148" name="__codelineno-0-1148"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
 </span><span id="__span-0-1149"><a id="__codelineno-0-1149" name="__codelineno-0-1149"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a static image of the figure.</span>
 </span><span id="__span-0-1150"><a id="__codelineno-0-1150" name="__codelineno-0-1150"></a>
 </span><span id="__span-0-1151"><a id="__codelineno-0-1151" name="__codelineno-0-1151"></a><span class="sd">    Args:</span>
@@ -13325,7 +13325,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1162">1162</a></span>
 <span class="normal"><a href="#__codelineno-0-1163">1163</a></span>
 <span class="normal"><a href="#__codelineno-0-1164">1164</a></span>
@@ -13338,7 +13338,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-1171">1171</a></span>
 <span class="normal"><a href="#__codelineno-0-1172">1172</a></span>
 <span class="normal"><a href="#__codelineno-0-1173">1173</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1162"><a id="__codelineno-0-1162" name="__codelineno-0-1162"></a><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">)</span>
-</span><span id="__span-0-1163"><a id="__codelineno-0-1163" name="__codelineno-0-1163"></a><span class="k">def</span> <span class="nf">write_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-1163"><a id="__codelineno-0-1163" name="__codelineno-0-1163"></a><span class="k">def</span><span class="w"> </span><span class="nf">write_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-1164"><a id="__codelineno-0-1164" name="__codelineno-0-1164"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Save an HTML representation of the figure to disk.</span>
 </span><span id="__span-0-1165"><a id="__codelineno-0-1165" name="__codelineno-0-1165"></a>
 </span><span id="__span-0-1166"><a id="__codelineno-0-1166" name="__codelineno-0-1166"></a><span class="sd">    Args:</span>
@@ -13419,7 +13419,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1175">1175</a></span>
 <span class="normal"><a href="#__codelineno-0-1176">1176</a></span>
 <span class="normal"><a href="#__codelineno-0-1177">1177</a></span>
@@ -13432,7 +13432,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-1184">1184</a></span>
 <span class="normal"><a href="#__codelineno-0-1185">1185</a></span>
 <span class="normal"><a href="#__codelineno-0-1186">1186</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1175"><a id="__codelineno-0-1175" name="__codelineno-0-1175"></a><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">)</span>
-</span><span id="__span-0-1176"><a id="__codelineno-0-1176" name="__codelineno-0-1176"></a><span class="k">def</span> <span class="nf">write_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-1176"><a id="__codelineno-0-1176" name="__codelineno-0-1176"></a><span class="k">def</span><span class="w"> </span><span class="nf">write_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-1177"><a id="__codelineno-0-1177" name="__codelineno-0-1177"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Save a static image of the figure to disk.</span>
 </span><span id="__span-0-1178"><a id="__codelineno-0-1178" name="__codelineno-0-1178"></a>
 </span><span id="__span-0-1179"><a id="__codelineno-0-1179" name="__codelineno-0-1179"></a><span class="sd">    Args:</span>
@@ -13472,7 +13472,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-643"> 643</a></span>
 <span class="normal"><a href="#__codelineno-0-644"> 644</a></span>
 <span class="normal"><a href="#__codelineno-0-645"> 645</a></span>
@@ -13852,7 +13852,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-1019">1019</a></span>
 <span class="normal"><a href="#__codelineno-0-1020">1020</a></span>
 <span class="normal"><a href="#__codelineno-0-1021">1021</a></span>
-<span class="normal"><a href="#__codelineno-0-1022">1022</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-643"><a id="__codelineno-0-643" name="__codelineno-0-643"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-1022">1022</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-643"><a id="__codelineno-0-643" name="__codelineno-0-643"></a><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="__span-0-644"><a id="__codelineno-0-644" name="__codelineno-0-644"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-645"><a id="__codelineno-0-645" name="__codelineno-0-645"></a>    <span class="o">**</span><span class="n">data</span><span class="p">,</span>
 </span><span id="__span-0-646"><a id="__codelineno-0-646" name="__codelineno-0-646"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -14301,7 +14301,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1106">1106</a></span>
 <span class="normal"><a href="#__codelineno-0-1107">1107</a></span>
 <span class="normal"><a href="#__codelineno-0-1108">1108</a></span>
@@ -14313,7 +14313,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-1114">1114</a></span>
 <span class="normal"><a href="#__codelineno-0-1115">1115</a></span>
 <span class="normal"><a href="#__codelineno-0-1116">1116</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1106"><a id="__codelineno-0-1106" name="__codelineno-0-1106"></a><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">)</span>
-</span><span id="__span-0-1107"><a id="__codelineno-0-1107" name="__codelineno-0-1107"></a><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-1107"><a id="__codelineno-0-1107" name="__codelineno-0-1107"></a><span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-1108"><a id="__codelineno-0-1108" name="__codelineno-0-1108"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Save a static image of the figure to disk.</span>
 </span><span id="__span-0-1109"><a id="__codelineno-0-1109" name="__codelineno-0-1109"></a>
 </span><span id="__span-0-1110"><a id="__codelineno-0-1110" name="__codelineno-0-1110"></a><span class="sd">    Alias of `write_image()`</span>
@@ -14344,7 +14344,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1118">1118</a></span>
 <span class="normal"><a href="#__codelineno-0-1119">1119</a></span>
 <span class="normal"><a href="#__codelineno-0-1120">1120</a></span>
@@ -14352,7 +14352,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-1122">1122</a></span>
 <span class="normal"><a href="#__codelineno-0-1123">1123</a></span>
 <span class="normal"><a href="#__codelineno-0-1124">1124</a></span>
-<span class="normal"><a href="#__codelineno-0-1125">1125</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1118"><a id="__codelineno-0-1118" name="__codelineno-0-1118"></a><span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-1125">1125</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1118"><a id="__codelineno-0-1118" name="__codelineno-0-1118"></a><span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-0-1119"><a id="__codelineno-0-1119" name="__codelineno-0-1119"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Show the clustermap.&quot;&quot;&quot;</span>
 </span><span id="__span-0-1120"><a id="__codelineno-0-1120" name="__codelineno-0-1120"></a>    <span class="n">config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
 </span><span id="__span-0-1121"><a id="__codelineno-0-1121" name="__codelineno-0-1121"></a>        <span class="n">displaylogo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -14453,7 +14453,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1127">1127</a></span>
 <span class="normal"><a href="#__codelineno-0-1128">1128</a></span>
 <span class="normal"><a href="#__codelineno-0-1129">1129</a></span>
@@ -14473,7 +14473,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-1143">1143</a></span>
 <span class="normal"><a href="#__codelineno-0-1144">1144</a></span>
 <span class="normal"><a href="#__codelineno-0-1145">1145</a></span>
-<span class="normal"><a href="#__codelineno-0-1146">1146</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1127"><a id="__codelineno-0-1127" name="__codelineno-0-1127"></a><span class="k">def</span> <span class="nf">to_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_sync</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-1146">1146</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1127"><a id="__codelineno-0-1127" name="__codelineno-0-1127"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_sync</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span id="__span-0-1128"><a id="__codelineno-0-1128" name="__codelineno-0-1128"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an HTML representation of the figure with optional synchronization.</span>
 </span><span id="__span-0-1129"><a id="__codelineno-0-1129" name="__codelineno-0-1129"></a>
 </span><span id="__span-0-1130"><a id="__codelineno-0-1130" name="__codelineno-0-1130"></a><span class="sd">    Wrapper from the Plotly Figure to_html method.</span>
@@ -14570,7 +14570,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1148">1148</a></span>
 <span class="normal"><a href="#__codelineno-0-1149">1149</a></span>
 <span class="normal"><a href="#__codelineno-0-1150">1150</a></span>
@@ -14583,7 +14583,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-1157">1157</a></span>
 <span class="normal"><a href="#__codelineno-0-1158">1158</a></span>
 <span class="normal"><a href="#__codelineno-0-1159">1159</a></span>
-<span class="normal"><a href="#__codelineno-0-1160">1160</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1148"><a id="__codelineno-0-1148" name="__codelineno-0-1148"></a><span class="k">def</span> <span class="nf">to_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-1160">1160</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1148"><a id="__codelineno-0-1148" name="__codelineno-0-1148"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
 </span><span id="__span-0-1149"><a id="__codelineno-0-1149" name="__codelineno-0-1149"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a static image of the figure.</span>
 </span><span id="__span-0-1150"><a id="__codelineno-0-1150" name="__codelineno-0-1150"></a>
 </span><span id="__span-0-1151"><a id="__codelineno-0-1151" name="__codelineno-0-1151"></a><span class="sd">    Args:</span>
@@ -14666,7 +14666,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1162">1162</a></span>
 <span class="normal"><a href="#__codelineno-0-1163">1163</a></span>
 <span class="normal"><a href="#__codelineno-0-1164">1164</a></span>
@@ -14679,7 +14679,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-1171">1171</a></span>
 <span class="normal"><a href="#__codelineno-0-1172">1172</a></span>
 <span class="normal"><a href="#__codelineno-0-1173">1173</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1162"><a id="__codelineno-0-1162" name="__codelineno-0-1162"></a><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">)</span>
-</span><span id="__span-0-1163"><a id="__codelineno-0-1163" name="__codelineno-0-1163"></a><span class="k">def</span> <span class="nf">write_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-1163"><a id="__codelineno-0-1163" name="__codelineno-0-1163"></a><span class="k">def</span><span class="w"> </span><span class="nf">write_html</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-1164"><a id="__codelineno-0-1164" name="__codelineno-0-1164"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Save an HTML representation of the figure to disk.</span>
 </span><span id="__span-0-1165"><a id="__codelineno-0-1165" name="__codelineno-0-1165"></a>
 </span><span id="__span-0-1166"><a id="__codelineno-0-1166" name="__codelineno-0-1166"></a><span class="sd">    Args:</span>
@@ -14760,7 +14760,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1175">1175</a></span>
 <span class="normal"><a href="#__codelineno-0-1176">1176</a></span>
 <span class="normal"><a href="#__codelineno-0-1177">1177</a></span>
@@ -14773,7 +14773,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-1184">1184</a></span>
 <span class="normal"><a href="#__codelineno-0-1185">1185</a></span>
 <span class="normal"><a href="#__codelineno-0-1186">1186</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1175"><a id="__codelineno-0-1175" name="__codelineno-0-1175"></a><span class="nd">@validate_call</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">model_config</span><span class="p">)</span>
-</span><span id="__span-0-1176"><a id="__codelineno-0-1176" name="__codelineno-0-1176"></a><span class="k">def</span> <span class="nf">write_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-1176"><a id="__codelineno-0-1176" name="__codelineno-0-1176"></a><span class="k">def</span><span class="w"> </span><span class="nf">write_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-1177"><a id="__codelineno-0-1177" name="__codelineno-0-1177"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Save a static image of the figure to disk.</span>
 </span><span id="__span-0-1178"><a id="__codelineno-0-1178" name="__codelineno-0-1178"></a>
 </span><span id="__span-0-1179"><a id="__codelineno-0-1179" name="__codelineno-0-1179"></a><span class="sd">    Args:</span>
@@ -14805,7 +14805,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1024">1024</a></span>
 <span class="normal"><a href="#__codelineno-0-1025">1025</a></span>
 <span class="normal"><a href="#__codelineno-0-1026">1026</a></span>
@@ -14876,7 +14876,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-1091">1091</a></span>
 <span class="normal"><a href="#__codelineno-0-1092">1092</a></span>
 <span class="normal"><a href="#__codelineno-0-1093">1093</a></span>
-<span class="normal"><a href="#__codelineno-0-1094">1094</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1024"><a id="__codelineno-0-1024" name="__codelineno-0-1024"></a><span class="k">def</span> <span class="nf">_adjust_layout_for_hidden_upper</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-1094">1094</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1024"><a id="__codelineno-0-1024" name="__codelineno-0-1024"></a><span class="k">def</span><span class="w"> </span><span class="nf">_adjust_layout_for_hidden_upper</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-1025"><a id="__codelineno-0-1025" name="__codelineno-0-1025"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Adjust the layout when the upper dendrogram is hidden to move components up.&quot;&quot;&quot;</span>
 </span><span id="__span-0-1026"><a id="__codelineno-0-1026" name="__codelineno-0-1026"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide_upper</span><span class="p">:</span>
 </span><span id="__span-0-1027"><a id="__codelineno-0-1027" name="__codelineno-0-1027"></a>        <span class="k">return</span>
@@ -14968,7 +14968,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1096">1096</a></span>
 <span class="normal"><a href="#__codelineno-0-1097">1097</a></span>
 <span class="normal"><a href="#__codelineno-0-1098">1098</a></span>
@@ -14977,7 +14977,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-1101">1101</a></span>
 <span class="normal"><a href="#__codelineno-0-1102">1102</a></span>
 <span class="normal"><a href="#__codelineno-0-1103">1103</a></span>
-<span class="normal"><a href="#__codelineno-0-1104">1104</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1096"><a id="__codelineno-0-1096" name="__codelineno-0-1096"></a><span class="k">def</span> <span class="nf">_set_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-1104">1104</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1096"><a id="__codelineno-0-1096" name="__codelineno-0-1096"></a><span class="k">def</span><span class="w"> </span><span class="nf">_set_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="__span-0-1097"><a id="__codelineno-0-1097" name="__codelineno-0-1097"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the labels for the clustermap.&quot;&quot;&quot;</span>
 </span><span id="__span-0-1098"><a id="__codelineno-0-1098" name="__codelineno-0-1098"></a>    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
 </span><span id="__span-0-1099"><a id="__codelineno-0-1099" name="__codelineno-0-1099"></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dtm</span><span class="p">,</span> <span class="n">DTM</span><span class="p">):</span>
@@ -15043,7 +15043,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
               <details class="mkdocstrings-source">
-                <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+                <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
                 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-389">389</a></span>
 <span class="normal"><a href="#__codelineno-0-390">390</a></span>
 <span class="normal"><a href="#__codelineno-0-391">391</a></span>
@@ -15194,10 +15194,10 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-536">536</a></span>
 <span class="normal"><a href="#__codelineno-0-537">537</a></span>
 <span class="normal"><a href="#__codelineno-0-538">538</a></span>
-<span class="normal"><a href="#__codelineno-0-539">539</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-389"><a id="__codelineno-0-389" name="__codelineno-0-389"></a><span class="k">class</span> <span class="nc">PlotlyClusterGrid</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-539">539</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-389"><a id="__codelineno-0-389" name="__codelineno-0-389"></a><span class="k">class</span><span class="w"> </span><span class="nc">PlotlyClusterGrid</span><span class="p">:</span>
 </span><span id="__span-0-390"><a id="__codelineno-0-390" name="__codelineno-0-390"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Plotly implementation of clustered heatmap with dendrograms.&quot;&quot;&quot;</span>
 </span><span id="__span-0-391"><a id="__codelineno-0-391" name="__codelineno-0-391"></a>
-</span><span id="__span-0-392"><a id="__codelineno-0-392" name="__codelineno-0-392"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span><span id="__span-0-392"><a id="__codelineno-0-392" name="__codelineno-0-392"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="__span-0-393"><a id="__codelineno-0-393" name="__codelineno-0-393"></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-394"><a id="__codelineno-0-394" name="__codelineno-0-394"></a>        <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
 </span><span id="__span-0-395"><a id="__codelineno-0-395" name="__codelineno-0-395"></a>        <span class="n">z_score</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -15230,7 +15230,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 </span><span id="__span-0-422"><a id="__codelineno-0-422" name="__codelineno-0-422"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="n">figsize</span>
 </span><span id="__span-0-423"><a id="__codelineno-0-423" name="__codelineno-0-423"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">dendrogram_ratio</span> <span class="o">=</span> <span class="n">dendrogram_ratio</span>
 </span><span id="__span-0-424"><a id="__codelineno-0-424" name="__codelineno-0-424"></a>
-</span><span id="__span-0-425"><a id="__codelineno-0-425" name="__codelineno-0-425"></a>    <span class="k">def</span> <span class="nf">_format_data</span><span class="p">(</span>
+</span><span id="__span-0-425"><a id="__codelineno-0-425" name="__codelineno-0-425"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_format_data</span><span class="p">(</span>
 </span><span id="__span-0-426"><a id="__codelineno-0-426" name="__codelineno-0-426"></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">z_score</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">standard_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="__span-0-427"><a id="__codelineno-0-427" name="__codelineno-0-427"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 </span><span id="__span-0-428"><a id="__codelineno-0-428" name="__codelineno-0-428"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Format and normalize data.</span>
@@ -15257,7 +15257,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 </span><span id="__span-0-449"><a id="__codelineno-0-449" name="__codelineno-0-449"></a>        <span class="k">return</span> <span class="n">data2d</span>
 </span><span id="__span-0-450"><a id="__codelineno-0-450" name="__codelineno-0-450"></a>
 </span><span id="__span-0-451"><a id="__codelineno-0-451" name="__codelineno-0-451"></a>    <span class="nd">@staticmethod</span>
-</span><span id="__span-0-452"><a id="__codelineno-0-452" name="__codelineno-0-452"></a>    <span class="k">def</span> <span class="nf">_z_score</span><span class="p">(</span><span class="n">data2d</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+</span><span id="__span-0-452"><a id="__codelineno-0-452" name="__codelineno-0-452"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_z_score</span><span class="p">(</span><span class="n">data2d</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 </span><span id="__span-0-453"><a id="__codelineno-0-453" name="__codelineno-0-453"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Standardize the mean and variance of the data axis.</span>
 </span><span id="__span-0-454"><a id="__codelineno-0-454" name="__codelineno-0-454"></a>
 </span><span id="__span-0-455"><a id="__codelineno-0-455" name="__codelineno-0-455"></a><span class="sd">        Args:</span>
@@ -15275,7 +15275,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 </span><span id="__span-0-467"><a id="__codelineno-0-467" name="__codelineno-0-467"></a>        <span class="k">return</span> <span class="n">data2d</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">std</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </span><span id="__span-0-468"><a id="__codelineno-0-468" name="__codelineno-0-468"></a>
 </span><span id="__span-0-469"><a id="__codelineno-0-469" name="__codelineno-0-469"></a>    <span class="nd">@staticmethod</span>
-</span><span id="__span-0-470"><a id="__codelineno-0-470" name="__codelineno-0-470"></a>    <span class="k">def</span> <span class="nf">_standard_scale</span><span class="p">(</span><span class="n">data2d</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+</span><span id="__span-0-470"><a id="__codelineno-0-470" name="__codelineno-0-470"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_standard_scale</span><span class="p">(</span><span class="n">data2d</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 </span><span id="__span-0-471"><a id="__codelineno-0-471" name="__codelineno-0-471"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Divide the data by the difference between the max and min.</span>
 </span><span id="__span-0-472"><a id="__codelineno-0-472" name="__codelineno-0-472"></a>
 </span><span id="__span-0-473"><a id="__codelineno-0-473" name="__codelineno-0-473"></a><span class="sd">        Args:</span>
@@ -15294,7 +15294,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 </span><span id="__span-0-486"><a id="__codelineno-0-486" name="__codelineno-0-486"></a>        <span class="n">max_vals</span> <span class="o">=</span> <span class="n">data2d</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </span><span id="__span-0-487"><a id="__codelineno-0-487" name="__codelineno-0-487"></a>        <span class="k">return</span> <span class="n">data2d</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">min_vals</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">max_vals</span> <span class="o">-</span> <span class="n">min_vals</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </span><span id="__span-0-488"><a id="__codelineno-0-488" name="__codelineno-0-488"></a>
-</span><span id="__span-0-489"><a id="__codelineno-0-489" name="__codelineno-0-489"></a>    <span class="k">def</span> <span class="nf">_process_mask</span><span class="p">(</span>
+</span><span id="__span-0-489"><a id="__codelineno-0-489" name="__codelineno-0-489"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_process_mask</span><span class="p">(</span>
 </span><span id="__span-0-490"><a id="__codelineno-0-490" name="__codelineno-0-490"></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
 </span><span id="__span-0-491"><a id="__codelineno-0-491" name="__codelineno-0-491"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
 </span><span id="__span-0-492"><a id="__codelineno-0-492" name="__codelineno-0-492"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Process mask for data visualization.</span>
@@ -15326,7 +15326,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 </span><span id="__span-0-518"><a id="__codelineno-0-518" name="__codelineno-0-518"></a>        <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data2d</span><span class="p">)</span>
 </span><span id="__span-0-519"><a id="__codelineno-0-519" name="__codelineno-0-519"></a>        <span class="k">return</span> <span class="n">mask</span>
 </span><span id="__span-0-520"><a id="__codelineno-0-520" name="__codelineno-0-520"></a>
-</span><span id="__span-0-521"><a id="__codelineno-0-521" name="__codelineno-0-521"></a>    <span class="k">def</span> <span class="nf">_calculate_linkage</span><span class="p">(</span>
+</span><span id="__span-0-521"><a id="__codelineno-0-521" name="__codelineno-0-521"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_linkage</span><span class="p">(</span>
 </span><span id="__span-0-522"><a id="__codelineno-0-522" name="__codelineno-0-522"></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;average&quot;</span><span class="p">,</span> <span class="n">metric</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;euclidean&quot;</span>
 </span><span id="__span-0-523"><a id="__codelineno-0-523" name="__codelineno-0-523"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 </span><span id="__span-0-524"><a id="__codelineno-0-524" name="__codelineno-0-524"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate linkage matrix.</span>
@@ -15487,7 +15487,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-392">392</a></span>
 <span class="normal"><a href="#__codelineno-0-393">393</a></span>
 <span class="normal"><a href="#__codelineno-0-394">394</a></span>
@@ -15519,7 +15519,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-420">420</a></span>
 <span class="normal"><a href="#__codelineno-0-421">421</a></span>
 <span class="normal"><a href="#__codelineno-0-422">422</a></span>
-<span class="normal"><a href="#__codelineno-0-423">423</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-392"><a id="__codelineno-0-392" name="__codelineno-0-392"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-423">423</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-392"><a id="__codelineno-0-392" name="__codelineno-0-392"></a><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="__span-0-393"><a id="__codelineno-0-393" name="__codelineno-0-393"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-394"><a id="__codelineno-0-394" name="__codelineno-0-394"></a>    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
 </span><span id="__span-0-395"><a id="__codelineno-0-395" name="__codelineno-0-395"></a>    <span class="n">z_score</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -15691,7 +15691,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-392">392</a></span>
 <span class="normal"><a href="#__codelineno-0-393">393</a></span>
 <span class="normal"><a href="#__codelineno-0-394">394</a></span>
@@ -15723,7 +15723,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-420">420</a></span>
 <span class="normal"><a href="#__codelineno-0-421">421</a></span>
 <span class="normal"><a href="#__codelineno-0-422">422</a></span>
-<span class="normal"><a href="#__codelineno-0-423">423</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-392"><a id="__codelineno-0-392" name="__codelineno-0-392"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-423">423</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-392"><a id="__codelineno-0-392" name="__codelineno-0-392"></a><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="__span-0-393"><a id="__codelineno-0-393" name="__codelineno-0-393"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-394"><a id="__codelineno-0-394" name="__codelineno-0-394"></a>    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
 </span><span id="__span-0-395"><a id="__codelineno-0-395" name="__codelineno-0-395"></a>    <span class="n">z_score</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -15846,7 +15846,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-425">425</a></span>
 <span class="normal"><a href="#__codelineno-0-426">426</a></span>
 <span class="normal"><a href="#__codelineno-0-427">427</a></span>
@@ -15871,7 +15871,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-446">446</a></span>
 <span class="normal"><a href="#__codelineno-0-447">447</a></span>
 <span class="normal"><a href="#__codelineno-0-448">448</a></span>
-<span class="normal"><a href="#__codelineno-0-449">449</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-425"><a id="__codelineno-0-425" name="__codelineno-0-425"></a><span class="k">def</span> <span class="nf">_format_data</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-449">449</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-425"><a id="__codelineno-0-425" name="__codelineno-0-425"></a><span class="k">def</span><span class="w"> </span><span class="nf">_format_data</span><span class="p">(</span>
 </span><span id="__span-0-426"><a id="__codelineno-0-426" name="__codelineno-0-426"></a>    <span class="bp">self</span><span class="p">,</span> <span class="n">z_score</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">standard_scale</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 </span><span id="__span-0-427"><a id="__codelineno-0-427" name="__codelineno-0-427"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 </span><span id="__span-0-428"><a id="__codelineno-0-428" name="__codelineno-0-428"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Format and normalize data.</span>
@@ -15954,7 +15954,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-451">451</a></span>
 <span class="normal"><a href="#__codelineno-0-452">452</a></span>
 <span class="normal"><a href="#__codelineno-0-453">453</a></span>
@@ -15972,7 +15972,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-465">465</a></span>
 <span class="normal"><a href="#__codelineno-0-466">466</a></span>
 <span class="normal"><a href="#__codelineno-0-467">467</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-451"><a id="__codelineno-0-451" name="__codelineno-0-451"></a><span class="nd">@staticmethod</span>
-</span><span id="__span-0-452"><a id="__codelineno-0-452" name="__codelineno-0-452"></a><span class="k">def</span> <span class="nf">_z_score</span><span class="p">(</span><span class="n">data2d</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+</span><span id="__span-0-452"><a id="__codelineno-0-452" name="__codelineno-0-452"></a><span class="k">def</span><span class="w"> </span><span class="nf">_z_score</span><span class="p">(</span><span class="n">data2d</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 </span><span id="__span-0-453"><a id="__codelineno-0-453" name="__codelineno-0-453"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Standardize the mean and variance of the data axis.</span>
 </span><span id="__span-0-454"><a id="__codelineno-0-454" name="__codelineno-0-454"></a>
 </span><span id="__span-0-455"><a id="__codelineno-0-455" name="__codelineno-0-455"></a><span class="sd">    Args:</span>
@@ -16083,7 +16083,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-469">469</a></span>
 <span class="normal"><a href="#__codelineno-0-470">470</a></span>
 <span class="normal"><a href="#__codelineno-0-471">471</a></span>
@@ -16103,7 +16103,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-485">485</a></span>
 <span class="normal"><a href="#__codelineno-0-486">486</a></span>
 <span class="normal"><a href="#__codelineno-0-487">487</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-469"><a id="__codelineno-0-469" name="__codelineno-0-469"></a><span class="nd">@staticmethod</span>
-</span><span id="__span-0-470"><a id="__codelineno-0-470" name="__codelineno-0-470"></a><span class="k">def</span> <span class="nf">_standard_scale</span><span class="p">(</span><span class="n">data2d</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+</span><span id="__span-0-470"><a id="__codelineno-0-470" name="__codelineno-0-470"></a><span class="k">def</span><span class="w"> </span><span class="nf">_standard_scale</span><span class="p">(</span><span class="n">data2d</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 </span><span id="__span-0-471"><a id="__codelineno-0-471" name="__codelineno-0-471"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Divide the data by the difference between the max and min.</span>
 </span><span id="__span-0-472"><a id="__codelineno-0-472" name="__codelineno-0-472"></a>
 </span><span id="__span-0-473"><a id="__codelineno-0-473" name="__codelineno-0-473"></a><span class="sd">    Args:</span>
@@ -16196,7 +16196,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-489">489</a></span>
 <span class="normal"><a href="#__codelineno-0-490">490</a></span>
 <span class="normal"><a href="#__codelineno-0-491">491</a></span>
@@ -16227,7 +16227,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-516">516</a></span>
 <span class="normal"><a href="#__codelineno-0-517">517</a></span>
 <span class="normal"><a href="#__codelineno-0-518">518</a></span>
-<span class="normal"><a href="#__codelineno-0-519">519</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-489"><a id="__codelineno-0-489" name="__codelineno-0-489"></a><span class="k">def</span> <span class="nf">_process_mask</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-519">519</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-489"><a id="__codelineno-0-489" name="__codelineno-0-489"></a><span class="k">def</span><span class="w"> </span><span class="nf">_process_mask</span><span class="p">(</span>
 </span><span id="__span-0-490"><a id="__codelineno-0-490" name="__codelineno-0-490"></a>    <span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
 </span><span id="__span-0-491"><a id="__codelineno-0-491" name="__codelineno-0-491"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
 </span><span id="__span-0-492"><a id="__codelineno-0-492" name="__codelineno-0-492"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Process mask for data visualization.</span>
@@ -16365,7 +16365,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-521">521</a></span>
 <span class="normal"><a href="#__codelineno-0-522">522</a></span>
 <span class="normal"><a href="#__codelineno-0-523">523</a></span>
@@ -16384,7 +16384,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-536">536</a></span>
 <span class="normal"><a href="#__codelineno-0-537">537</a></span>
 <span class="normal"><a href="#__codelineno-0-538">538</a></span>
-<span class="normal"><a href="#__codelineno-0-539">539</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-521"><a id="__codelineno-0-521" name="__codelineno-0-521"></a><span class="k">def</span> <span class="nf">_calculate_linkage</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-539">539</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-521"><a id="__codelineno-0-521" name="__codelineno-0-521"></a><span class="k">def</span><span class="w"> </span><span class="nf">_calculate_linkage</span><span class="p">(</span>
 </span><span id="__span-0-522"><a id="__codelineno-0-522" name="__codelineno-0-522"></a>    <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;average&quot;</span><span class="p">,</span> <span class="n">metric</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;euclidean&quot;</span>
 </span><span id="__span-0-523"><a id="__codelineno-0-523" name="__codelineno-0-523"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 </span><span id="__span-0-524"><a id="__codelineno-0-524" name="__codelineno-0-524"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate linkage matrix.</span>
@@ -16483,7 +16483,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-36">36</a></span>
 <span class="normal"><a href="#__codelineno-0-37">37</a></span>
 <span class="normal"><a href="#__codelineno-0-38">38</a></span>
@@ -16514,7 +16514,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-63">63</a></span>
 <span class="normal"><a href="#__codelineno-0-64">64</a></span>
 <span class="normal"><a href="#__codelineno-0-65">65</a></span>
-<span class="normal"><a href="#__codelineno-0-66">66</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="k">def</span> <span class="nf">_get_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="n">DTM</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-66">66</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="k">def</span><span class="w"> </span><span class="nf">_get_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="n">DTM</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 </span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a valid matrix from the input.</span>
 </span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a>
 </span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="sd">    Args:</span>
@@ -16684,7 +16684,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/cluster/clustermap.py</code></summary>
+              <summary>Source code in <code>lexos/cluster/clustermap.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-323">323</a></span>
 <span class="normal"><a href="#__codelineno-0-324">324</a></span>
 <span class="normal"><a href="#__codelineno-0-325">325</a></span>
@@ -16748,7 +16748,7 @@ See <a href="https://plotly.com/python-api-reference/generated/plotly.graph_obje
 <span class="normal"><a href="#__codelineno-0-383">383</a></span>
 <span class="normal"><a href="#__codelineno-0-384">384</a></span>
 <span class="normal"><a href="#__codelineno-0-385">385</a></span>
-<span class="normal"><a href="#__codelineno-0-386">386</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-323"><a id="__codelineno-0-323" name="__codelineno-0-323"></a><span class="k">def</span> <span class="nf">_create_dendrogram_traces</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-386">386</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-323"><a id="__codelineno-0-323" name="__codelineno-0-323"></a><span class="k">def</span><span class="w"> </span><span class="nf">_create_dendrogram_traces</span><span class="p">(</span>
 </span><span id="__span-0-324"><a id="__codelineno-0-324" name="__codelineno-0-324"></a>    <span class="n">linkage_matrix</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
 </span><span id="__span-0-325"><a id="__codelineno-0-325" name="__codelineno-0-325"></a>    <span class="n">labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 </span><span id="__span-0-326"><a id="__codelineno-0-326" name="__codelineno-0-326"></a>    <span class="n">orientation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bottom&quot;</span><span class="p">,</span>
@@ -16838,7 +16838,7 @@ It is added to the HTML output of the clustermap to ensure that when the user zo
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="December 31, 2025 00:44:38 UTC">December 31, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 4, 2026 17:18:43 UTC">August 4, 2026</span>
   </span>
 
     

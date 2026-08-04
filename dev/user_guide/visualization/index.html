@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.7.7">
     
     
       
@@ -5668,7 +5668,7 @@
 <p>There are two methods of generating word cloud variants: pure Python approaches that produce static images and Javascript versions that generate charts in the web browser with interactive features. Each of these will be discussed below.</p>
 <h2 id="word-clouds">Word Clouds<a class="headerlink" href="#word-clouds" title="Permanent link">¤</a></h2>
 <p>Word clouds display each submitted term in your text(s), scaled according to its frequency and laid out in a compact display so that you can easily "eyeball" which terms are most frequent. To produce a basic word cloud, import the <code>WordCloud</code> class and submit a simple text.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">lexos.visualization.cloud</span> <span class="kn">import</span> <span class="n">WordCloud</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.visualization.cloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">WordCloud</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;This is a sample text to demonstrate how to produce a word cloud.&quot;</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">wc</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Word Cloud&quot;</span><span class="p">)</span>
@@ -5682,7 +5682,7 @@
 <p>Notice that you can optionally supply a title with the <code>title</code> keyword. The last line (<code>wc.show()</code>) will display the word cloud.</p>
 <p>Unlike many other word cloud generators, Lexos prefers for you to pre-tokenise your data <em>before</em> you pass it to the <code>WordCloud</code> class, such as by converting it to a spaCy <code>Doc</code>. You <em>can</em> pass a spaCy <code>Doc</code> object directly, but it is better to convert it to a list of token strings. This allows you to perform other types of pre-processing, such as removing punctuation and stop words (you could also generate a list of token strings by some other means). In the example below, we convert our text to a spaCy <code>Doc</code>, filter out punctuation, stop words, and white space, then generate our word cloud.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Import the Lexos Tokenizer class</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span> <span class="nn">lexos.tokenizer</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.tokenizer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tokenizer</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Create an instance of the Tokenizer class and make a spaCy doc</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;en_core_web_sm&quot;</span><span class="p">)</span>
@@ -5775,7 +5775,7 @@
 </span></code></pre></div>
 <h2 id="bubble-charts">Bubble Charts<a class="headerlink" href="#bubble-charts" title="Permanent link">¤</a></h2>
 <p>Bubble charts (also known as packed circle charts or bubble visualisations) arrange terms into labelled circles, which can sometimes be easier to read than traditional word clouds. They are produced in a similar manner.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span> <span class="nn">lexos.visualization.cloud</span> <span class="kn">import</span> <span class="n">WordCloud</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.visualization.cloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">WordCloud</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;This is a sample text to demonstrate how to produce a bubble chart.&quot;</span>
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">bc</span> <span class="o">=</span> <span class="n">BubbleChart</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;My Bubble Chart&quot;</span><span class="p">)</span>
@@ -5807,7 +5807,7 @@
 <p class="admonition-title">Note</p>
 <p>You can also manipulate the image in <code>matplotlib</code> after it has been generated. Here's an example showing how to change the title and plot size:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Import matplotlib</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Get the term counts from the BubbleChart instance</span>
 </span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">bc</span><span class="o">.</span><span class="n">counts</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
@@ -5837,7 +5837,7 @@
 <h2 id="multiclouds">Multiclouds<a class="headerlink" href="#multiclouds" title="Permanent link">¤</a></h2>
 <p>Multiclouds are grids of word clouds that allow you to compare the term counts in multiple documents. They are produced using the <code>MultiCloud</code> class. Each cloud in the grid is an individual instance of a <code>WordCloud</code>, so you can use the customisation parameters available for that class. Here is a short example:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Import the MultiCloud class</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">from</span> <span class="nn">lexos.visualization.cloud</span> <span class="kn">import</span> <span class="n">MultiCloud</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.visualization.cloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultiCloud</span>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
 </span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
 </span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="s2">&quot;Natural language processing is a fascinating field that combines linguistics, computer science, and artificial intelligence.&quot;</span><span class="p">,</span>
@@ -5909,7 +5909,7 @@
 <p>This allows you to take advantage of spaCy's natural language processing functionality.</p>
 <p>Another scenario is where you might have pre-tokenised texts is if you have already generated a document-term matrix with the Lexos <code>dtm</code> module. The <code>WordCloud</code> and <code>BubbleChart</code> classes accept a Lexos <code>DTM</code> object, as well as a pandas DataFrame produced by the <code>DTM.to_df()</code> method.</p>
 <p>Finally, you may have a pre-generated list of term counts, such as is produced by the Python <code>collections.Counter</code> class:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
 </span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;this&quot;</span><span class="p">,</span> <span class="s2">&quot;is&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;sample&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">,</span> <span class="s2">&quot;demonstrate&quot;</span><span class="p">,</span> <span class="s2">&quot;how&quot;</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">,</span> <span class="s2">&quot;produce&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;bubble&quot;</span><span class="p">,</span> <span class="s2">&quot;chart&quot;</span><span class="p">]</span>
 </span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="n">counter</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Counter</span><span class="p">(</span><span class="n">tokens</span><span class="p">))</span>
@@ -5934,7 +5934,7 @@
 </div>
 <p>To generate a D3 word cloud, follow the procedure below (noting the import):</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Import the D3WordCloud class</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="kn">from</span> <span class="nn">lexos.visualization.d3_wordcloud</span> <span class="kn">import</span> <span class="n">D3WordCloud</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.visualization.d3_wordcloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">D3WordCloud</span>
 </span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
 </span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="c1"># Generate and save a word cloud</span>
 </span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="n">wc</span> <span class="o">=</span> <span class="n">D3WordCloud</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
@@ -5976,7 +5976,7 @@
 <p>The available options are based on the exceptional <a href="https://www.jasondavies.com/wordcloud/" target="_blank">word cloud generator</a> produced by Jason Davies.</p>
 </div>
 <p>You can also generate a multicloud in D3:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">from</span> <span class="nn">lexos.visualization.d3_wordcloud</span> <span class="kn">import</span> <span class="n">D3MultiCloud</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.visualization.d3_wordcloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">D3MultiCloud</span>
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
 </span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="c1"># Create multi-cloud</span>
 </span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="n">mc</span> <span class="o">=</span> <span class="n">D3MultiCloud</span><span class="p">(</span>
@@ -5993,7 +5993,7 @@
 
 <p>All the customisation parameters listed above for <code>D3WordCloud</code> are available. Notice, however, that few minor differences. You input your data using the <code>data_sources</code> keyword. Since each source document can have its own title, you can supply these titles as a list with the <code>labels</code> parameter (if you do not provide this, generic titles "Doc 1", "Doc 2", etc. will be used). Likewise, you can specify the dimensions of individual clouds (in pixels) with the <code>cloud_width</code> and <code>cloud_height</code> parameters. Finally, you can set the number of columns in the layout.</p>
 <p>To generate a D3 bubble chart, you use the <code>D3BubbleChart</code> class:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kn">from</span> <span class="nn">lexos.visualization.d3_bubbleviz</span> <span class="kn">import</span> <span class="n">D3BubbleChart</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.visualization.d3_bubbleviz</span><span class="w"> </span><span class="kn">import</span> <span class="n">D3BubbleChart</span>
 </span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
 </span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="n">bc</span> <span class="o">=</span> <span class="n">D3BubbleChart</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;D3 Bubble Chart&quot;</span><span class="p">)</span>
 </span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="n">bc</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;d3_bubblechart.html)</span>
@@ -6032,7 +6032,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 30, 2026 17:45:45 UTC">July 30, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 4, 2026 17:18:43 UTC">August 4, 2026</span>
   </span>
 
     

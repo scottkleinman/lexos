@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.7.7">
     
     
       
@@ -5687,7 +5687,7 @@
 <p>Each token is spaCy <code>Token</code> object which stores all the token's attributes.</p>
 <h3 id="creating-a-spacy-doc-object">Creating a SpaCy <code>Doc</code> Object<a class="headerlink" href="#creating-a-spacy-doc-object" title="Permanent link">¤</a></h3>
 <p>The Lexos API wraps this procedure in the <code>Tokenizer.make_doc()</code> method:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span> <span class="nn">lexos.tokenizer</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.tokenizer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tokenizer</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">()</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">doc</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">make_doc</span><span class="p">(</span><span class="s2">&quot;This is a test.&quot;</span><span class="p">)</span>
@@ -5701,7 +5701,7 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <code>tokenizer</code> module is a wrapper for the spaCy library, so you can also use spaCy directly to create a <code>Doc</code> object since spaCy is installed with Lexos. Lexos is designed to make it easier to work with spaCy's functionality, but it is not necessary to use the Lexos API to work with spaCy. The equivalent of the above using spaCy's API is</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span> <span class="nn">spacy</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;en_core_web_sm&quot;</span><span class="p">)</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="s2">&quot;This is a test.&quot;</span><span class="p">)</span>
 </span></code></pre></div>
@@ -5766,14 +5766,14 @@
 <h2 id="custom-tokenizers">Custom Tokenizers<a class="headerlink" href="#custom-tokenizers" title="Permanent link">¤</a></h2>
 <p>Sometimes using a language model to perform tokenization is not appropriate or is overkill for the desired output. Lexos has two tokenizer classes that operate on strings and return lists of strings. They mostly illustrate how you can produce your own tokenizer class if required.</p>
 <p><code>SliceTokenizer</code> slices the text into tokens of <code>n</code> characters. The constructor takes two arguments: <code>n</code>, which is the number of characters  in each output token, and <code>drop_ws</code>, a modifier that controls whether to drop whitespace or keep it.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span> <span class="nn">lexos.tokenizer</span> <span class="kn">import</span> <span class="n">SliceTokenizer</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.tokenizer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SliceTokenizer</span>
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="n">test_text</span> <span class="o">=</span> <span class="s2">&quot;Cut me up into tiny pieces!&quot;</span>
 </span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="n">slicer</span> <span class="o">=</span> <span class="n">SliceTokenizer</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">drop_ws</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">slices</span> <span class="o">=</span> <span class="n">slicer</span><span class="p">(</span><span class="n">test_text</span><span class="p">)</span>
 </span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="nb">print</span><span class="p">(</span><span class="n">slices</span><span class="p">)</span>
 </span></code></pre></div>
 <p><code>WhitespaceTokenizer</code> simply slices a text into tokens on whitespace, similarly to Python's built-in <code>split()</code> method.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span> <span class="nn">lexos.tokenizer</span> <span class="kn">import</span> <span class="n">WhitespaceTokenizer</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.tokenizer</span><span class="w"> </span><span class="kn">import</span> <span class="n">WhitespaceTokenizer</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">test_text</span> <span class="o">=</span> <span class="s2">&quot;Split me up by whitespace!&quot;</span>
 </span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">neatSlicer</span> <span class="o">=</span> <span class="n">WhitespaceTokenizer</span><span class="p">()</span>
 </span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">slices</span> <span class="o">=</span> <span class="n">neatSlicer</span><span class="p">(</span><span class="n">test_text</span><span class="p">)</span>
@@ -5783,7 +5783,7 @@
 <p class="admonition-title">Note</p>
 <p>The NLP community are largely concerned with extracting <em>linguistic</em> features from text strings where whitespace is typically ignored. But scholars in the Humanities have pointed out that in the texts they study, whitespace itself can be meaningful. Lexos has an experimental <code>WhitespaceCounter</code> tokenizer that extends the <code>Tokenizer</code> class by counting runs of spaces and line breaks. See the <a href="../../api/tokenizer/whitespace_counter/">Whitespace Counter</a> documentation for more information.</p>
 <p>To use it, instantiate the <code>WhitespaceCounter</code> class and call it with a text string:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">from</span> <span class="nn">lexos.tokenizer.whitespace_counter</span> <span class="kn">import</span> <span class="n">WhitespaceCounter</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.tokenizer.whitespace_counter</span><span class="w"> </span><span class="kn">import</span> <span class="n">WhitespaceCounter</span>
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="n">wc</span> <span class="o">=</span> <span class="n">WhitespaceCounter</span><span class="p">()</span>
 </span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="n">tokens</span> <span class="o">=</span> <span class="n">wc</span><span class="p">(</span><span class="s2">&quot;This  is   a</span><span class="se">\n\n</span><span class="s2"> test.&quot;</span><span class="p">)</span>
@@ -5794,8 +5794,8 @@
 <h2 id="generating-ngrams">Generating Ngrams<a class="headerlink" href="#generating-ngrams" title="Permanent link">¤</a></h2>
 <p>Both texts and documents can be parsed into sequences of two or more tokens called <strong>ngrams</strong>. Many spaCy models can identify syntactic units such as noun chunks. These capabilities are not covered here since they are language specific. Instead, the section below describe how to obtain more general ngram sequences.</p>
 <p>The easiest method of obtaining ngrams from a text is to create a spaCy doc and then call the <a href="../../api/tokenizer/ngrams/#lexos.tokenizer.ngrams.Ngrams.from_doc"><code>ngrams_from_doc()</code></a> method:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">import</span> <span class="nn">spacy</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="kn">from</span> <span class="nn">lexos.tokenizer.ngrams</span> <span class="kn">import</span> <span class="n">Ngrams</span> <span class="k">as</span> <span class="n">ng</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">spacy</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.tokenizer.ngrams</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ngrams</span> <span class="k">as</span> <span class="n">ng</span>
 </span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
 </span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;xx_sent_ud_sm&quot;</span><span class="p">)</span>
 </span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;The end is nigh.&quot;</span>
@@ -5815,7 +5815,7 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The <code>from_doc()</code> function is a wrapper for the <code>textacy.extract.basics.ngrams</code> method, which is part of the <a href="https://textacy.readthedocs.io/en/latest/" target="_blank">Textacy</a> library. You can call Textacy directly as shown below:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">import</span> <span class="nn">textacy.extract.basics.ngrams</span> <span class="k">as</span> <span class="nn">ng</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">textacy.extract.basics.ngrams</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ng</span>
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">ngrams</span> <span class="o">=</span> <span class="n">ng</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">min_freq</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </span></code></pre></div>
 <p>The <code>min_freq</code> parameter removes ngrams that do not occur at least two times. This can cut down on the size of the generated ngrams. Textacy has a lot of additional options, which are documented in the Textacy API reference under <a href="https://textacy.readthedocs.io/en/latest/api_reference/extract.html#textacy.extract.basics.ngrams" target="\&quot;_blank\&quot;"><code>textacy.extract.basics.ngrams</code></a>. The Lexos <code>Ngrams.from_doc()</code> method accepts the same parameters as Textacy's method with a few additional options (see the <a href="../../api/tokenizer/ngrams/">API documentation</a>).</p>
@@ -5824,7 +5824,7 @@
 <p>If you do not want to use a language model, the <code>Ngrams</code> class also accepts input data in the form of text strings with <code>Ngrams.from_text()</code> and <code>Ngrams.from_texts()</code>. By default, your text(s) will be processed using the <code>WhitespaceTokenizer</code> before the ngrams are generated, although you can swap it for another tokenizer. If you use the <code>SliceTokenizer</code>, you will produce <strong>character ngrams</strong>. For instance, the text "Hello world" will produce the bigrams "He, el, lo, o , w, wo, or, rl, ld". (You can also generate character ngrams by calling <code>SliceTokenizer</code> directly: <code>ngrams = SliceTokenizer(text, n=2)</code>). Note that your language model may not be able apply labels effectively to ngram tokens, so working with character ngrams is primarily useful if you are planning to work with the token forms only, or if the ngram size you use maps closely to character lengths of words in the language you are working in.</p>
 <p>If you have a list of pre-tokenized strings, you can use the <code>Ngrams.from_tokens()</code> method. For instance, <code>ngrams = ng.from_tokens(["Hello", "world", "how", "are", "you"], n=3)</code> will generate "Hello world how, world how are, how are you".</p>
 <p>In some cases, you may wish to generate a <code>Doc</code> object with ngrams as tokens. This can be done by calling spaCy's <code>Doc.from_docs()</code> method, which takes a list or tuple of ngrams and returns a new spaCy <code>Doc</code>:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">from</span> <span class="nn">spacy.tokens</span> <span class="kn">import</span> <span class="n">Doc</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">spacy.tokens</span><span class="w"> </span><span class="kn">import</span> <span class="n">Doc</span>
 </span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">new_doc</span> <span class="o">=</span> <span class="n">Doc</span><span class="o">.</span><span class="n">from_docs</span><span class="p">(</span><span class="n">ngrams</span><span class="p">)</span>
 </span></code></pre></div>
 
@@ -5847,7 +5847,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 30, 2026 17:45:45 UTC">July 30, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 4, 2026 17:18:43 UTC">August 4, 2026</span>
   </span>
 
     

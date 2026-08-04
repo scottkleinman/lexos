@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.7.7">
     
     
       
@@ -5418,6 +5418,183 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#maintainer-runbook-versioned-docs-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maintainer Runbook: Versioned Docs Deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintainer Runbook: Versioned Docs Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-repository-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required Repository Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branch-responsibilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Branch Responsibilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automation-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automation Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alias-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alias Policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-run-requirements-strict-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual Run Requirements (Strict Audit)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cutover-validation-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cutover Validation Sequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-secrets-and-variables-for-dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required Secrets and Variables for Dispatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Operations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backfill-a-missing-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backfill a Missing Version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repair-an-alias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repair an Alias
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roll-back-stable-docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roll Back Stable Docs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emergency-local-fallback-deploy-from-lexos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emergency Local Fallback Deploy from lexos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting Checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#local-maintainer-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local Maintainer Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -5539,6 +5716,183 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#maintainer-runbook-versioned-docs-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maintainer Runbook: Versioned Docs Deployment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintainer Runbook: Versioned Docs Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-repository-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required Repository Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branch-responsibilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Branch Responsibilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automation-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Automation Behavior
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alias-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alias Policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-run-requirements-strict-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual Run Requirements (Strict Audit)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cutover-validation-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cutover Validation Sequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-secrets-and-variables-for-dispatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required Secrets and Variables for Dispatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Operations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#backfill-a-missing-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backfill a Missing Version
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repair-an-alias" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repair an Alias
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roll-back-stable-docs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roll Back Stable Docs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emergency-local-fallback-deploy-from-lexos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emergency Local Fallback Deploy from lexos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#troubleshooting-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting Checklist
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#local-maintainer-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local Maintainer Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -5666,6 +6020,138 @@
 <li>Make requested changes and push updates.</li>
 <li>Once approved, your changes will be merged!</li>
 </ol>
+<h2 id="maintainer-runbook-versioned-docs-deployment">Maintainer Runbook: Versioned Docs Deployment<a class="headerlink" href="#maintainer-runbook-versioned-docs-deployment" title="Permanent link">¤</a></h2>
+<p>Lexos documentation is published as a versioned site with <code>mike</code> on the <code>gh-pages</code> branch.</p>
+<p>As part of the split-repo migration, <code>lexos</code> dispatches docs publishing events to this repository (<code>lexos-docs</code>). <code>lexos-docs</code> performs docs builds and publishes to the <code>lexos</code> <code>gh-pages</code> branch.</p>
+<h3 id="required-repository-settings">Required Repository Settings<a class="headerlink" href="#required-repository-settings" title="Permanent link">¤</a></h3>
+<ol>
+<li>GitHub Pages must be configured to <strong>Deploy from a branch</strong>.</li>
+<li>The selected branch must be <code>gh-pages</code>.</li>
+<li>The selected folder must be <code>/(root)</code> (not <code>/docs</code>).</li>
+</ol>
+<h3 id="branch-responsibilities">Branch Responsibilities<a class="headerlink" href="#branch-responsibilities" title="Permanent link">¤</a></h3>
+<ol>
+<li><code>docs-source</code> stores authored docs and MkDocs configuration (<code>doc_src</code>).</li>
+<li><code>gh-pages</code> stores only rendered documentation output and mike metadata.</li>
+<li><code>main</code> stores Python source code and triggers development docs updates.</li>
+<li><code>docs-v*</code> tags (for example <code>docs-v0.1.0-beta.31</code>) are the canonical historical docs snapshots.</li>
+</ol>
+<h3 id="automation-behavior">Automation Behavior<a class="headerlink" href="#automation-behavior" title="Permanent link">¤</a></h3>
+<p>There are now two workflows involved:</p>
+<ol>
+<li><code>.github/workflows/docs-dispatch.yml</code> in <code>lexos</code> sends events to <code>lexos-docs</code>.</li>
+<li><code>.github/workflows/docs-versioned.yml</code> in <code>lexos-docs</code> receives dispatch events and publishes docs.</li>
+<li><code>.github/workflows/docs-versioned.yml</code> in <code>lexos</code> is a legacy fallback workflow and should remain manual-only.</li>
+</ol>
+<p>The dispatch workflow in <code>lexos</code> handles trigger forwarding.</p>
+<ol>
+<li>Push to <code>main</code> (matching paths): dispatches a <code>dev</code> docs update request.</li>
+<li>Push to a tag matching <code>v*</code>: dispatches a release-tag publish request.</li>
+<li>Release published: dispatches a release publish request.</li>
+<li>Manual dispatch: forwards a manually-audited publish request.</li>
+</ol>
+<p>The legacy workflow in <code>lexos</code> (<code>docs-versioned.yml</code>) only runs when one of the following is true:</p>
+<ol>
+<li>The run is started manually (<code>workflow_dispatch</code>).</li>
+<li>Repository variable <code>LEXOS_ENABLE_LEGACY_DOCS_DEPLOY</code> is set to <code>true</code>.</li>
+</ol>
+<p>This prevents duplicate publishes during split-repo operation.</p>
+<p>The receiver workflow in <code>lexos-docs</code> accepts:</p>
+<ol>
+<li><code>repository_dispatch</code> event type <code>lexos_docs_publish</code> from <code>scottkleinman/lexos</code>.</li>
+<li><code>workflow_dispatch</code> for manual operations (<code>dry-run</code>, <code>backfill</code>, <code>alias-repair</code>, <code>rollback</code>).</li>
+</ol>
+<h3 id="alias-policy">Alias Policy<a class="headerlink" href="#alias-policy" title="Permanent link">¤</a></h3>
+<ol>
+<li><code>stable</code> points to latest non-prerelease version.</li>
+<li><code>stable-beta</code> points to latest prerelease version.</li>
+<li><code>latest</code> points to the latest published release tag.</li>
+<li><code>dev</code> points to docs generated from <code>main</code>.</li>
+</ol>
+<h3 id="manual-run-requirements-strict-audit">Manual Run Requirements (Strict Audit)<a class="headerlink" href="#manual-run-requirements-strict-audit" title="Permanent link">¤</a></h3>
+<p>Manual runs require:</p>
+<ol>
+<li>operation type</li>
+<li>source ref</li>
+<li>reason</li>
+<li>change summary</li>
+</ol>
+<p>If required inputs are missing, the run fails.</p>
+<h3 id="cutover-validation-sequence">Cutover Validation Sequence<a class="headerlink" href="#cutover-validation-sequence" title="Permanent link">¤</a></h3>
+<p>To complete cutover safely, run both validations in this order:</p>
+<ol>
+<li><code>lexos-docs</code> <code>docs-versioned.yml</code> with <code>workflow_dispatch</code> and <code>operation=dry-run</code>.</li>
+<li><code>lexos</code> <code>docs-dispatch.yml</code> with <code>workflow_dispatch</code> to send a real <code>repository_dispatch</code> event.</li>
+</ol>
+<p>Expected outcome:</p>
+<ol>
+<li>Dry-run verifies checkout + mkdocstrings path + mike execution without pushing to <code>gh-pages</code>.</li>
+<li>Real dispatch produces a <code>dev</code> publish from <code>lexos-docs</code> to <code>lexos</code> <code>gh-pages</code>.</li>
+</ol>
+<h3 id="required-secrets-and-variables-for-dispatch">Required Secrets and Variables for Dispatch<a class="headerlink" href="#required-secrets-and-variables-for-dispatch" title="Permanent link">¤</a></h3>
+<p><code>lexos</code> repository:</p>
+<ol>
+<li>By default, <code>.github/workflows/docs-dispatch.yml</code> uses <code>github.token</code> to send <code>repository_dispatch</code> to <code>scottkleinman/lexos-docs</code>.</li>
+<li>If cross-repo dispatch fails with permission errors, switch dispatch auth to a fine-grained PAT secret (for example <code>LEXOS_DISPATCH_PAT</code>) and re-run.</li>
+</ol>
+<p><code>lexos-docs</code> repository:</p>
+<ol>
+<li><code>LEXOS_PAGES_PAT</code> secret for pushing mike output to <code>lexos</code> <code>gh-pages</code> (repository-contents write on <code>lexos</code>).</li>
+<li><code>.github/workflows/docs-versioned.yml</code> to handle <code>repository_dispatch</code> event type <code>lexos_docs_publish</code>.</li>
+</ol>
+<h3 id="common-operations">Common Operations<a class="headerlink" href="#common-operations" title="Permanent link">¤</a></h3>
+<h4 id="backfill-a-missing-version">Backfill a Missing Version<a class="headerlink" href="#backfill-a-missing-version" title="Permanent link">¤</a></h4>
+<p>During split-repo operation, run this in <code>lexos-docs</code> workflow dispatch with:</p>
+<ol>
+<li>operation = <code>backfill</code></li>
+<li>source_ref = release tag or commit</li>
+<li>docs_ref = optional docs snapshot ref (defaults to <code>docs-&lt;source_ref&gt;</code>)</li>
+<li>version_label = desired docs label</li>
+<li>reason + change_summary</li>
+</ol>
+<h4 id="repair-an-alias">Repair an Alias<a class="headerlink" href="#repair-an-alias" title="Permanent link">¤</a></h4>
+<p>During split-repo operation, run this in <code>lexos-docs</code> workflow dispatch with:</p>
+<ol>
+<li>operation = <code>alias-repair</code></li>
+<li>alias_name = <code>stable</code>, <code>stable-beta</code>, <code>latest</code>, or <code>dev</code></li>
+<li>target_version = existing deployed version label</li>
+<li>reason + change_summary</li>
+</ol>
+<h4 id="roll-back-stable-docs">Roll Back Stable Docs<a class="headerlink" href="#roll-back-stable-docs" title="Permanent link">¤</a></h4>
+<p>During split-repo operation, run this in <code>lexos-docs</code> workflow dispatch with:</p>
+<ol>
+<li>operation = <code>rollback</code></li>
+<li>target_version = known good deployed version</li>
+<li>reason + change_summary</li>
+</ol>
+<p>This updates <code>stable</code> and the default landing version.</p>
+<h4 id="emergency-local-fallback-deploy-from-lexos">Emergency Local Fallback Deploy from <code>lexos</code><a class="headerlink" href="#emergency-local-fallback-deploy-from-lexos" title="Permanent link">¤</a></h4>
+<p>Only use this when <code>lexos-docs</code> is unavailable.</p>
+<ol>
+<li>Run <code>.github/workflows/docs-versioned.yml</code> manually from Actions UI.</li>
+<li>Provide strict audit inputs (<code>reason</code>, <code>change_summary</code>, and operation parameters).</li>
+<li>Disable fallback usage once <code>lexos-docs</code> is healthy.</li>
+</ol>
+<h3 id="troubleshooting-checklist">Troubleshooting Checklist<a class="headerlink" href="#troubleshooting-checklist" title="Permanent link">¤</a></h3>
+<p>If the site is not deploying:</p>
+<ol>
+<li>Verify Pages is <code>gh-pages</code> + <code>/(root)</code>.</li>
+<li>Confirm <code>.github/workflows/docs-dispatch.yml</code> exists on <code>main</code>.</li>
+<li>Confirm dispatch run succeeded in <code>lexos</code> and reached <code>lexos-docs</code>.</li>
+<li>Check <code>lexos-docs</code> workflow logs for checkout, mkdocstrings source path, and <code>mike deploy</code> failures.</li>
+<li>Confirm both required tokens are present and not expired.</li>
+<li>Confirm matching docs refs exist in <code>lexos-docs</code> for release/tag backfills (<code>docs-&lt;source_ref&gt;</code> pattern).</li>
+<li>If <code>lexos</code> fallback workflow ran unexpectedly, check whether <code>LEXOS_ENABLE_LEGACY_DOCS_DEPLOY</code> is set to <code>true</code>.</li>
+<li>If dispatch is rejected immediately, verify the source repository in the receiver payload is <code>scottkleinman/lexos</code>.</li>
+</ol>
+<h3 id="local-maintainer-verification">Local Maintainer Verification<a class="headerlink" href="#local-maintainer-verification" title="Permanent link">¤</a></h3>
+<p>Before changing deployment logic, verify docs build locally:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">cd</span><span class="w"> </span>lexos
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>uv<span class="w"> </span>sync<span class="w"> </span>--group<span class="w"> </span>dev
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nb">cd</span><span class="w"> </span>doc_src
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>uv<span class="w"> </span>run<span class="w"> </span>mkdocs<span class="w"> </span>build
+</span></code></pre></div>
+<p>For API docs resolution during local tests, ensure source files are available in <code>../src</code> or provide <code>MKDOCSTRINGS_PYTHON_PATH</code>.</p>
 
 
 
@@ -5686,7 +6172,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="December 31, 2025 00:44:38 UTC">December 31, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 4, 2026 17:18:43 UTC">August 4, 2026</span>
   </span>
 
     

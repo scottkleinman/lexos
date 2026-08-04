@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.7.7">
     
     
       
@@ -6650,7 +6650,7 @@ model.copy_assets(**splits)</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-168">168</a></span>
 <span class="normal"><a href="#__codelineno-0-169">169</a></span>
 <span class="normal"><a href="#__codelineno-0-170">170</a></span>
@@ -6719,7 +6719,7 @@ model.copy_assets(**splits)</p>
 <span class="normal"><a href="#__codelineno-0-233">233</a></span>
 <span class="normal"><a href="#__codelineno-0-234">234</a></span>
 <span class="normal"><a href="#__codelineno-0-235">235</a></span>
-<span class="normal"><a href="#__codelineno-0-236">236</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-168"><a id="__codelineno-0-168" name="__codelineno-0-168"></a><span class="k">def</span> <span class="nf">split_conllu</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-236">236</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-168"><a id="__codelineno-0-168" name="__codelineno-0-168"></a><span class="k">def</span><span class="w"> </span><span class="nf">split_conllu</span><span class="p">(</span>
 </span><span id="__span-0-169"><a id="__codelineno-0-169" name="__codelineno-0-169"></a>    <span class="n">input_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
 </span><span id="__span-0-170"><a id="__codelineno-0-170" name="__codelineno-0-170"></a>    <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
 </span><span id="__span-0-171"><a id="__codelineno-0-171" name="__codelineno-0-171"></a>    <span class="o">*</span><span class="p">,</span>
@@ -6754,7 +6754,7 @@ model.copy_assets(**splits)</p>
 </span><span id="__span-0-200"><a id="__codelineno-0-200" name="__codelineno-0-200"></a><span class="sd">            splits = split_conllu(&quot;corpus.conllu&quot;, &quot;model/assets/en/&quot;)</span>
 </span><span id="__span-0-201"><a id="__codelineno-0-201" name="__codelineno-0-201"></a><span class="sd">            model.copy_assets(**splits)</span>
 </span><span id="__span-0-202"><a id="__codelineno-0-202" name="__codelineno-0-202"></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="__span-0-203"><a id="__codelineno-0-203" name="__codelineno-0-203"></a>    <span class="kn">import</span> <span class="nn">random</span>
+</span><span id="__span-0-203"><a id="__codelineno-0-203" name="__codelineno-0-203"></a>    <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 </span><span id="__span-0-204"><a id="__codelineno-0-204" name="__codelineno-0-204"></a>
 </span><span id="__span-0-205"><a id="__codelineno-0-205" name="__codelineno-0-205"></a>    <span class="n">input_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
 </span><span id="__span-0-206"><a id="__codelineno-0-206" name="__codelineno-0-206"></a>    <span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
@@ -6904,7 +6904,7 @@ sentences — the model's sentence segmenter handles splitting.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-239">239</a></span>
 <span class="normal"><a href="#__codelineno-0-240">240</a></span>
 <span class="normal"><a href="#__codelineno-0-241">241</a></span>
@@ -6964,7 +6964,7 @@ sentences — the model's sentence segmenter handles splitting.</p>
 <span class="normal"><a href="#__codelineno-0-295">295</a></span>
 <span class="normal"><a href="#__codelineno-0-296">296</a></span>
 <span class="normal"><a href="#__codelineno-0-297">297</a></span>
-<span class="normal"><a href="#__codelineno-0-298">298</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-239"><a id="__codelineno-0-239" name="__codelineno-0-239"></a><span class="k">def</span> <span class="nf">export_to_conllu</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-298">298</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-239"><a id="__codelineno-0-239" name="__codelineno-0-239"></a><span class="k">def</span><span class="w"> </span><span class="nf">export_to_conllu</span><span class="p">(</span>
 </span><span id="__span-0-240"><a id="__codelineno-0-240" name="__codelineno-0-240"></a>    <span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
 </span><span id="__span-0-241"><a id="__codelineno-0-241" name="__codelineno-0-241"></a>    <span class="n">texts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 </span><span id="__span-0-242"><a id="__codelineno-0-242" name="__codelineno-0-242"></a>    <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
@@ -7123,7 +7123,7 @@ they should be concatenated.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-301">301</a></span>
 <span class="normal"><a href="#__codelineno-0-302">302</a></span>
 <span class="normal"><a href="#__codelineno-0-303">303</a></span>
@@ -7151,7 +7151,7 @@ they should be concatenated.</p>
 <span class="normal"><a href="#__codelineno-0-325">325</a></span>
 <span class="normal"><a href="#__codelineno-0-326">326</a></span>
 <span class="normal"><a href="#__codelineno-0-327">327</a></span>
-<span class="normal"><a href="#__codelineno-0-328">328</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-301"><a id="__codelineno-0-301" name="__codelineno-0-301"></a><span class="k">def</span> <span class="nf">combine_conllu</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-328">328</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-301"><a id="__codelineno-0-301" name="__codelineno-0-301"></a><span class="k">def</span><span class="w"> </span><span class="nf">combine_conllu</span><span class="p">(</span>
 </span><span id="__span-0-302"><a id="__codelineno-0-302" name="__codelineno-0-302"></a>    <span class="n">round_files</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">],</span>
 </span><span id="__span-0-303"><a id="__codelineno-0-303" name="__codelineno-0-303"></a>    <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
 </span><span id="__span-0-304"><a id="__codelineno-0-304" name="__codelineno-0-304"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
@@ -7348,7 +7348,7 @@ random initialisation.</p>
     </table>
 
               <details class="mkdocstrings-source">
-                <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+                <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
                 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-336">336</a></span>
 <span class="normal"><a href="#__codelineno-0-337">337</a></span>
 <span class="normal"><a href="#__codelineno-0-338">338</a></span>
@@ -7979,7 +7979,7 @@ random initialisation.</p>
 <span class="normal"><a href="#__codelineno-0-963">963</a></span>
 <span class="normal"><a href="#__codelineno-0-964">964</a></span>
 <span class="normal"><a href="#__codelineno-0-965">965</a></span>
-<span class="normal"><a href="#__codelineno-0-966">966</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-336"><a id="__codelineno-0-336" name="__codelineno-0-336"></a><span class="k">class</span> <span class="nc">LanguageModel</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-966">966</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-336"><a id="__codelineno-0-336" name="__codelineno-0-336"></a><span class="k">class</span><span class="w"> </span><span class="nc">LanguageModel</span><span class="p">:</span>
 </span><span id="__span-0-337"><a id="__codelineno-0-337" name="__codelineno-0-337"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Manage the full lifecycle of a spaCy fine-tuning workflow.</span>
 </span><span id="__span-0-338"><a id="__codelineno-0-338" name="__codelineno-0-338"></a>
 </span><span id="__span-0-339"><a id="__codelineno-0-339" name="__codelineno-0-339"></a><span class="sd">    Creates and maintains a self-contained model directory with the following</span>
@@ -7998,7 +7998,7 @@ random initialisation.</p>
 </span><span id="__span-0-352"><a id="__codelineno-0-352" name="__codelineno-0-352"></a><span class="sd">    random initialisation.</span>
 </span><span id="__span-0-353"><a id="__codelineno-0-353" name="__codelineno-0-353"></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="__span-0-354"><a id="__codelineno-0-354" name="__codelineno-0-354"></a>
-</span><span id="__span-0-355"><a id="__codelineno-0-355" name="__codelineno-0-355"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span><span id="__span-0-355"><a id="__codelineno-0-355" name="__codelineno-0-355"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="__span-0-356"><a id="__codelineno-0-356" name="__codelineno-0-356"></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-357"><a id="__codelineno-0-357" name="__codelineno-0-357"></a>        <span class="n">model_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 </span><span id="__span-0-358"><a id="__codelineno-0-358" name="__codelineno-0-358"></a>        <span class="o">*</span><span class="p">,</span>
@@ -8130,7 +8130,7 @@ random initialisation.</p>
 </span><span id="__span-0-484"><a id="__codelineno-0-484" name="__codelineno-0-484"></a>    <span class="c1"># Internal helpers</span>
 </span><span id="__span-0-485"><a id="__codelineno-0-485" name="__codelineno-0-485"></a>    <span class="c1"># ------------------------------------------------------------------</span>
 </span><span id="__span-0-486"><a id="__codelineno-0-486" name="__codelineno-0-486"></a>
-</span><span id="__span-0-487"><a id="__codelineno-0-487" name="__codelineno-0-487"></a>    <span class="k">def</span> <span class="nf">_load_recipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recipe</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Printer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-487"><a id="__codelineno-0-487" name="__codelineno-0-487"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_load_recipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recipe</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Printer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-488"><a id="__codelineno-0-488" name="__codelineno-0-488"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a config from a recipe file path.</span>
 </span><span id="__span-0-489"><a id="__codelineno-0-489" name="__codelineno-0-489"></a>
 </span><span id="__span-0-490"><a id="__codelineno-0-490" name="__codelineno-0-490"></a><span class="sd">        The recipe&#39;s `[nlp] pipeline` becomes `self.components` so that</span>
@@ -8182,13 +8182,13 @@ random initialisation.</p>
 </span><span id="__span-0-536"><a id="__codelineno-0-536" name="__codelineno-0-536"></a>
 </span><span id="__span-0-537"><a id="__codelineno-0-537" name="__codelineno-0-537"></a>        <span class="n">msg</span><span class="o">.</span><span class="n">good</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded recipe: </span><span class="si">{</span><span class="n">recipe_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="__span-0-538"><a id="__codelineno-0-538" name="__codelineno-0-538"></a>
-</span><span id="__span-0-539"><a id="__codelineno-0-539" name="__codelineno-0-539"></a>    <span class="k">def</span> <span class="nf">_resolve_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+</span><span id="__span-0-539"><a id="__codelineno-0-539" name="__codelineno-0-539"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 </span><span id="__span-0-540"><a id="__codelineno-0-540" name="__codelineno-0-540"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalise base_model to a component→source mapping.&quot;&quot;&quot;</span>
 </span><span id="__span-0-541"><a id="__codelineno-0-541" name="__codelineno-0-541"></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">base_model</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 </span><span id="__span-0-542"><a id="__codelineno-0-542" name="__codelineno-0-542"></a>            <span class="k">return</span> <span class="p">{</span><span class="n">comp</span><span class="p">:</span> <span class="n">base_model</span> <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">}</span>
 </span><span id="__span-0-543"><a id="__codelineno-0-543" name="__codelineno-0-543"></a>        <span class="k">return</span> <span class="n">base_model</span>
 </span><span id="__span-0-544"><a id="__codelineno-0-544" name="__codelineno-0-544"></a>
-</span><span id="__span-0-545"><a id="__codelineno-0-545" name="__codelineno-0-545"></a>    <span class="k">def</span> <span class="nf">_generate_finetune_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Config</span><span class="p">:</span>
+</span><span id="__span-0-545"><a id="__codelineno-0-545" name="__codelineno-0-545"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_generate_finetune_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Config</span><span class="p">:</span>
 </span><span id="__span-0-546"><a id="__codelineno-0-546" name="__codelineno-0-546"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Build a Thinc Config that sources each component from an existing model.</span>
 </span><span id="__span-0-547"><a id="__codelineno-0-547" name="__codelineno-0-547"></a>
 </span><span id="__span-0-548"><a id="__codelineno-0-548" name="__codelineno-0-548"></a><span class="sd">        Loads default_ud.cfg as the structural base (providing corpora,</span>
@@ -8219,7 +8219,7 @@ random initialisation.</p>
 </span><span id="__span-0-573"><a id="__codelineno-0-573" name="__codelineno-0-573"></a>
 </span><span id="__span-0-574"><a id="__codelineno-0-574" name="__codelineno-0-574"></a>        <span class="k">return</span> <span class="n">base</span>
 </span><span id="__span-0-575"><a id="__codelineno-0-575" name="__codelineno-0-575"></a>
-</span><span id="__span-0-576"><a id="__codelineno-0-576" name="__codelineno-0-576"></a>    <span class="k">def</span> <span class="nf">_apply_config_defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-576"><a id="__codelineno-0-576" name="__codelineno-0-576"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_apply_config_defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-577"><a id="__codelineno-0-577" name="__codelineno-0-577"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Set values that spaCy&#39;s config generator leaves unset or unusable.</span>
 </span><span id="__span-0-578"><a id="__codelineno-0-578" name="__codelineno-0-578"></a>
 </span><span id="__span-0-579"><a id="__codelineno-0-579" name="__codelineno-0-579"></a><span class="sd">        Specifically:</span>
@@ -8270,11 +8270,11 @@ random initialisation.</p>
 </span><span id="__span-0-624"><a id="__codelineno-0-624" name="__codelineno-0-624"></a>    <span class="c1"># ------------------------------------------------------------------</span>
 </span><span id="__span-0-625"><a id="__codelineno-0-625" name="__codelineno-0-625"></a>
 </span><span id="__span-0-626"><a id="__codelineno-0-626" name="__codelineno-0-626"></a>    <span class="nd">@property</span>
-</span><span id="__span-0-627"><a id="__codelineno-0-627" name="__codelineno-0-627"></a>    <span class="k">def</span> <span class="nf">config_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+</span><span id="__span-0-627"><a id="__codelineno-0-627" name="__codelineno-0-627"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">config_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 </span><span id="__span-0-628"><a id="__codelineno-0-628" name="__codelineno-0-628"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Path to the config.cfg file on disk.&quot;&quot;&quot;</span>
 </span><span id="__span-0-629"><a id="__codelineno-0-629" name="__codelineno-0-629"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config_path</span>
 </span><span id="__span-0-630"><a id="__codelineno-0-630" name="__codelineno-0-630"></a>
-</span><span id="__span-0-631"><a id="__codelineno-0-631" name="__codelineno-0-631"></a>    <span class="k">def</span> <span class="nf">save_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-631"><a id="__codelineno-0-631" name="__codelineno-0-631"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">save_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-632"><a id="__codelineno-0-632" name="__codelineno-0-632"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the in-memory config to disk.</span>
 </span><span id="__span-0-633"><a id="__codelineno-0-633" name="__codelineno-0-633"></a>
 </span><span id="__span-0-634"><a id="__codelineno-0-634" name="__codelineno-0-634"></a><span class="sd">        Args:</span>
@@ -8283,7 +8283,7 @@ random initialisation.</p>
 </span><span id="__span-0-637"><a id="__codelineno-0-637" name="__codelineno-0-637"></a>        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span> <span class="k">if</span> <span class="n">filepath</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_config_path</span>
 </span><span id="__span-0-638"><a id="__codelineno-0-638" name="__codelineno-0-638"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">to_disk</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 </span><span id="__span-0-639"><a id="__codelineno-0-639" name="__codelineno-0-639"></a>
-</span><span id="__span-0-640"><a id="__codelineno-0-640" name="__codelineno-0-640"></a>    <span class="k">def</span> <span class="nf">load_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-640"><a id="__codelineno-0-640" name="__codelineno-0-640"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-641"><a id="__codelineno-0-641" name="__codelineno-0-641"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace the current config by loading from a file.</span>
 </span><span id="__span-0-642"><a id="__codelineno-0-642" name="__codelineno-0-642"></a>
 </span><span id="__span-0-643"><a id="__codelineno-0-643" name="__codelineno-0-643"></a><span class="sd">        Args:</span>
@@ -8298,7 +8298,7 @@ random initialisation.</p>
 </span><span id="__span-0-652"><a id="__codelineno-0-652" name="__codelineno-0-652"></a>    <span class="c1"># Workflow methods</span>
 </span><span id="__span-0-653"><a id="__codelineno-0-653" name="__codelineno-0-653"></a>    <span class="c1"># ------------------------------------------------------------------</span>
 </span><span id="__span-0-654"><a id="__codelineno-0-654" name="__codelineno-0-654"></a>
-</span><span id="__span-0-655"><a id="__codelineno-0-655" name="__codelineno-0-655"></a>    <span class="k">def</span> <span class="nf">copy_assets</span><span class="p">(</span>
+</span><span id="__span-0-655"><a id="__codelineno-0-655" name="__codelineno-0-655"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">copy_assets</span><span class="p">(</span>
 </span><span id="__span-0-656"><a id="__codelineno-0-656" name="__codelineno-0-656"></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-657"><a id="__codelineno-0-657" name="__codelineno-0-657"></a>        <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-658"><a id="__codelineno-0-658" name="__codelineno-0-658"></a>        <span class="n">train</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -8333,7 +8333,7 @@ random initialisation.</p>
 </span><span id="__span-0-687"><a id="__codelineno-0-687" name="__codelineno-0-687"></a>                <span class="k">with</span> <span class="n">smart_open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 </span><span id="__span-0-688"><a id="__codelineno-0-688" name="__codelineno-0-688"></a>                    <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </span><span id="__span-0-689"><a id="__codelineno-0-689" name="__codelineno-0-689"></a>            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="__span-0-690"><a id="__codelineno-0-690" name="__codelineno-0-690"></a>                <span class="k">raise</span> <span class="n">LexosException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not read </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> file: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+</span><span id="__span-0-690"><a id="__codelineno-0-690" name="__codelineno-0-690"></a>                <span class="k">raise</span> <span class="n">LexosException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not read </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> file: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 </span><span id="__span-0-691"><a id="__codelineno-0-691" name="__codelineno-0-691"></a>
 </span><span id="__span-0-692"><a id="__codelineno-0-692" name="__codelineno-0-692"></a>            <span class="n">dest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assets_dir</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
 </span><span id="__span-0-693"><a id="__codelineno-0-693" name="__codelineno-0-693"></a>            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -8359,7 +8359,7 @@ random initialisation.</p>
 </span><span id="__span-0-713"><a id="__codelineno-0-713" name="__codelineno-0-713"></a>
 </span><span id="__span-0-714"><a id="__codelineno-0-714" name="__codelineno-0-714"></a>        <span class="n">msg</span><span class="o">.</span><span class="n">good</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Assets copied to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_assets_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="__span-0-715"><a id="__codelineno-0-715" name="__codelineno-0-715"></a>
-</span><span id="__span-0-716"><a id="__codelineno-0-716" name="__codelineno-0-716"></a>    <span class="k">def</span> <span class="nf">convert_assets</span><span class="p">(</span>
+</span><span id="__span-0-716"><a id="__codelineno-0-716" name="__codelineno-0-716"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">convert_assets</span><span class="p">(</span>
 </span><span id="__span-0-717"><a id="__codelineno-0-717" name="__codelineno-0-717"></a>        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n_sents</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">merge_subtokens</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 </span><span id="__span-0-718"><a id="__codelineno-0-718" name="__codelineno-0-718"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-719"><a id="__codelineno-0-719" name="__codelineno-0-719"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert CONLL-U files in assets/ to spaCy&#39;s binary format in corpus/.</span>
@@ -8395,7 +8395,7 @@ random initialisation.</p>
 </span><span id="__span-0-749"><a id="__codelineno-0-749" name="__codelineno-0-749"></a>        <span class="k">else</span><span class="p">:</span>
 </span><span id="__span-0-750"><a id="__codelineno-0-750" name="__codelineno-0-750"></a>            <span class="n">msg</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;One or more assets failed to convert. Check CONLL-U formatting.&quot;</span><span class="p">)</span>
 </span><span id="__span-0-751"><a id="__codelineno-0-751" name="__codelineno-0-751"></a>
-</span><span id="__span-0-752"><a id="__codelineno-0-752" name="__codelineno-0-752"></a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-752"><a id="__codelineno-0-752" name="__codelineno-0-752"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-753"><a id="__codelineno-0-753" name="__codelineno-0-753"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Run pre-training preflight checks and print a summary.</span>
 </span><span id="__span-0-754"><a id="__codelineno-0-754" name="__codelineno-0-754"></a>
 </span><span id="__span-0-755"><a id="__codelineno-0-755" name="__codelineno-0-755"></a><span class="sd">        Verifies that:</span>
@@ -8469,7 +8469,7 @@ random initialisation.</p>
 </span><span id="__span-0-823"><a id="__codelineno-0-823" name="__codelineno-0-823"></a>        <span class="n">msg</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Assets:     </span><span class="si">{</span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">assets</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="__span-0-824"><a id="__codelineno-0-824" name="__codelineno-0-824"></a>        <span class="n">msg</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Output:     </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_training_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="__span-0-825"><a id="__codelineno-0-825" name="__codelineno-0-825"></a>
-</span><span id="__span-0-826"><a id="__codelineno-0-826" name="__codelineno-0-826"></a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">skip_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-826"><a id="__codelineno-0-826" name="__codelineno-0-826"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">skip_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-827"><a id="__codelineno-0-827" name="__codelineno-0-827"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Train the model using the current config.</span>
 </span><span id="__span-0-828"><a id="__codelineno-0-828" name="__codelineno-0-828"></a>
 </span><span id="__span-0-829"><a id="__codelineno-0-829" name="__codelineno-0-829"></a><span class="sd">        Reads `config.cfg` from disk (so any manual edits to that file are</span>
@@ -8507,7 +8507,7 @@ random initialisation.</p>
 </span><span id="__span-0-861"><a id="__codelineno-0-861" name="__codelineno-0-861"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="n">Printer</span><span class="p">()</span>
 </span><span id="__span-0-862"><a id="__codelineno-0-862" name="__codelineno-0-862"></a>        <span class="n">msg</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training complete. Time elapsed: </span><span class="si">{</span><span class="n">timer</span><span class="o">.</span><span class="n">elapsed</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="__span-0-863"><a id="__codelineno-0-863" name="__codelineno-0-863"></a>
-</span><span id="__span-0-864"><a id="__codelineno-0-864" name="__codelineno-0-864"></a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span>
+</span><span id="__span-0-864"><a id="__codelineno-0-864" name="__codelineno-0-864"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span>
 </span><span id="__span-0-865"><a id="__codelineno-0-865" name="__codelineno-0-865"></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-866"><a id="__codelineno-0-866" name="__codelineno-0-866"></a>        <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-867"><a id="__codelineno-0-867" name="__codelineno-0-867"></a>        <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -8556,7 +8556,7 @@ random initialisation.</p>
 </span><span id="__span-0-910"><a id="__codelineno-0-910" name="__codelineno-0-910"></a>            <span class="n">silent</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span>
 </span><span id="__span-0-911"><a id="__codelineno-0-911" name="__codelineno-0-911"></a>        <span class="p">)</span>
 </span><span id="__span-0-912"><a id="__codelineno-0-912" name="__codelineno-0-912"></a>
-</span><span id="__span-0-913"><a id="__codelineno-0-913" name="__codelineno-0-913"></a>    <span class="k">def</span> <span class="nf">package</span><span class="p">(</span>
+</span><span id="__span-0-913"><a id="__codelineno-0-913" name="__codelineno-0-913"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">package</span><span class="p">(</span>
 </span><span id="__span-0-914"><a id="__codelineno-0-914" name="__codelineno-0-914"></a>        <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-915"><a id="__codelineno-0-915" name="__codelineno-0-915"></a>        <span class="n">input_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
 </span><span id="__span-0-916"><a id="__codelineno-0-916" name="__codelineno-0-916"></a>        <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
@@ -8601,7 +8601,7 @@ random initialisation.</p>
 </span><span id="__span-0-955"><a id="__codelineno-0-955" name="__codelineno-0-955"></a>                    <span class="s2">&quot;Packaging failed (see output above). &quot;</span>
 </span><span id="__span-0-956"><a id="__codelineno-0-956" name="__codelineno-0-956"></a>                    <span class="s2">&quot;The most common cause is a missing &#39;build&#39; package: &quot;</span>
 </span><span id="__span-0-957"><a id="__codelineno-0-957" name="__codelineno-0-957"></a>                    <span class="s2">&quot;pip install build&quot;</span>
-</span><span id="__span-0-958"><a id="__codelineno-0-958" name="__codelineno-0-958"></a>                <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+</span><span id="__span-0-958"><a id="__codelineno-0-958" name="__codelineno-0-958"></a>                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 </span><span id="__span-0-959"><a id="__codelineno-0-959" name="__codelineno-0-959"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="n">Printer</span><span class="p">()</span>
 </span><span id="__span-0-960"><a id="__codelineno-0-960" name="__codelineno-0-960"></a>        <span class="n">tarfile</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">.tar.gz&quot;</span>
 </span><span id="__span-0-961"><a id="__codelineno-0-961" name="__codelineno-0-961"></a>        <span class="n">dist</span> <span class="o">=</span> <span class="n">out_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">/</span> <span class="s2">&quot;dist&quot;</span> <span class="o">/</span> <span class="n">tarfile</span>
@@ -8820,7 +8820,7 @@ specific to tok2vec pipelines.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-355">355</a></span>
 <span class="normal"><a href="#__codelineno-0-356">356</a></span>
 <span class="normal"><a href="#__codelineno-0-357">357</a></span>
@@ -8947,7 +8947,7 @@ specific to tok2vec pipelines.</p>
 <span class="normal"><a href="#__codelineno-0-478">478</a></span>
 <span class="normal"><a href="#__codelineno-0-479">479</a></span>
 <span class="normal"><a href="#__codelineno-0-480">480</a></span>
-<span class="normal"><a href="#__codelineno-0-481">481</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-355"><a id="__codelineno-0-355" name="__codelineno-0-355"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-481">481</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-355"><a id="__codelineno-0-355" name="__codelineno-0-355"></a><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="__span-0-356"><a id="__codelineno-0-356" name="__codelineno-0-356"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-357"><a id="__codelineno-0-357" name="__codelineno-0-357"></a>    <span class="n">model_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 </span><span id="__span-0-358"><a id="__codelineno-0-358" name="__codelineno-0-358"></a>    <span class="o">*</span><span class="p">,</span>
@@ -9144,7 +9144,7 @@ groups give the model more context during training but use more memory.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-716">716</a></span>
 <span class="normal"><a href="#__codelineno-0-717">717</a></span>
 <span class="normal"><a href="#__codelineno-0-718">718</a></span>
@@ -9179,7 +9179,7 @@ groups give the model more context during training but use more memory.</p>
 <span class="normal"><a href="#__codelineno-0-747">747</a></span>
 <span class="normal"><a href="#__codelineno-0-748">748</a></span>
 <span class="normal"><a href="#__codelineno-0-749">749</a></span>
-<span class="normal"><a href="#__codelineno-0-750">750</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-716"><a id="__codelineno-0-716" name="__codelineno-0-716"></a><span class="k">def</span> <span class="nf">convert_assets</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-750">750</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-716"><a id="__codelineno-0-716" name="__codelineno-0-716"></a><span class="k">def</span><span class="w"> </span><span class="nf">convert_assets</span><span class="p">(</span>
 </span><span id="__span-0-717"><a id="__codelineno-0-717" name="__codelineno-0-717"></a>    <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n_sents</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">merge_subtokens</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 </span><span id="__span-0-718"><a id="__codelineno-0-718" name="__codelineno-0-718"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-719"><a id="__codelineno-0-719" name="__codelineno-0-719"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert CONLL-U files in assets/ to spaCy&#39;s binary format in corpus/.</span>
@@ -9306,7 +9306,7 @@ model.copy_assets(**splits)
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-655">655</a></span>
 <span class="normal"><a href="#__codelineno-0-656">656</a></span>
 <span class="normal"><a href="#__codelineno-0-657">657</a></span>
@@ -9366,7 +9366,7 @@ model.copy_assets(**splits)
 <span class="normal"><a href="#__codelineno-0-711">711</a></span>
 <span class="normal"><a href="#__codelineno-0-712">712</a></span>
 <span class="normal"><a href="#__codelineno-0-713">713</a></span>
-<span class="normal"><a href="#__codelineno-0-714">714</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-655"><a id="__codelineno-0-655" name="__codelineno-0-655"></a><span class="k">def</span> <span class="nf">copy_assets</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-714">714</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-655"><a id="__codelineno-0-655" name="__codelineno-0-655"></a><span class="k">def</span><span class="w"> </span><span class="nf">copy_assets</span><span class="p">(</span>
 </span><span id="__span-0-656"><a id="__codelineno-0-656" name="__codelineno-0-656"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-657"><a id="__codelineno-0-657" name="__codelineno-0-657"></a>    <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-658"><a id="__codelineno-0-658" name="__codelineno-0-658"></a>    <span class="n">train</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -9401,7 +9401,7 @@ model.copy_assets(**splits)
 </span><span id="__span-0-687"><a id="__codelineno-0-687" name="__codelineno-0-687"></a>            <span class="k">with</span> <span class="n">smart_open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 </span><span id="__span-0-688"><a id="__codelineno-0-688" name="__codelineno-0-688"></a>                <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </span><span id="__span-0-689"><a id="__codelineno-0-689" name="__codelineno-0-689"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="__span-0-690"><a id="__codelineno-0-690" name="__codelineno-0-690"></a>            <span class="k">raise</span> <span class="n">LexosException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not read </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> file: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+</span><span id="__span-0-690"><a id="__codelineno-0-690" name="__codelineno-0-690"></a>            <span class="k">raise</span> <span class="n">LexosException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not read </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> file: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 </span><span id="__span-0-691"><a id="__codelineno-0-691" name="__codelineno-0-691"></a>
 </span><span id="__span-0-692"><a id="__codelineno-0-692" name="__codelineno-0-692"></a>        <span class="n">dest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assets_dir</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
 </span><span id="__span-0-693"><a id="__codelineno-0-693" name="__codelineno-0-693"></a>        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -9533,7 +9533,7 @@ searches <code>corpus/{lang}/</code> for a file matching <code>*test*.spacy</cod
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-864">864</a></span>
 <span class="normal"><a href="#__codelineno-0-865">865</a></span>
 <span class="normal"><a href="#__codelineno-0-866">866</a></span>
@@ -9581,7 +9581,7 @@ searches <code>corpus/{lang}/</code> for a file matching <code>*test*.spacy</cod
 <span class="normal"><a href="#__codelineno-0-908">908</a></span>
 <span class="normal"><a href="#__codelineno-0-909">909</a></span>
 <span class="normal"><a href="#__codelineno-0-910">910</a></span>
-<span class="normal"><a href="#__codelineno-0-911">911</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-864"><a id="__codelineno-0-864" name="__codelineno-0-864"></a><span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-911">911</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-864"><a id="__codelineno-0-864" name="__codelineno-0-864"></a><span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span>
 </span><span id="__span-0-865"><a id="__codelineno-0-865" name="__codelineno-0-865"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-866"><a id="__codelineno-0-866" name="__codelineno-0-866"></a>    <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-867"><a id="__codelineno-0-867" name="__codelineno-0-867"></a>    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -9681,7 +9681,7 @@ searches <code>corpus/{lang}/</code> for a file matching <code>*test*.spacy</cod
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-640">640</a></span>
 <span class="normal"><a href="#__codelineno-0-641">641</a></span>
 <span class="normal"><a href="#__codelineno-0-642">642</a></span>
@@ -9691,7 +9691,7 @@ searches <code>corpus/{lang}/</code> for a file matching <code>*test*.spacy</cod
 <span class="normal"><a href="#__codelineno-0-646">646</a></span>
 <span class="normal"><a href="#__codelineno-0-647">647</a></span>
 <span class="normal"><a href="#__codelineno-0-648">648</a></span>
-<span class="normal"><a href="#__codelineno-0-649">649</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-640"><a id="__codelineno-0-640" name="__codelineno-0-640"></a><span class="k">def</span> <span class="nf">load_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-649">649</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-640"><a id="__codelineno-0-640" name="__codelineno-0-640"></a><span class="k">def</span><span class="w"> </span><span class="nf">load_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-641"><a id="__codelineno-0-641" name="__codelineno-0-641"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace the current config by loading from a file.</span>
 </span><span id="__span-0-642"><a id="__codelineno-0-642" name="__codelineno-0-642"></a>
 </span><span id="__span-0-643"><a id="__codelineno-0-643" name="__codelineno-0-643"></a><span class="sd">    Args:</span>
@@ -9836,7 +9836,7 @@ searches <code>corpus/{lang}/</code> for a file matching <code>*test*.spacy</cod
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-913">913</a></span>
 <span class="normal"><a href="#__codelineno-0-914">914</a></span>
 <span class="normal"><a href="#__codelineno-0-915">915</a></span>
@@ -9890,7 +9890,7 @@ searches <code>corpus/{lang}/</code> for a file matching <code>*test*.spacy</cod
 <span class="normal"><a href="#__codelineno-0-963">963</a></span>
 <span class="normal"><a href="#__codelineno-0-964">964</a></span>
 <span class="normal"><a href="#__codelineno-0-965">965</a></span>
-<span class="normal"><a href="#__codelineno-0-966">966</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-913"><a id="__codelineno-0-913" name="__codelineno-0-913"></a><span class="k">def</span> <span class="nf">package</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-966">966</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-913"><a id="__codelineno-0-913" name="__codelineno-0-913"></a><span class="k">def</span><span class="w"> </span><span class="nf">package</span><span class="p">(</span>
 </span><span id="__span-0-914"><a id="__codelineno-0-914" name="__codelineno-0-914"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-915"><a id="__codelineno-0-915" name="__codelineno-0-915"></a>    <span class="n">input_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
 </span><span id="__span-0-916"><a id="__codelineno-0-916" name="__codelineno-0-916"></a>    <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
@@ -9935,7 +9935,7 @@ searches <code>corpus/{lang}/</code> for a file matching <code>*test*.spacy</cod
 </span><span id="__span-0-955"><a id="__codelineno-0-955" name="__codelineno-0-955"></a>                <span class="s2">&quot;Packaging failed (see output above). &quot;</span>
 </span><span id="__span-0-956"><a id="__codelineno-0-956" name="__codelineno-0-956"></a>                <span class="s2">&quot;The most common cause is a missing &#39;build&#39; package: &quot;</span>
 </span><span id="__span-0-957"><a id="__codelineno-0-957" name="__codelineno-0-957"></a>                <span class="s2">&quot;pip install build&quot;</span>
-</span><span id="__span-0-958"><a id="__codelineno-0-958" name="__codelineno-0-958"></a>            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+</span><span id="__span-0-958"><a id="__codelineno-0-958" name="__codelineno-0-958"></a>            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 </span><span id="__span-0-959"><a id="__codelineno-0-959" name="__codelineno-0-959"></a>    <span class="n">msg</span> <span class="o">=</span> <span class="n">Printer</span><span class="p">()</span>
 </span><span id="__span-0-960"><a id="__codelineno-0-960" name="__codelineno-0-960"></a>    <span class="n">tarfile</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">.tar.gz&quot;</span>
 </span><span id="__span-0-961"><a id="__codelineno-0-961" name="__codelineno-0-961"></a>    <span class="n">dist</span> <span class="o">=</span> <span class="n">out_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">/</span> <span class="s2">&quot;dist&quot;</span> <span class="o">/</span> <span class="n">tarfile</span>
@@ -9996,7 +9996,7 @@ searches <code>corpus/{lang}/</code> for a file matching <code>*test*.spacy</cod
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-631">631</a></span>
 <span class="normal"><a href="#__codelineno-0-632">632</a></span>
 <span class="normal"><a href="#__codelineno-0-633">633</a></span>
@@ -10004,7 +10004,7 @@ searches <code>corpus/{lang}/</code> for a file matching <code>*test*.spacy</cod
 <span class="normal"><a href="#__codelineno-0-635">635</a></span>
 <span class="normal"><a href="#__codelineno-0-636">636</a></span>
 <span class="normal"><a href="#__codelineno-0-637">637</a></span>
-<span class="normal"><a href="#__codelineno-0-638">638</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-631"><a id="__codelineno-0-631" name="__codelineno-0-631"></a><span class="k">def</span> <span class="nf">save_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-638">638</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-631"><a id="__codelineno-0-631" name="__codelineno-0-631"></a><span class="k">def</span><span class="w"> </span><span class="nf">save_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-632"><a id="__codelineno-0-632" name="__codelineno-0-632"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Write the in-memory config to disk.</span>
 </span><span id="__span-0-633"><a id="__codelineno-0-633" name="__codelineno-0-633"></a>
 </span><span id="__span-0-634"><a id="__codelineno-0-634" name="__codelineno-0-634"></a><span class="sd">    Args:</span>
@@ -10072,7 +10072,7 @@ to training.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-826">826</a></span>
 <span class="normal"><a href="#__codelineno-0-827">827</a></span>
 <span class="normal"><a href="#__codelineno-0-828">828</a></span>
@@ -10109,7 +10109,7 @@ to training.</p>
 <span class="normal"><a href="#__codelineno-0-859">859</a></span>
 <span class="normal"><a href="#__codelineno-0-860">860</a></span>
 <span class="normal"><a href="#__codelineno-0-861">861</a></span>
-<span class="normal"><a href="#__codelineno-0-862">862</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-826"><a id="__codelineno-0-826" name="__codelineno-0-826"></a><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">skip_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-862">862</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-826"><a id="__codelineno-0-826" name="__codelineno-0-826"></a><span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">skip_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-827"><a id="__codelineno-0-827" name="__codelineno-0-827"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Train the model using the current config.</span>
 </span><span id="__span-0-828"><a id="__codelineno-0-828" name="__codelineno-0-828"></a>
 </span><span id="__span-0-829"><a id="__codelineno-0-829" name="__codelineno-0-829"></a><span class="sd">    Reads `config.cfg` from disk (so any manual edits to that file are</span>
@@ -10199,7 +10199,7 @@ before raising so the user can fix them in one round.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-752">752</a></span>
 <span class="normal"><a href="#__codelineno-0-753">753</a></span>
 <span class="normal"><a href="#__codelineno-0-754">754</a></span>
@@ -10272,7 +10272,7 @@ before raising so the user can fix them in one round.</p>
 <span class="normal"><a href="#__codelineno-0-821">821</a></span>
 <span class="normal"><a href="#__codelineno-0-822">822</a></span>
 <span class="normal"><a href="#__codelineno-0-823">823</a></span>
-<span class="normal"><a href="#__codelineno-0-824">824</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-752"><a id="__codelineno-0-752" name="__codelineno-0-752"></a><span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-824">824</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-752"><a id="__codelineno-0-752" name="__codelineno-0-752"></a><span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-753"><a id="__codelineno-0-753" name="__codelineno-0-753"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Run pre-training preflight checks and print a summary.</span>
 </span><span id="__span-0-754"><a id="__codelineno-0-754" name="__codelineno-0-754"></a>
 </span><span id="__span-0-755"><a id="__codelineno-0-755" name="__codelineno-0-755"></a><span class="sd">    Verifies that:</span>
@@ -10535,7 +10535,7 @@ specific to tok2vec pipelines.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-355">355</a></span>
 <span class="normal"><a href="#__codelineno-0-356">356</a></span>
 <span class="normal"><a href="#__codelineno-0-357">357</a></span>
@@ -10662,7 +10662,7 @@ specific to tok2vec pipelines.</p>
 <span class="normal"><a href="#__codelineno-0-478">478</a></span>
 <span class="normal"><a href="#__codelineno-0-479">479</a></span>
 <span class="normal"><a href="#__codelineno-0-480">480</a></span>
-<span class="normal"><a href="#__codelineno-0-481">481</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-355"><a id="__codelineno-0-355" name="__codelineno-0-355"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-481">481</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-355"><a id="__codelineno-0-355" name="__codelineno-0-355"></a><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
 </span><span id="__span-0-356"><a id="__codelineno-0-356" name="__codelineno-0-356"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-357"><a id="__codelineno-0-357" name="__codelineno-0-357"></a>    <span class="n">model_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 </span><span id="__span-0-358"><a id="__codelineno-0-358" name="__codelineno-0-358"></a>    <span class="o">*</span><span class="p">,</span>
@@ -10871,7 +10871,7 @@ specific to tok2vec pipelines.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-631">631</a></span>
 <span class="normal"><a href="#__codelineno-0-632">632</a></span>
 <span class="normal"><a href="#__codelineno-0-633">633</a></span>
@@ -10879,7 +10879,7 @@ specific to tok2vec pipelines.</p>
 <span class="normal"><a href="#__codelineno-0-635">635</a></span>
 <span class="normal"><a href="#__codelineno-0-636">636</a></span>
 <span class="normal"><a href="#__codelineno-0-637">637</a></span>
-<span class="normal"><a href="#__codelineno-0-638">638</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-631"><a id="__codelineno-0-631" name="__codelineno-0-631"></a><span class="k">def</span> <span class="nf">save_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-638">638</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-631"><a id="__codelineno-0-631" name="__codelineno-0-631"></a><span class="k">def</span><span class="w"> </span><span class="nf">save_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-632"><a id="__codelineno-0-632" name="__codelineno-0-632"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Write the in-memory config to disk.</span>
 </span><span id="__span-0-633"><a id="__codelineno-0-633" name="__codelineno-0-633"></a>
 </span><span id="__span-0-634"><a id="__codelineno-0-634" name="__codelineno-0-634"></a><span class="sd">    Args:</span>
@@ -10943,7 +10943,7 @@ specific to tok2vec pipelines.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-640">640</a></span>
 <span class="normal"><a href="#__codelineno-0-641">641</a></span>
 <span class="normal"><a href="#__codelineno-0-642">642</a></span>
@@ -10953,7 +10953,7 @@ specific to tok2vec pipelines.</p>
 <span class="normal"><a href="#__codelineno-0-646">646</a></span>
 <span class="normal"><a href="#__codelineno-0-647">647</a></span>
 <span class="normal"><a href="#__codelineno-0-648">648</a></span>
-<span class="normal"><a href="#__codelineno-0-649">649</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-640"><a id="__codelineno-0-640" name="__codelineno-0-640"></a><span class="k">def</span> <span class="nf">load_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-649">649</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-640"><a id="__codelineno-0-640" name="__codelineno-0-640"></a><span class="k">def</span><span class="w"> </span><span class="nf">load_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-641"><a id="__codelineno-0-641" name="__codelineno-0-641"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace the current config by loading from a file.</span>
 </span><span id="__span-0-642"><a id="__codelineno-0-642" name="__codelineno-0-642"></a>
 </span><span id="__span-0-643"><a id="__codelineno-0-643" name="__codelineno-0-643"></a><span class="sd">    Args:</span>
@@ -11059,7 +11059,7 @@ model.copy_assets(**splits)
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-655">655</a></span>
 <span class="normal"><a href="#__codelineno-0-656">656</a></span>
 <span class="normal"><a href="#__codelineno-0-657">657</a></span>
@@ -11119,7 +11119,7 @@ model.copy_assets(**splits)
 <span class="normal"><a href="#__codelineno-0-711">711</a></span>
 <span class="normal"><a href="#__codelineno-0-712">712</a></span>
 <span class="normal"><a href="#__codelineno-0-713">713</a></span>
-<span class="normal"><a href="#__codelineno-0-714">714</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-655"><a id="__codelineno-0-655" name="__codelineno-0-655"></a><span class="k">def</span> <span class="nf">copy_assets</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-714">714</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-655"><a id="__codelineno-0-655" name="__codelineno-0-655"></a><span class="k">def</span><span class="w"> </span><span class="nf">copy_assets</span><span class="p">(</span>
 </span><span id="__span-0-656"><a id="__codelineno-0-656" name="__codelineno-0-656"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-657"><a id="__codelineno-0-657" name="__codelineno-0-657"></a>    <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-658"><a id="__codelineno-0-658" name="__codelineno-0-658"></a>    <span class="n">train</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -11154,7 +11154,7 @@ model.copy_assets(**splits)
 </span><span id="__span-0-687"><a id="__codelineno-0-687" name="__codelineno-0-687"></a>            <span class="k">with</span> <span class="n">smart_open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 </span><span id="__span-0-688"><a id="__codelineno-0-688" name="__codelineno-0-688"></a>                <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </span><span id="__span-0-689"><a id="__codelineno-0-689" name="__codelineno-0-689"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="__span-0-690"><a id="__codelineno-0-690" name="__codelineno-0-690"></a>            <span class="k">raise</span> <span class="n">LexosException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not read </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> file: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+</span><span id="__span-0-690"><a id="__codelineno-0-690" name="__codelineno-0-690"></a>            <span class="k">raise</span> <span class="n">LexosException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not read </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> file: </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 </span><span id="__span-0-691"><a id="__codelineno-0-691" name="__codelineno-0-691"></a>
 </span><span id="__span-0-692"><a id="__codelineno-0-692" name="__codelineno-0-692"></a>        <span class="n">dest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assets_dir</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
 </span><span id="__span-0-693"><a id="__codelineno-0-693" name="__codelineno-0-693"></a>        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -11253,7 +11253,7 @@ groups give the model more context during training but use more memory.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-716">716</a></span>
 <span class="normal"><a href="#__codelineno-0-717">717</a></span>
 <span class="normal"><a href="#__codelineno-0-718">718</a></span>
@@ -11288,7 +11288,7 @@ groups give the model more context during training but use more memory.</p>
 <span class="normal"><a href="#__codelineno-0-747">747</a></span>
 <span class="normal"><a href="#__codelineno-0-748">748</a></span>
 <span class="normal"><a href="#__codelineno-0-749">749</a></span>
-<span class="normal"><a href="#__codelineno-0-750">750</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-716"><a id="__codelineno-0-716" name="__codelineno-0-716"></a><span class="k">def</span> <span class="nf">convert_assets</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-750">750</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-716"><a id="__codelineno-0-716" name="__codelineno-0-716"></a><span class="k">def</span><span class="w"> </span><span class="nf">convert_assets</span><span class="p">(</span>
 </span><span id="__span-0-717"><a id="__codelineno-0-717" name="__codelineno-0-717"></a>    <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">n_sents</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">merge_subtokens</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 </span><span id="__span-0-718"><a id="__codelineno-0-718" name="__codelineno-0-718"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-719"><a id="__codelineno-0-719" name="__codelineno-0-719"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert CONLL-U files in assets/ to spaCy&#39;s binary format in corpus/.</span>
@@ -11380,7 +11380,7 @@ before raising so the user can fix them in one round.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-752">752</a></span>
 <span class="normal"><a href="#__codelineno-0-753">753</a></span>
 <span class="normal"><a href="#__codelineno-0-754">754</a></span>
@@ -11453,7 +11453,7 @@ before raising so the user can fix them in one round.</p>
 <span class="normal"><a href="#__codelineno-0-821">821</a></span>
 <span class="normal"><a href="#__codelineno-0-822">822</a></span>
 <span class="normal"><a href="#__codelineno-0-823">823</a></span>
-<span class="normal"><a href="#__codelineno-0-824">824</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-752"><a id="__codelineno-0-752" name="__codelineno-0-752"></a><span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-824">824</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-752"><a id="__codelineno-0-752" name="__codelineno-0-752"></a><span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-753"><a id="__codelineno-0-753" name="__codelineno-0-753"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Run pre-training preflight checks and print a summary.</span>
 </span><span id="__span-0-754"><a id="__codelineno-0-754" name="__codelineno-0-754"></a>
 </span><span id="__span-0-755"><a id="__codelineno-0-755" name="__codelineno-0-755"></a><span class="sd">    Verifies that:</span>
@@ -11590,7 +11590,7 @@ to training.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-826">826</a></span>
 <span class="normal"><a href="#__codelineno-0-827">827</a></span>
 <span class="normal"><a href="#__codelineno-0-828">828</a></span>
@@ -11627,7 +11627,7 @@ to training.</p>
 <span class="normal"><a href="#__codelineno-0-859">859</a></span>
 <span class="normal"><a href="#__codelineno-0-860">860</a></span>
 <span class="normal"><a href="#__codelineno-0-861">861</a></span>
-<span class="normal"><a href="#__codelineno-0-862">862</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-826"><a id="__codelineno-0-826" name="__codelineno-0-826"></a><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">skip_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-862">862</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-826"><a id="__codelineno-0-826" name="__codelineno-0-826"></a><span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">skip_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-827"><a id="__codelineno-0-827" name="__codelineno-0-827"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Train the model using the current config.</span>
 </span><span id="__span-0-828"><a id="__codelineno-0-828" name="__codelineno-0-828"></a>
 </span><span id="__span-0-829"><a id="__codelineno-0-829" name="__codelineno-0-829"></a><span class="sd">    Reads `config.cfg` from disk (so any manual edits to that file are</span>
@@ -11775,7 +11775,7 @@ searches <code>corpus/{lang}/</code> for a file matching <code>*test*.spacy</cod
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-864">864</a></span>
 <span class="normal"><a href="#__codelineno-0-865">865</a></span>
 <span class="normal"><a href="#__codelineno-0-866">866</a></span>
@@ -11823,7 +11823,7 @@ searches <code>corpus/{lang}/</code> for a file matching <code>*test*.spacy</cod
 <span class="normal"><a href="#__codelineno-0-908">908</a></span>
 <span class="normal"><a href="#__codelineno-0-909">909</a></span>
 <span class="normal"><a href="#__codelineno-0-910">910</a></span>
-<span class="normal"><a href="#__codelineno-0-911">911</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-864"><a id="__codelineno-0-864" name="__codelineno-0-864"></a><span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-911">911</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-864"><a id="__codelineno-0-864" name="__codelineno-0-864"></a><span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span>
 </span><span id="__span-0-865"><a id="__codelineno-0-865" name="__codelineno-0-865"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-866"><a id="__codelineno-0-866" name="__codelineno-0-866"></a>    <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-867"><a id="__codelineno-0-867" name="__codelineno-0-867"></a>    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -12010,7 +12010,7 @@ searches <code>corpus/{lang}/</code> for a file matching <code>*test*.spacy</cod
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-913">913</a></span>
 <span class="normal"><a href="#__codelineno-0-914">914</a></span>
 <span class="normal"><a href="#__codelineno-0-915">915</a></span>
@@ -12064,7 +12064,7 @@ searches <code>corpus/{lang}/</code> for a file matching <code>*test*.spacy</cod
 <span class="normal"><a href="#__codelineno-0-963">963</a></span>
 <span class="normal"><a href="#__codelineno-0-964">964</a></span>
 <span class="normal"><a href="#__codelineno-0-965">965</a></span>
-<span class="normal"><a href="#__codelineno-0-966">966</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-913"><a id="__codelineno-0-913" name="__codelineno-0-913"></a><span class="k">def</span> <span class="nf">package</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-966">966</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-913"><a id="__codelineno-0-913" name="__codelineno-0-913"></a><span class="k">def</span><span class="w"> </span><span class="nf">package</span><span class="p">(</span>
 </span><span id="__span-0-914"><a id="__codelineno-0-914" name="__codelineno-0-914"></a>    <span class="bp">self</span><span class="p">,</span>
 </span><span id="__span-0-915"><a id="__codelineno-0-915" name="__codelineno-0-915"></a>    <span class="n">input_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
 </span><span id="__span-0-916"><a id="__codelineno-0-916" name="__codelineno-0-916"></a>    <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
@@ -12109,7 +12109,7 @@ searches <code>corpus/{lang}/</code> for a file matching <code>*test*.spacy</cod
 </span><span id="__span-0-955"><a id="__codelineno-0-955" name="__codelineno-0-955"></a>                <span class="s2">&quot;Packaging failed (see output above). &quot;</span>
 </span><span id="__span-0-956"><a id="__codelineno-0-956" name="__codelineno-0-956"></a>                <span class="s2">&quot;The most common cause is a missing &#39;build&#39; package: &quot;</span>
 </span><span id="__span-0-957"><a id="__codelineno-0-957" name="__codelineno-0-957"></a>                <span class="s2">&quot;pip install build&quot;</span>
-</span><span id="__span-0-958"><a id="__codelineno-0-958" name="__codelineno-0-958"></a>            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+</span><span id="__span-0-958"><a id="__codelineno-0-958" name="__codelineno-0-958"></a>            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 </span><span id="__span-0-959"><a id="__codelineno-0-959" name="__codelineno-0-959"></a>    <span class="n">msg</span> <span class="o">=</span> <span class="n">Printer</span><span class="p">()</span>
 </span><span id="__span-0-960"><a id="__codelineno-0-960" name="__codelineno-0-960"></a>    <span class="n">tarfile</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">.tar.gz&quot;</span>
 </span><span id="__span-0-961"><a id="__codelineno-0-961" name="__codelineno-0-961"></a>    <span class="n">dist</span> <span class="o">=</span> <span class="n">out_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">lang</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">/</span> <span class="s2">&quot;dist&quot;</span> <span class="o">/</span> <span class="n">tarfile</span>
@@ -12219,7 +12219,7 @@ is not installed.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-487">487</a></span>
 <span class="normal"><a href="#__codelineno-0-488">488</a></span>
 <span class="normal"><a href="#__codelineno-0-489">489</a></span>
@@ -12270,7 +12270,7 @@ is not installed.</p>
 <span class="normal"><a href="#__codelineno-0-534">534</a></span>
 <span class="normal"><a href="#__codelineno-0-535">535</a></span>
 <span class="normal"><a href="#__codelineno-0-536">536</a></span>
-<span class="normal"><a href="#__codelineno-0-537">537</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-487"><a id="__codelineno-0-487" name="__codelineno-0-487"></a><span class="k">def</span> <span class="nf">_load_recipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recipe</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Printer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-537">537</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-487"><a id="__codelineno-0-487" name="__codelineno-0-487"></a><span class="k">def</span><span class="w"> </span><span class="nf">_load_recipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recipe</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Printer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-488"><a id="__codelineno-0-488" name="__codelineno-0-488"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a config from a recipe file path.</span>
 </span><span id="__span-0-489"><a id="__codelineno-0-489" name="__codelineno-0-489"></a>
 </span><span id="__span-0-490"><a id="__codelineno-0-490" name="__codelineno-0-490"></a><span class="sd">    The recipe&#39;s `[nlp] pipeline` becomes `self.components` so that</span>
@@ -12346,12 +12346,12 @@ is not installed.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-539">539</a></span>
 <span class="normal"><a href="#__codelineno-0-540">540</a></span>
 <span class="normal"><a href="#__codelineno-0-541">541</a></span>
 <span class="normal"><a href="#__codelineno-0-542">542</a></span>
-<span class="normal"><a href="#__codelineno-0-543">543</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-539"><a id="__codelineno-0-539" name="__codelineno-0-539"></a><span class="k">def</span> <span class="nf">_resolve_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="normal"><a href="#__codelineno-0-543">543</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-539"><a id="__codelineno-0-539" name="__codelineno-0-539"></a><span class="k">def</span><span class="w"> </span><span class="nf">_resolve_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 </span><span id="__span-0-540"><a id="__codelineno-0-540" name="__codelineno-0-540"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalise base_model to a component→source mapping.&quot;&quot;&quot;</span>
 </span><span id="__span-0-541"><a id="__codelineno-0-541" name="__codelineno-0-541"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">base_model</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 </span><span id="__span-0-542"><a id="__codelineno-0-542" name="__codelineno-0-542"></a>        <span class="k">return</span> <span class="p">{</span><span class="n">comp</span><span class="p">:</span> <span class="n">base_model</span> <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">}</span>
@@ -12387,7 +12387,7 @@ replaced with the actual integer read from the source model's config.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-545">545</a></span>
 <span class="normal"><a href="#__codelineno-0-546">546</a></span>
 <span class="normal"><a href="#__codelineno-0-547">547</a></span>
@@ -12417,7 +12417,7 @@ replaced with the actual integer read from the source model's config.</p>
 <span class="normal"><a href="#__codelineno-0-571">571</a></span>
 <span class="normal"><a href="#__codelineno-0-572">572</a></span>
 <span class="normal"><a href="#__codelineno-0-573">573</a></span>
-<span class="normal"><a href="#__codelineno-0-574">574</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-545"><a id="__codelineno-0-545" name="__codelineno-0-545"></a><span class="k">def</span> <span class="nf">_generate_finetune_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Config</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-574">574</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-545"><a id="__codelineno-0-545" name="__codelineno-0-545"></a><span class="k">def</span><span class="w"> </span><span class="nf">_generate_finetune_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Config</span><span class="p">:</span>
 </span><span id="__span-0-546"><a id="__codelineno-0-546" name="__codelineno-0-546"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a Thinc Config that sources each component from an existing model.</span>
 </span><span id="__span-0-547"><a id="__codelineno-0-547" name="__codelineno-0-547"></a>
 </span><span id="__span-0-548"><a id="__codelineno-0-548" name="__codelineno-0-548"></a><span class="sd">    Loads default_ud.cfg as the structural base (providing corpora,</span>
@@ -12480,7 +12480,7 @@ replaced with the actual integer read from the source model's config.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-576">576</a></span>
 <span class="normal"><a href="#__codelineno-0-577">577</a></span>
 <span class="normal"><a href="#__codelineno-0-578">578</a></span>
@@ -12525,7 +12525,7 @@ replaced with the actual integer read from the source model's config.</p>
 <span class="normal"><a href="#__codelineno-0-617">617</a></span>
 <span class="normal"><a href="#__codelineno-0-618">618</a></span>
 <span class="normal"><a href="#__codelineno-0-619">619</a></span>
-<span class="normal"><a href="#__codelineno-0-620">620</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-576"><a id="__codelineno-0-576" name="__codelineno-0-576"></a><span class="k">def</span> <span class="nf">_apply_config_defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-620">620</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-576"><a id="__codelineno-0-576" name="__codelineno-0-576"></a><span class="k">def</span><span class="w"> </span><span class="nf">_apply_config_defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-577"><a id="__codelineno-0-577" name="__codelineno-0-577"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Set values that spaCy&#39;s config generator leaves unset or unusable.</span>
 </span><span id="__span-0-578"><a id="__codelineno-0-578" name="__codelineno-0-578"></a>
 </span><span id="__span-0-579"><a id="__codelineno-0-579" name="__codelineno-0-579"></a><span class="sd">    Specifically:</span>
@@ -12696,7 +12696,7 @@ blocking — you may need to fix errors one round at a time.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-974"> 974</a></span>
 <span class="normal"><a href="#__codelineno-0-975"> 975</a></span>
 <span class="normal"><a href="#__codelineno-0-976"> 976</a></span>
@@ -12734,7 +12734,7 @@ blocking — you may need to fix errors one round at a time.</p>
 <span class="normal"><a href="#__codelineno-0-1008">1008</a></span>
 <span class="normal"><a href="#__codelineno-0-1009">1009</a></span>
 <span class="normal"><a href="#__codelineno-0-1010">1010</a></span>
-<span class="normal"><a href="#__codelineno-0-1011">1011</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-974"><a id="__codelineno-0-974" name="__codelineno-0-974"></a><span class="k">def</span> <span class="nf">debug_config</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-1011">1011</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-974"><a id="__codelineno-0-974" name="__codelineno-0-974"></a><span class="k">def</span><span class="w"> </span><span class="nf">debug_config</span><span class="p">(</span>
 </span><span id="__span-0-975"><a id="__codelineno-0-975" name="__codelineno-0-975"></a>    <span class="n">config_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
 </span><span id="__span-0-976"><a id="__codelineno-0-976" name="__codelineno-0-976"></a>    <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-977"><a id="__codelineno-0-977" name="__codelineno-0-977"></a>    <span class="n">overrides</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -12771,7 +12771,7 @@ blocking — you may need to fix errors one round at a time.</p>
 </span><span id="__span-0-1008"><a id="__codelineno-0-1008" name="__codelineno-0-1008"></a>            <span class="k">raise</span> <span class="n">LexosException</span><span class="p">(</span>
 </span><span id="__span-0-1009"><a id="__codelineno-0-1009" name="__codelineno-0-1009"></a>                <span class="s2">&quot;debug_config found errors in your config (see output above). &quot;</span>
 </span><span id="__span-0-1010"><a id="__codelineno-0-1010" name="__codelineno-0-1010"></a>                <span class="s2">&quot;Fix them before training.&quot;</span>
-</span><span id="__span-0-1011"><a id="__codelineno-0-1011" name="__codelineno-0-1011"></a>            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+</span><span id="__span-0-1011"><a id="__codelineno-0-1011" name="__codelineno-0-1011"></a>            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 </span></code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -12911,7 +12911,7 @@ if spaCy's data checker finds errors.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1014">1014</a></span>
 <span class="normal"><a href="#__codelineno-0-1015">1015</a></span>
 <span class="normal"><a href="#__codelineno-0-1016">1016</a></span>
@@ -12955,7 +12955,7 @@ if spaCy's data checker finds errors.</p>
 <span class="normal"><a href="#__codelineno-0-1054">1054</a></span>
 <span class="normal"><a href="#__codelineno-0-1055">1055</a></span>
 <span class="normal"><a href="#__codelineno-0-1056">1056</a></span>
-<span class="normal"><a href="#__codelineno-0-1057">1057</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1014"><a id="__codelineno-0-1014" name="__codelineno-0-1014"></a><span class="k">def</span> <span class="nf">debug_data</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-1057">1057</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1014"><a id="__codelineno-0-1014" name="__codelineno-0-1014"></a><span class="k">def</span><span class="w"> </span><span class="nf">debug_data</span><span class="p">(</span>
 </span><span id="__span-0-1015"><a id="__codelineno-0-1015" name="__codelineno-0-1015"></a>    <span class="n">config_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
 </span><span id="__span-0-1016"><a id="__codelineno-0-1016" name="__codelineno-0-1016"></a>    <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-1017"><a id="__codelineno-0-1017" name="__codelineno-0-1017"></a>    <span class="n">overrides</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -12998,7 +12998,7 @@ if spaCy's data checker finds errors.</p>
 </span><span id="__span-0-1054"><a id="__codelineno-0-1054" name="__codelineno-0-1054"></a>            <span class="k">raise</span> <span class="n">LexosException</span><span class="p">(</span>
 </span><span id="__span-0-1055"><a id="__codelineno-0-1055" name="__codelineno-0-1055"></a>                <span class="s2">&quot;debug_data found errors in your training data (see output above). &quot;</span>
 </span><span id="__span-0-1056"><a id="__codelineno-0-1056" name="__codelineno-0-1056"></a>                <span class="s2">&quot;Fix them before training.&quot;</span>
-</span><span id="__span-0-1057"><a id="__codelineno-0-1057" name="__codelineno-0-1057"></a>            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+</span><span id="__span-0-1057"><a id="__codelineno-0-1057" name="__codelineno-0-1057"></a>            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 </span></code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -13247,7 +13247,7 @@ if spaCy's data checker finds errors.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1060">1060</a></span>
 <span class="normal"><a href="#__codelineno-0-1061">1061</a></span>
 <span class="normal"><a href="#__codelineno-0-1062">1062</a></span>
@@ -13314,7 +13314,7 @@ if spaCy's data checker finds errors.</p>
 <span class="normal"><a href="#__codelineno-0-1123">1123</a></span>
 <span class="normal"><a href="#__codelineno-0-1124">1124</a></span>
 <span class="normal"><a href="#__codelineno-0-1125">1125</a></span>
-<span class="normal"><a href="#__codelineno-0-1126">1126</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1060"><a id="__codelineno-0-1060" name="__codelineno-0-1060"></a><span class="k">def</span> <span class="nf">debug_model</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-1126">1126</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1060"><a id="__codelineno-0-1060" name="__codelineno-0-1060"></a><span class="k">def</span><span class="w"> </span><span class="nf">debug_model</span><span class="p">(</span>
 </span><span id="__span-0-1061"><a id="__codelineno-0-1061" name="__codelineno-0-1061"></a>    <span class="n">config_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
 </span><span id="__span-0-1062"><a id="__codelineno-0-1062" name="__codelineno-0-1062"></a>    <span class="o">*</span><span class="p">,</span>
 </span><span id="__span-0-1063"><a id="__codelineno-0-1063" name="__codelineno-0-1063"></a>    <span class="n">config_overrides</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -13502,7 +13502,7 @@ if spaCy's data checker finds errors.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1129">1129</a></span>
 <span class="normal"><a href="#__codelineno-0-1130">1130</a></span>
 <span class="normal"><a href="#__codelineno-0-1131">1131</a></span>
@@ -13527,7 +13527,7 @@ if spaCy's data checker finds errors.</p>
 <span class="normal"><a href="#__codelineno-0-1150">1150</a></span>
 <span class="normal"><a href="#__codelineno-0-1151">1151</a></span>
 <span class="normal"><a href="#__codelineno-0-1152">1152</a></span>
-<span class="normal"><a href="#__codelineno-0-1153">1153</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1129"><a id="__codelineno-0-1129" name="__codelineno-0-1129"></a><span class="k">def</span> <span class="nf">fill_config</span><span class="p">(</span>
+<span class="normal"><a href="#__codelineno-0-1153">1153</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1129"><a id="__codelineno-0-1129" name="__codelineno-0-1129"></a><span class="k">def</span><span class="w"> </span><span class="nf">fill_config</span><span class="p">(</span>
 </span><span id="__span-0-1130"><a id="__codelineno-0-1130" name="__codelineno-0-1130"></a>    <span class="n">config_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
 </span><span id="__span-0-1131"><a id="__codelineno-0-1131" name="__codelineno-0-1131"></a>    <span class="n">output_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
 </span><span id="__span-0-1132"><a id="__codelineno-0-1132" name="__codelineno-0-1132"></a>    <span class="o">*</span><span class="p">,</span>
@@ -13578,7 +13578,7 @@ if spaCy's data checker finds errors.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-72">72</a></span>
 <span class="normal"><a href="#__codelineno-0-73">73</a></span>
 <span class="normal"><a href="#__codelineno-0-74">74</a></span>
@@ -13592,7 +13592,7 @@ if spaCy's data checker finds errors.</p>
 <span class="normal"><a href="#__codelineno-0-82">82</a></span>
 <span class="normal"><a href="#__codelineno-0-83">83</a></span>
 <span class="normal"><a href="#__codelineno-0-84">84</a></span>
-<span class="normal"><a href="#__codelineno-0-85">85</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-72"><a id="__codelineno-0-72" name="__codelineno-0-72"></a><span class="k">def</span> <span class="nf">_has_nvidia_gpu</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-85">85</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-72"><a id="__codelineno-0-72" name="__codelineno-0-72"></a><span class="k">def</span><span class="w"> </span><span class="nf">_has_nvidia_gpu</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 </span><span id="__span-0-73"><a id="__codelineno-0-73" name="__codelineno-0-73"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if an NVIDIA GPU driver and nvidia-smi are accessible.&quot;&quot;&quot;</span>
 </span><span id="__span-0-74"><a id="__codelineno-0-74" name="__codelineno-0-74"></a>    <span class="k">if</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;nvidia-smi&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-75"><a id="__codelineno-0-75" name="__codelineno-0-75"></a>        <span class="k">return</span> <span class="kc">False</span>
@@ -13711,7 +13711,7 @@ is missing.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-88"> 88</a></span>
 <span class="normal"><a href="#__codelineno-0-89"> 89</a></span>
 <span class="normal"><a href="#__codelineno-0-90"> 90</a></span>
@@ -13765,7 +13765,7 @@ is missing.</p>
 <span class="normal"><a href="#__codelineno-0-138">138</a></span>
 <span class="normal"><a href="#__codelineno-0-139">139</a></span>
 <span class="normal"><a href="#__codelineno-0-140">140</a></span>
-<span class="normal"><a href="#__codelineno-0-141">141</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-88"><a id="__codelineno-0-88" name="__codelineno-0-88"></a><span class="k">def</span> <span class="nf">_get_tok2vec_width</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-141">141</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-88"><a id="__codelineno-0-88" name="__codelineno-0-88"></a><span class="k">def</span><span class="w"> </span><span class="nf">_get_tok2vec_width</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="__span-0-89"><a id="__codelineno-0-89" name="__codelineno-0-89"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Read tok2vec output width from a model&#39;s config.cfg without loading weights.</span>
 </span><span id="__span-0-90"><a id="__codelineno-0-90" name="__codelineno-0-90"></a>
 </span><span id="__span-0-91"><a id="__codelineno-0-91" name="__codelineno-0-91"></a><span class="sd">    Supports both local directory paths and installed spaCy package names.</span>
@@ -13787,7 +13787,7 @@ is missing.</p>
 </span><span id="__span-0-107"><a id="__codelineno-0-107" name="__codelineno-0-107"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">cfg_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
 </span><span id="__span-0-108"><a id="__codelineno-0-108" name="__codelineno-0-108"></a>            <span class="k">raise</span> <span class="n">LexosException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No config.cfg found at </span><span class="si">{</span><span class="n">source_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="__span-0-109"><a id="__codelineno-0-109" name="__codelineno-0-109"></a>    <span class="k">else</span><span class="p">:</span>
-</span><span id="__span-0-110"><a id="__codelineno-0-110" name="__codelineno-0-110"></a>        <span class="kn">import</span> <span class="nn">spacy.util</span> <span class="k">as</span> <span class="nn">_spacy_util</span>
+</span><span id="__span-0-110"><a id="__codelineno-0-110" name="__codelineno-0-110"></a>        <span class="kn">import</span><span class="w"> </span><span class="nn">spacy.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">_spacy_util</span>
 </span><span id="__span-0-111"><a id="__codelineno-0-111" name="__codelineno-0-111"></a>
 </span><span id="__span-0-112"><a id="__codelineno-0-112" name="__codelineno-0-112"></a>        <span class="k">try</span><span class="p">:</span>
 </span><span id="__span-0-113"><a id="__codelineno-0-113" name="__codelineno-0-113"></a>            <span class="n">pkg_path</span> <span class="o">=</span> <span class="n">_spacy_util</span><span class="o">.</span><span class="n">get_package_path</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
@@ -13803,7 +13803,7 @@ is missing.</p>
 </span><span id="__span-0-123"><a id="__codelineno-0-123" name="__codelineno-0-123"></a>            <span class="k">raise</span> <span class="n">LexosException</span><span class="p">(</span>
 </span><span id="__span-0-124"><a id="__codelineno-0-124" name="__codelineno-0-124"></a>                <span class="sa">f</span><span class="s2">&quot;Could not locate config.cfg for source model &#39;</span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
 </span><span id="__span-0-125"><a id="__codelineno-0-125" name="__codelineno-0-125"></a>                <span class="s2">&quot;Use recipe= with an explicit width instead.&quot;</span>
-</span><span id="__span-0-126"><a id="__codelineno-0-126" name="__codelineno-0-126"></a>            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+</span><span id="__span-0-126"><a id="__codelineno-0-126" name="__codelineno-0-126"></a>            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 </span><span id="__span-0-127"><a id="__codelineno-0-127" name="__codelineno-0-127"></a>
 </span><span id="__span-0-128"><a id="__codelineno-0-128" name="__codelineno-0-128"></a>    <span class="n">raw</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">from_disk</span><span class="p">(</span><span class="n">cfg_path</span><span class="p">)</span>
 </span><span id="__span-0-129"><a id="__codelineno-0-129" name="__codelineno-0-129"></a>    <span class="n">width</span> <span class="o">=</span> <span class="p">(</span>
@@ -13894,7 +13894,7 @@ disappears, so we walk the component dict and substitute the integer.</p>
 
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/lexos/language_model/__init__.py</code></summary>
+              <summary>Source code in <code>lexos/language_model/__init__.py</code></summary>
               <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-144">144</a></span>
 <span class="normal"><a href="#__codelineno-0-145">145</a></span>
 <span class="normal"><a href="#__codelineno-0-146">146</a></span>
@@ -13911,7 +13911,7 @@ disappears, so we walk the component dict and substitute the integer.</p>
 <span class="normal"><a href="#__codelineno-0-157">157</a></span>
 <span class="normal"><a href="#__codelineno-0-158">158</a></span>
 <span class="normal"><a href="#__codelineno-0-159">159</a></span>
-<span class="normal"><a href="#__codelineno-0-160">160</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-144"><a id="__codelineno-0-144" name="__codelineno-0-144"></a><span class="k">def</span> <span class="nf">_patch_tok2vec_width</span><span class="p">(</span><span class="n">component_cfg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal"><a href="#__codelineno-0-160">160</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-144"><a id="__codelineno-0-144" name="__codelineno-0-144"></a><span class="k">def</span><span class="w"> </span><span class="nf">_patch_tok2vec_width</span><span class="p">(</span><span class="n">component_cfg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-145"><a id="__codelineno-0-145" name="__codelineno-0-145"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace the tok2vec width variable reference with a concrete integer.</span>
 </span><span id="__span-0-146"><a id="__codelineno-0-146" name="__codelineno-0-146"></a>
 </span><span id="__span-0-147"><a id="__codelineno-0-147" name="__codelineno-0-147"></a><span class="sd">    Thinc stores `${components.tok2vec.model.encode.width}` as a literal</span>
@@ -13956,7 +13956,7 @@ disappears, so we walk the component dict and substitute the integer.</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 29, 2026 19:06:07 UTC">July 29, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 4, 2026 17:18:43 UTC">August 4, 2026</span>
   </span>
 
     

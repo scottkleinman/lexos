@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="http://lexos.wheatoncollege.edu/static/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-material-9.7.7">
     
     
       
@@ -5699,18 +5699,18 @@
 <h2 id="loading-components">Loading Components<a class="headerlink" href="#loading-components" title="Permanent link">¤</a></h2>
 <p>Components must be loaded before they can be used. Each loaded component is a function, which we can then use or feed to a scrubbing pipeline.</p>
 <p>There are several ways to load Scrubber components into a Python file. The simplest is to import the component directly:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">scrubber.normalize</span> <span class="kn">import</span> <span class="n">lower_case</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">scrubber.normalize</span><span class="w"> </span><span class="kn">import</span> <span class="n">lower_case</span>
 </span></code></pre></div>
 <p>It is also possible to load the entire registry, called <code>scrubber_components</code>, and get individual components as needed:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Load the Scrubber components registry</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span> <span class="nn">lexos.scrubber</span> <span class="kn">import</span> <span class="n">scrubber_components</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.scrubber</span><span class="w"> </span><span class="kn">import</span> <span class="n">scrubber_components</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Load a single component from the registry</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">lower_case</span> <span class="o">=</span> <span class="n">scrubber_components</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lower_case&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <p>In addition, Lexos provides a <code>get_components()</code> helper function to load components from the registry:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Load the helper functions</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span> <span class="nn">lexos.scrubber</span> <span class="kn">import</span> <span class="n">get_components</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.scrubber</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_components</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Load multiple components using the helper function</span>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">punctuation</span><span class="p">,</span> <span class="n">remove_digits</span> <span class="o">=</span> <span class="n">get_components</span><span class="p">(</span><span class="s2">&quot;punctuation&quot;</span><span class="p">,</span> <span class="s2">&quot;digits&quot;</span><span class="p">)</span>
@@ -5723,7 +5723,7 @@
 <h3 id="custom-scrubbing-components">Custom Scrubbing Components<a class="headerlink" href="#custom-scrubbing-components" title="Permanent link">¤</a></h3>
 <p>Although Scrubber provides many component functions that perform common tasks like removing punctuation or HTML tags, users can also write custom components for use with Scrubber. These components are written like a normal functions and then added to the component registry. Below is an example with a custom <code>title_case</code> function.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Define the custom function</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">def</span> <span class="nf">title_case</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">title_case</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Our custom function to convert text to title case.&quot;&quot;&quot;</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
@@ -5735,7 +5735,7 @@
 <p class="admonition-title">Developer's Note</p>
 <p>The Scrubber component registry is managed using the Python <a href="https://github.com/explosion/catalogue" target="_blank">catalogue</a> library, which also allows you to register functions with a decorator.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nd">@scrubber_functions</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;title_case&quot;</span><span class="p">)</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">def</span> <span class="nf">title_case</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">title_case</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Our custom function to convert text to title case.&quot;&quot;&quot;</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
 </span></code></pre></div>
@@ -5748,8 +5748,8 @@
 <p>When scrubbing texts, we may need to apply Scrubber components in a particular order. For this, we need a scrubbing <strong>pipeline</strong>, which we can create using either the <code>make_pipeline()</code> function or the <code>Scrubber</code> class. Each of these methods is detailed below.</p>
 <h3 id="using-make_pipeline">Using <code>make_pipeline()</code><a class="headerlink" href="#using-make_pipeline" title="Permanent link">¤</a></h3>
 <p>To make a pipeline with the <code>make_pipeline()</code> function, we import the function and pass our components to it in the order we want them to be implemented.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span> <span class="nn">lexos.scrubber</span> <span class="kn">import</span> <span class="n">make_pipeline</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span> <span class="nn">lexos.scrubber</span> <span class="kn">import</span> <span class="n">get_components</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.scrubber</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_pipeline</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.scrubber</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_components</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">lower_case</span><span class="p">,</span> <span class="n">punctuation</span> <span class="o">=</span> <span class="n">get_components</span><span class="p">(</span><span class="s2">&quot;lower_case&quot;</span><span class="p">,</span> <span class="s2">&quot;punctuation&quot;</span><span class="p">)</span>
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
@@ -5761,8 +5761,8 @@
 </span></code></pre></div>
 <p>This will return "lexos is the number 12 text analysis tool".</p>
 <p>Many Scrubber functions take additional keyword arguments. To pass them to a pipeline, it is necesary to use the <code>functools.partial</code> function:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span> <span class="nn">functools.import</span> <span class="n">partial</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span> <span class="nn">lexos.scrubber</span> <span class="kn">import</span> <span class="n">get_components</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">functools.import</span> <span class="n">partial</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.scrubber</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_components</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">lower_case</span><span class="p">,</span> <span class="n">punctuation</span><span class="p">,</span> <span class="n">remove_digits</span> <span class="o">=</span> <span class="n">get_components</span><span class="p">(</span><span class="s2">&quot;lower_case&quot;</span><span class="p">,</span> <span class="s2">&quot;punctuation&quot;</span><span class="p">,</span> <span class="s2">&quot;digits&quot;</span><span class="p">)</span>
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
@@ -5785,7 +5785,7 @@
 </span></code></pre></div>
 <p>This will produce the same result.</p>
 <p>Lexos also provides the <code>scrub()</code> function, which takes a text and pipeline as arguments.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span> <span class="nn">lexos.scrubber</span> <span class="kn">import</span> <span class="n">scrub</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.scrubber</span><span class="w"> </span><span class="kn">import</span> <span class="n">scrub</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">pipes</span> <span class="o">=</span> <span class="p">(</span><span class="n">lower_case</span><span class="p">,</span> <span class="n">punctuation</span><span class="p">)</span>
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">pipes</span><span class="p">)</span>
@@ -5798,14 +5798,14 @@
 <p>This is an alternative way of applying the pipeline.</p>
 <h3 id="using-the-scrubber-class">Using the <code>Scrubber</code> Class<a class="headerlink" href="#using-the-scrubber-class" title="Permanent link">¤</a></h3>
 <p>The Lexos <code>Scrubber</code> class also provides a more object-oriented approach, which may be more useful for some workflows. Start by creating an instance of the class. You can then add components to the pipeline with the <code>add_pipe()</code> method:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span> <span class="nn">lexos.scrubber</span> <span class="kn">import</span> <span class="n">Scrubber</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.scrubber</span><span class="w"> </span><span class="kn">import</span> <span class="n">Scrubber</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">scrubber</span> <span class="o">=</span> <span class="n">Scrubber</span><span class="p">()</span>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">scrubber</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="s2">&quot;lower_case&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <p>Notice that if the input is the string name of a component, it will automatically be fetched from the registry.</p>
 <p>The <code>add_pipe()</code> method can also take a list or tuple of components such as <code>["lower_case", "remove_digits"]</code>. If a function takes keyword arguments, it can be passed as a <code>partial</code>, just as in the <code>pipe()</code> function discussed above.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 </span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">scrubber</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">([</span><span class="s2">&quot;lower_case&quot;</span><span class="p">,</span> <span class="n">partial</span><span class="p">(</span><span class="n">remove_digits</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">])])</span>
 </span></code></pre></div>
 <p>As an alternative, you can pass a tuple with the keyword arguments in a dictionary:</p>
@@ -5848,7 +5848,7 @@
 <p>The <code>Scrubber.pipe()</code> method returns a generator, so use <code>list(scrubber.pipe(texts))</code> if you need a list of texts. Otherwise, <code>scrubbed_texts</code> will be <code>None</code> if you try to access it again.</p>
 </div>
 <p>Under the hood, <code>Scrubber</code> uses the <code>Pipe</code> class to manage the pipeline. Each component added to the pipeline is converted to a <code>Pipe</code> object, which has a string <code>name</code> attribute and an <code>opts</code> dictionary to store keyword arguments accepted by the component function. It also has a <code>__call__()</code> method that applies the component to the text. You can create a <code>Pipe</code> object directly and use it to scrub text:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">from</span> <span class="nn">lexos.scrubber</span> <span class="kn">import</span> <span class="n">Pipe</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.scrubber</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipe</span>
 </span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
 </span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;Number 12 is the best number!&quot;</span>
 </span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="n">my_pipe</span> <span class="o">=</span> <span class="n">Pipe</span><span class="p">(</span><span class="s2">&quot;digits&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;only&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">]})</span>
@@ -5916,7 +5916,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 30, 2026 17:45:45 UTC">July 30, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 4, 2026 17:18:43 UTC">August 4, 2026</span>
   </span>
 
     
