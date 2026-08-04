@@ -1,4 +1,4 @@
-# Lexos Documentation
+# Lexos Documentation (Test2)
 
 Documentation for Lexos takes three forms:
 
@@ -136,3 +136,107 @@ However, you may use the `git` client of your choice.
    - Respond to feedback from maintainers.
    - Make requested changes and push updates.
    - Once approved, your changes will be merged!
+
+## Maintainer Runbook: Versioned Docs Deployment
+
+Lexos documentation is published as a versioned site with `mike` on the `gh-pages` branch.
+
+### Required Repository Settings
+
+1. GitHub Pages must be configured to **Deploy from a branch**.
+2. The selected branch must be `gh-pages`.
+3. The selected folder must be `/(root)` (not `/docs`).
+
+### Branch Responsibilities
+
+1. `docs-source` stores authored docs and MkDocs configuration (`doc_src`).
+2. `gh-pages` stores only rendered documentation output and mike metadata.
+3. `main` stores Python source code and triggers development docs updates.
+
+### Automation Behavior
+
+The workflow in `.github/workflows/docs-versioned.yml` handles publishing.
+
+1. Push to `main` (matching paths): updates `dev` docs.
+2. Push to `docs-source` (matching paths): updates `dev` docs using latest `main` source for API generation.
+3. Push to a tag matching `v*`: deploys a new immutable version from that tag.
+4. Release published: deploys a new immutable version such as `v0.2.0-beta.1`.
+5. For release/tag/backfill runs, docs are loaded from the selected source ref (`source/doc_src/mkdocs.yml`). If that file is missing in the selected ref, the run fails (no fallback).
+6. Manual dispatch:
+  - `backfill`: publish a missing historical version.
+  - `alias-repair`: fix aliases (`stable`, `stable-beta`, `latest`, `dev`).
+  - `rollback`: repoint `stable` to a known good version.
+
+### Alias Policy
+
+1. `stable` points to latest non-prerelease version.
+2. `stable-beta` points to latest prerelease version.
+3. `latest` points to the latest published release tag.
+4. `dev` points to docs generated from `main`.
+
+### Manual Run Requirements (Strict Audit)
+
+Manual runs require:
+
+1. operation type
+2. source ref
+3. reason
+4. change summary
+
+If required inputs are missing, the run fails.
+
+### Common Operations
+
+#### Backfill a Missing Version
+
+Use workflow dispatch with:
+
+1. operation = `backfill`
+2. source_ref = release tag or commit
+3. version_label = desired docs label
+4. reason + change_summary
+
+#### Repair an Alias
+
+Use workflow dispatch with:
+
+1. operation = `alias-repair`
+2. alias_name = `stable`, `stable-beta`, `latest`, or `dev`
+3. target_version = existing deployed version label
+4. reason + change_summary
+
+#### Roll Back Stable Docs
+
+Use workflow dispatch with:
+
+1. operation = `rollback`
+2. target_version = known good deployed version
+3. reason + change_summary
+
+This updates `stable` and the default landing version.
+
+### Troubleshooting Checklist
+
+If the site is not deploying:
+
+1. Verify Pages is `gh-pages` + `/(root)`.
+2. Confirm `.github/workflows/docs-versioned.yml` exists on `main`.
+3. Confirm `docs-source` exists and contains `doc_src/mkdocs.yml`.
+4. Confirm the workflow run was triggered by one of the supported events (push to `main`/`docs-source`, tag push `v*`, release published, or manual dispatch).
+5. Check workflow logs for failed `mike deploy` or permission errors.
+6. Confirm Actions has write permission to repository contents.
+7. Confirm release/tag/backfill source refs include `doc_src/mkdocs.yml` (strict guard).
+8. Confirm release-based deploys can use either **Release published** or tag pushes matching `v*`.
+
+### Local Maintainer Verification
+
+Before changing deployment logic, verify docs build locally:
+
+```bash
+cd lexos
+uv sync --group dev
+cd doc_src
+uv run mkdocs build
+```
+
+For API docs resolution during local tests, ensure source files are available in `../src` or provide `MKDOCSTRINGS_PYTHON_PATH`.
