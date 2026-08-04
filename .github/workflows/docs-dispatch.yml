@@ -87,6 +87,32 @@ jobs:
           echo "is_prerelease=${is_prerelease}" >> "$GITHUB_OUTPUT"
           echo "tag_name=${tag_name}" >> "$GITHUB_OUTPUT"
 
+      - name: Debug token access
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.LEXOS_DOCS_REPO_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          code_user="$(curl -sS -o /tmp/user.json -w "%{http_code}" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/user)"
+          echo "GET /user -> ${code_user}"
+          if [[ "${code_user}" != "200" ]]; then
+            cat /tmp/user.json
+            exit 1
+          fi
+
+          code_repo="$(curl -sS -o /tmp/repo.json -w "%{http_code}" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/scottkleinman/lexos-docs)"
+          echo "GET /repos/scottkleinman/lexos-docs -> ${code_repo}"
+          if [[ "${code_repo}" != "200" ]]; then
+            cat /tmp/repo.json
+            exit 1
+          fi
       - name: Send repository dispatch to docs repo
         shell: bash
         env:
