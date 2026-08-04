@@ -218,6 +218,30 @@ jobs:
         working-directory: docs-src
         run: uv sync --group dev
 
+      - name: Select docs config source
+        id: docsctx
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          operation="${{ steps.ctx.outputs.operation }}"
+          docs_config_path="doc_src/mkdocs.yml"
+          docs_source_used="docs-source"
+
+          if [[ "${operation}" == "release" || "${operation}" == "release-tag" || "${operation}" == "backfill" ]]; then
+            if [[ -f "${GITHUB_WORKSPACE}/source/doc_src/mkdocs.yml" ]]; then
+              docs_config_path="../source/doc_src/mkdocs.yml"
+              docs_source_used="source-ref"
+            else
+              echo "Release/tag/backfill runs require doc_src/mkdocs.yml in the source ref (${{ steps.ctx.outputs.source_ref }})."
+              echo "Create or restore tagged docs content, or choose a source_ref that contains doc_src."
+              exit 1
+            fi
+          fi
+
+          echo "docs_config_path=${docs_config_path}" >> "$GITHUB_OUTPUT"
+          echo "docs_source_used=${docs_source_used}" >> "$GITHUB_OUTPUT"
+
       - name: Configure git identity for mike
         shell: bash
         run: |
@@ -232,7 +256,7 @@ jobs:
           set -euo pipefail
 
           version_label="${{ steps.ctx.outputs.version_label }}"
-          existing_versions="$(uv run --project . --with mike mike list --config-file doc_src/mkdocs.yml | awk '{if ($1 == "*") {print $2} else {print $1}}')"
+          existing_versions="$(uv run --project . --with mike mike list --config-file "${{ steps.docsctx.outputs.docs_config_path }}" | awk '{if ($1 == "*") {print $2} else {print $1}}')"
 
           if printf '%s\n' "${existing_versions}" | grep -Fx "${version_label}" >/dev/null 2>&1; then
             if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.force_overwrite }}" == "true" ]]; then
@@ -256,9 +280,9 @@ jobs:
           alias_to_update="${{ steps.ctx.outputs.alias_to_update }}"
 
           if [[ -n "${alias_to_update}" && "${alias_to_update}" != "${version_label}" ]]; then
-            uv run --project . --with mike mike deploy --config-file doc_src/mkdocs.yml --push --update-aliases "${version_label}" "${alias_to_update}"
+            uv run --project . --with mike mike deploy --config-file "${{ steps.docsctx.outputs.docs_config_path }}" --push --update-aliases "${version_label}" "${alias_to_update}"
           else
-            uv run --project . --with mike mike deploy --config-file doc_src/mkdocs.yml --push "${version_label}"
+            uv run --project . --with mike mike deploy --config-file "${{ steps.docsctx.outputs.docs_config_path }}" --push "${version_label}"
           fi
 
       - name: Deploy manual backfill version
@@ -271,7 +295,7 @@ jobs:
           set -euo pipefail
 
           version_label="${{ steps.ctx.outputs.version_label }}"
-          uv run --project . --with mike mike deploy --config-file doc_src/mkdocs.yml --push "${version_label}"
+          uv run --project . --with mike mike deploy --config-file "${{ steps.docsctx.outputs.docs_config_path }}" --push "${version_label}"
 
       - name: Ensure default version exists
         if: ${{ steps.ctx.outputs.operation == 'push-sync' || steps.ctx.outputs.operation == 'release' || steps.ctx.outputs.operation == 'release-tag' || steps.ctx.outputs.operation == 'backfill' }}
@@ -282,12 +306,12 @@ jobs:
 
           # mike serves the site root via the configured default version.
           # If no default is set yet, GitHub Pages root can return 404.
-          if uv run --project . --with mike mike list --config-file doc_src/mkdocs.yml | awk 'NR>1 {if ($1 == "*") found=1} END {exit !found}'; then
+          if uv run --project . --with mike mike list --config-file "${{ steps.docsctx.outputs.docs_config_path }}" | awk 'NR>1 {if ($1 == "*") found=1} END {exit !found}'; then
             echo "Default version already configured."
             exit 0
           fi
 
-          if uv run --project . --with mike mike list --config-file doc_src/mkdocs.yml | awk 'NR>1 {v=($1=="*"?$2:$1); if (v=="stable") found=1} END {exit !found}'; then
+          if uv run --project . --with mike mike list --config-file "${{ steps.docsctx.outputs.docs_config_path }}" | awk 'NR>1 {v=($1=="*"?$2:$1); if (v=="stable") found=1} END {exit !found}'; then
             default_target="${STABLE_ALIAS}"
           elif [[ -n "${{ steps.ctx.outputs.alias_to_update }}" ]]; then
             default_target="${{ steps.ctx.outputs.alias_to_update }}"
@@ -295,7 +319,7 @@ jobs:
             default_target="${{ steps.ctx.outputs.version_label }}"
           fi
 
-          uv run --project . --with mike mike set-default --config-file doc_src/mkdocs.yml --push "${default_target}"
+          uv run --project . --with mike mike set-default --config-file "${{ steps.docsctx.outputs.docs_config_path }}" --push "${default_target}"
 
       - name: Update latest alias
         if: ${{ steps.ctx.outputs.update_latest_alias == 'true' }}
@@ -305,7 +329,7 @@ jobs:
           set -euo pipefail
 
           version_label="${{ steps.ctx.outputs.version_label }}"
-          uv run --project . --with mike mike alias --config-file doc_src/mkdocs.yml --push "${version_label}" latest
+          uv run --project . --with mike mike alias --config-file "${{ steps.docsctx.outputs.docs_config_path }}" --push "${version_label}" latest
 
       - name: Apply alias repair
         if: ${{ steps.ctx.outputs.operation == 'alias-repair' }}
@@ -317,10 +341,10 @@ jobs:
           alias_name="${{ inputs.alias_name }}"
           target_version="${{ inputs.target_version }}"
 
-          uv run --project . --with mike mike alias --config-file doc_src/mkdocs.yml --push "${target_version}" "${alias_name}"
+          uv run --project . --with mike mike alias --config-file "${{ steps.docsctx.outputs.docs_config_path }}" --push "${target_version}" "${alias_name}"
 
           if [[ "${alias_name}" == "${STABLE_ALIAS}" ]]; then
-            uv run --project . --with mike mike set-default --config-file doc_src/mkdocs.yml --push "${STABLE_ALIAS}"
+            uv run --project . --with mike mike set-default --config-file "${{ steps.docsctx.outputs.docs_config_path }}" --push "${STABLE_ALIAS}"
           fi
 
       - name: Apply rollback
@@ -332,15 +356,15 @@ jobs:
 
           target_version="${{ inputs.target_version }}"
 
-          uv run --project . --with mike mike alias --config-file doc_src/mkdocs.yml --push "${target_version}" "${STABLE_ALIAS}"
-          uv run --project . --with mike mike set-default --config-file doc_src/mkdocs.yml --push "${STABLE_ALIAS}"
+          uv run --project . --with mike mike alias --config-file "${{ steps.docsctx.outputs.docs_config_path }}" --push "${target_version}" "${STABLE_ALIAS}"
+          uv run --project . --with mike mike set-default --config-file "${{ steps.docsctx.outputs.docs_config_path }}" --push "${STABLE_ALIAS}"
 
       - name: Set default alias for stable releases
         if: ${{ steps.ctx.outputs.update_default == 'true' }}
         shell: bash
         working-directory: docs-src
         run: |
-          uv run --project . --with mike mike set-default --config-file doc_src/mkdocs.yml --push "${STABLE_ALIAS}"
+          uv run --project . --with mike mike set-default --config-file "${{ steps.docsctx.outputs.docs_config_path }}" --push "${STABLE_ALIAS}"
 
       - name: Publish run summary
         shell: bash
@@ -353,6 +377,9 @@ jobs:
             echo "- Operation: ${{ steps.ctx.outputs.operation }}"
             echo "- Docs source branch: ${{ steps.ctx.outputs.docs_source_branch }}"
             echo "- Source ref: ${{ steps.ctx.outputs.source_ref }}"
+            echo "- Docs source selected: ${{ steps.docsctx.outputs.docs_source_used }}"
+            echo "- Docs config path: ${{ steps.docsctx.outputs.docs_config_path }}"
+            echo "- Guard mode: strict (release/tag/backfill require source-ref doc_src)"
             echo "- Version label: ${{ steps.ctx.outputs.version_label }}"
             echo "- Alias updated: ${{ steps.ctx.outputs.alias_to_update }}"
             echo "- latest updated: ${{ steps.ctx.outputs.update_latest_alias }}"
