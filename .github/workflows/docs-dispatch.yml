@@ -95,7 +95,6 @@ jobs:
           set -euo pipefail
 
           payload="$(jq -n \
-            --arg event_name "${{ steps.payload.outputs.event_name }}" \
             --arg operation "${{ steps.payload.outputs.operation }}" \
             --arg source_ref "${{ steps.payload.outputs.source_ref }}" \
             --arg is_prerelease "${{ steps.payload.outputs.is_prerelease }}" \
@@ -107,9 +106,8 @@ jobs:
             --arg reason "${{ github.event_name == 'workflow_dispatch' && inputs.reason || '' }}" \
             --arg change_summary "${{ github.event_name == 'workflow_dispatch' && inputs.change_summary || '' }}" \
             '{
-              event_type: "lexos_docs_publish",
-              client_payload: {
-                event_name: $event_name,
+                event_type: "lexos_docs_publish",
+                client_payload: {
                 operation: $operation,
                 source_ref: $source_ref,
                 is_prerelease: $is_prerelease,
@@ -120,7 +118,7 @@ jobs:
                 source_run_id: $run_id,
                 reason: $reason,
                 change_summary: $change_summary
-              }
+                }
             }')"
 
           http_code="$(curl -sS -o dispatch_response.json -w "%{http_code}" -X POST \
