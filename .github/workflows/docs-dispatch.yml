@@ -90,7 +90,7 @@ jobs:
       - name: Send repository dispatch to docs repo
         shell: bash
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.LEXOS_DOCS_REPO_TOKEN }}
         run: |
           set -euo pipefail
 
@@ -123,12 +123,19 @@ jobs:
               }
             }')"
 
-          curl -sS -X POST \
+          http_code="$(curl -sS -o dispatch_response.json -w "%{http_code}" -X POST \
             -H "Authorization: Bearer ${GH_TOKEN}" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${TARGET_DOCS_REPO}/dispatches" \
-            -d "${payload}"
+            -d "${payload}")"
 
+          if [[ "${http_code}" != "204" ]]; then
+            echo "Dispatch failed with HTTP ${http_code}"
+            cat dispatch_response.json
+            exit 1
+          fi
+
+          echo "Dispatch accepted by ${TARGET_DOCS_REPO}"
       - name: Publish run summary
         shell: bash
         run: |
