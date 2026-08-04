@@ -1,4 +1,4 @@
-# Lexos Documentation (Test2)
+# Lexos Documentation
 
 Documentation for Lexos takes three forms:
 
@@ -152,6 +152,7 @@ Lexos documentation is published as a versioned site with `mike` on the `gh-page
 1. `docs-source` stores authored docs and MkDocs configuration (`doc_src`).
 2. `gh-pages` stores only rendered documentation output and mike metadata.
 3. `main` stores Python source code and triggers development docs updates.
+4. `docs-v*` tags (for example `docs-v0.1.0-beta.31`) are the canonical historical docs snapshots.
 
 ### Automation Behavior
 
@@ -161,8 +162,10 @@ The workflow in `.github/workflows/docs-versioned.yml` handles publishing.
 2. Push to `docs-source` (matching paths): updates `dev` docs using latest `main` source for API generation.
 3. Push to a tag matching `v*`: deploys a new immutable version from that tag.
 4. Release published: deploys a new immutable version such as `v0.2.0-beta.1`.
-5. For release/tag/backfill runs, docs are loaded from the selected source ref (`source/doc_src/mkdocs.yml`). If that file is missing in the selected ref, the run fails (no fallback).
-6. Manual dispatch:
+5. For release/tag runs, docs are loaded from a matching docs ref: `docs-<source_ref>` (for example source `v0.1.0-beta.31` -> docs ref `docs-v0.1.0-beta.31`).
+6. For backfill runs, docs are loaded from `docs-<source_ref>` by default, or from explicit `docs_ref` if provided.
+7. If the selected docs ref does not contain either `doc_src/zensical.yml` or `doc_src/mkdocs.yml`, the run fails (strict guard, no fallback).
+8. Manual dispatch:
   - `backfill`: publish a missing historical version.
   - `alias-repair`: fix aliases (`stable`, `stable-beta`, `latest`, `dev`).
   - `rollback`: repoint `stable` to a known good version.
@@ -193,8 +196,9 @@ Use workflow dispatch with:
 
 1. operation = `backfill`
 2. source_ref = release tag or commit
-3. version_label = desired docs label
-4. reason + change_summary
+3. docs_ref = optional docs snapshot ref (defaults to `docs-<source_ref>`)
+4. version_label = desired docs label
+5. reason + change_summary
 
 #### Repair an Alias
 
@@ -225,7 +229,7 @@ If the site is not deploying:
 4. Confirm the workflow run was triggered by one of the supported events (push to `main`/`docs-source`, tag push `v*`, release published, or manual dispatch).
 5. Check workflow logs for failed `mike deploy` or permission errors.
 6. Confirm Actions has write permission to repository contents.
-7. Confirm release/tag/backfill source refs include `doc_src/mkdocs.yml` (strict guard).
+7. Confirm a matching docs ref exists (for example `docs-v0.1.0-beta.31`) and includes either `doc_src/zensical.yml` or `doc_src/mkdocs.yml`.
 8. Confirm release-based deploys can use either **Release published** or tag pushes matching `v*`.
 
 ### Local Maintainer Verification

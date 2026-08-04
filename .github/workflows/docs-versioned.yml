@@ -60,6 +60,11 @@ name: Versioned Docs
         required: true
         default: "docs-source"
         type: string
+      docs_ref:
+        description: "Optional docs ref override (branch/tag/SHA). For backfill, defaults to docs-<source_ref>"
+        required: false
+        default: ""
+        type: string
       reason:
         description: "Required: why this manual run is needed"
         required: true
@@ -96,6 +101,7 @@ jobs:
           event_name="${{ github.event_name }}"
           operation=""
           source_ref=""
+          docs_ref=""
           version_label=""
           alias_to_update=""
           update_latest_alias="false"
@@ -106,6 +112,7 @@ jobs:
             if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
               operation="release-tag"
               source_ref="${GITHUB_REF_NAME}"
+              docs_ref="docs-${GITHUB_REF_NAME}"
               version_label="${GITHUB_REF_NAME}"
 
               # Pre-release tags route to stable-beta; final tags route to stable.
@@ -119,12 +126,14 @@ jobs:
             else
               operation="push-sync"
               source_ref="main"
+              docs_ref="${docs_source_branch}"
               version_label="${DEV_VERSION}"
               alias_to_update="${DEV_VERSION}"
             fi
           elif [[ "${event_name}" == "release" ]]; then
             operation="release"
             source_ref="${{ github.event.release.tag_name }}"
+            docs_ref="docs-${{ github.event.release.tag_name }}"
             version_label="${{ github.event.release.tag_name }}"
 
             if [[ "${{ github.event.release.prerelease }}" == "true" ]]; then
@@ -138,19 +147,27 @@ jobs:
             operation="${{ inputs.operation }}"
             source_ref="${{ inputs.source_ref }}"
             docs_source_branch="${{ inputs.docs_source_branch }}"
+            docs_ref="${docs_source_branch}"
 
             if [[ "${operation}" == "backfill" ]]; then
+              docs_ref="${{ inputs.docs_ref }}"
+              if [[ -z "${docs_ref}" ]]; then
+                docs_ref="docs-${source_ref}"
+              fi
               version_label="${{ inputs.version_label }}"
               if [[ -z "${version_label}" ]]; then
                 version_label="${source_ref##*/}"
               fi
               alias_to_update=""
+            elif [[ -n "${{ inputs.docs_ref }}" ]]; then
+              docs_ref="${{ inputs.docs_ref }}"
             fi
           fi
 
           echo "event_name=${event_name}" >> "$GITHUB_OUTPUT"
           echo "operation=${operation}" >> "$GITHUB_OUTPUT"
           echo "source_ref=${source_ref}" >> "$GITHUB_OUTPUT"
+          echo "docs_ref=${docs_ref}" >> "$GITHUB_OUTPUT"
           echo "version_label=${version_label}" >> "$GITHUB_OUTPUT"
           echo "alias_to_update=${alias_to_update}" >> "$GITHUB_OUTPUT"
           echo "update_latest_alias=${update_latest_alias}" >> "$GITHUB_OUTPUT"
@@ -185,10 +202,10 @@ jobs:
             fi
           fi
 
-      - name: Checkout docs source branch
+      - name: Checkout docs ref
         uses: actions/checkout@v5
         with:
-          ref: ${{ steps.ctx.outputs.docs_source_branch }}
+          ref: ${{ steps.ctx.outputs.docs_ref }}
           path: docs-src
           fetch-depth: 0
 
@@ -224,19 +241,17 @@ jobs:
         run: |
           set -euo pipefail
 
-          operation="${{ steps.ctx.outputs.operation }}"
-          docs_config_path="doc_src/mkdocs.yml"
-          docs_source_used="docs-source"
+          docs_config_path=""
+          docs_source_used="${{ steps.ctx.outputs.docs_ref }}"
 
-          if [[ "${operation}" == "release" || "${operation}" == "release-tag" || "${operation}" == "backfill" ]]; then
-            if [[ -f "${GITHUB_WORKSPACE}/source/doc_src/mkdocs.yml" ]]; then
-              docs_config_path="../source/doc_src/mkdocs.yml"
-              docs_source_used="source-ref"
-            else
-              echo "Release/tag/backfill runs require doc_src/mkdocs.yml in the source ref (${{ steps.ctx.outputs.source_ref }})."
-              echo "Create or restore tagged docs content, or choose a source_ref that contains doc_src."
-              exit 1
-            fi
+          if [[ -f "${GITHUB_WORKSPACE}/docs-src/doc_src/zensical.yml" ]]; then
+            docs_config_path="doc_src/zensical.yml"
+          elif [[ -f "${GITHUB_WORKSPACE}/docs-src/doc_src/mkdocs.yml" ]]; then
+            docs_config_path="doc_src/mkdocs.yml"
+          else
+            echo "Docs ref '${{ steps.ctx.outputs.docs_ref }}' must contain doc_src/zensical.yml or doc_src/mkdocs.yml."
+            echo "Create matching docs-* tags/refs or provide workflow_dispatch input docs_ref."
+            exit 1
           fi
 
           echo "docs_config_path=${docs_config_path}" >> "$GITHUB_OUTPUT"
@@ -377,9 +392,10 @@ jobs:
             echo "- Operation: ${{ steps.ctx.outputs.operation }}"
             echo "- Docs source branch: ${{ steps.ctx.outputs.docs_source_branch }}"
             echo "- Source ref: ${{ steps.ctx.outputs.source_ref }}"
+            echo "- Docs ref: ${{ steps.ctx.outputs.docs_ref }}"
             echo "- Docs source selected: ${{ steps.docsctx.outputs.docs_source_used }}"
             echo "- Docs config path: ${{ steps.docsctx.outputs.docs_config_path }}"
-            echo "- Guard mode: strict (release/tag/backfill require source-ref doc_src)"
+            echo "- Guard mode: strict (docs ref must contain doc_src/zensical.yml or doc_src/mkdocs.yml)"
             echo "- Version label: ${{ steps.ctx.outputs.version_label }}"
             echo "- Alias updated: ${{ steps.ctx.outputs.alias_to_update }}"
             echo "- latest updated: ${{ steps.ctx.outputs.update_latest_alias }}"
