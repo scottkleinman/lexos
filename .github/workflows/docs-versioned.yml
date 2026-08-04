@@ -1,20 +1,6 @@
-name: Versioned Docs
+name: Versioned Docs (Legacy Fallback)
 
 'on':
-  push:
-    branches:
-      - main
-      - docs-source
-    tags:
-      - "v*"
-    paths:
-      - "src/**"
-      - "doc_src/**"
-      - "pyproject.toml"
-      - ".github/workflows/docs-versioned.yml"
-  release:
-    types:
-      - published
   workflow_dispatch:
     inputs:
       operation:
@@ -130,19 +116,6 @@ jobs:
               version_label="${DEV_VERSION}"
               alias_to_update="${DEV_VERSION}"
             fi
-          elif [[ "${event_name}" == "release" ]]; then
-            operation="release"
-            source_ref="${{ github.event.release.tag_name }}"
-            docs_ref="docs-${{ github.event.release.tag_name }}"
-            version_label="${{ github.event.release.tag_name }}"
-
-            if [[ "${{ github.event.release.prerelease }}" == "true" ]]; then
-              alias_to_update="${PRERELEASE_ALIAS}"
-            else
-              alias_to_update="${STABLE_ALIAS}"
-              update_default="true"
-            fi
-            update_latest_alias="true"
           else
             operation="${{ inputs.operation }}"
             source_ref="${{ inputs.source_ref }}"

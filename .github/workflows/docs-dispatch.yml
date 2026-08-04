@@ -1,0 +1,148 @@
+name: Dispatch Docs Publish
+
+'on':
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+    paths:
+      - "src/**"
+      - "doc_src/**"
+      - "pyproject.toml"
+      - ".github/workflows/docs-dispatch.yml"
+      - ".github/workflows/docs-versioned.yml"
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Required: why this manual dispatch is needed"
+        required: true
+        type: string
+      change_summary:
+        description: "Required: expected docs impact"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+
+    env:
+      TARGET_DOCS_REPO: scottkleinman/lexos-docs
+
+    steps:
+      - name: Require strict audit inputs for manual dispatch
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${{ inputs.reason }}" || -z "${{ inputs.change_summary }}" ]]; then
+            echo "Manual dispatch requires both reason and change_summary inputs."
+            exit 1
+          fi
+
+      - name: Build dispatch payload
+        id: payload
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          event_name="${{ github.event_name }}"
+          operation="push-sync"
+          source_ref="main"
+          is_prerelease="false"
+          tag_name=""
+
+          if [[ "${event_name}" == "push" ]]; then
+            if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+              operation="release-tag"
+              source_ref="${GITHUB_REF_NAME}"
+              tag_name="${GITHUB_REF_NAME}"
+              if [[ "${GITHUB_REF_NAME}" == *-* ]]; then
+                is_prerelease="true"
+              fi
+            fi
+          elif [[ "${event_name}" == "release" ]]; then
+            operation="release"
+            source_ref="${{ github.event.release.tag_name }}"
+            tag_name="${{ github.event.release.tag_name }}"
+            if [[ "${{ github.event.release.prerelease }}" == "true" ]]; then
+              is_prerelease="true"
+            fi
+          else
+            operation="manual-dispatch"
+            source_ref="main"
+          fi
+
+          echo "event_name=${event_name}" >> "$GITHUB_OUTPUT"
+          echo "operation=${operation}" >> "$GITHUB_OUTPUT"
+          echo "source_ref=${source_ref}" >> "$GITHUB_OUTPUT"
+          echo "is_prerelease=${is_prerelease}" >> "$GITHUB_OUTPUT"
+          echo "tag_name=${tag_name}" >> "$GITHUB_OUTPUT"
+
+      - name: Send repository dispatch to docs repo
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          payload="$(jq -n \
+            --arg event_name "${{ steps.payload.outputs.event_name }}" \
+            --arg operation "${{ steps.payload.outputs.operation }}" \
+            --arg source_ref "${{ steps.payload.outputs.source_ref }}" \
+            --arg is_prerelease "${{ steps.payload.outputs.is_prerelease }}" \
+            --arg tag_name "${{ steps.payload.outputs.tag_name }}" \
+            --arg actor "${{ github.actor }}" \
+            --arg sha "${{ github.sha }}" \
+            --arg repo "${{ github.repository }}" \
+            --arg run_id "${{ github.run_id }}" \
+            --arg reason "${{ github.event_name == 'workflow_dispatch' && inputs.reason || '' }}" \
+            --arg change_summary "${{ github.event_name == 'workflow_dispatch' && inputs.change_summary || '' }}" \
+            '{
+              event_type: "lexos_docs_publish",
+              client_payload: {
+                event_name: $event_name,
+                operation: $operation,
+                source_ref: $source_ref,
+                is_prerelease: $is_prerelease,
+                tag_name: $tag_name,
+                actor: $actor,
+                sha: $sha,
+                source_repository: $repo,
+                source_run_id: $run_id,
+                reason: $reason,
+                change_summary: $change_summary
+              }
+            }')"
+
+          curl -sS -X POST \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${TARGET_DOCS_REPO}/dispatches" \
+            -d "${payload}"
+
+      - name: Publish run summary
+        shell: bash
+        run: |
+          {
+            echo "## Docs Dispatch Summary"
+            echo ""
+            echo "- Source repository: ${{ github.repository }}"
+            echo "- Trigger: ${{ github.event_name }}"
+            echo "- Operation: ${{ steps.payload.outputs.operation }}"
+            echo "- Source ref: ${{ steps.payload.outputs.source_ref }}"
+            echo "- Source SHA: ${{ github.sha }}"
+            echo "- Target docs repo: ${TARGET_DOCS_REPO}"
+            if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+              echo "- Reason: ${{ inputs.reason }}"
+              echo "- Change summary: ${{ inputs.change_summary }}"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

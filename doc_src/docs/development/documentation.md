@@ -141,6 +141,8 @@ However, you may use the `git` client of your choice.
 
 Lexos documentation is published as a versioned site with `mike` on the `gh-pages` branch.
 
+As part of the split-repo migration, this repository now dispatches docs publishing events to the `lexos-docs` repository. `lexos-docs` is expected to perform docs builds and publish to the `lexos` `gh-pages` branch.
+
 ### Required Repository Settings
 
 1. GitHub Pages must be configured to **Deploy from a branch**.
@@ -156,19 +158,24 @@ Lexos documentation is published as a versioned site with `mike` on the `gh-page
 
 ### Automation Behavior
 
-The workflow in `.github/workflows/docs-versioned.yml` handles publishing.
+There are now two workflows involved:
 
-1. Push to `main` (matching paths): updates `dev` docs.
-2. Push to `docs-source` (matching paths): updates `dev` docs using latest `main` source for API generation.
-3. Push to a tag matching `v*`: deploys a new immutable version from that tag.
-4. Release published: deploys a new immutable version such as `v0.2.0-beta.1`.
-5. For release/tag runs, docs are loaded from a matching docs ref: `docs-<source_ref>` (for example source `v0.1.0-beta.31` -> docs ref `docs-v0.1.0-beta.31`).
-6. For backfill runs, docs are loaded from `docs-<source_ref>` by default, or from explicit `docs_ref` if provided.
-7. If the selected docs ref does not contain either `doc_src/zensical.yml` or `doc_src/mkdocs.yml`, the run fails (strict guard, no fallback).
-8. Manual dispatch:
-  - `backfill`: publish a missing historical version.
-  - `alias-repair`: fix aliases (`stable`, `stable-beta`, `latest`, `dev`).
-  - `rollback`: repoint `stable` to a known good version.
+1. `.github/workflows/docs-dispatch.yml` in `lexos` sends events to `lexos-docs`.
+2. `.github/workflows/docs-versioned.yml` in `lexos` is a legacy fallback workflow and is disabled by default.
+
+The dispatch workflow in `lexos` handles trigger forwarding.
+
+1. Push to `main` (matching paths): dispatches a `dev` docs update request.
+2. Push to a tag matching `v*`: dispatches a release-tag publish request.
+3. Release published: dispatches a release publish request.
+4. Manual dispatch: forwards a manually-audited publish request.
+
+The legacy workflow in `lexos` (`docs-versioned.yml`) only runs when one of the following is true:
+
+1. The run is started manually (`workflow_dispatch`).
+2. Repository variable `LEXOS_ENABLE_LEGACY_DOCS_DEPLOY` is set to `true`.
+
+This prevents duplicate publishes during split-repo operation.
 
 ### Alias Policy
 
@@ -188,11 +195,23 @@ Manual runs require:
 
 If required inputs are missing, the run fails.
 
+### Required Secrets and Variables for Dispatch
+
+`lexos` repository:
+
+1. By default, `.github/workflows/docs-dispatch.yml` uses `github.token` to send `repository_dispatch` to `scottkleinman/lexos-docs`.
+2. If cross-repo dispatch fails with permission errors, switch the workflow auth to a fine-grained PAT secret and re-run.
+
+`lexos-docs` repository:
+
+1. Secret for pushing mike output to `lexos` `gh-pages` (repository-contents write on `lexos`).
+2. Workflow that handles `repository_dispatch` event type `lexos_docs_publish`.
+
 ### Common Operations
 
 #### Backfill a Missing Version
 
-Use workflow dispatch with:
+During split-repo operation, run this in `lexos-docs` workflow dispatch with:
 
 1. operation = `backfill`
 2. source_ref = release tag or commit
@@ -202,7 +221,7 @@ Use workflow dispatch with:
 
 #### Repair an Alias
 
-Use workflow dispatch with:
+During split-repo operation, run this in `lexos-docs` workflow dispatch with:
 
 1. operation = `alias-repair`
 2. alias_name = `stable`, `stable-beta`, `latest`, or `dev`
@@ -211,7 +230,7 @@ Use workflow dispatch with:
 
 #### Roll Back Stable Docs
 
-Use workflow dispatch with:
+During split-repo operation, run this in `lexos-docs` workflow dispatch with:
 
 1. operation = `rollback`
 2. target_version = known good deployed version
@@ -219,18 +238,25 @@ Use workflow dispatch with:
 
 This updates `stable` and the default landing version.
 
+#### Emergency Local Fallback Deploy from `lexos`
+
+Only use this when `lexos-docs` is unavailable.
+
+1. Run `.github/workflows/docs-versioned.yml` manually from Actions UI.
+2. Provide strict audit inputs (`reason`, `change_summary`, and operation parameters).
+3. Disable fallback usage once `lexos-docs` is healthy.
+
 ### Troubleshooting Checklist
 
 If the site is not deploying:
 
 1. Verify Pages is `gh-pages` + `/(root)`.
-2. Confirm `.github/workflows/docs-versioned.yml` exists on `main`.
-3. Confirm `docs-source` exists and contains `doc_src/mkdocs.yml`.
-4. Confirm the workflow run was triggered by one of the supported events (push to `main`/`docs-source`, tag push `v*`, release published, or manual dispatch).
-5. Check workflow logs for failed `mike deploy` or permission errors.
-6. Confirm Actions has write permission to repository contents.
-7. Confirm a matching docs ref exists (for example `docs-v0.1.0-beta.31`) and includes either `doc_src/zensical.yml` or `doc_src/mkdocs.yml`.
-8. Confirm release-based deploys can use either **Release published** or tag pushes matching `v*`.
+2. Confirm `.github/workflows/docs-dispatch.yml` exists on `main`.
+3. Confirm dispatch run succeeded in `lexos` and reached `lexos-docs`.
+4. Check `lexos-docs` workflow logs for checkout, mkdocstrings source path, and `mike deploy` failures.
+5. Confirm both required tokens are present and not expired.
+6. Confirm matching docs refs exist in `lexos-docs` for release/tag backfills (`docs-<source_ref>` pattern).
+7. If `lexos` fallback workflow ran unexpectedly, check whether `LEXOS_ENABLE_LEGACY_DOCS_DEPLOY` is set to `true`.
 
 ### Local Maintainer Verification
 
