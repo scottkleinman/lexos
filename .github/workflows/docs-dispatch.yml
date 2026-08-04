@@ -57,26 +57,8 @@ jobs:
           event_name="${{ github.event_name }}"
           operation="push-sync"
           source_ref="main"
-          is_prerelease="false"
-          tag_name=""
 
-          if [[ "${event_name}" == "push" ]]; then
-            if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
-              operation="release-tag"
-              source_ref="${GITHUB_REF_NAME}"
-              tag_name="${GITHUB_REF_NAME}"
-              if [[ "${GITHUB_REF_NAME}" == *-* ]]; then
-                is_prerelease="true"
-              fi
-            fi
-          elif [[ "${event_name}" == "release" ]]; then
-            operation="release"
-            source_ref="${{ github.event.release.tag_name }}"
-            tag_name="${{ github.event.release.tag_name }}"
-            if [[ "${{ github.event.release.prerelease }}" == "true" ]]; then
-              is_prerelease="true"
-            fi
-          else
+          if [[ "${event_name}" == "workflow_dispatch" ]]; then
             operation="manual-dispatch"
             source_ref="main"
           fi
@@ -84,35 +66,6 @@ jobs:
           echo "event_name=${event_name}" >> "$GITHUB_OUTPUT"
           echo "operation=${operation}" >> "$GITHUB_OUTPUT"
           echo "source_ref=${source_ref}" >> "$GITHUB_OUTPUT"
-          echo "is_prerelease=${is_prerelease}" >> "$GITHUB_OUTPUT"
-          echo "tag_name=${tag_name}" >> "$GITHUB_OUTPUT"
-
-      - name: Debug token access
-        shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.LEXOS_DOCS_REPO_TOKEN }}
-        run: |
-          set -euo pipefail
-
-          code_user="$(curl -sS -o /tmp/user.json -w "%{http_code}" \
-            -H "Authorization: Bearer ${GH_TOKEN}" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/user)"
-          echo "GET /user -> ${code_user}"
-          if [[ "${code_user}" != "200" ]]; then
-            cat /tmp/user.json
-            exit 1
-          fi
-
-          code_repo="$(curl -sS -o /tmp/repo.json -w "%{http_code}" \
-            -H "Authorization: Bearer ${GH_TOKEN}" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/scottkleinman/lexos-docs)"
-          echo "GET /repos/scottkleinman/lexos-docs -> ${code_repo}"
-          if [[ "${code_repo}" != "200" ]]; then
-            cat /tmp/repo.json
-            exit 1
-          fi
       - name: Send repository dispatch to docs repo
         shell: bash
         env:
@@ -123,8 +76,6 @@ jobs:
           payload="$(jq -n \
             --arg operation "${{ steps.payload.outputs.operation }}" \
             --arg source_ref "${{ steps.payload.outputs.source_ref }}" \
-            --arg is_prerelease "${{ steps.payload.outputs.is_prerelease }}" \
-            --arg tag_name "${{ steps.payload.outputs.tag_name }}" \
             --arg actor "${{ github.actor }}" \
             --arg sha "${{ github.sha }}" \
             --arg repo "${{ github.repository }}" \
@@ -136,8 +87,6 @@ jobs:
                 client_payload: {
                 operation: $operation,
                 source_ref: $source_ref,
-                is_prerelease: $is_prerelease,
-                tag_name: $tag_name,
                 actor: $actor,
                 sha: $sha,
                 source_repository: $repo,
