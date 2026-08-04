@@ -4,17 +4,12 @@ name: Dispatch Docs Publish
   push:
     branches:
       - main
-    tags:
-      - "v*"
     paths:
       - "src/**"
       - "doc_src/**"
       - "pyproject.toml"
       - ".github/workflows/docs-dispatch.yml"
       - ".github/workflows/docs-versioned.yml"
-  release:
-    types:
-      - published
   workflow_dispatch:
     inputs:
       reason:

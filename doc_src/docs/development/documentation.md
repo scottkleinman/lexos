@@ -165,10 +165,11 @@ There are now two workflows involved:
 
 The dispatch workflow in `lexos` handles trigger forwarding.
 
-1. Push to `main` (matching paths): dispatches a `dev` docs update request.
-2. Push to a tag matching `v*`: dispatches a release-tag publish request.
-3. Release published: dispatches a release publish request.
-4. Manual dispatch: forwards a manually-audited publish request.
+1. Push to `main` (matching paths): dispatches a docs update request.
+2. Manual dispatch: forwards a manually-audited publish request.
+
+Release tags and GitHub Release events are intentionally not auto-dispatched from `lexos`.
+Historical version publishing and alias management should be initiated from `lexos-docs` manual operations.
 
 The legacy workflow in `lexos` (`docs-versioned.yml`) only runs when one of the following is true:
 
@@ -199,8 +200,8 @@ If required inputs are missing, the run fails.
 
 `lexos` repository:
 
-1. By default, `.github/workflows/docs-dispatch.yml` uses `github.token` to send `repository_dispatch` to `scottkleinman/lexos-docs`.
-2. If cross-repo dispatch fails with permission errors, switch the workflow auth to a fine-grained PAT secret and re-run.
+1. `.github/workflows/docs-dispatch.yml` uses secret `LEXOS_DOCS_REPO_TOKEN` to send `repository_dispatch` to `scottkleinman/lexos-docs`.
+2. The token should be a fine-grained PAT with repository access needed to create repository dispatch events in `lexos-docs`.
 
 `lexos-docs` repository:
 
