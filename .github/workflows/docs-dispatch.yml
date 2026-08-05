@@ -9,7 +9,6 @@ name: Dispatch Docs Publish
       - "doc_src/**"
       - "pyproject.toml"
       - ".github/workflows/docs-dispatch.yml"
-      - ".github/workflows/docs-versioned.yml"
   workflow_dispatch:
     inputs:
       reason:

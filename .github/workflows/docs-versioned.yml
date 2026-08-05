@@ -1,4 +1,4 @@
-name: Versioned Docs (Legacy Fallback)
+name: Versioned Docs (Legacy Fallback, Disabled By Default)
 
 'on':
   workflow_dispatch:
@@ -78,6 +78,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Legacy fallback kill switch
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ vars.LEXOS_ENABLE_LEGACY_DOCS_DEPLOY }}" != "true" ]]; then
+            echo "Legacy docs deploy is disabled in lexos."
+            echo "Use lexos-docs as the single publisher."
+            echo "To run this fallback temporarily, set repository variable:"
+            echo "  LEXOS_ENABLE_LEGACY_DOCS_DEPLOY=true"
+            echo "Then rerun this workflow_dispatch and disable it again afterward."
+            exit 1
+          fi
+
       - name: Determine publish context
         id: ctx
         shell: bash
