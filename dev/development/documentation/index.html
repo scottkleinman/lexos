@@ -5601,6 +5601,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#troubleshooting-local-import-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting Local Import Paths
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5913,6 +5924,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#troubleshooting-local-import-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting Local Import Paths
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -5951,7 +5973,8 @@
 <p>The documentation website is static website generated with <a href="https://www.mkdocs.org/" target="_blank">MkDocs</a> and <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank">Material for MkDocs</a>. Each page is a Markdown file, which is converted to HTML when the site is built.</p>
 <p>To preview changes to the documentation, serve it locally with</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cd</span><span class="w"> </span>lexos/doc_src
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>uv<span class="w"> </span>run<span class="w"> </span>mkdocs<span class="w"> </span>serve
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>uv<span class="w"> </span>sync<span class="w"> </span>--no-install-project
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>uv<span class="w"> </span>run<span class="w"> </span>mkdocs<span class="w"> </span>serve
 </span></code></pre></div>
 <p>This will start a local server and automatically build a <code>docs</code> folder in the project root to contain the built website. If you do not want to serve the site, you can call <code>uv run mkdocs build</code>. However, in most case you will want to serve it to observe your changes in a web browser.</p>
 <p>If you make a new page, you must add it to the <code>doc_src/docs/mkdocs.yml</code> configuration. If the page is under an <code>overview.md</code> page, check to see if the <code>overview.md</code> page has discussion or a table of contents where you might want to link to the new page. Note that the <code>mkdocs.yml</code> file is very easy to corrupt, so <strong>be careful</strong>.</p>
@@ -6194,7 +6217,19 @@
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nb">cd</span><span class="w"> </span>doc_src
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>uv<span class="w"> </span>run<span class="w"> </span>mkdocs<span class="w"> </span>build
 </span></code></pre></div>
-<p>For API docs resolution during local tests, ensure source files are available in <code>../src</code> or provide <code>MKDOCSTRINGS_PYTHON_PATH</code>.</p>
+<p>For API docs resolution during local tests, <code>mkdocs.yml</code> now includes default source path fallbacks for both local sibling clones (<code>../../lexos/src</code>) and CI checkout layout (<code>../../source/src</code>).</p>
+<p>If your local checkout layout is different, override it explicitly:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">cd</span><span class="w"> </span>lexos-docs/doc_src
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nv">MKDOCSTRINGS_PYTHON_PATH</span><span class="o">=</span>/absolute/path/to/lexos/src<span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span>/absolute/path/to/lexos/src<span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>mkdocs<span class="w"> </span>serve
+</span></code></pre></div>
+<h3 id="troubleshooting-local-import-paths">Troubleshooting Local Import Paths<a class="headerlink" href="#troubleshooting-local-import-paths" title="Permanent link">¤</a></h3>
+<p>If <code>mkdocs serve</code> or <code>mkdocs build</code> reports <code>ImportError</code> for <code>lexos.*</code>, first verify that Python can import <code>lexos</code> from your chosen source path:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">cd</span><span class="w"> </span>lexos-docs/doc_src
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nv">MKDOCSTRINGS_PYTHON_PATH</span><span class="o">=</span>/absolute/path/to/lexos/src<span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span>/absolute/path/to/lexos/src<span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import lexos; print(lexos.__file__)&quot;</span>
+</span></code></pre></div>
+<p>If the command fails, fix the path and try again. If it succeeds, rerun:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>uv<span class="w"> </span>run<span class="w"> </span>mkdocs<span class="w"> </span>serve
+</span></code></pre></div>
 
 
 
@@ -6215,7 +6250,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 5, 2026 01:11:22 UTC">August 5, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 5, 2026 02:32:42 UTC">August 5, 2026</span>
   </span>
 
     
