@@ -377,10 +377,6 @@
          <lastmod>2026-08-05</lastmod>
     </url>
     <url>
-         <loc>https://lexos.github.io/en/latest/dev/user_guide/analyzing_documents/</loc>
-         <lastmod>2026-08-05</lastmod>
-    </url>
-    <url>
          <loc>https://lexos.github.io/en/latest/dev/user_guide/clustering/</loc>
          <lastmod>2026-08-05</lastmod>
     </url>
@@ -434,6 +430,10 @@
     </url>
     <url>
          <loc>https://lexos.github.io/en/latest/dev/user_guide/visualization/</loc>
+         <lastmod>2026-08-05</lastmod>
+    </url>
+    <url>
+         <loc>https://lexos.github.io/en/latest/dev/user_guide/analyzing_documents/</loc>
          <lastmod>2026-08-05</lastmod>
     </url>
     <url>
