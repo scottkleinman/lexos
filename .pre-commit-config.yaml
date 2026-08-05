@@ -38,5 +38,5 @@ repos:
       name: Enforce single backticks for code symbols
       entry: uv run python tools/check_backticks.py
       language: system
-      files: ^(doc_src/docs/|src/|tests/).*\.(py|md)$
+      files: ^(src/|tests/).*\.(py|md)$
       pass_filenames: true

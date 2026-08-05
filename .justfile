@@ -10,10 +10,6 @@ test *args:
 cov *args :
     uv run pytest {{ args }} --cov --cov-report=term-missing
 
-# Run mkdocs serve
-serve:
-    uv run mkdocs serve -f doc_src/mkdocs.yml
-
 # Bump dependency versions
 upgrade:
     uv sync --upgrade
