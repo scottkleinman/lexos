@@ -6,7 +6,6 @@ name: Dispatch Docs Publish
       - main
     paths:
       - "src/**"
-      - "doc_src/**"
       - "pyproject.toml"
       - ".github/workflows/docs-dispatch.yml"
   workflow_dispatch:
@@ -48,16 +47,14 @@ jobs:
         run: |
           set -euo pipefail
 
-          event_name="${{ github.event_name }}"
           operation="push-sync"
           source_ref="main"
 
-          if [[ "${event_name}" == "workflow_dispatch" ]]; then
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             operation="manual-dispatch"
             source_ref="main"
           fi
 
-          echo "event_name=${event_name}" >> "$GITHUB_OUTPUT"
           echo "operation=${operation}" >> "$GITHUB_OUTPUT"
           echo "source_ref=${source_ref}" >> "$GITHUB_OUTPUT"
       - name: Send repository dispatch to docs repo

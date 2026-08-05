@@ -151,32 +151,24 @@ As part of the split-repo migration, this repository now dispatches docs publish
 
 ### Branch Responsibilities
 
-1. `docs-source` stores authored docs and MkDocs configuration (`doc_src`).
-2. `gh-pages` stores only rendered documentation output and mike metadata.
-3. `main` stores Python source code and triggers development docs updates.
-4. `docs-v*` tags (for example `docs-v0.1.0-beta.31`) are the canonical historical docs snapshots.
+1. `gh-pages` stores only rendered documentation output and mike metadata.
+2. `main` stores Python source code and dispatches docs publish requests to `lexos-docs`.
 
 ### Automation Behavior
 
-There are now two workflows involved:
+Publishing is coordinated across `lexos` and `lexos-docs`.
 
-1. `.github/workflows/docs-dispatch.yml` in `lexos` sends events to `lexos-docs`.
-2. `.github/workflows/docs-versioned.yml` in `lexos` is a legacy fallback workflow and is disabled by default.
-
-The dispatch workflow in `lexos` handles trigger forwarding.
+`lexos` owns code-driven publish requests via `.github/workflows/docs-dispatch.yml`.
 
 1. Push to `main` (matching paths): dispatches a docs update request.
 2. Manual dispatch: forwards a manually-audited publish request.
 
+`lexos-docs` owns docs-content-driven publishing and manual docs operations.
+
+1. Pushes to `lexos-docs` `main` (matching docs paths): run publish directly from `lexos-docs`.
+2. Manual operations (`backfill`, `alias-repair`, `rollback`) are run from `lexos-docs` workflow dispatch.
+
 Release tags and GitHub Release events are intentionally not auto-dispatched from `lexos`.
-Historical version publishing and alias management should be initiated from `lexos-docs` manual operations.
-
-The legacy workflow in `lexos` (`docs-versioned.yml`) only runs when one of the following is true:
-
-1. The run is started manually (`workflow_dispatch`).
-2. Repository variable `LEXOS_ENABLE_LEGACY_DOCS_DEPLOY` is set to `true`.
-
-This prevents duplicate publishes during split-repo operation.
 
 ### Alias Policy
 
@@ -196,7 +188,7 @@ Manual runs require:
 
 If required inputs are missing, the run fails.
 
-### Required Secrets and Variables for Dispatch
+### Required Secrets and Variables
 
 `lexos` repository:
 
@@ -206,7 +198,7 @@ If required inputs are missing, the run fails.
 `lexos-docs` repository:
 
 1. Secret for pushing mike output to `lexos` `gh-pages` (repository-contents write on `lexos`).
-2. Workflow that handles `repository_dispatch` event type `lexos_docs_publish`.
+2. Workflow triggers for both `repository_dispatch` (`lexos_docs_publish`) and push-based docs publishing.
 
 ### Common Operations
 
@@ -239,35 +231,23 @@ During split-repo operation, run this in `lexos-docs` workflow dispatch with:
 
 This updates `stable` and the default landing version.
 
-#### Emergency Local Fallback Deploy from `lexos`
-
-Only use this when `lexos-docs` is unavailable.
-
-1. Run `.github/workflows/docs-versioned.yml` manually from Actions UI.
-2. Provide strict audit inputs (`reason`, `change_summary`, and operation parameters).
-3. Disable fallback usage once `lexos-docs` is healthy.
-
 ### Troubleshooting Checklist
 
 If the site is not deploying:
 
 1. Verify Pages is `gh-pages` + `/(root)`.
 2. Confirm `.github/workflows/docs-dispatch.yml` exists on `main`.
-3. Confirm dispatch run succeeded in `lexos` and reached `lexos-docs`.
+3. Confirm the correct trigger path ran:
+  - code/API change in `lexos`: dispatch run succeeded in `lexos` and reached `lexos-docs`.
+  - docs-content change in `lexos-docs`: push-triggered publish run started in `lexos-docs`.
 4. Check `lexos-docs` workflow logs for checkout, mkdocstrings source path, and `mike deploy` failures.
 5. Confirm both required tokens are present and not expired.
 6. Confirm matching docs refs exist in `lexos-docs` for release/tag backfills (`docs-<source_ref>` pattern).
-7. If `lexos` fallback workflow ran unexpectedly, check whether `LEXOS_ENABLE_LEGACY_DOCS_DEPLOY` is set to `true`.
 
 ### Local Maintainer Verification
 
-Before changing deployment logic, verify docs build locally:
+Before changing deployment logic, run a docs dry-run or publish from `lexos-docs` and verify that:
 
-```bash
-cd lexos
-uv sync --group dev
-cd doc_src
-uv run mkdocs build
-```
-
-For API docs resolution during local tests, ensure source files are available in `../src` or provide `MKDOCSTRINGS_PYTHON_PATH`.
+1. A run is triggered with the expected operation in `lexos-docs`.
+2. A new commit appears on `lexos` `gh-pages` when rendered output changes.
+3. The site reflects the update after the GitHub Pages build/deployment run completes.
