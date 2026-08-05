@@ -37,7 +37,6 @@ ipython_config.py
 
 # mkdocs documentation
 /z_src
-/doc_src/llms
 
 # Vscode config files
 .vscode.json
