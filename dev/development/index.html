@@ -5379,12 +5379,13 @@
 <p>When reporting issues, follow <a href="https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax" target="_blank">GitHub Markdown conventions</a>, especially for code and code blocks.</p>
 <p>Please consider adding a GitHub label to your post to help us categorize the issue.</p>
 <h2 id="contributing-to-the-code-base-or-documentation">Contributing to the Code Base or Documentation<a class="headerlink" href="#contributing-to-the-code-base-or-documentation" title="Permanent link">¤</a></h2>
-<p>The Lexos source code and documentation currently reside in the same repository under the <code>lexos/src</code> and <code>lexos/src</code> folders respectively. To work with them, you will need to fork and clone the repository and work with it in a local development environment. When you are ready, you can submit the changes as a pull request to the main Lexos repository.</p>
+<p>The Lexos source code can be found in the <a href="https://github.com/scottkleinman/lexos" target="_blank"><code>lexos</code></a> repository on GitHub. The documentation website is maintained separately in the <a href="https://github.com/scottkleinman/lexos-docs" target="_blank"><code>lexos-docs</code></a> repository. To work with them, you will need to fork and clone the appropriate repository and work with it in a local development environment. When you are ready, you can submit the changes as a pull request to the repository on GitHub.</p>
 <h3 id="fork-and-clone-the-repository">Fork and Clone the Repository<a class="headerlink" href="#fork-and-clone-the-repository" title="Permanent link">¤</a></h3>
 <p>Start by forking the project on GitHub to your own account. Then clone your fork locally. On the command line, run</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/your-username/lexos.git
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>lexos
 </span></code></pre></div>
+<p>Change <code>lexos</code> to <code>lexos-docs</code> if cloning the documentation repository.</p>
 <p>You can also clone the repository with a preferred <code>git</code> client or code editor.</p>
 <h3 id="set-up-your-development-environment">Set Up Your Development Environment<a class="headerlink" href="#set-up-your-development-environment" title="Permanent link">¤</a></h3>
 <p>To make changes to the Lexos source code or documentation, you will need to have a development environment consisting of a Python 3.12+, (preferably) <a href="https://docs.astral.sh/uv/getting-started/installation/" target="_blank">uv</a> to manage dependencies and your virtual environment, and <a href="https://git-scm.com" target="_blank">git</a> installed.</p>
@@ -5431,7 +5432,7 @@
 <p><strong>Open a Pull Request</strong></p>
 </li>
 <li>
-<p>Go to the <a href="https://github.com/scottkleinman/lexos/" target="_blank">Lexos repo</a> and open a pull request from your branch.</p>
+<p>Go to the <a href="https://github.com/scottkleinman/lexos/" target="_blank"><code>lexos</code> repo</a> or <a href="https://github.com/scottkleinman/lexos/" target="_blank"><code>lexos-docs</code> repo</a> and open a pull request from your branch.</p>
 </li>
 <li>Fill out the description field by describing your changes.</li>
 </ol>
@@ -5439,7 +5440,7 @@
 <p>All Python code must be compatible with Python 3.12+ and follow the project's code conventions.</p>
 <p>📖 <strong>The Lexos code conventions are described on the separate <a href="code-conventions/">Code Conventions</a> page.</strong></p>
 <h2 id="adding-tests">Adding Tests<a class="headerlink" href="#adding-tests" title="Permanent link">¤</a></h2>
-<p>Lexos uses the <a href="http://doc.pytest.org/" target="_blank">pytest</a> framework for testing. For more info on this, see the <a href="(http://docs.pytest.org/en/latest/contents.html" target="_blank">pytest documentation</a>. Tests for Lexos modules and classes live in their own directories of the same name. For example, tests for the <code>Tokenizer</code> class can be found in the <code>/lexos/tests/tokenizer</code> folder. To be interpreted and run, all test files and test functions need to be prefixed with <code>test_</code>.</p>
+<p>Lexos uses the <a href="http://doc.pytest.org/" target="_blank">pytest</a> framework for testing. For more info on this, see the <a href="http://docs.pytest.org/en/latest/contents.html" target="_blank">pytest documentation</a>. Tests for Lexos modules and classes live in their own directories of the same name. For example, tests for the <code>Tokenizer</code> class can be found in the <code>/lexos/tests/tokenizer</code> folder. To be interpreted and run, all test files and test functions need to be prefixed with <code>test_</code>.</p>
 <p>📖 <strong>For more guidelines and information on how to add tests, check out the separate <a href="tests/">Lexos Tests</a> page.</strong></p>
 <h2 id="code-of-conduct">Code of Conduct<a class="headerlink" href="#code-of-conduct" title="Permanent link">¤</a></h2>
 <p>Lexos adheres to the <a href="https://www.contributor-covenant.org/version/3/0/code_of_conduct/" target="_blank">Contributor Covenant Code of Conduct</a>. By participating, you are expected to uphold this code.</p>
@@ -5463,7 +5464,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 4, 2026 17:18:43 UTC">August 4, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 7, 2026 00:54:56 UTC">August 7, 2026</span>
   </span>
 
     
