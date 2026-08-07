@@ -4955,7 +4955,15 @@
               return {text: i.title, value: i.version,
                       selected: i.version === realVersion};
             }));
-            select.value = realVersion;
+            var hardcodedVersion = "v0.1.0-beta.31";
+            select.value = hardcodedVersion;
+            var selectedOption = Array.from(select.options).find(function(option) {
+              return option.value === hardcodedVersion;
+            });
+            if (selectedOption) {
+              selectedOption.selected = true;
+              selectedOption.defaultSelected = true;
+            }
             select.addEventListener("change", function(event) {
               window.location.href = ABS_BASE_URL + "../" + this.value + "/";
             });
