@@ -4958,19 +4958,21 @@
                       selected: i.version === realVersion};
             }));
             select.value = realVersion;
-          container.id = "version-selector";
-          container.appendChild(select);
+            select.addEventListener("change", function(event) {
+              window.location.href = ABS_BASE_URL + "../" + this.value + "/";
+            });
 
-          var title = document.querySelector(".navbar-brand");
-          if (title.parentNode.classList.contains("navbar-header")) {
-            var height = window.getComputedStyle(title).getPropertyValue("height");
-            container.style.height = height;
-          }
+            var container = document.createElement("div");
+            container.id = "version-selector";
+            container.appendChild(select);
 
-          title.parentNode.insertBefore(container, title.nextSibling);
-        });
-      });
-      </script>
+            var title = document.querySelector(".navbar-brand");
+            if (title.parentNode.classList.contains("navbar-header")) {
+              var height = window.getComputedStyle(title).getPropertyValue("height");
+              container.style.height = height;
+            }
+            title.parentNode.insertBefore(container, title.nextSibling);
+          });
 
   </body>
 </html>
