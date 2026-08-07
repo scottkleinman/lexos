@@ -4892,7 +4892,7 @@
 
       <script src="assets/javascripts/bundle.e71a0d61.min.js"></script>
 
-      <!-- mike javascript -->
+      <!-- mike javascript set to automatically show the current version -->
       <script>
       window.addEventListener("DOMContentLoaded", function() {
         function expandPath(path) {
@@ -4935,33 +4935,29 @@
           select.classList.add("form-control");
 
           options.forEach(function(i) {
-            var option = new Option(i.text, i.value, undefined,
-                                    i.selected);
-            select.add(option);
-          });
+              var option = new Option(i.text, i.value, false,
+                                      i.selected);
+              select.add(option);
+            });
 
-          return select;
-        }
+            return select;
+          }
 
-        fetch(ABS_BASE_URL + "../versions.json").then((response) => {
-          return response.json();
-        }).then((versions) => {
-          var realVersion = versions.find(function(i) {
-            return i.version === CURRENT_VERSION ||
-                  i.aliases.includes(CURRENT_VERSION);
-          }).version;
+          fetch(ABS_BASE_URL + "../versions.json").then((response) => {
+            return response.json();
+          }).then((versions) => {
+            var realVersion = versions.find(function(i) {
+              return i.version === CURRENT_VERSION ||
+                    i.aliases.includes(CURRENT_VERSION);
+            }).version;
 
-          var select = makeSelect(versions.filter(function(i) {
-            return i.version === realVersion || !i.properties || !i.properties.hidden;
-          }).map(function(i) {
-            return {text: i.title, value: i.version,
-                    selected: i.version === realVersion};
-          }));
-          select.addEventListener("change", function(event) {
-            window.location.href = ABS_BASE_URL + "../" + this.value + "/";
-          });
-
-          var container = document.createElement("div");
+            var select = makeSelect(versions.filter(function(i) {
+              return i.version === realVersion || !i.properties || !i.properties.hidden;
+            }).map(function(i) {
+              return {text: i.title, value: i.version,
+                      selected: i.version === realVersion};
+            }));
+            select.value = realVersion;
           container.id = "version-selector";
           container.appendChild(select);
 
