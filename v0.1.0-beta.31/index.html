@@ -4935,13 +4935,11 @@
           select.classList.add("form-control");
 
           options.forEach(function(i) {
-              var option = new Option(i.text, i.value, false,
-                                      i.selected);
-              select.add(option);
-            });
-
-            return select;
-          }
+              var option = document.createElement("option");
+              option.text = i.text;
+              option.value = i.value;
+              option.selected = i.selected;
+              option.defaultSelected = i.selected;
 
           fetch(ABS_BASE_URL + "../versions.json").then((response) => {
             return response.json();
