@@ -120,7 +120,6 @@
           <span class="md-ellipsis">
             Lexos Documentation
           </span>
-          <div class="md-version"><button class="md-version__current" aria-label="Select version">dev</button><ul class="md-version__list"><li class="md-version__item"><a href="https://scottkleinman.github.io/lexos/dev/" class="md-version__link">dev</a></li><li class="md-version__item"><a href="https://scottkleinman.github.io/lexos/v0.1.0-beta.31/" class="md-version__link">v0.1.0-beta.31</a></li></ul></div>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
@@ -4891,94 +4890,7 @@
 
 
       <script src="assets/javascripts/bundle.e71a0d61.min.js"></script>
-
-      <!-- mike javascript set to automatically show the current version -->
-      <script>
-      window.addEventListener("DOMContentLoaded", function() {
-        function expandPath(path) {
-          // Get the base directory components.
-          var expanded = window.location.pathname.split("/");
-          expanded.pop();
-          var isSubdir = false;
-
-          path.split("/").forEach(function(bit, i) {
-            if (bit === "" && i === 0) {
-              isSubdir = false;
-              expanded = [""];
-            } else if (bit === "." || bit === "") {
-              isSubdir = true;
-            } else if (bit === "..") {
-              if (expanded.length === 1) {
-                // We must be trying to .. past the root!
-                throw new Error("invalid path");
-              } else {
-                isSubdir = true;
-                expanded.pop();
-              }
-            } else {
-              isSubdir = false;
-              expanded.push(bit);
-            }
-          });
-
-          if (isSubdir)
-            expanded.push("");
-          return expanded.join("/");
-        }
-
-        // `base_url` comes from the base.html template for this theme.
-        var ABS_BASE_URL = expandPath(base_url);
-        var CURRENT_VERSION = ABS_BASE_URL.match(/\/([^\/]+)\/$/)[1];
-
-        function makeSelect(options) {
-          var select = document.createElement("select");
-          select.classList.add("form-control");
-
-          options.forEach(function(i) {
-              var option = document.createElement("option");
-              option.text = i.text;
-              option.value = i.value;
-              option.selected = i.selected;
-              option.defaultSelected = i.selected;
-
-          fetch(ABS_BASE_URL + "../versions.json").then((response) => {
-            return response.json();
-          }).then((versions) => {
-            var realVersion = versions.find(function(i) {
-              return i.version === CURRENT_VERSION ||
-                    i.aliases.includes(CURRENT_VERSION);
-            }).version;
-
-            var select = makeSelect(versions.filter(function(i) {
-              return i.version === realVersion || !i.properties || !i.properties.hidden;
-            }).map(function(i) {
-              return {text: i.title, value: i.version,
-                      selected: i.version === realVersion};
-            }));
-            var hardcodedVersion = "v0.1.0-beta.31";
-            select.value = hardcodedVersion;
-            var selectedOption = Array.from(select.options).find(function(option) {
-              return option.value === hardcodedVersion;
-            });
-            if (selectedOption) {
-              selectedOption.selected = true;
-              selectedOption.defaultSelected = true;
-            }
-            select.addEventListener("change", function(event) {
-              window.location.href = ABS_BASE_URL + "../" + this.value + "/";
-            });
-
-            var container = document.createElement("div");
-            container.id = "version-selector";
-            container.appendChild(select);
-
-            var title = document.querySelector(".navbar-brand");
-            if (title.parentNode.classList.contains("navbar-header")) {
-              var height = window.getComputedStyle(title).getPropertyValue("height");
-              container.style.height = height;
-            }
-            title.parentNode.insertBefore(container, title.nextSibling);
-          });
+      <script src="assets/javascripts/version_selector.js"></script>
 
   </body>
 </html>
