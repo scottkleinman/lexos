@@ -5600,16 +5600,33 @@
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>uv<span class="w"> </span>run<span class="w"> </span>mkdocs<span class="w"> </span>serve
 </span></code></pre></div>
 <p>This will start a local server and automatically build a <code>docs</code> folder in the project root to contain the built website. If you do not want to serve the site, you can call <code>uv run mkdocs build</code>. However, in most case you will want to serve it to observe your changes in a web browser.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>To build the Lexos Documentation website, you must clone both the <code>lexos</code> and <code>lexos-docs</code> repos <em>and</em> they must be located in the same parent directory. This is because <code>mkdocs.yml</code> uses the Python handler with source paths <code>../../lexos/src</code> and <code>../../source/src</code>. When you run <code>uv run mkdocs serve</code> from <code>lexos-docs/src</code>, <code>mkdocstrings</code> looks for the <code>lexos</code> package in sibling paths <code>../../lexos/src</code> and <code>../../source/src</code> relative to <code>lexos-docs/src</code>.</p>
+<p>Although you can re-configure these paths in <code>mkdocs.yml</code> on your local system, these changes should not be committed to the repository. If you <em>really</em> need to store your local repositories in different locations, you can change the paths in your local environment with one of the approaches below.</p>
+<ol>
+<li>Set the paths when running <code>mkdocs serve</code>:</li>
+</ol>
+<p><code>bash
+  MKDOCSTRINGS_PYTHON_PATH=/absolute/path/to/lexos/src PYTHONPATH=/absolute/path/to/lexos/src uv run mkdocs serve</code></p>
+<ol>
+<li>Export the paths first:</li>
+</ol>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">MKDOCSTRINGS_PYTHON_PATH</span><span class="o">=</span>/absolute/path/to/lexos/src
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span>/absolute/path/to/lexos/src
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>uv<span class="w"> </span>run<span class="w"> </span>mkdocs<span class="w"> </span>serve
+</span></code></pre></div>
+</div>
 <p>When building the documentation, errors and warnings will be printed to the console. Please check and resolve them before making a pull request (see below). If there are many warnings, it can be helpful to redirect the console output to a file. You can do this with <code>uv run mkdocs build &gt; build_full.log 2&gt;&amp;1</code> and then inspect the generated <code>build_full.log</code> file, which will be saved in the <code>src</code> folder. <strong>Make sure that you don't push this file to the repository.</strong></p>
 <h3 id="create-a-pull-request">Create a Pull Request<a class="headerlink" href="#create-a-pull-request" title="Permanent link">¤</a></h3>
 <p>When you are satisfied with your changes, use <code>git</code> to commit them. Make sure you write clear, descriptive commit messages.</p>
 <p>An example using the command line would be
-     <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>git<span class="w"> </span>add<span class="w"> </span>.
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;New documentation page about a fancy new feature&quot;</span>
+     <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>git<span class="w"> </span>add<span class="w"> </span>.
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;New documentation page about a fancy new feature&quot;</span>
 </span></code></pre></div></p>
 <p>However, you may use the <code>git</code> client of your choice.</p>
 <p>Start by pushing your changes your fork on GitHub:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main<span class="w"> </span><span class="c1"># or substitute the name of the branch you are working on</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main<span class="w"> </span><span class="c1"># or substitute the name of the branch you are working on</span>
 </span></code></pre></div>
 <p>Next, go to the <code>lexos-docs</code> repo and open a pull request from your branch. Fill out the pull request form describing the new module documentation.</p>
 <div class="admonition note">
@@ -5637,7 +5654,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 7, 2026 00:54:56 UTC">August 7, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 7, 2026 16:33:45 UTC">August 7, 2026</span>
   </span>
 
     
