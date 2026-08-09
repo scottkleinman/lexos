@@ -1155,7 +1155,7 @@ wheels = [
 
 [[package]]
 name = "lexos"
-version = "0.1.0b31"
+version = "0.2.0b0"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -1253,7 +1253,7 @@ requires-dist = [
     { name = "nvidia-cusparse-cu12", marker = "extra == 'gpu'" },
     { name = "pandas", specifier = ">=2.2.3" },
     { name = "plotly", specifier = ">=6.2.0,<7.0.0" },
-    { name = "puremagic", specifier = ">=2.0.0b2" },
+    { name = "puremagic", specifier = ">=2.2.0" },
     { name = "pydantic", specifier = ">=2.10.4" },
     { name = "pydantic-extra-types", specifier = ">=2.10.2" },
     { name = "pypdf", specifier = ">=6.14.2" },
@@ -2260,11 +2260,11 @@ wheels = [
 
 [[package]]
 name = "puremagic"
-version = "2.0.0b2"
+version = "2.2.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/23/62/4fbf86ec40364e8ffe8b7d0ff669d939985e60328df68990f3a8e6b45237/puremagic-2.0.0b2.tar.gz", hash = "sha256:70136f3ea0977fd50a7783093b4b2588c5760411c668790300c2bf5e67e2fbab", size = 500594, upload-time = "2025-05-05T01:28:53.307Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/24/74/ce5987ab9b8aec4ced06e2723ebb604205c9eb58abdad91453da93166380/puremagic-2.2.0.tar.gz", hash = "sha256:eb4bddf07c177c4b434554b92165b67449f5a51e152b976202d6254498810eef", size = 1189752, upload-time = "2026-04-08T01:39:55.562Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/df/bb/34e4b09a7c8e3c5d1e63df184e5f8d0a55c7f3f82defa9dec480ec3a5d7a/puremagic-2.0.0b2-py3-none-any.whl", hash = "sha256:5f5836a96f98aaa559f003def597824a319e480e7e88cb1e02c21185abd48675", size = 47873, upload-time = "2025-05-05T01:28:51.842Z" },
+    { url = "https://files.pythonhosted.org/packages/95/81/314320aeffd88dadeac553ff9eb10f54507ab41deccd0c69f6221d254a0a/puremagic-2.2.0-py3-none-any.whl", hash = "sha256:c4f7ed7307f056c787199acfda839555921be1df13abba61e8e6db0c787ae1d0", size = 71971, upload-time = "2026-04-08T01:39:54.169Z" },
 ]
 
 [[package]]

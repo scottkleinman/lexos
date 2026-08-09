@@ -1,7 +1,7 @@
 """test_parallel_loader.py.
 
-Coverage: 98%. Missing: 55, 64, 257-258, 714
-Last Update: June 27, 2026
+Coverage: 98%. Missing: 55, 64, 257-258, 713
+Last Update: August 9, 2026
 
 Tests for the ParallelLoader class including thread safety, concurrent operations,
 progress tracking, and error handling.
@@ -509,9 +509,11 @@ class TestParallelLoaderErrorHandling:
 
         # Create a file with unsupported extension
         invalid_file = Path(temp_dir.name) / "test.xyz"
-        invalid_file.write_text("Some content")
+        invalid_file.write_bytes(b"\x00\x01\x02\x03\x04")
 
-        parallel_loader.load([invalid_file])
+        with patch.object(parallel_loader, "_get_mime_type", return_value=None):
+            parallel_loader.load([invalid_file])
+
         temp_dir.cleanup()
 
         # Should have recorded an error
