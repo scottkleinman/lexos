@@ -18,6 +18,7 @@ __info__ = {
     "version": __version__,
     "docs": __docs__,
     "repo": __repo__,
+    "copyright": __copyright__,
     "license": __license__,
     "status": __status__,
 }
