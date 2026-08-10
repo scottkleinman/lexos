@@ -1,10 +1,9 @@
 """bubbleviz.py.
 
-Last Updated: July 9, 2026
-Last Tested: July 9, 2026
+Last Updated: August 9, 2026
+Last Tested: August 9, 2026
 """
 
-from collections import Counter
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Optional
@@ -52,7 +51,7 @@ DEFAULT_COLORS = [
 ]
 
 
-class BubbleChart(BaseModel):
+class BubbleViz(BaseModel):
     """Bubble chart.
 
     Notes:
@@ -112,7 +111,7 @@ class BubbleChart(BaseModel):
         return value
 
     def __init__(self, **data):
-        """Initialize the BubbleChart with the provided data."""
+        """Initialize the BubbleViz with the provided data."""
         super().__init__(**data)
 
         # Process different data types to get individual document data
@@ -316,9 +315,9 @@ class BubbleChart(BaseModel):
         self.fig.savefig(path, **kwargs)
 
     def show(self):
-        """Show the figure if it is hidden.
+        """Show the BubbleViz figure if it is hidden.
 
         This is a helper method. You can also reference the figure using
-        `BubbleChart.fig`. This will generally display in a Jupyter notebook.
+        `BubbleViz.fig`. This will generally display in a Jupyter notebook.
         """
         return self.fig

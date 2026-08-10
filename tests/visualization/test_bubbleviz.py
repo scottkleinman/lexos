@@ -18,7 +18,7 @@ from pydantic import ValidationError
 
 from lexos.dtm import DTM
 from lexos.exceptions import LexosException
-from lexos.visualization.bubbleviz import DEFAULT_COLORS, BubbleChart
+from lexos.visualization.bubbleviz import DEFAULT_COLORS, BubbleViz
 
 # Test data
 SAMPLE_TEXT = (
@@ -40,12 +40,12 @@ SAMPLE_DOCS = [
 ]
 
 
-class TestBubbleChart:
-    """Test the BubbleChart class."""
+class TestBubbleViz:
+    """Test the BubbleViz class."""
 
-    def test_bubblechart_string_initialization(self):
-        """Test BubbleChart initialization with string data."""
-        bc = BubbleChart(data=SAMPLE_TEXT)
+    def test_bubbleviz_string_initialization(self):
+        """Test BubbleViz initialization with string data."""
+        bc = BubbleViz(data=SAMPLE_TEXT)
 
         assert isinstance(bc.counts, dict)
         assert bc.figsize == (10, 10)  # Default figsize becomes tuple
@@ -57,26 +57,26 @@ class TestBubbleChart:
         assert bc.fig is not None
         assert isinstance(bc.bubbles, np.ndarray)
 
-    def test_bubblechart_dict_initialization(self):
-        """Test BubbleChart initialization with dictionary data."""
-        bc = BubbleChart(data=SAMPLE_DICT)
+    def test_bubbleviz_dict_initialization(self):
+        """Test BubbleViz initialization with dictionary data."""
+        bc = BubbleViz(data=SAMPLE_DICT)
 
         assert bc.counts == SAMPLE_DICT
         assert bc.fig is not None
         assert len(bc.bubbles) == len(SAMPLE_DICT)
 
-    def test_bubblechart_list_initialization(self):
-        """Test BubbleChart initialization with list data."""
-        bc = BubbleChart(data=SAMPLE_TOKENS)
+    def test_bubbleviz_list_initialization(self):
+        """Test BubbleViz initialization with list data."""
+        bc = BubbleViz(data=SAMPLE_TOKENS)
 
         expected_counts = Counter(SAMPLE_TOKENS)
         assert bc.counts == dict(expected_counts)
         assert bc.fig is not None
 
-    def test_bubblechart_custom_parameters(self):
-        """Test BubbleChart with custom parameters."""
+    def test_bubbleviz_custom_parameters(self):
+        """Test BubbleViz with custom parameters."""
         custom_colors = ["#FF0000", "#00FF00", "#0000FF"]
-        bc = BubbleChart(
+        bc = BubbleViz(
             data=SAMPLE_TEXT,
             limit=5,
             title="Custom Bubble Chart",
@@ -96,86 +96,86 @@ class TestBubbleChart:
         assert bc.showfig == False
         assert len(bc.counts) <= 5
 
-    def test_bubblechart_with_spacy_doc(self):
-        """Test BubbleChart with spaCy Doc object."""
+    def test_bubbleviz_with_spacy_doc(self):
+        """Test BubbleViz with spaCy Doc object."""
         import spacy
 
         nlp = spacy.blank("en")
         doc = nlp(SAMPLE_TEXT)
 
-        bc = BubbleChart(data=doc)
+        bc = BubbleViz(data=doc)
 
         expected_counts = Counter([token.text for token in doc])
         assert bc.counts == dict(expected_counts)
         assert bc.fig is not None
 
-    def test_bubblechart_with_spacy_span(self):
-        """Test BubbleChart with spaCy Span object."""
+    def test_bubbleviz_with_spacy_span(self):
+        """Test BubbleViz with spaCy Span object."""
         import spacy
 
         nlp = spacy.blank("en")
         doc = nlp(SAMPLE_TEXT)
         span = doc[2:5]  # Select middle tokens
 
-        bc = BubbleChart(data=span)
+        bc = BubbleViz(data=span)
 
         expected_counts = Counter([token.text for token in span])
         assert bc.counts == dict(expected_counts)
         assert bc.fig is not None
 
-    def test_bubblechart_with_token_list(self):
-        """Test BubbleChart with list of spaCy Token objects."""
+    def test_bubbleviz_with_token_list(self):
+        """Test BubbleViz with list of spaCy Token objects."""
         import spacy
 
         nlp = spacy.blank("en")
         doc = nlp(SAMPLE_TEXT)
         tokens = list(doc)
 
-        bc = BubbleChart(data=tokens)
+        bc = BubbleViz(data=tokens)
 
         expected_counts = Counter([token.text for token in tokens])
         assert bc.counts == dict(expected_counts)
         assert bc.fig is not None
 
-    def test_bubblechart_with_nested_lists(self):
-        """Test BubbleChart with nested list structure."""
+    def test_bubbleviz_with_nested_lists(self):
+        """Test BubbleViz with nested list structure."""
         nested_data = [
             ["natural", "language", "processing"],
             ["machine", "learning", "algorithms"],
             ["data", "science", "analytics"],
         ]
 
-        bc = BubbleChart(data=nested_data)
+        bc = BubbleViz(data=nested_data)
 
         assert isinstance(bc.counts, dict)
         assert bc.fig is not None
 
-    def test_bubblechart_with_doc_list(self):
-        """Test BubbleChart with list of spaCy Doc objects."""
+    def test_bubbleviz_with_doc_list(self):
+        """Test BubbleViz with list of spaCy Doc objects."""
         import spacy
 
         nlp = spacy.blank("en")
         docs = [nlp(text) for text in SAMPLE_DOCS]
 
-        bc = BubbleChart(data=docs)
+        bc = BubbleViz(data=docs)
 
         assert isinstance(bc.counts, dict)
         assert bc.fig is not None
 
-    def test_bubblechart_with_dataframe(self):
-        """Test BubbleChart with DataFrame data."""
+    def test_bubbleviz_with_dataframe(self):
+        """Test BubbleViz with DataFrame data."""
         df = pd.DataFrame(
             {"doc1": [2, 1, 3, 0], "doc2": [1, 3, 0, 2], "doc3": [0, 2, 1, 1]},
             index=["term1", "term2", "term3", "term4"],
         )
 
-        bc = BubbleChart(data=df)
+        bc = BubbleViz(data=df)
 
         assert isinstance(bc.counts, dict)
         assert bc.fig is not None
 
-    def test_bubblechart_with_dtm(self):
-        """Test BubbleChart with DTM data."""
+    def test_bubbleviz_with_dtm(self):
+        """Test BubbleViz with DTM data."""
         docs = [
             ["term1", "term2", "term3"],
             ["term1", "term3", "term4"],
@@ -184,59 +184,59 @@ class TestBubbleChart:
 
         dtm = DTM()
         dtm(docs=docs, labels=["doc1", "doc2", "doc3"])
-        bc = BubbleChart(data=dtm)
+        bc = BubbleViz(data=dtm)
 
         assert isinstance(bc.counts, dict)
         assert bc.fig is not None
 
-    def test_bubblechart_with_limit(self):
-        """Test BubbleChart with term limit."""
+    def test_bubbleviz_with_limit(self):
+        """Test BubbleViz with term limit."""
         large_text = " ".join([f"word{i}" for i in range(50)])
-        bc = BubbleChart(data=large_text, limit=10)
+        bc = BubbleViz(data=large_text, limit=10)
 
         assert len(bc.counts) <= 10
         assert len(bc.bubbles) <= 10
 
-    def test_bubblechart_with_docs_parameter(self):
-        """Test BubbleChart with docs parameter for document selection."""
+    def test_bubbleviz_with_docs_parameter(self):
+        """Test BubbleViz with docs parameter for document selection."""
         df = pd.DataFrame(
             {"doc1": [2, 1, 0], "doc2": [1, 3, 2], "doc3": [0, 1, 1]},
             index=["term1", "term2", "term3"],
         )
 
-        bc = BubbleChart(data=df, docs=[0, 2])  # Select first and third docs
+        bc = BubbleViz(data=df, docs=[0, 2])  # Select first and third docs
 
         assert isinstance(bc.counts, dict)
         assert bc.fig is not None
 
-    def test_bubblechart_empty_data_validation(self):
-        """Test BubbleChart validation with empty data."""
+    def test_bubbleviz_empty_data_validation(self):
+        """Test BubbleViz validation with empty data."""
         # Empty string
         with pytest.raises(LexosException) as exc_info:
-            BubbleChart(data="")
+            BubbleViz(data="")
         assert "Data is an empty list or string" in str(exc_info.value)
 
         # Empty list
         with pytest.raises(LexosException) as exc_info:
-            BubbleChart(data=[])
+            BubbleViz(data=[])
         assert "Data is an empty list or string" in str(exc_info.value)
 
         # Empty dict
         with pytest.raises(LexosException) as exc_info:
-            BubbleChart(data={})
+            BubbleViz(data={})
         assert "Data is an empty list or string" in str(exc_info.value)
 
-    def test_bubblechart_empty_dataframe_validation(self):
-        """Test BubbleChart validation with empty DataFrame."""
+    def test_bubbleviz_empty_dataframe_validation(self):
+        """Test BubbleViz validation with empty DataFrame."""
         empty_df = pd.DataFrame()
 
         with pytest.raises(LexosException) as exc_info:
-            BubbleChart(data=empty_df)
+            BubbleViz(data=empty_df)
         assert "Dataframe is empty" in str(exc_info.value)
 
-    def test_bubblechart_center_distance(self):
-        """Test BubbleChart _center_distance method."""
-        bc = BubbleChart(data=SAMPLE_DICT)
+    def test_bubbleviz_center_distance(self):
+        """Test BubbleViz _center_distance method."""
+        bc = BubbleViz(data=SAMPLE_DICT)
 
         bubble = np.array([0, 0, 1, 1])
         bubbles = np.array([[1, 1, 1, 1], [2, 2, 1, 1]])
@@ -245,9 +245,9 @@ class TestBubbleChart:
         expected = np.array([np.sqrt(2), np.sqrt(8)])
         np.testing.assert_array_almost_equal(distances, expected)
 
-    def test_bubblechart_center_of_mass(self):
-        """Test BubbleChart _center_of_mass method."""
-        bc = BubbleChart(data=SAMPLE_DICT)
+    def test_bubbleviz_center_of_mass(self):
+        """Test BubbleViz _center_of_mass method."""
+        bc = BubbleViz(data=SAMPLE_DICT)
 
         # Test with known bubble configuration
         bc.bubbles = np.array(
@@ -264,9 +264,9 @@ class TestBubbleChart:
 
         np.testing.assert_array_almost_equal(com, expected)
 
-    def test_bubblechart_outline_distance(self):
-        """Test BubbleChart _outline_distance method."""
-        bc = BubbleChart(data=SAMPLE_DICT)
+    def test_bubbleviz_outline_distance(self):
+        """Test BubbleViz _outline_distance method."""
+        bc = BubbleViz(data=SAMPLE_DICT)
 
         bubble = np.array([0, 0, 1, 1])  # radius 1
         bubbles = np.array([[3, 0, 1, 1]])  # radius 1, distance 3
@@ -277,9 +277,9 @@ class TestBubbleChart:
 
         np.testing.assert_array_almost_equal(outline_dist, expected)
 
-    def test_bubblechart_check_collisions(self):
-        """Test BubbleChart _check_collisions method."""
-        bc = BubbleChart(data=SAMPLE_DICT)
+    def test_bubbleviz_check_collisions(self):
+        """Test BubbleViz _check_collisions method."""
+        bc = BubbleViz(data=SAMPLE_DICT)
 
         # Two overlapping bubbles
         bubble = np.array([0, 0, 1, 1])
@@ -288,9 +288,9 @@ class TestBubbleChart:
         collisions = bc._check_collisions(bubble, bubbles)
         assert collisions > 0  # Should detect collision
 
-    def test_bubblechart_collides_with(self):
-        """Test BubbleChart _collides_with method."""
-        bc = BubbleChart(data=SAMPLE_DICT)
+    def test_bubbleviz_collides_with(self):
+        """Test BubbleViz _collides_with method."""
+        bc = BubbleViz(data=SAMPLE_DICT)
 
         bubble = np.array([0, 0, 1, 1])
         bubbles = np.array(
@@ -303,9 +303,9 @@ class TestBubbleChart:
         colliding_indices = bc._collides_with(bubble, bubbles)
         assert 0 in colliding_indices  # Should return index of closest bubble
 
-    def test_bubblechart_collapse(self):
-        """Test BubbleChart _collapse method."""
-        bc = BubbleChart(data={"a": 5, "b": 3})
+    def test_bubbleviz_collapse(self):
+        """Test BubbleViz _collapse method."""
+        bc = BubbleViz(data={"a": 5, "b": 3})
 
         initial_positions = bc.bubbles[:, :2].copy()
         bc._collapse(n_iterations=5)
@@ -314,9 +314,9 @@ class TestBubbleChart:
         # Positions should have changed (bubbles moved toward center)
         assert not np.array_equal(initial_positions, final_positions)
 
-    def test_bubblechart_plot_method(self):
-        """Test BubbleChart _plot method."""
-        bc = BubbleChart(data=SAMPLE_DICT)
+    def test_bubbleviz_plot_method(self):
+        """Test BubbleViz _plot method."""
+        bc = BubbleViz(data=SAMPLE_DICT)
 
         fig, ax = plt.subplots()
         labels = list(SAMPLE_DICT.keys())
@@ -328,9 +328,9 @@ class TestBubbleChart:
         assert len(ax.patches) == len(labels)
         plt.close(fig)
 
-    def test_bubblechart_save_method(self):
-        """Test BubbleChart save method."""
-        bc = BubbleChart(data=SAMPLE_TEXT)
+    def test_bubbleviz_save_method(self):
+        """Test BubbleViz save method."""
+        bc = BubbleViz(data=SAMPLE_TEXT)
 
         with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp_file:
             tmp_path = tmp_file.name
@@ -341,158 +341,158 @@ class TestBubbleChart:
         finally:
             Path(tmp_path).unlink(missing_ok=True)
 
-    def test_bubblechart_save_empty_path(self):
-        """Test BubbleChart save with empty path."""
-        bc = BubbleChart(data=SAMPLE_TEXT)
+    def test_bubbleviz_save_empty_path(self):
+        """Test BubbleViz save with empty path."""
+        bc = BubbleViz(data=SAMPLE_TEXT)
 
         with pytest.raises(LexosException) as exc_info:
             bc.save("")
         assert "You must provide a valid path" in str(exc_info.value)
 
-    def test_bubblechart_save_no_figure(self):
-        """Test BubbleChart save when no figure exists."""
-        bc = BubbleChart(data=SAMPLE_TEXT)
+    def test_bubbleviz_save_no_figure(self):
+        """Test BubbleViz save when no figure exists."""
+        bc = BubbleViz(data=SAMPLE_TEXT)
         bc.fig = None  # Manually remove figure
 
         with pytest.raises(LexosException) as exc_info:
             bc.save("test.png")
         assert "The figure has not yet been generated" in str(exc_info.value)
 
-    def test_bubblechart_show_method(self):
-        """Test BubbleChart show method."""
-        bc = BubbleChart(data=SAMPLE_TEXT)
+    def test_bubbleviz_show_method(self):
+        """Test BubbleViz show method."""
+        bc = BubbleViz(data=SAMPLE_TEXT)
 
         fig = bc.show()
         assert fig is not None
         assert fig == bc.fig
 
-    def test_bubblechart_with_title(self):
-        """Test BubbleChart with title."""
+    def test_bubbleviz_with_title(self):
+        """Test BubbleViz with title."""
         title = "Test Bubble Chart"
-        bc = BubbleChart(data=SAMPLE_TEXT, title=title)
+        bc = BubbleViz(data=SAMPLE_TEXT, title=title)
 
         assert bc.title == title
         assert bc.fig is not None
 
-    def test_bubblechart_custom_colors(self):
-        """Test BubbleChart with custom colors."""
+    def test_bubbleviz_custom_colors(self):
+        """Test BubbleViz with custom colors."""
         custom_colors = ["#FF5733", "#33FF57", "#3357FF"]
-        bc = BubbleChart(data=SAMPLE_DICT, colors=custom_colors)
+        bc = BubbleViz(data=SAMPLE_DICT, colors=custom_colors)
 
         assert bc.colors == custom_colors
 
-    def test_bubblechart_different_bubble_spacing(self):
-        """Test BubbleChart with different bubble spacing."""
-        bc1 = BubbleChart(data=SAMPLE_DICT, bubble_spacing=0.05)
-        bc2 = BubbleChart(data=SAMPLE_DICT, bubble_spacing=0.5)
+    def test_bubbleviz_different_bubble_spacing(self):
+        """Test BubbleViz with different bubble spacing."""
+        bc1 = BubbleViz(data=SAMPLE_DICT, bubble_spacing=0.05)
+        bc2 = BubbleViz(data=SAMPLE_DICT, bubble_spacing=0.5)
 
         assert bc1.bubble_spacing == 0.05
         assert bc2.bubble_spacing == 0.5
         assert bc1.bubble_spacing != bc2.bubble_spacing
 
-    def test_bubblechart_different_figsize(self):
-        """Test BubbleChart with different figure sizes."""
-        bc = BubbleChart(data=SAMPLE_TEXT, figsize=15)
+    def test_bubbleviz_different_figsize(self):
+        """Test BubbleViz with different figure sizes."""
+        bc = BubbleViz(data=SAMPLE_TEXT, figsize=15)
 
         assert bc.figsize == (15, 15)
 
-    def test_bubblechart_no_showfig(self):
-        """Test BubbleChart with showfig=False."""
-        bc = BubbleChart(data=SAMPLE_TEXT, showfig=False)
+    def test_bubbleviz_no_showfig(self):
+        """Test BubbleViz with showfig=False."""
+        bc = BubbleViz(data=SAMPLE_TEXT, showfig=False)
 
         assert bc.showfig == False
         assert bc.fig is not None  # Figure should still be created
 
-    def test_bubblechart_large_dataset(self):
-        """Test BubbleChart with large dataset."""
+    def test_bubbleviz_large_dataset(self):
+        """Test BubbleViz with large dataset."""
         # Create large text with many unique words
         large_text = " ".join([f"word{i}" for i in range(200)])
-        bc = BubbleChart(data=large_text, limit=50)
+        bc = BubbleViz(data=large_text, limit=50)
 
         assert len(bc.counts) <= 50
         assert bc.fig is not None
 
-    def test_bubblechart_single_word(self):
-        """Test BubbleChart with single word."""
-        bc = BubbleChart(data="word")
+    def test_bubbleviz_single_word(self):
+        """Test BubbleViz with single word."""
+        bc = BubbleViz(data="word")
 
         assert bc.counts == {"word": 1}
         assert len(bc.bubbles) == 1
 
-    def test_bubblechart_repeated_words(self):
-        """Test BubbleChart with repeated words."""
+    def test_bubbleviz_repeated_words(self):
+        """Test BubbleViz with repeated words."""
         text = "apple apple banana apple banana banana banana"
-        bc = BubbleChart(data=text)
+        bc = BubbleViz(data=text)
 
         expected = {"apple": 3, "banana": 4}
         assert bc.counts == expected
 
-    def test_bubblechart_unicode_text(self):
-        """Test BubbleChart with Unicode characters."""
+    def test_bubbleviz_unicode_text(self):
+        """Test BubbleViz with Unicode characters."""
         unicode_text = "café résumé naïve 数据 科学"
-        bc = BubbleChart(data=unicode_text)
+        bc = BubbleViz(data=unicode_text)
 
         assert "café" in bc.counts
         assert "数据" in bc.counts
         assert bc.fig is not None
 
-    def test_bubblechart_special_characters(self):
-        """Test BubbleChart with special characters."""
+    def test_bubbleviz_special_characters(self):
+        """Test BubbleViz with special characters."""
         special_text = "hello@world.com test-case user#123"
-        bc = BubbleChart(data=special_text)
+        bc = BubbleViz(data=special_text)
 
         assert isinstance(bc.counts, dict)
         assert bc.fig is not None
 
-    def test_bubblechart_dataframe_with_docs_selection(self):
-        """Test BubbleChart with DataFrame and document selection."""
+    def test_bubbleviz_dataframe_with_docs_selection(self):
+        """Test BubbleViz with DataFrame and document selection."""
         df = pd.DataFrame(
             {"doc1": [2, 1, 0], "doc2": [1, 3, 2], "doc3": [0, 1, 1]},
             index=["term1", "term2", "term3"],
         )
 
-        bc = BubbleChart(data=df, docs=[0, 2])
+        bc = BubbleViz(data=df, docs=[0, 2])
 
         assert isinstance(bc.counts, dict)
         assert bc.fig is not None
 
-    def test_bubblechart_dtm_with_docs_selection(self):
-        """Test BubbleChart with DTM and document selection."""
+    def test_bubbleviz_dtm_with_docs_selection(self):
+        """Test BubbleViz with DTM and document selection."""
         docs = [["apple", "banana"], ["cherry", "date"], ["elderberry", "fig"]]
 
         dtm = DTM()
         dtm(docs=docs, labels=["fruits1", "fruits2", "fruits3"])
-        bc = BubbleChart(data=dtm, docs=[0, 2])
+        bc = BubbleViz(data=dtm, docs=[0, 2])
 
         assert isinstance(bc.counts, dict)
         assert bc.fig is not None
 
-    def test_bubblechart_font_family(self):
-        """Test BubbleChart with different font families."""
-        bc = BubbleChart(data=SAMPLE_TEXT, font_family="Times New Roman")
+    def test_bubbleviz_font_family(self):
+        """Test BubbleViz with different font families."""
+        bc = BubbleViz(data=SAMPLE_TEXT, font_family="Times New Roman")
 
         assert bc.font_family == "Times New Roman"
 
-    def test_bubblechart_zero_limit(self):
-        """Test BubbleChart with zero limit."""
+    def test_bubbleviz_zero_limit(self):
+        """Test BubbleViz with zero limit."""
         with pytest.raises(ValidationError):
-            bc = BubbleChart(data=SAMPLE_TEXT, limit=0)
+            bc = BubbleViz(data=SAMPLE_TEXT, limit=0)
 
-    def test_bubblechart_none_limit(self):
-        """Test BubbleChart with None limit."""
-        bc = BubbleChart(data=SAMPLE_TEXT, limit=None)
+    def test_bubbleviz_none_limit(self):
+        """Test BubbleViz with None limit."""
+        bc = BubbleViz(data=SAMPLE_TEXT, limit=None)
 
         # Should include all words when limit is None
         expected_count = len(SAMPLE_TEXT.split())
         assert len(bc.counts) == len(set(SAMPLE_TEXT.split()))
 
-    def test_bubblechart_invalid_data_type(self):
-        """Test BubbleChart with invalid data type."""
+    def test_bubbleviz_invalid_data_type(self):
+        """Test BubbleViz with invalid data type."""
         with pytest.raises(ValidationError):
-            BubbleChart(data=12345)  # int is not in allowed types
+            BubbleViz(data=12345)  # int is not in allowed types
 
-    def test_bubblechart_nested_token_lists(self):
-        """Test BubbleChart with nested lists of tokens."""
+    def test_bubbleviz_nested_token_lists(self):
+        """Test BubbleViz with nested lists of tokens."""
         import spacy
 
         nlp = spacy.blank("en")
@@ -501,40 +501,40 @@ class TestBubbleChart:
         doc2 = nlp("foo bar")
 
         nested_tokens = [list(doc1), list(doc2)]
-        bc = BubbleChart(data=nested_tokens)
+        bc = BubbleViz(data=nested_tokens)
 
         assert isinstance(bc.counts, dict)
         assert bc.fig is not None
 
-    def test_bubblechart_edge_case_single_bubble(self):
-        """Test BubbleChart edge case with single bubble."""
-        bc = BubbleChart(data={"single": 1})
+    def test_bubbleviz_edge_case_single_bubble(self):
+        """Test BubbleViz edge case with single bubble."""
+        bc = BubbleViz(data={"single": 1})
 
         assert len(bc.bubbles) == 1
         assert bc.counts == {"single": 1}
         assert bc.fig is not None
 
-    def test_bubblechart_very_small_counts(self):
-        """Test BubbleChart with very small count values."""
+    def test_bubbleviz_very_small_counts(self):
+        """Test BubbleViz with very small count values."""
         small_counts = {"a": 1, "b": 1, "c": 1}
-        bc = BubbleChart(data=small_counts)
+        bc = BubbleViz(data=small_counts)
 
         assert bc.counts == small_counts
         assert len(bc.bubbles) == 3
 
-    def test_bubblechart_very_large_counts(self):
-        """Test BubbleChart with very large count values."""
+    def test_bubbleviz_very_large_counts(self):
+        """Test BubbleViz with very large count values."""
         large_counts = {"word1": 1000, "word2": 500, "word3": 2000}
-        bc = BubbleChart(data=large_counts)
+        bc = BubbleViz(data=large_counts)
 
         assert bc.counts == large_counts
         assert bc.fig is not None
 
-    def test_bubblechart_matplotlib_cleanup(self):
-        """Test that BubbleChart properly closes matplotlib figures."""
+    def test_bubbleviz_matplotlib_cleanup(self):
+        """Test that BubbleViz properly closes matplotlib figures."""
         initial_figs = len(plt.get_fignums())
 
-        bc = BubbleChart(data=SAMPLE_TEXT)
+        bc = BubbleViz(data=SAMPLE_TEXT)
 
         # Figure should be created but closed (due to plt.close() in __init__)
         current_figs = len(plt.get_fignums())
@@ -544,13 +544,13 @@ class TestBubbleChart:
         assert bc.fig is not None
 
 
-class TestBubbleChartIntegration:
-    """Integration tests for complete BubbleChart workflows."""
+class TestBubbleVizIntegration:
+    """Integration tests for complete BubbleViz workflows."""
 
-    def test_bubblechart_complete_workflow(self):
-        """Test complete BubbleChart workflow."""
+    def test_bubbleviz_complete_workflow(self):
+        """Test complete BubbleViz workflow."""
         # Create bubble chart
-        bc = BubbleChart(
+        bc = BubbleViz(
             data=SAMPLE_DICT,
             title="Integration Test",
             limit=5,
@@ -575,13 +575,13 @@ class TestBubbleChartIntegration:
         finally:
             Path(tmp_path).unlink(missing_ok=True)
 
-    def test_bubblechart_multiple_data_types(self):
-        """Test BubbleChart with multiple data types in sequence."""
+    def test_bubbleviz_multiple_data_types(self):
+        """Test BubbleViz with multiple data types in sequence."""
         data_types = [SAMPLE_TEXT, SAMPLE_DICT, SAMPLE_TOKENS]
 
         bubble_charts = []
         for data in data_types:
-            bc = BubbleChart(data=data, limit=10)
+            bc = BubbleViz(data=data, limit=10)
             bubble_charts.append(bc)
             assert bc.fig is not None
             assert isinstance(bc.counts, dict)

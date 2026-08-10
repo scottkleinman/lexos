@@ -1,12 +1,11 @@
 """d3.bubbleviz.py.
 
-Last Updated: June 28, 2026
-Last Tested: June 28, 2026
+Last Updated: August 9, 2026
+Last Tested: August 9, 2026
 """
 
 import tempfile
 import webbrowser
-from collections import Counter
 from functools import lru_cache
 from pathlib import Path
 from typing import Optional
@@ -41,7 +40,7 @@ def _load_local_asset(path: Path) -> str:
         return f.read()
 
 
-class D3BubbleChart(BaseModel):
+class D3BubbleViz(BaseModel):
     """Class to render a D3 bubble chart visualization in HTML format."""
 
     data: single_doc_types | multi_doc_types | pd.DataFrame = Field(
@@ -83,7 +82,7 @@ class D3BubbleChart(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     def __init__(self, **data):
-        """Initialize the D3BubbleChart with the provided data."""
+        """Initialize the D3BubbleViz with the provided data."""
         super().__init__(**data)
         self.template = self._get_asset_path(self.template)
         # Process the data into a consistent format
