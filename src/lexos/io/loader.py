@@ -1,7 +1,7 @@
 """loader.py.
 
-Last Update: 2026-06-28
-Last Tested: 2026-06-28
+Last Update: August 9, 2026
+Last Tested: August 9, 2026
 """
 
 import mimetypes
@@ -25,6 +25,7 @@ from lexos.constants import (
 )
 
 VALID_FILE_TYPES = {*TEXT_TYPES, *PDF_TYPES, *DOCX_TYPES, *ZIP_TYPES}
+PLAIN_TEXT_EXTENSIONS = {".txt", ".md", ".csv", ".json", ".xml", ".log", ".cfg"}
 from lexos.exceptions import LexosException
 
 
@@ -65,12 +66,25 @@ class Loader(BaseLoader):
             return "application/vnd.python.pickle"
         results = puremagic.magic_string(file_start, path)
         if not results:
-            return None
+            mime_type = None
         else:
             mime_type = results[0].mime_type
-            if mime_type == "":
-                mime_type, _ = mimetypes.guess_type(path)
-            return mime_type
+
+        if not mime_type or mime_type == "":
+            guessed, _ = mimetypes.guess_type(path)
+            mime_type = guessed
+
+        if mime_type == "application/octet-stream":
+            guessed, _ = mimetypes.guess_type(path)
+            if guessed:
+                mime_type = guessed
+            elif Path(path).suffix.lower() in PLAIN_TEXT_EXTENSIONS:
+                mime_type = "text/plain"
+
+        if not mime_type and Path(path).suffix.lower() in PLAIN_TEXT_EXTENSIONS:
+            mime_type = "text/plain"
+
+        return mime_type
 
     def _load_docx_file(self, path: Path | str) -> None:
         """Load a docx file.

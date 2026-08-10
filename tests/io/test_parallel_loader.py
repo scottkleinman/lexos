@@ -1,6 +1,6 @@
 """test_parallel_loader.py.
 
-Coverage: 98%. Missing: 55, 64, 257-258, 713
+Coverage: 98%. Missing: 56, 65, 151, 154, 274-275, 730
 Last Update: August 9, 2026
 
 Tests for the ParallelLoader class including thread safety, concurrent operations,
@@ -14,6 +14,7 @@ import zipfile
 from pathlib import Path
 from unittest.mock import Mock, patch
 
+import puremagic
 import pytest
 
 from lexos.exceptions import LexosException
@@ -1331,6 +1332,18 @@ class TestParallelLoaderErrorEdgeCases:
 
                 # Should return None
                 assert mime_type is None
+
+    def test_mime_detection_puremagic_empty_input_exception(self):
+        """Test MIME detection when puremagic raises PureValueError for empty input."""
+        loader = ParallelLoader(show_progress=False)
+
+        with patch("lexos.io.parallel_loader.puremagic.magic_string") as mock_magic:
+            mock_magic.side_effect = puremagic.main.PureValueError("Input was empty")
+
+            mime_type = loader._get_mime_type("/test/unknown", b"")
+
+            # Puremagic empty-input errors should be treated as unknown type.
+            assert mime_type is None
 
     def test_mime_detection_with_unicode_decode_error(self):
         """Test MIME detection when decode raises UnicodeDecodeError."""

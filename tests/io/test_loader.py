@@ -1,7 +1,7 @@
 """test_loader.py.
 
-Coverage: 99%. Missing: 36
-Last Update: 2026-06-27
+Coverage: 95%. Missing: 37, 78-82, 85
+Last Update: 9 August, 2026
 
 Note: Some tests use mocked data, but real files in temporary directories are
 created where functions have context managers (since those are hard to mock).

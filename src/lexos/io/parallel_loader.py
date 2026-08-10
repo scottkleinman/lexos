@@ -41,6 +41,7 @@ from lexos.util import _decode_bytes as decode
 from lexos.util import ensure_list
 
 VALID_FILE_TYPES = {*TEXT_TYPES, *PDF_TYPES, *DOCX_TYPES, *ZIP_TYPES}
+PLAIN_TEXT_EXTENSIONS = {".txt", ".md", ".csv", ".json", ".xml", ".log", ".cfg"}
 
 
 def _sanitize_zip_filename(filename: str) -> str:
@@ -128,13 +129,29 @@ class ParallelLoader(BaseLoader):
             except (UnicodeDecodeError, AttributeError):
                 file_start_str = ""
 
-            results = puremagic.magic_string(file_start_str, path)
+            try:
+                results = puremagic.magic_string(file_start_str, path)
+            except puremagic.main.PureValueError:
+                results = []
             if not results:
                 mime_type = None
             else:
                 mime_type = results[0].mime_type
-                if mime_type == "":
-                    mime_type, _ = mimetypes.guess_type(path)
+
+                # Fallback for ambiguous types: trust extension for known text files.
+                if not mime_type or mime_type == "":
+                    guessed, _ = mimetypes.guess_type(path)
+                    mime_type = guessed
+
+                if mime_type == "application/octet-stream":
+                    guessed, _ = mimetypes.guess_type(path)
+                    if guessed:
+                        mime_type = guessed
+                    elif Path(path).suffix.lower() in PLAIN_TEXT_EXTENSIONS:
+                        mime_type = "text/plain"
+
+                if not mime_type and Path(path).suffix.lower() in PLAIN_TEXT_EXTENSIONS:
+                    mime_type = "text/plain"
 
         # Cache the result
         self._mime_cache[path_str] = mime_type
