@@ -5598,8 +5598,12 @@
 
 
 <h1 id="io">IO<a class="headerlink" href="#io" title="Permanent link">¤</a></h1>
-<p>The <code>IO</code> module contains the classes and methods useful for loading in texts and text data from various souces and formats into a consistant structure so they can be analyzed within the Lexos enviroment.</p>
-<p>This module contains three main components:</p>
+<p>The <code>io</code> module contains the classes and methods useful for loading in texts and text data from various sources and formats into a consistent structure so they can be analyzed within the Lexos environment.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The Lexos library is designed to work with UTF-8 encoded text since UTF-8 is the global standard for universal character support. If you are loading texts in a different encoding, the <code>io</code> module will attempt to convert them to UTF-8. If the conversion fails, an error will be raised.</p>
+</div>
+<p>The <code>io</code> module contains three main components:</p>
 <ol>
 <li><code>Loader</code>: The main loader used for Lexos. Designed to handle individual files (.txt, .pdf, and docx), directories of files, and zip archives.</li>
 <li><code>ParallelLoader</code>: An optimized version of <code>Loader</code> for loading large numbers of files using concurrent processing.</li>
@@ -5614,7 +5618,7 @@
 <li><code>texts</code>: The text content of the loaded items.</li>
 <li><code>errors</code>: Any errors encountered during loading.</li>
 </ul>
-<p>Additionally loaders will have access to the following properties:</p>
+<p>Additionally, loaders will have access to the following properties:</p>
 <ul>
 <li><code>records</code>: Returns a list of dictionaries, with each representing a loaded item with keys such as <code>name</code>, <code>path</code>, and <code>mime_type</code>.</li>
 <li><code>data</code>: Returns a single dictionary containing all of the data stored in the loader.</li>
@@ -5642,20 +5646,23 @@
 </ul>
 <p>The <code>Loader</code> class automatically detects the file type based on the file extension and uses the appropriate method to extract the text content. It also handles errors gracefully, logging any issues encountered during loading. The path to the source file can be a local file path or a URL. For multiple files, the path can be a list of file paths or a path to a directory.</p>
 <p>Here is an example of how to use <code>Loader</code>:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.io.loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">Loader</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">Loader</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Create a Loader instance</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">()</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># Sample texts from various sources</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;path/to/file1.txt&quot;</span><span class="p">)</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">([</span><span class="s2">&quot;path/to/file2.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;path/to/file3.txt&quot;</span><span class="p">])</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;path/to/directory_of_files&quot;</span><span class="p">)</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;url/to/file4.txt&quot;</span><span class="p">)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;path/to/file1.txt&quot;</span><span class="p">)</span>            <span class="c1"># Load a single local text file</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;path/to/directory_of_files&quot;</span><span class="p">)</span>   <span class="c1"># Load all files in a directory</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;url/to/file2.txt&quot;</span><span class="p">)</span>             <span class="c1"># Load a text file from a URL</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">loader</span><span class="o">.</span><span class="n">load</span><span class="p">([</span>                               <span class="c1"># Load multiple text files</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  <span class="s2">&quot;path/to/file1.txt&quot;</span><span class="p">,</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  <span class="s2">&quot;url/to/file2.txt&quot;</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="p">])</span>
 </span></code></pre></div>
 <p>Once texts are loaded, they can be accessed through the <code>texts</code> attribute or the <code>df</code> property, which returns a pandas DataFrame of the loaded records. If there is a problem loading a file, the error will be logged in the <code>errors</code> attribute.</p>
 <p>By default, the <code>Loader</code> class assigns names to loaded texts based on the file name, minus the extension. However, custom names can be provided using the <code>names</code> parameter when loading files.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.io.loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">Loader</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">Loader</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Create a Loader instance</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">loader</span> <span class="o">=</span> <span class="n">Loader</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Doc1&quot;</span><span class="p">,</span> <span class="s2">&quot;Doc2&quot;</span><span class="p">])</span>
@@ -5685,7 +5692,7 @@
 <p>For small file counts (&lt;50 files) on fast local storage, the standard <code>Loader</code> may be faster due to threading overhead.</p>
 <h3 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">¤</a></h3>
 <p>The <code>ParallelLoader</code> API is identical to the standard <code>Loader</code>, making it a drop-in replacement:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.io.parallel_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParallelLoader</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParallelLoader</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Create a ParallelLoader instance</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">loader</span> <span class="o">=</span> <span class="n">ParallelLoader</span><span class="p">()</span>
@@ -5701,7 +5708,7 @@
 </span></code></pre></div>
 <h3 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link">¤</a></h3>
 <p><code>ParallelLoader</code> provides several options to customize performance:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.io.parallel_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParallelLoader</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParallelLoader</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Customize worker threads and batch size</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">loader</span> <span class="o">=</span> <span class="n">ParallelLoader</span><span class="p">(</span>
@@ -5792,14 +5799,14 @@
 <h3 id="loading-lineated-text-files">Loading Lineated Text Files<a class="headerlink" href="#loading-lineated-text-files" title="Permanent link">¤</a></h3>
 <p>The basic method for loading a file with one document per line is as follows:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Import the DataLoader class</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.io.data_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
 </span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">()</span>
 </span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">loader</span><span class="o">.</span><span class="n">load_lineated_text</span><span class="p">(</span><span class="s2">&quot;path/to/file.txt&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <p>Note that each document will be named "text001", "text002", "text003", etc. unless you provide a list of document names with the <code>names</code> parameter:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Import the DataLoader class</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.io.data_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;author1&quot;</span><span class="p">,</span> <span class="s2">&quot;author2&quot;</span><span class="p">,</span> <span class="s2">&quot;author3&quot;</span><span class="p">])</span>
 </span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">loader</span><span class="o">.</span><span class="n">load_lineated_text</span><span class="p">(</span><span class="s2">&quot;path/to/file.txt&quot;</span><span class="p">)</span>
@@ -5807,7 +5814,7 @@
 <h3 id="loading-csv-and-excel-files">Loading CSV and Excel Files<a class="headerlink" href="#loading-csv-and-excel-files" title="Permanent link">¤</a></h3>
 <p>The procedure is similar for CSV and Excel files. However, you must designate which columns contain the document name and text by indicating their headers with the <code>name_col</code> and <code>text_col</code> parameters.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Import the DataLoader class</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.io.data_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
 </span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
 </span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">()</span>
 </span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">loader</span><span class="o">.</span><span class="n">load_csv</span><span class="p">(</span><span class="s2">&quot;path/to/file.csv&quot;</span><span class="p">,</span> <span class="n">name_col</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">text_col</span><span class="o">=</span><span class="s2">&quot;content&quot;</span><span class="p">)</span>
@@ -5822,7 +5829,7 @@
 <h3 id="loading-json-files">Loading JSON Files<a class="headerlink" href="#loading-json-files" title="Permanent link">¤</a></h3>
 <p>In a JSON-formatted file, each document is a separate object consisting of fields in which the value is referenced by the field's key (e.g. <code>{"text": "Some text here"}</code>). When loading JSON files, it is necessary to specify the key indicating which field contains the text name and which field contains the text content. This is done with the <code>name_field</code> and <code>text_field</code> parameters, as shown below:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Import the DataLoader class</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.io.data_loader</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
 </span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">()</span>
 </span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="n">loader</span><span class="o">.</span><span class="n">load_json</span><span class="p">(</span><span class="s2">&quot;path/to/file.json&quot;</span><span class="p">,</span> <span class="n">name_field</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">text_field</span><span class="o">=</span><span class="s2">&quot;content&quot;</span><span class="p">)</span>
@@ -5865,7 +5872,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 4, 2026 17:18:43 UTC">August 4, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 10, 2026 18:24:51 UTC">August 10, 2026</span>
   </span>
 
     

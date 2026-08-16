@@ -5571,6 +5571,11 @@
 <h3 id="the-tutorials">The Tutorials<a class="headerlink" href="#the-tutorials" title="Permanent link">¤</a></h3>
 <p>The User Guide is the beginner's entry-point into using Lexos, but there is no substitute for hands-on experience. So, as part of the "documentation" offer a series of Jupyter notebooks with executable code where the user can try out Lexos features. Notebooks may or may not come with sample datasets. If they do, the dataset should be compressed to a zip file in a subfolder inside the tutorial's folder. This allows the user to download both the tutorial notebook and the data to run locally. If you create a new tutorial, make sure to add it to the table of contents in <code>docs_src/docs/tutorials/index.md</code>.</p>
 <p>Tutorials should be aimed at entry-level users and their Markdown narrative should follow the same principles as outlined for the User Guide (except that sample code should mostly be in executable Python cells). All code blocks and Python cells should follow the conventions described on the <a href="../code-conventions/">Code Conventions</a> page.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The tutorials will not run in the <code>lexos-docs</code> virtual environment since it does not have a copy of Lexos. In order to run them, you need to have Lexos installed in a separate environment (such as you might have in a clone of the <code>lexos</code> repo). You must then select that virtual environment as your Python kernel. For instance, if you open a tutorial in VS Code, click <code>Select Kernel</code> at the top right, followed by <code>Select Another Kernel...</code>, <code>Python Environments...</code>, <code>Create Python Environment</code>, and <code>Enter Interpreter Path</code>. Then enter the path to <code>lexos/.venv/bin/python</code> (if that is where your Lexos virtual environment is located). This is something of a tedious procedure, so, if you are going to be working with the tutorials frequently, you may want to create a named kernel for your Lexos virtual environment. See <a href="named-notebook-tutorials.md">Named Notebook Tutorials</a> for instructions.</p>
+</div>
+<p>Tutorials are not automatically built into the documentation website. If you want to add a new tutorial, you must add a link to it to the <code>src/docs/tutorials/index.md</code> file and then build the site with <code>uv run mkdocs build</code> or <code>uv run mkdocs serve</code>. You can also add a link to the tutorial in the User Guide or API documentation, if appropriate.</p>
 <h2 id="submitting-changes">Submitting Changes<a class="headerlink" href="#submitting-changes" title="Permanent link">¤</a></h2>
 <p>These instructions assume that you have set up a development environment with <code>uv</code>, <code>git</code>, and Python following the instructions at <a href="../setup/#setting-up-your-development-environment">Setting Up Your Development Environment</a>.</p>
 <h3 id="fork-and-clone-the-repository">Fork and Clone the Repository<a class="headerlink" href="#fork-and-clone-the-repository" title="Permanent link">¤</a></h3>
@@ -5658,7 +5663,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 8, 2026 16:52:33 UTC">August 8, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 16, 2026 01:12:15 UTC">August 16, 2026</span>
   </span>
 
     

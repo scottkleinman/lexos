@@ -5515,7 +5515,7 @@
 <hr />
 <h3 id="records">Records<a class="headerlink" href="#records" title="Permanent link">¤</a></h3>
 <p>Let's start with the foundation: the <code>Record</code>. A Record is simply a document with some metadata attached.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.corpus</span><span class="w"> </span><span class="kn">import</span> <span class="n">Record</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">Record</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">record</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;my_first_doc&quot;</span><span class="p">,</span>
@@ -5529,7 +5529,7 @@
 <hr />
 <h3 id="creating-a-corpus">Creating a Corpus<a class="headerlink" href="#creating-a-corpus" title="Permanent link">¤</a></h3>
 <p>A corpus is a collection of records. The simplest way to create a file-based corpus using the <code>Corpus</code> class.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.corpus</span><span class="w"> </span><span class="kn">import</span> <span class="n">Corpus</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">Corpus</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">corpus</span> <span class="o">=</span> <span class="n">Corpus</span><span class="p">(</span><span class="n">corpus_dir</span><span class="o">=</span><span class="s2">&quot;my_collection&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;My Texts&quot;</span><span class="p">)</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
@@ -5552,7 +5552,7 @@
 <hr />
 <h4 id="loading-files-from-disk">Loading Files from Disk<a class="headerlink" href="#loading-files-from-disk" title="Permanent link">¤</a></h4>
 <p>For loading multiple files into your corpus efficiently, use the <code>add_from_files()</code> method. This method provides memory-efficient streaming of files with parallel processing. For 100 files, <code>add_from_files()</code> is typically <strong>1.4x faster</strong> than loading files individually. Performance gains increase with larger file counts (1000+ files). It works with plain text files as well as PDFs, DOCX, and ZIP archives.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.corpus</span><span class="w"> </span><span class="kn">import</span> <span class="n">Corpus</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">Corpus</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">corpus</span> <span class="o">=</span> <span class="n">Corpus</span><span class="p">(</span><span class="n">corpus_dir</span><span class="o">=</span><span class="s2">&quot;my_collection&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;My Texts&quot;</span><span class="p">)</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
@@ -5988,7 +5988,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 4, 2026 17:18:43 UTC">August 4, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 10, 2026 18:24:51 UTC">August 10, 2026</span>
   </span>
 
     
