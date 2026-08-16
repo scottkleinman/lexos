@@ -1,7 +1,7 @@
 """clustermap.py.
 
-Last Updated: July 15, 2026
-Last Tested: July 15, 2026
+Last Updated: August 16, 2026
+Last Tested: August 16, 2026
 
 Note: These clustermap classes are highly experimental and may change in the future.
 They may require fiddling with size and layout to be readable. The clustermap may
@@ -647,41 +647,67 @@ class PlotlyClustermap(BaseModel):
         """Initialize the PlotlyClustermap instance."""
         super().__init__(**data)
 
-        # Set the labels
         self._set_labels()
-
-        # Get the matrix based on the data type
         matrix = _get_matrix(self.dtm)
+        show_heatmap_x_labels, show_heatmap_y_labels = (
+            self._resolve_heatmap_label_settings()
+        )
+        filtered_kwargs = self._prepare_heatmap_kwargs()
 
-        # Extract our custom parameters from kwargs to prevent them being passed to plotly components
-        filtered_kwargs = self.kwargs.copy()
-        filtered_kwargs.pop(
-            "show_dendrogram_labels", None
-        )  # This is already a function parameter
-        filtered_kwargs.pop(
-            "show_heatmap_labels", None
-        )  # This is already a function parameter
-        filtered_kwargs.pop(
-            "title", None
-        )  # Title should go to layout, not heatmap trace
+        grid = self._create_cluster_grid(matrix)
+        row_dendro_traces, row_dendro_data, row_order = self._prepare_row_dendrogram(
+            grid, data.get("row_linkage", None)
+        )
+        col_dendro_traces, col_dendro_data, col_order = self._prepare_col_dendrogram(
+            grid, data.get("col_linkage", None)
+        )
 
-        # Determine whether to show heatmap labels
+        ordered_data = grid.data2d.iloc[row_order, col_order]
+        z_data = ordered_data.values
+        x_labels = [str(x) for x in ordered_data.columns]
+        y_labels = [str(y) for y in ordered_data.index]
+
+        mask_ordered = None
+        if grid.mask is not None:
+            mask_ordered = grid.mask.iloc[row_order, col_order]
+            z_data = np.where(mask_ordered.values, np.nan, z_data)
+
+        self.fig = self._build_figure(
+            ordered_data=ordered_data,
+            grid=grid,
+            z_data=z_data,
+            x_labels=x_labels,
+            y_labels=y_labels,
+            row_dendro_traces=row_dendro_traces,
+            col_dendro_traces=col_dendro_traces,
+            row_dendro_data=row_dendro_data,
+            col_dendro_data=col_dendro_data,
+            show_heatmap_x_labels=show_heatmap_x_labels,
+            show_heatmap_y_labels=show_heatmap_y_labels,
+            filtered_kwargs=filtered_kwargs,
+            mask_ordered=mask_ordered,
+        )
+
+    def _resolve_heatmap_label_settings(self) -> tuple[bool, bool]:
+        """Resolve final visibility states for heatmap axis labels."""
         if self.show_heatmap_labels is None:
-            # Auto-mode: hide y-axis (left) labels when row dendrogram is present,
-            # but always show x-axis (bottom) labels for readability
-            show_heatmap_x_labels = (
-                True  # Always show bottom labels unless explicitly disabled
-            )
-            show_heatmap_y_labels = (
-                not self.row_cluster
-            )  # Hide left labels only if row dendrogram present
-        else:
-            # Manual mode: use the same setting for both axes
-            show_heatmap_x_labels = self.show_heatmap_labels
-            show_heatmap_y_labels = self.show_heatmap_labels
+            return True, not self.row_cluster
 
-        # Initialize cluster grid
-        grid = PlotlyClusterGrid(
+        return self.show_heatmap_labels, self.show_heatmap_labels
+
+    def _prepare_heatmap_kwargs(self) -> dict[str, Any]:
+        """Exclude clustermap-specific kwargs from the heatmap trace config."""
+        filtered_kwargs = self.kwargs.copy()
+        filtered_kwargs.pop("show_dendrogram_labels", None)
+        filtered_kwargs.pop("show_heatmap_labels", None)
+        filtered_kwargs.pop("title", None)
+        return filtered_kwargs
+
+    def _create_cluster_grid(
+        self, matrix: ArrayLike | pd.DataFrame | DTM
+    ) -> PlotlyClusterGrid:
+        """Build the PlotlyClusterGrid used for clustering and masking."""
+        return PlotlyClusterGrid(
             data=matrix,
             z_score=self.z_score,
             standard_scale=self.standard_scale,
@@ -690,117 +716,106 @@ class PlotlyClustermap(BaseModel):
             dendrogram_ratio=self.dendrogram_ratio,
         )
 
-        # Handle dendrogram ratios
-        if isinstance(self.dendrogram_ratio, (list, tuple)):
-            row_dendrogram_ratio, col_dendrogram_ratio = self.dendrogram_ratio
-        else:
-            row_dendrogram_ratio = col_dendrogram_ratio = self.dendrogram_ratio
+    def _prepare_row_dendrogram(
+        self,
+        grid: PlotlyClusterGrid,
+        row_linkage: Optional[np.ndarray],
+    ) -> tuple[list[go.Scatter], dict | None, list[int]]:
+        """Generate row dendrogram traces and the row order."""
+        if not self.row_cluster:
+            return [], None, list(range(len(grid.data2d.index)))
 
-        # Handle tree styling
-        if self.tree_kws is None:
-            self.tree_kws = {}
-        tree_color = self.tree_kws.get("color", "rgb(50,50,50)")
-        tree_width = self.tree_kws.get("linewidth", 1.0)
-
-        # Calculate clustering
-        data_array = grid.data2d.values
-
-        # Row clustering
-        row_linkage = data.get("row_linkage", None)
-        if self.row_cluster:
-            if row_linkage is None:
-                row_linkage = grid._calculate_linkage(
-                    data_array, self.method, self.metric
-                )
-            row_dendro_traces, row_dendro_data = _create_dendrogram_traces(
-                row_linkage,
-                labels=[str(x) for x in grid.data2d.index]
-                if self.show_dendrogram_labels
-                else None,
-                orientation="left",
-                color=tree_color,
-                line_width=tree_width,
+        if row_linkage is None:
+            row_linkage = grid._calculate_linkage(
+                grid.data2d.values, self.method, self.metric
             )
-            row_order = row_dendro_data["leaves"]
-        else:
-            row_order = list(range(len(grid.data2d.index)))
-            row_dendro_traces = []
-            row_dendro_data = None
 
-        # Column clustering
-        col_linkage = data.get("col_linkage", None)
-        if self.col_cluster:
-            if col_linkage is None:
-                col_linkage = grid._calculate_linkage(
-                    data_array.T, self.method, self.metric
-                )
-            col_dendro_traces, col_dendro_data = _create_dendrogram_traces(
-                col_linkage,
-                labels=[str(x) for x in grid.data2d.columns]
-                if self.show_dendrogram_labels
-                else None,
-                orientation="top",
-                color=tree_color,
-                line_width=tree_width,
-            )
-            col_order = col_dendro_data["leaves"]
-        else:
-            col_order = list(range(len(grid.data2d.columns)))
-            col_dendro_traces = []
-            col_dendro_data = None
-
-        # Reorder data
-        ordered_data = grid.data2d.iloc[row_order, col_order]
-
-        # Create subplot layout
-        n_rows = 2 if self.col_cluster else 1
-        n_cols = 2 if self.row_cluster else 1
-
-        # Calculate subplot dimensions
-        if self.row_cluster and self.col_cluster:
-            row_heights = [col_dendrogram_ratio, 1 - col_dendrogram_ratio]
-            col_widths = [1 - row_dendrogram_ratio, row_dendrogram_ratio]
-            # subplot_titles = ["", "Column Dendrogram", "Row Dendrogram", "Heatmap"]
-        elif self.col_cluster:
-            row_heights = [col_dendrogram_ratio, 1 - col_dendrogram_ratio]
-            col_widths = [1.0]
-            # subplot_titles = ["Column Dendrogram", "Heatmap"]
-        elif self.row_cluster:
-            row_heights = [1.0]
-            col_widths = [1 - row_dendrogram_ratio, row_dendrogram_ratio]
-            # subplot_titles = ["Heatmap", "Row Dendrogram"]
-        else:
-            row_heights = [1.0]
-            col_widths = [1.0]
-            # subplot_titles = ["Heatmap"]
-
-        # Create subplots
-        fig = make_subplots(
-            rows=n_rows,
-            cols=n_cols,
-            row_heights=row_heights,
-            column_widths=col_widths,
-            horizontal_spacing=0,  # Remove padding between dendrograms and heatmap
-            vertical_spacing=0,  # Remove padding between dendrograms and heatmap
-            # subplot_titles=None,  # We'll add custom titles if needed
+        traces, data = _create_dendrogram_traces(
+            row_linkage,
+            labels=[str(x) for x in grid.data2d.index]
+            if self.show_dendrogram_labels
+            else None,
+            orientation="left",
+            color=self.tree_kws.get("color", "rgb(50,50,50)")
+            if self.tree_kws
+            else "rgb(50,50,50)",
+            line_width=self.tree_kws.get("linewidth", 1.0) if self.tree_kws else 1.0,
         )
 
-        # Determine subplot positions
-        heatmap_row = n_rows
-        heatmap_col = 1 if not self.row_cluster else n_cols
+        return traces, data, data["leaves"]
 
-        # Prepare heatmap data
-        z_data = ordered_data.values
-        x_labels = [str(x) for x in ordered_data.columns]
-        y_labels = [str(y) for y in ordered_data.index]
+    def _prepare_col_dendrogram(
+        self,
+        grid: PlotlyClusterGrid,
+        col_linkage: Optional[np.ndarray],
+    ) -> tuple[list[go.Scatter], dict | None, list[int]]:
+        """Generate column dendrogram traces and the column order."""
+        if not self.col_cluster:
+            return [], None, list(range(len(grid.data2d.columns)))
 
-        # Apply mask if provided
-        if grid.mask is not None:
-            mask_ordered = grid.mask.iloc[row_order, col_order]
-            z_data = np.where(mask_ordered.values, np.nan, z_data)
+        if col_linkage is None:
+            col_linkage = grid._calculate_linkage(
+                grid.data2d.values.T, self.method, self.metric
+            )
 
-        # Add heatmap
-        heatmap_trace = go.Heatmap(
+        traces, data = _create_dendrogram_traces(
+            col_linkage,
+            labels=[str(x) for x in grid.data2d.columns]
+            if self.show_dendrogram_labels
+            else None,
+            orientation="top",
+            color=self.tree_kws.get("color", "rgb(50,50,50)")
+            if self.tree_kws
+            else "rgb(50,50,50)",
+            line_width=self.tree_kws.get("linewidth", 1.0) if self.tree_kws else 1.0,
+        )
+
+        return traces, data, data["leaves"]
+
+    def _get_subplots_config(self) -> tuple[int, int, list[float], list[float]]:
+        """Compute subplot dimensions for the cluster grid and dendrograms."""
+        row_dendrogram_ratio, col_dendrogram_ratio = (
+            self.dendrogram_ratio
+            if isinstance(self.dendrogram_ratio, (list, tuple))
+            else (self.dendrogram_ratio, self.dendrogram_ratio)
+        )
+
+        if self.row_cluster and self.col_cluster:
+            return (
+                2,
+                2,
+                [col_dendrogram_ratio, 1 - col_dendrogram_ratio],
+                [1 - row_dendrogram_ratio, row_dendrogram_ratio],
+            )
+
+        if self.col_cluster:
+            return 2, 1, [col_dendrogram_ratio, 1 - col_dendrogram_ratio], [1.0]
+
+        if self.row_cluster:
+            return 1, 2, [1.0], [1 - row_dendrogram_ratio, row_dendrogram_ratio]
+
+        return 1, 1, [1.0], [1.0]
+
+    def _get_heatmap_position(self, n_rows: int, n_cols: int) -> tuple[int, int]:
+        """Return the row and column indices for the heatmap subplot."""
+        return n_rows, 1 if not self.row_cluster else n_cols
+
+    def _axis_ref(self, row: int, col: int, n_cols: int, axis_type: str) -> str:
+        """Return the Plotly axis reference name for a subplot cell."""
+        axis_index = col + (row - 1) * n_cols
+        if axis_index == 1:
+            return f"{axis_type}axis"
+        return f"{axis_type}axis{axis_index}"
+
+    def _create_heatmap_trace(
+        self,
+        z_data: np.ndarray,
+        x_labels: list[str],
+        y_labels: list[str],
+        filtered_kwargs: dict[str, Any],
+    ) -> go.Heatmap:
+        """Build the Plotly heatmap trace."""
+        return go.Heatmap(
             z=z_data,
             x=x_labels,
             y=y_labels,
@@ -808,57 +823,60 @@ class PlotlyClustermap(BaseModel):
             zmid=self.center,
             showscale=True,
             colorbar=self.colorbar,
-            name="",  # Remove Trace 0 from hover
+            name="",
             **filtered_kwargs,
         )
 
-        fig.add_trace(heatmap_trace, row=heatmap_row, col=heatmap_col)
+    def _build_figure(
+        self,
+        ordered_data: pd.DataFrame,
+        grid: PlotlyClusterGrid,
+        z_data: np.ndarray,
+        x_labels: list[str],
+        y_labels: list[str],
+        row_dendro_traces: list[go.Scatter],
+        col_dendro_traces: list[go.Scatter],
+        row_dendro_data: dict | None,
+        col_dendro_data: dict | None,
+        show_heatmap_x_labels: bool,
+        show_heatmap_y_labels: bool,
+        filtered_kwargs: dict[str, Any],
+        mask_ordered: Optional[pd.DataFrame] = None,
+    ) -> go.Figure:
+        """Build the Plotly figure with subplots, heatmap, and dendrograms."""
+        n_rows, n_cols, row_heights, col_widths = self._get_subplots_config()
+        fig = make_subplots(
+            rows=n_rows,
+            cols=n_cols,
+            row_heights=row_heights,
+            column_widths=col_widths,
+            horizontal_spacing=0,
+            vertical_spacing=0,
+        )
 
-        # Add column dendrogram
-        if not self.hide_upper:
-            if self.col_cluster and col_dendro_traces:
-                for trace in col_dendro_traces:
-                    fig.add_trace(trace, row=1, col=heatmap_col)
+        heatmap_row, heatmap_col = self._get_heatmap_position(n_rows, n_cols)
+        fig.add_trace(
+            self._create_heatmap_trace(z_data, x_labels, y_labels, filtered_kwargs),
+            row=heatmap_row,
+            col=heatmap_col,
+        )
 
-        # Add row dendrogram
-        if not self.hide_side:
-            if self.row_cluster and row_dendro_traces:
-                for trace in row_dendro_traces:
-                    fig.add_trace(trace, row=heatmap_row, col=1)
+        if not self.hide_upper and self.col_cluster and col_dendro_traces:
+            for trace in col_dendro_traces:
+                fig.add_trace(trace, row=1, col=heatmap_col)
 
-        # Reverse the traces for the row dendrogram to match the Seaborn dendrogram
+        if not self.hide_side and self.row_cluster and row_dendro_traces:
+            for trace in row_dendro_traces:
+                fig.add_trace(trace, row=heatmap_row, col=1)
+
         fig.update_yaxes(row=heatmap_row, col=1, autorange="reversed")
 
-        # Add annotations if requested
         if self.annot:
-            annotations = []
-            for i, row in enumerate(y_labels):
-                for j, col in enumerate(x_labels):
-                    if not (grid.mask is not None and mask_ordered.iloc[i, j]):
-                        cell_value = z_data[i, j]
-                        if not np.isnan(cell_value):
-                            max_abs_val = np.nanmax(np.abs(z_data))
-                            text_color = (
-                                "white"
-                                if abs(cell_value) > max_abs_val / 2
-                                else "black"
-                            )
-
-                            annotations.append(
-                                dict(
-                                    x=j,
-                                    y=i,
-                                    text=format(cell_value, self.fmt),
-                                    showarrow=False,
-                                    font=dict(color=text_color, size=10),
-                                    xref=f"x{heatmap_col}" if heatmap_col > 1 else "x",
-                                    yref=f"y{heatmap_row}" if heatmap_row > 1 else "y",
-                                )
-                            )
-
+            annotations = self._add_annotations(
+                z_data, x_labels, y_labels, mask_ordered, grid, heatmap_row, heatmap_col
+            )
             fig.update_layout(annotations=annotations)
 
-        # Update layout
         fig.update_layout(
             title=self.title if self.title else None,
             width=self.figsize[0],
@@ -866,232 +884,277 @@ class PlotlyClustermap(BaseModel):
             showlegend=False,
         )
 
-        # Configure axes for each subplot
+        self._configure_axes(
+            fig,
+            n_rows,
+            n_cols,
+            heatmap_row,
+            heatmap_col,
+            x_labels,
+            y_labels,
+            show_heatmap_x_labels,
+            show_heatmap_y_labels,
+            row_dendro_data,
+            col_dendro_data,
+            ordered_data,
+        )
+
+        fig.update_layout(title_x=0.5)
+        self.fig = fig
+        return fig
+
+    def _configure_axes(
+        self,
+        fig: go.Figure,
+        n_rows: int,
+        n_cols: int,
+        heatmap_row: int,
+        heatmap_col: int,
+        x_labels: list[str],
+        y_labels: list[str],
+        show_heatmap_x_labels: bool,
+        show_heatmap_y_labels: bool,
+        row_dendro_data: dict | None,
+        col_dendro_data: dict | None,
+        ordered_data: pd.DataFrame,
+    ) -> None:
+        """Configure axis properties for all subplots and dendrograms."""
         for row in range(1, n_rows + 1):
             for col in range(1, n_cols + 1):
-                # Generate xaxis and yaxis references
-                xaxis_ref = (
-                    f"xaxis{col + (row - 1) * n_cols}"
-                    if col + (row - 1) * n_cols > 1
-                    else "xaxis"
-                )
-                yaxis_ref = (
-                    f"yaxis{col + (row - 1) * n_cols}"
-                    if col + (row - 1) * n_cols > 1
-                    else "yaxis"
-                )
-
-                # Default settings for all subplots
                 fig.update_layout(
                     {
-                        xaxis_ref: dict(
-                            showticklabels=False,
-                            showgrid=False,
-                            zeroline=False,
-                            showline=False,
-                            ticks="",
-                        ),
-                        yaxis_ref: dict(
-                            showticklabels=False,
-                            showgrid=False,
-                            zeroline=False,
-                            showline=False,
-                            ticks="",
-                        ),
+                        self._axis_ref(row, col, n_cols, "x"): self._base_axis_style(),
+                        self._axis_ref(row, col, n_cols, "y"): self._base_axis_style(),
                     }
                 )
 
-        # Special configuration for heatmap
-        heatmap_xaxis = (
-            f"xaxis{heatmap_col + (heatmap_row - 1) * n_cols}"
-            if heatmap_col + (heatmap_row - 1) * n_cols > 1
-            else "xaxis"
-        )
-        heatmap_yaxis = (
-            f"yaxis{heatmap_col + (heatmap_row - 1) * n_cols}"
-            if heatmap_col + (heatmap_row - 1) * n_cols > 1
-            else "yaxis"
-        )
+        heatmap_xaxis = self._axis_ref(heatmap_row, heatmap_col, n_cols, "x")
+        heatmap_yaxis = self._axis_ref(heatmap_row, heatmap_col, n_cols, "y")
 
         fig.update_layout(
             {
-                heatmap_xaxis: dict(
-                    showticklabels=show_heatmap_x_labels,
-                    tickmode="array" if show_heatmap_x_labels else "linear",
-                    tickvals=list(range(len(x_labels)))
-                    if show_heatmap_x_labels
-                    else [],
-                    ticktext=x_labels if show_heatmap_x_labels else [],
-                    tickangle=45 if show_heatmap_x_labels else 0,
+                heatmap_xaxis: self._heatmap_axis_style(
+                    show_heatmap_x_labels,
+                    x_labels,
+                    tickangle=45,
                     side="bottom",
-                    showgrid=False,
-                    zeroline=False,
-                    showline=False,
-                    ticks="" if not show_heatmap_x_labels else "outside",
                 ),
-                heatmap_yaxis: dict(
-                    showticklabels=show_heatmap_y_labels,
-                    tickmode="array" if show_heatmap_y_labels else "linear",
-                    tickvals=list(range(len(y_labels)))
-                    if show_heatmap_y_labels
-                    else [],
-                    ticktext=y_labels if show_heatmap_y_labels else [],
-                    autorange="reversed",  # Reverse to match typical heatmap orientation
-                    showgrid=False,
-                    zeroline=False,
-                    showline=False,
-                    ticks="" if not show_heatmap_y_labels else "outside",
+                heatmap_yaxis: self._heatmap_axis_style(
+                    show_heatmap_y_labels,
+                    y_labels,
+                    tickangle=0,
                     side="right",
+                    autorange="reversed",
                 ),
             }
         )
 
-        # Configure dendrogram axes ranges
         if self.col_cluster and col_dendro_data:
-            col_dend_xaxis = f"xaxis{heatmap_col}" if heatmap_col > 1 else "xaxis"
-            col_dend_yaxis = f"yaxis{heatmap_col}" if heatmap_col > 1 else "yaxis"
-
-            # Set ranges for column dendrogram
-            fig.update_layout(
-                {
-                    col_dend_xaxis: dict(
-                        range=[0, len(ordered_data.columns) * 10 + 5],
-                        showticklabels=self.show_dendrogram_labels,
-                        showgrid=False,
-                        zeroline=False,
-                        showline=False,
-                        ticks="" if not self.show_dendrogram_labels else "outside",
-                    ),
-                    col_dend_yaxis: dict(
-                        range=[
-                            0,
-                            max(np.array(col_dendro_data["dcoord"]).flatten()) * 1.00,
-                        ],
-                        showticklabels=self.show_dendrogram_labels,
-                        showgrid=False,
-                        zeroline=False,
-                        showline=False,
-                        ticks="" if not self.show_dendrogram_labels else "outside",
-                    ),
-                }
+            self._configure_dendrogram_axes(
+                fig,
+                x_axis=self._axis_ref(1, heatmap_col, n_cols, "x"),
+                y_axis=self._axis_ref(1, heatmap_col, n_cols, "y"),
+                x_range=[0, len(ordered_data.columns) * 10 + 5],
+                y_range=[0, max(np.array(col_dendro_data["dcoord"]).flatten()) * 1.00],
             )
 
         if self.row_cluster and row_dendro_data:
-            row_dend_xaxis = (
-                f"xaxis{1 + (heatmap_row - 1) * n_cols}"
-                if 1 + (heatmap_row - 1) * n_cols > 1
-                else "xaxis"
+            self._configure_dendrogram_axes(
+                fig,
+                x_axis=self._axis_ref(heatmap_row, 1, n_cols, "x"),
+                y_axis=self._axis_ref(heatmap_row, 1, n_cols, "y"),
+                x_range=[0, max(np.array(row_dendro_data["dcoord"]).flatten()) * 1.01],
+                y_range=[0, len(ordered_data.index) * 10],
             )
 
-            row_dend_yaxis = (
-                f"yaxis{1 + (heatmap_row - 1) * n_cols}"
-                if 1 + (heatmap_row - 1) * n_cols > 1
-                else "yaxis"
+    def _configure_dendrogram_axes(
+        self,
+        fig: go.Figure,
+        x_axis: str,
+        y_axis: str,
+        x_range: list[float],
+        y_range: list[float],
+    ) -> None:
+        """Configure axis properties for a dendrogram subplot."""
+        fig.update_layout(
+            {
+                x_axis: self._dendrogram_axis_style(range=x_range),
+                y_axis: self._dendrogram_axis_style(range=y_range),
+            }
+        )
+
+    def _base_axis_style(self) -> dict[str, Any]:
+        """Return the shared base style for subplot axes."""
+        return dict(
+            showticklabels=False,
+            showgrid=False,
+            zeroline=False,
+            showline=False,
+            ticks="",
+        )
+
+    def _heatmap_axis_style(
+        self,
+        show_labels: bool,
+        labels: list[str],
+        tickangle: int,
+        side: str,
+        autorange: str | None = None,
+    ) -> dict[str, Any]:
+        """Return axis style for heatmap axes."""
+        config = self._base_axis_style()
+        config.update(
+            showticklabels=show_labels,
+            tickmode="array" if show_labels else "linear",
+            tickvals=list(range(len(labels))) if show_labels else [],
+            ticktext=labels if show_labels else [],
+            tickangle=tickangle,
+            side=side,
+            ticks="" if not show_labels else "outside",
+        )
+        if autorange is not None:
+            config["autorange"] = autorange
+        return config
+
+    def _dendrogram_axis_style(self, range: list[float]) -> dict[str, Any]:
+        """Return axis style for dendrogram axes."""
+        return dict(
+            range=range,
+            showticklabels=self.show_dendrogram_labels,
+            showgrid=False,
+            zeroline=False,
+            showline=False,
+            ticks="" if not self.show_dendrogram_labels else "outside",
+        )
+
+    def _add_annotations(
+        self,
+        z_data: np.ndarray,
+        x_labels: list[str],
+        y_labels: list[str],
+        mask_ordered: Optional[pd.DataFrame],
+        grid: PlotlyClusterGrid,
+        heatmap_row: int,
+        heatmap_col: int,
+    ) -> list[dict]:
+        """Add annotations to the heatmap cells."""
+        if z_data.size == 0:
+            return []
+
+        annotations = []
+        mask = mask_ordered.values if mask_ordered is not None else None
+        max_abs_val = (
+            np.nanmax(np.abs(z_data[~np.isnan(z_data)]))
+            if np.any(~np.isnan(z_data))
+            else 0.0
+        )
+
+        for i, j in np.ndindex(z_data.shape):
+            if self._skip_annotation(z_data, mask, i, j):
+                continue
+
+            annotations.append(
+                self._build_annotation(
+                    i,
+                    j,
+                    z_data[i, j],
+                    heatmap_row,
+                    heatmap_col,
+                    max_abs_val,
+                )
             )
 
-            # Set ranges for row dendrogram
-            fig.update_layout(
-                {
-                    row_dend_xaxis: dict(
-                        range=[
-                            0,
-                            max(np.array(row_dendro_data["dcoord"]).flatten()) * 1.01,
-                        ],
-                        showticklabels=self.show_dendrogram_labels,
-                        showgrid=False,
-                        zeroline=False,
-                        showline=False,
-                        ticks="" if not self.show_dendrogram_labels else "outside",
-                    ),
-                    row_dend_yaxis: dict(
-                        range=[0, len(ordered_data.index) * 10],
-                        showticklabels=self.show_dendrogram_labels,
-                        showgrid=False,
-                        zeroline=False,
-                        showline=False,
-                        ticks="" if not self.show_dendrogram_labels else "outside",
-                    ),
-                }
-            )
+        return annotations
 
-        fig.update_layout(title_x=0.5)  # Automatically adjust x-axis margins
+    def _skip_annotation(
+        self,
+        z_data: np.ndarray,
+        mask: Optional[np.ndarray],
+        i: int,
+        j: int,
+    ) -> bool:
+        """Return True when a cell should not be annotated."""
+        if mask is not None and mask[i, j]:
+            return True
 
-        self.fig = fig
+        return np.isnan(z_data[i, j])
 
-        # Adjust layout if upper dendrogram is hidden
-        self._adjust_layout_for_hidden_upper()
+    def _build_annotation(
+        self,
+        row: int,
+        col: int,
+        value: float,
+        heatmap_row: int,
+        heatmap_col: int,
+        max_abs_val: float,
+    ) -> dict:
+        """Build the annotation dictionary for a single cell."""
+        return dict(
+            x=col,
+            y=row,
+            text=format(value, self.fmt),
+            showarrow=False,
+            font=dict(color=self._annotation_color(value, max_abs_val), size=10),
+            xref=f"x{heatmap_col}" if heatmap_col > 1 else "x",
+            yref=f"y{heatmap_row}" if heatmap_row > 1 else "y",
+        )
+
+    def _annotation_color(self, value: float, max_abs_val: float) -> str:
+        """Choose annotation text color based on cell value."""
+        return "white" if abs(value) > max_abs_val / 2 else "black"
 
     def _adjust_layout_for_hidden_upper(self) -> None:
         """Adjust the layout when the upper dendrogram is hidden to move components up."""
         if not self.hide_upper:
             return
 
-        # Get the current layout
-        layout = self.fig.layout
-
-        # Find which subplot contains the heatmap and row dendrogram
-        heatmap_subplot = None
-        row_dendro_subplot = None
-
-        # Iterate through the traces to find the heatmap and row dendrogram
-        for i, trace in enumerate(self.fig.data):
-            if hasattr(trace, "type") and trace.type == "heatmap":
-                # This is the heatmap
-                heatmap_subplot = (
-                    getattr(trace, "xaxis", "x"),
-                    getattr(trace, "yaxis", "y"),
-                )
-            elif hasattr(trace, "type") and trace.type == "scatter":
-                # This might be the row dendrogram - check if it's on the side
-                x_axis = getattr(trace, "xaxis", "x")
-                y_axis = getattr(trace, "yaxis", "y")
-                if x_axis != heatmap_subplot[0] if heatmap_subplot else True:
-                    row_dendro_subplot = x_axis, y_axis
-
-        # Adjust the domains to move everything up
-        # The key is to expand the y-domain of the bottom subplots to fill the top space
-
+        heatmap_axes, row_dendro_axes = self._find_heatmap_and_row_dendrogram_axes()
         updates = {}
 
-        # Move heatmap up by expanding its y-domain
-        if heatmap_subplot:
-            heatmap_xaxis = (
-                heatmap_subplot[0].replace("x", "xaxis")
-                if "x" in heatmap_subplot[0]
-                else "xaxis"
-            )
-            heatmap_yaxis = (
-                heatmap_subplot[1].replace("y", "yaxis")
-                if "y" in heatmap_subplot[1]
-                else "yaxis"
-            )
+        if heatmap_axes:
+            updates[f"{self._axis_name(heatmap_axes[1])}.domain"] = [0.0, 1.0]
 
-            # Get current domain or use defaults
-            current_layout = getattr(layout, heatmap_yaxis, {})
-            current_domain = getattr(current_layout, "domain", [0.0, 0.8])
+        if row_dendro_axes and not self.hide_side:
+            updates[f"{self._axis_name(row_dendro_axes[1])}.domain"] = [0.0, 1.0]
 
-            # Expand to fill the full height
-            updates[f"{heatmap_yaxis}.domain"] = [0.0, 1.0]
-
-        # Move row dendrogram up by expanding its y-domain
-        if row_dendro_subplot and not self.hide_side:
-            row_dendro_xaxis = (
-                row_dendro_subplot[0].replace("x", "xaxis")
-                if "x" in row_dendro_subplot[0]
-                else "xaxis"
-            )
-            row_dendro_yaxis = (
-                row_dendro_subplot[1].replace("y", "yaxis")
-                if "y" in row_dendro_subplot[1]
-                else "yaxis"
-            )
-
-            # Expand to fill the full height
-            updates[f"{row_dendro_yaxis}.domain"] = [0.0, 1.0]
-
-        # Apply the updates
         if updates:
             self.fig.update_layout(updates)
+
+    def _find_heatmap_and_row_dendrogram_axes(
+        self,
+    ) -> tuple[tuple[str, str] | None, tuple[str, str] | None]:
+        """Return axes tuples for the heatmap and row dendrogram traces."""
+        heatmap_axes = None
+        candidate_axes = []
+
+        for trace in self.fig.data:
+            trace_type = getattr(trace, "type", None)
+            x_axis = getattr(trace, "xaxis", "x")
+            y_axis = getattr(trace, "yaxis", "y")
+
+            if trace_type == "heatmap":
+                heatmap_axes = (x_axis, y_axis)
+            elif trace_type == "scatter":
+                candidate_axes.append((x_axis, y_axis))
+
+        row_dendro_axes = None
+        if heatmap_axes:
+            row_dendro_axes = next(
+                (axes for axes in candidate_axes if axes[0] != heatmap_axes[0]),
+                None,
+            )
+
+        return heatmap_axes, row_dendro_axes
+
+    def _axis_name(self, axis: str) -> str:
+        """Normalize a Plotly axis reference for layout updates."""
+        if axis.startswith("xaxis") or axis.startswith("yaxis"):
+            return axis
+        if axis.startswith("x"):
+            return f"xaxis{axis[1:]}" if len(axis) > 1 else "xaxis"
+        if axis.startswith("y"):
+            return f"yaxis{axis[1:]}" if len(axis) > 1 else "yaxis"
+        return axis
 
     def _set_labels(self):
         """Set the labels for the clustermap."""

@@ -1,7 +1,7 @@
 """test_clustermap.py.
 
-Coverage: 96%. Missing: 508, 697, 820-821, 826-827, 1044-1049, 1078-1090
-Last Updated: July 15, 2026
+Coverage: 100%
+Last Updated: August 16, 2026
 """
 
 from unittest.mock import Mock, patch
@@ -1070,6 +1070,22 @@ class TestPlotlyClusterGrid:
         assert grid.mask is not None
         assert grid.mask.iloc[0, 0] == True
 
+    def test_plotly_cluster_grid_mask_with_dataframe_invalid_shape(
+        self, sample_dataframe
+    ):
+        """Test PlotlyClusterGrid rejects DataFrame mask with mismatched shape."""
+        invalid_mask = pd.DataFrame(
+            False,
+            index=["doc1", "doc2"],
+            columns=["term1", "term2", "term3", "term4"],
+        )
+
+        with pytest.raises(
+            ValueError,
+            match="Mask must have the same index and columns as data.",
+        ):
+            PlotlyClusterGrid(sample_dataframe, mask=invalid_mask)
+
     def test_plotly_cluster_grid_with_z_score_and_standard_scale_error(
         self, sample_dataframe
     ):
@@ -1303,6 +1319,90 @@ class TestPlotlyClustermap:
             assert cm.annot is True
             assert cm.fmt == ".1f"
             assert isinstance(cm.fig, go.Figure)
+
+    def test_plotly_clustermap_annotations_skip_mask_and_nan(self, sample_dataframe):
+        """Test PlotlyClustermap annotations skip masked and NaN cells."""
+        with (
+            patch("lexos.cluster.clustermap.PlotlyClusterGrid") as mock_grid_class,
+            patch("lexos.cluster.clustermap._create_dendrogram_traces") as mock_dendro,
+        ):
+            mock_grid = Mock()
+            mock_grid.data2d = sample_dataframe
+            mock_grid.mask = None
+            mock_grid._calculate_linkage.return_value = np.array([[0, 1, 0.5, 2]])
+            mock_grid_class.return_value = mock_grid
+
+            mock_dendro_data = {
+                "leaves": [0, 1, 2],
+                "icoord": [[10, 10, 20, 20], [15, 15, 25, 25]],
+                "dcoord": [[0, 5, 5, 0], [0, 10, 10, 0]],
+            }
+            mock_dendro.return_value = ([], mock_dendro_data)
+
+            cm = PlotlyClustermap(dtm=sample_dataframe, annot=True, fmt=".1f")
+
+            z_data = np.array([[1.0, np.nan], [2.0, 3.0]])
+            mask_df = pd.DataFrame(
+                [[True, False], [False, False]],
+                index=["doc1", "doc2"],
+                columns=["term1", "term2"],
+            )
+
+            annotations = cm._add_annotations(
+                z_data,
+                ["term1", "term2"],
+                ["doc1", "doc2"],
+                mask_df,
+                mock_grid,
+                1,
+                1,
+            )
+
+            assert isinstance(annotations, list)
+            assert len(annotations) == 2
+            assert all(item["text"] in {"1.0", "2.0", "3.0"} for item in annotations)
+
+    def test_plotly_clustermap_renders_dendrogram_traces_when_not_hidden(
+        self, sample_dataframe
+    ):
+        """Test PlotlyClustermap adds dendrogram traces when both clusters are shown."""
+        with (
+            patch("lexos.cluster.clustermap.PlotlyClusterGrid") as mock_grid_class,
+            patch("lexos.cluster.clustermap._create_dendrogram_traces") as mock_dendro,
+        ):
+            mock_grid = Mock()
+            mock_grid.data2d = sample_dataframe
+            mock_grid.mask = None
+            mock_grid._calculate_linkage.return_value = np.array([[0, 1, 0.5, 2]])
+            mock_grid_class.return_value = mock_grid
+
+            col_trace = go.Scatter(
+                x=[1],
+                y=[1],
+                mode="lines",
+                xaxis="x2",
+                yaxis="y2",
+            )
+            row_trace = go.Scatter(
+                x=[1],
+                y=[1],
+                mode="lines",
+                xaxis="x3",
+                yaxis="y3",
+            )
+            mock_dendro.side_effect = [
+                ([col_trace], {"leaves": [0, 1, 2], "icoord": [[0]], "dcoord": [[0]]}),
+                ([row_trace], {"leaves": [0, 1, 2], "icoord": [[0]], "dcoord": [[0]]}),
+            ]
+
+            cm = PlotlyClustermap(
+                dtm=sample_dataframe, hide_upper=False, hide_side=False
+            )
+
+            assert isinstance(cm.fig, go.Figure)
+            assert len(cm.fig.data) == 3
+            assert cm.fig.data[1].type == "scatter"
+            assert cm.fig.data[2].type == "scatter"
 
     def test_plotly_clustermap_with_mask(self, sample_dataframe):
         """Test PlotlyClustermap with mask parameter."""
@@ -2344,6 +2444,179 @@ class TestPlotlyClustermap:
             assert isinstance(cm.fig, go.Figure)
             # The layout should have been adjusted
             assert cm.fig.layout is not None
+
+    def test_plotly_clustermap_axis_name_normalizes_axis_references(
+        self, sample_dataframe
+    ):
+        """Test _axis_name normalization for Plotly axis references."""
+        with (
+            patch("lexos.cluster.clustermap.PlotlyClusterGrid") as mock_grid_class,
+            patch("lexos.cluster.clustermap._create_dendrogram_traces") as mock_dendro,
+        ):
+            mock_grid = Mock()
+            mock_grid.data2d = sample_dataframe
+            mock_grid.mask = None
+            mock_grid._calculate_linkage.return_value = np.array([[0, 1, 0.5, 2]])
+            mock_grid_class.return_value = mock_grid
+            mock_dendro.return_value = (
+                [],
+                {"leaves": [0, 1, 2], "icoord": [[0]], "dcoord": [[0]]},
+            )
+
+            cm = PlotlyClustermap(dtm=sample_dataframe)
+
+            expected = {
+                "x": "xaxis",
+                "x2": "xaxis2",
+                "xaxis3": "xaxis3",
+                "y": "yaxis",
+                "y2": "yaxis2",
+                "yaxis4": "yaxis4",
+                "foo": "foo",
+            }
+
+            for axis, expected_name in expected.items():
+                assert cm._axis_name(axis) == expected_name
+
+    def test_plotly_clustermap_find_heatmap_and_row_dendrogram_axes(
+        self, sample_dataframe
+    ):
+        """Test _find_heatmap_and_row_dendrogram_axes returns correct axes tuples."""
+        with (
+            patch("lexos.cluster.clustermap.PlotlyClusterGrid") as mock_grid_class,
+            patch("lexos.cluster.clustermap._create_dendrogram_traces") as mock_dendro,
+        ):
+            mock_grid = Mock()
+            mock_grid.data2d = sample_dataframe
+            mock_grid.mask = None
+            mock_grid._calculate_linkage.return_value = np.array([[0, 1, 0.5, 2]])
+            mock_grid_class.return_value = mock_grid
+            mock_dendro.return_value = (
+                [],
+                {"leaves": [0, 1, 2], "icoord": [[0]], "dcoord": [[0]]},
+            )
+
+            cm = PlotlyClustermap(dtm=sample_dataframe)
+            cm.fig = go.Figure(
+                data=[
+                    go.Heatmap(z=[[1]], xaxis="x", yaxis="y"),
+                    go.Scatter(x=[1], y=[1], xaxis="x2", yaxis="y2"),
+                ]
+            )
+
+            heatmap_axes, row_dendro_axes = cm._find_heatmap_and_row_dendrogram_axes()
+
+            assert heatmap_axes == ("x", "y")
+            assert row_dendro_axes == ("x2", "y2")
+
+            cm.fig = go.Figure(
+                data=[
+                    go.Heatmap(z=[[1]], xaxis="x", yaxis="y"),
+                    go.Scatter(x=[1], y=[1], xaxis="x", yaxis="y2"),
+                ]
+            )
+
+            heatmap_axes, row_dendro_axes = cm._find_heatmap_and_row_dendrogram_axes()
+
+            assert heatmap_axes == ("x", "y")
+            assert row_dendro_axes is None
+
+    def test_plotly_clustermap_adjust_layout_for_hidden_upper_updates_layout(
+        self, sample_dataframe
+    ):
+        """Test _adjust_layout_for_hidden_upper updates layout when upper is hidden."""
+        with (
+            patch("lexos.cluster.clustermap.PlotlyClusterGrid") as mock_grid_class,
+            patch("lexos.cluster.clustermap._create_dendrogram_traces") as mock_dendro,
+        ):
+            mock_grid = Mock()
+            mock_grid.data2d = sample_dataframe
+            mock_grid.mask = None
+            mock_grid._calculate_linkage.return_value = np.array([[0, 1, 0.5, 2]])
+            mock_grid_class.return_value = mock_grid
+            mock_dendro.return_value = (
+                [],
+                {"leaves": [0, 1, 2], "icoord": [[0]], "dcoord": [[0]]},
+            )
+
+            cm = PlotlyClustermap(
+                dtm=sample_dataframe, hide_upper=True, hide_side=False
+            )
+            cm.fig = go.Figure(
+                data=[
+                    go.Heatmap(z=[[1]], xaxis="x", yaxis="y"),
+                    go.Scatter(x=[1], y=[1], xaxis="x2", yaxis="y2"),
+                ]
+            )
+            cm.fig.update_layout = Mock()
+
+            cm._adjust_layout_for_hidden_upper()
+
+            cm.fig.update_layout.assert_called_once_with(
+                {"yaxis.domain": [0.0, 1.0], "yaxis2.domain": [0.0, 1.0]}
+            )
+
+    def test_plotly_clustermap_adjust_layout_for_hidden_upper_no_action_when_not_hidden(
+        self, sample_dataframe
+    ):
+        """Test _adjust_layout_for_hidden_upper does nothing when hide_upper is False."""
+        with (
+            patch("lexos.cluster.clustermap.PlotlyClusterGrid") as mock_grid_class,
+            patch("lexos.cluster.clustermap._create_dendrogram_traces") as mock_dendro,
+        ):
+            mock_grid = Mock()
+            mock_grid.data2d = sample_dataframe
+            mock_grid.mask = None
+            mock_grid._calculate_linkage.return_value = np.array([[0, 1, 0.5, 2]])
+            mock_grid_class.return_value = mock_grid
+            mock_dendro.return_value = (
+                [],
+                {"leaves": [0, 1, 2], "icoord": [[0]], "dcoord": [[0]]},
+            )
+
+            cm = PlotlyClustermap(dtm=sample_dataframe, hide_upper=False)
+            cm.fig = go.Figure(
+                data=[
+                    go.Heatmap(z=[[1]], xaxis="x", yaxis="y"),
+                    go.Scatter(x=[1], y=[1], xaxis="x2", yaxis="y2"),
+                ]
+            )
+            cm.fig.update_layout = Mock()
+
+            cm._adjust_layout_for_hidden_upper()
+
+            cm.fig.update_layout.assert_not_called()
+
+    def test_plotly_clustermap_adjust_layout_for_hidden_upper_skips_row_dendrogram_when_hide_side(
+        self, sample_dataframe
+    ):
+        """Test _adjust_layout_for_hidden_upper skips row dendrogram adjustment when hide_side is True."""
+        with (
+            patch("lexos.cluster.clustermap.PlotlyClusterGrid") as mock_grid_class,
+            patch("lexos.cluster.clustermap._create_dendrogram_traces") as mock_dendro,
+        ):
+            mock_grid = Mock()
+            mock_grid.data2d = sample_dataframe
+            mock_grid.mask = None
+            mock_grid._calculate_linkage.return_value = np.array([[0, 1, 0.5, 2]])
+            mock_grid_class.return_value = mock_grid
+            mock_dendro.return_value = (
+                [],
+                {"leaves": [0, 1, 2], "icoord": [[0]], "dcoord": [[0]]},
+            )
+
+            cm = PlotlyClustermap(dtm=sample_dataframe, hide_upper=True, hide_side=True)
+            cm.fig = go.Figure(
+                data=[
+                    go.Heatmap(z=[[1]], xaxis="x", yaxis="y"),
+                    go.Scatter(x=[1], y=[1], xaxis="x2", yaxis="y2"),
+                ]
+            )
+            cm.fig.update_layout = Mock()
+
+            cm._adjust_layout_for_hidden_upper()
+
+            cm.fig.update_layout.assert_called_once_with({"yaxis.domain": [0.0, 1.0]})
 
 
 class TestCreateDendrogramTraces:
