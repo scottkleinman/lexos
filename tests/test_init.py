@@ -1,6 +1,6 @@
 """test_init.py.
 
-Tests for the top-level ``lexos`` package initialization module.
+Tests for the top-level `lexos` package initialization module.
 
 Coverage: 100%
 Last Update: August 9, 2026
