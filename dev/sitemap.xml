@@ -53,6 +53,10 @@
          <lastmod>2026-08-16</lastmod>
     </url>
     <url>
+         <loc>https://lexos.github.io/en/latest/dev/api/cluster/seetrees/</loc>
+         <lastmod>2026-08-16</lastmod>
+    </url>
+    <url>
          <loc>https://lexos.github.io/en/latest/dev/api/cluster/sync_script/</loc>
          <lastmod>2026-08-16</lastmod>
     </url>
@@ -442,6 +446,10 @@
     </url>
     <url>
          <loc>https://lexos.github.io/en/latest/dev/user_guide/cluster/k-means/</loc>
+         <lastmod>2026-08-16</lastmod>
+    </url>
+    <url>
+         <loc>https://lexos.github.io/en/latest/dev/user_guide/cluster/seetrees/</loc>
          <lastmod>2026-08-16</lastmod>
     </url>
     <url>
