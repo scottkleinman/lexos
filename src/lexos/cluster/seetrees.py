@@ -186,7 +186,7 @@ class SeeTrees(BaseModel):
         plt.tight_layout()
         plt.show()
 
-    def compute_distances(self, metric: str = "delta"):
+    def compute_distances(self, metric: str = "delta") -> pd.DataFrame:
         """Compute a stylometric distance matrix from frequency data.
 
         Supports multiple stylometric metrics including Burrows' Delta,
