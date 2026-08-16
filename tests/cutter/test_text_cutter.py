@@ -1,7 +1,7 @@
 """test_text_cutter.py.
 
 Coverage: 100%
-Last updated: 9 July, 2026
+Last updated: 15 August, 2026
 """
 
 from pathlib import Path
@@ -167,7 +167,6 @@ def test_merge_final_single_chunk(cutter):
 def test_write_chunk(cutter, tmp_path):
     """Test writing chunk to output directory."""
     output_dir = tmp_path / "output"
-    # Do NOT create output_dir here; _write_chunk should create it
     chunk = "Test chunk"
     cutter._write_chunk("test.txt", 1, chunk, output_dir)
     output_file = output_dir / "test_001.txt"
@@ -224,9 +223,8 @@ def test_split_with_custom_delimiter_pad(cutter, text_file, tmp_path):
     )
     chunks = list(cutter.chunks)[0]
     assert len(chunks) == 3
-    # Save with custom delimiter and padding
     cutter.save(output_dir=output_dir, delimiter="-", pad=4)
-    output_files = list(output_dir.glob("*"))
+    output_files = list(output_dir.glob("*.txt"))
     assert all("-" in file.name for file in output_files)
     assert all(len(file.stem.split("-")[1]) == 4 for file in output_files)
 
@@ -272,8 +270,6 @@ def test_process_buffer_with_n_newline(cutter, text_file):
     """Test cutting file with newline option - when newline=True, n means lines per chunk (same as chunksize)."""
     cutter.split(docs=text_file, file=True, n=2, merge_threshold=0.0, newline=True)
     chunks = list(cutter.chunks)[0]
-    # With newline=True and n=2, creates chunks of 2 lines each (same as chunksize=2)
-    # 5 lines total: chunks of 2, 2, 1 lines
     assert len(chunks) == 3
     assert chunks[0] == "Line1\nLine2\n"
     assert chunks[1] == "Line3\nLine4\n"
@@ -318,7 +314,6 @@ def test_split_on_milestones_writes_to_disk(
         docs=milestones_text_file,
         file=True,
     )
-    # Save the chunks to disk
     cutter.save(output_dir=output_dir)
     written_files = list(output_dir.glob("*.txt"))
     assert len(written_files) == 3
@@ -338,7 +333,6 @@ def test_keep_spans_following(cutter, sample_milestones_text, mock_milestones):
     cutter.split_on_milestones(
         mock_milestones, docs=sample_milestones_text, keep_spans="following", file=False
     )
-    # With new logic, 'quick' is at the start of chunk 2, 'over' at start of chunk 3
     assert cutter.chunks[0][1].startswith("quick")
     assert cutter.chunks[0][2].startswith("over")
 
@@ -480,7 +474,6 @@ def test_split_on_milestones_no_docs(mock_milestones):
     cutter = TextCutter()
     with pytest.raises(LexosException, match="No documents provided for splitting."):
         cutter.split_on_milestones(mock_milestones, docs=None)
-    """Test fallback to Path(source).stem in _get_name()."""
     cutter.names = []
     source = Path("document.txt")
     name = cutter._get_name(source, 0)
@@ -489,11 +482,9 @@ def test_split_on_milestones_no_docs(mock_milestones):
 
 def test_save_basic(cutter_for_save, output_dir):
     """Test basic save functionality."""
-    # Remove output_dir to test auto-creation
     for f in output_dir.glob("*"):
         f.unlink()
     output_dir.rmdir()
-    # Now call save, which should create output_dir
     cutter_for_save.save(output_dir)
     files = list(output_dir.glob("*.txt"))
     assert len(files) == 4
@@ -587,7 +578,6 @@ def test_split_with_overlap(cutter):
     cutter.split(docs=text, chunksize=10, overlap=3, file=False)
     chunks = cutter.chunks[0]
     assert len(chunks) >= 2
-    # Check that overlap is applied
     assert chunks[0][-3:] == chunks[1][:3]
 
 
@@ -600,7 +590,6 @@ def test_split_with_overlap_file(cutter, tmp_path):
     cutter.split(docs=text_file, chunksize=10, overlap=3, file=True)
     chunks = cutter.chunks[0]
     assert len(chunks) >= 2
-    # Check that overlap is applied
     assert chunks[0][-3:] == chunks[1][:3]
 
 
@@ -609,7 +598,6 @@ def test_split_with_overlap_multiple_chunks(cutter):
     text = "A" * 50
     cutter.split(docs=text, chunksize=15, overlap=5, file=False)
     chunks = cutter.chunks[0]
-    # Each chunk should overlap with the next
     for i in range(len(chunks) - 1):
         assert chunks[i][-5:] == chunks[i + 1][:5]
 
@@ -620,7 +608,6 @@ def test_split_with_no_overlap(cutter):
     cutter.split(docs=text, chunksize=10, overlap=None, file=False)
     chunks = cutter.chunks[0]
     assert len(chunks) >= 2
-    # Check that no overlap is applied - chunks should be sequential
     assert chunks[0] == "ABCDEFGHIJ"
     assert chunks[1] == "KLMNOPQRST"
 
@@ -631,7 +618,6 @@ def test_split_with_zero_overlap(cutter):
     cutter.split(docs=text, chunksize=10, overlap=0, file=False)
     chunks = cutter.chunks[0]
     assert len(chunks) >= 2
-    # Check that no overlap is applied
     assert chunks[0] == "ABCDEFGHIJ"
     assert chunks[1] == "KLMNOPQRST"
 
@@ -641,12 +627,8 @@ def test_split_with_overlap_single_chunk(cutter):
     text = "SHORT"
     cutter.split(docs=text, chunksize=100, overlap=5, file=False)
     chunks = cutter.chunks[0]
-    # Should have only one chunk since text is smaller than chunksize
     assert len(chunks) == 1
     assert chunks[0] == "SHORT"
-
-
-# Tests for byte-based chunking (by_bytes=True)
 
 
 def test_split_buffer_by_bytes(cutter, sample_text):
@@ -654,8 +636,7 @@ def test_split_buffer_by_bytes(cutter, sample_text):
     cutter.split(docs=sample_text, chunksize=15, by_bytes=True, file=False)
     chunks = cutter.chunks[0]
     assert len(chunks) == 2
-    # Verify byte-based splitting
-    assert len(chunks[0]) <= 15  # May be less due to UTF-8 decoding
+    assert len(chunks[0]) <= 15
     assert len(chunks[1]) <= 15
 
 
@@ -663,8 +644,7 @@ def test_split_buffer_by_bytes_with_n(cutter, sample_text):
     """Test byte-based buffer chunking with n parameter."""
     cutter.split(docs=sample_text, n=3, by_bytes=True, file=False)
     chunks = cutter.chunks[0]
-    assert len(chunks) >= 1  # May produce fewer chunks than n if text is short
-    # All chunks should exist
+    assert len(chunks) >= 1
     for chunk in chunks:
         assert isinstance(chunk, str)
 
@@ -676,7 +656,6 @@ def test_split_buffer_by_bytes_with_newline(cutter, sample_text):
     )
     chunks = cutter.chunks[0]
     assert len(chunks) >= 1
-    # Each chunk should contain complete lines
     for chunk in chunks:
         assert isinstance(chunk, str)
 
@@ -695,7 +674,6 @@ def test_split_file_by_bytes(cutter, text_file):
     cutter.split(docs=text_file, chunksize=15, by_bytes=True, file=True)
     chunks = cutter.chunks[0]
     assert len(chunks) >= 1
-    # Verify chunks are strings
     for chunk in chunks:
         assert isinstance(chunk, str)
 
@@ -729,7 +707,6 @@ def test_split_file_by_bytes_with_n_and_newline(cutter, text_file):
 
 def test_split_file_by_bytes_with_n_readline_extension(cutter, tmp_path):
     """Test byte-based file chunking with n that extends to end of line."""
-    # Create a file where byte-based splitting would end mid-line
     text = "Line1\nLine2\nLine3\nLine4\n"
     test_file = tmp_path / "test_bytes.txt"
     test_file.write_text(text)
@@ -737,64 +714,56 @@ def test_split_file_by_bytes_with_n_readline_extension(cutter, tmp_path):
     cutter.split(docs=test_file, n=2, by_bytes=True, file=True)
     chunks = cutter.chunks[0]
     assert len(chunks) >= 1
-    # Chunks should be strings
     for chunk in chunks:
         assert isinstance(chunk, str)
 
 
 def test_split_file_by_bytes_readline_extension_no_final_newline(cutter, tmp_path):
     """Test byte-based file chunking when rest_of_line has no trailing newline."""
-    # Create a file that will trigger the seek back logic
-    text = "X" * 10 + "Y" * 20  # 30 bytes, no newlines
+    text = "X" * 10 + "Y" * 20
     test_file = tmp_path / "test_no_newline.txt"
     test_file.write_text(text)
 
     cutter.split(docs=test_file, n=2, by_bytes=True, file=True)
     chunks = cutter.chunks[0]
-    # Should still split into 2 chunks
     assert len(chunks) >= 1
 
 
-def test_read_by_lines_method(cutter):
-    """Test _read_by_lines method with a buffer."""
+def test_read_binary_lines_method(cutter):
+    """Test _read_binary_lines method with a binary buffer."""
     from io import BytesIO
 
     text = "Line1\nLine2\nLine3\n"
     buffer = BytesIO(text.encode())
 
-    chunk = cutter._read_by_lines(buffer, 15)
-    assert isinstance(chunk, str)
-    assert "Line1" in chunk or "Line2" in chunk
+    chunk_lines = cutter._read_binary_lines(buffer, 15)
+    assert isinstance(chunk_lines, list)
+    assert any("Line1" in chunk or "Line2" in chunk for chunk in chunk_lines)
 
 
-def test_read_chunks_method(cutter):
-    """Test _read_chunks method."""
+def test_process_binary_chunk(cutter):
+    """Test _process_binary_chunk reads a fixed number of bytes and decodes text."""
     from io import BytesIO
 
     text = "Hello World"
     buffer = BytesIO(text.encode())
 
-    chunk = cutter._read_chunks(buffer, 5)
-    assert isinstance(chunk, bytes)
-    assert len(chunk) == 5
+    chunk = cutter._process_binary_chunk(buffer, 5)
+    assert isinstance(chunk, str)
+    assert chunk == "Hello"
 
 
 def test_split_buffer_by_bytes_empty_chunk_break(cutter):
     """Test byte-based buffer chunking with n that triggers empty chunk break."""
-    # Create a text shorter than n*chunksize to trigger break
-    text = "Line1\nLine2\n"  # 13 bytes
-    # Request n=10 chunks, each would be ~1 byte, but text only has 13 bytes
-    # This will cause the loop to break early when chunks become empty
+    text = "Line1\nLine2\n"
     cutter.split(docs=text, n=10, by_bytes=True, merge_final=False, file=False)
     chunks = cutter.chunks[0]
-    # Should break early - won't get 10 chunks from 13 bytes
     assert len(chunks) <= 10
     assert len(chunks) >= 1
 
 
 def test_split_buffer_bytes_input(cutter):
     """Test character-based chunking when input is bytes (line 211)."""
-    # Pass bytes instead of string to trigger the decode path
     text_bytes = b"Hello World Test"
     cutter.split(docs=text_bytes, chunksize=8, file=False)
     chunks = cutter.chunks[0]
@@ -805,35 +774,27 @@ def test_split_buffer_bytes_input(cutter):
 
 def test_split_buffer_with_n_empty_chunk_break(cutter):
     """Test character-based chunking with n that triggers empty chunk break."""
-    # Create a text that will cause early break
-    text = "Short text here"  # 15 chars
+    text = "Short text here"
     cutter.split(docs=text, n=10, merge_final=False, file=False)
     chunks = cutter.chunks[0]
-    # Should break early when chunks become empty (n=10 but only get fewer chunks)
     assert len(chunks) <= 10
     assert len(chunks) >= 1
 
 
 def test_byte_chunking_n_early_break(cutter):
     """Test byte-based chunking with n where buffer.read returns empty (line 190)."""
-    # Create a very short text with n larger than available chunks
-    # This will cause buffer.read() to return empty bytes, triggering line 190 break
-    text = "X"  # Just 1 byte
+    text = "X"
     cutter.split(docs=text, n=2, by_bytes=True, merge_final=False, file=False)
     chunks = cutter.chunks[0]
-    # Should break early when buffer.read returns empty
     assert len(chunks) >= 0
 
 
 def test_char_chunking_bytes_input(cutter):
     """Test character-based chunking when source is bytes (line 211)."""
-    # Pass bytes to trigger the isinstance(source, bytes) check on line 210
-    # and the decode on line 211
     text_bytes = b"Hello World Testing"
     cutter.split(docs=text_bytes, chunksize=10, by_bytes=False, file=False)
     chunks = cutter.chunks[0]
     assert len(chunks) >= 1
-    # Verify it was decoded to strings
     for chunk in chunks:
         assert isinstance(chunk, str)
         assert "Hello" in chunk or "World" in chunk or "Testing" in chunk
@@ -841,12 +802,9 @@ def test_char_chunking_bytes_input(cutter):
 
 def test_process_buffer_bytes_directly(cutter):
     """Test _process_buffer directly with bytes input to cover line 211."""
-    # Call _process_buffer directly with bytes to bypass pydantic validation
-    # which converts bytes to str before reaching _process_buffer
     text_bytes = b"Direct bytes test"
     chunks = cutter._process_buffer(doc=text_bytes, n=False)
     assert len(chunks) >= 1
-    # Verify bytes were decoded to strings
     for chunk in chunks:
         assert isinstance(chunk, str)
         assert "Direct" in chunk or "bytes" in chunk or "test" in chunk

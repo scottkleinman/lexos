@@ -1,7 +1,7 @@
 """text_cutter.py.
 
-Last Updated: 2025-12-23
-Last Tested: 2026-07-09
+Last Updated: 15 August, 2026
+Last Tested: 15 August, 2026
 """
 
 import os
@@ -177,109 +177,176 @@ class TextCutter(BaseModel, validate_assignment=True):
         Returns:
             list[str]: The chunks.
         """
-        # If chunking by bytes, use the legacy byte-based approach
         if self.by_bytes:
-            if isinstance(doc, str):
-                doc = doc.encode()
-            chunks = []
-            with BytesIO(doc) as buffer:
-                if n is True:
-                    if self.newline:
-                        # When newline=True, n means "N lines per chunk" (same as chunksize)
-                        lines_per_chunk = self.n
-                        while True:
-                            chunk_lines = []
-                            for _ in range(lines_per_chunk):
-                                line = buffer.readline()
-                                if not line:
-                                    break
-                                chunk_lines.append(line)
-                            if not chunk_lines:
-                                break
-                            chunk = b"".join(chunk_lines)
-                            chunks.append(self._normalize_text(chunk.decode("utf-8")))
-                    else:
-                        file_size = buffer.getbuffer().nbytes
-                        chunk_size, remainder = self._calculate_chunk_size(
-                            file_size, self.n
-                        )
-                        for i in range(self.n):
-                            size = (
-                                chunk_size + remainder
-                                if i == self.n - 1
-                                else chunk_size
-                            )
-                            chunk = buffer.read(size)
-                            if not chunk:
-                                break
-                            chunks.append(self._normalize_text(chunk.decode("utf-8")))
-                else:
-                    if self.newline:
-                        # Read chunksize lines at a time
-                        while True:
-                            chunk_lines = []
-                            for _ in range(self.chunksize):
-                                line = buffer.readline()
-                                if not line:
-                                    break
-                                chunk_lines.append(line)
-                            if not chunk_lines:
-                                break
-                            chunk = b"".join(chunk_lines)
-                            chunks.append(self._normalize_text(chunk.decode("utf-8")))
-                    else:
-                        while chunk := buffer.read(self.chunksize):
-                            chunks.append(self._normalize_text(chunk.decode("utf-8")))
-            return chunks
+            return self._process_buffer_bytes(doc, n)
 
-        # Character-based chunking (default)
         if isinstance(doc, bytes):
             doc = doc.decode("utf-8")
-        doc = self._normalize_text(doc)
-        chunks = []
+        return self._process_buffer_text(self._normalize_text(doc), n)
 
+    def _process_buffer_bytes(self, doc: bytes | str, n: bool = False) -> list[str]:
+        if isinstance(doc, str):
+            doc = doc.encode()
+
+        with BytesIO(doc) as buffer:
+            return self._process_binary_stream(buffer, n=n)
+
+    def _get_binary_size(self, file_or_buf: BinaryIO) -> int:
+        if isinstance(file_or_buf, BytesIO):
+            return file_or_buf.getbuffer().nbytes
+        return os.fstat(file_or_buf.fileno()).st_size
+
+    def _read_binary_lines(
+        self, file_or_buf: BinaryIO, lines_per_chunk: int
+    ) -> list[str]:
+        chunks: list[str] = []
+        while True:
+            chunk_lines: list[bytes] = []
+            for _ in range(lines_per_chunk):
+                line = file_or_buf.readline()
+                if not line:
+                    break
+                chunk_lines.append(line)
+            if not chunk_lines:
+                break
+            chunks.append(self._normalize_text(b"".join(chunk_lines).decode("utf-8")))
+        return chunks
+
+    def _process_binary_chunk(
+        self,
+        file_or_buf: BinaryIO,
+        size: int,
+        extend_to_newline: bool = False,
+        is_last_chunk: bool = False,
+    ) -> str:
+        chunk = file_or_buf.read(size)
+        if not chunk:
+            return ""
+
+        text_chunk = self._normalize_text(chunk.decode("utf-8"))
+        if (
+            extend_to_newline
+            and not is_last_chunk
+            and text_chunk
+            and not text_chunk.endswith("\n")
+        ):
+            rest_of_line = file_or_buf.readline()
+            if rest_of_line:
+                rest_of_line = rest_of_line.decode("utf-8")
+                if rest_of_line.endswith("\n"):
+                    rest_of_line = rest_of_line[:-1]
+                    file_or_buf.seek(file_or_buf.tell() - 1)
+                text_chunk += rest_of_line
+
+        return text_chunk
+
+    def _process_binary_fixed_chunks(
+        self,
+        file_or_buf: BinaryIO,
+        size: int,
+        total_chunks: Optional[int] = None,
+        remainder: int = 0,
+        extend_to_newline: bool = False,
+    ) -> list[str]:
+        chunks: list[str] = []
+        if total_chunks is not None:
+            for i in range(total_chunks):
+                chunk_size = size + remainder if i == total_chunks - 1 else size
+                text_chunk = self._process_binary_chunk(
+                    file_or_buf,
+                    chunk_size,
+                    extend_to_newline=extend_to_newline,
+                    is_last_chunk=i == total_chunks - 1,
+                )
+                if not text_chunk:
+                    break
+                chunks.append(text_chunk)
+            return chunks
+
+        while True:
+            text_chunk = self._process_binary_chunk(file_or_buf, size)
+            if not text_chunk:
+                break
+            chunks.append(text_chunk)
+        return chunks
+
+    def _process_binary_stream(
+        self,
+        file_or_buf: BinaryIO,
+        n: bool = False,
+        extend_to_newline: bool = False,
+    ) -> list[str]:
+        if n is True:
+            if self.newline:
+                return self._read_binary_lines(file_or_buf, self.n)
+            total_size = self._get_binary_size(file_or_buf)
+            chunk_size, remainder = self._calculate_chunk_size(total_size, self.n)
+            return self._process_binary_fixed_chunks(
+                file_or_buf,
+                chunk_size,
+                total_chunks=self.n,
+                remainder=remainder,
+                extend_to_newline=extend_to_newline,
+            )
         if self.newline:
-            # Split text into lines first
-            lines = doc.splitlines(keepends=True)
+            return self._read_binary_lines(file_or_buf, self.chunksize)
+        return self._process_binary_fixed_chunks(file_or_buf, self.chunksize)
 
-            # When newline=True, both n and chunksize mean "N lines per chunk"
-            lines_per_chunk = self.n if n is True else self.chunksize
+    def _split_text_by_newlines(self, doc: str, n: bool = False) -> list[str]:
+        lines = doc.splitlines(keepends=True)
+        lines_per_chunk = self.n if n is True else self.chunksize
+        return [
+            "".join(lines[i : i + lines_per_chunk])
+            for i in range(0, len(lines), lines_per_chunk)
+            if lines[i : i + lines_per_chunk]
+        ]
 
-            # Split by lines_per_chunk LINES
-            for i in range(0, len(lines), lines_per_chunk):
-                chunk_lines = lines[i : i + lines_per_chunk]
-                if chunk_lines:
-                    chunks.append("".join(chunk_lines))
-        elif n is True:
-            total_len = len(doc)
-            chunk_size, remainder = self._calculate_chunk_size(total_len, self.n)
-            start = 0
-            for i in range(self.n):
-                size = chunk_size + remainder if i == self.n - 1 else chunk_size
-                end = start + size
-                chunk = doc[start:end]
-                # If not the last chunk and chunk doesn't end with newline, extend to line end
-                if i < self.n - 1 and chunk and not chunk.endswith("\n"):
-                    # Find the next newline
-                    next_newline = doc.find("\n", end)
-                    if next_newline != -1:
-                        chunk = doc[start:next_newline]
-                        start = next_newline
-                    else:
-                        start = end
+    def _split_text_into_n_chunks(self, doc: str) -> list[str]:
+        total_len = len(doc)
+        chunk_size, remainder = self._calculate_chunk_size(total_len, self.n)
+        chunks: list[str] = []
+        start = 0
+        for i in range(self.n):
+            size = chunk_size + remainder if i == self.n - 1 else chunk_size
+            end = start + size
+            chunk = doc[start:end]
+            if i < self.n - 1 and chunk and not chunk.endswith("\n"):
+                next_newline = doc.find("\n", end)
+                if next_newline != -1:
+                    chunk = doc[start:next_newline]
+                    start = next_newline
                 else:
                     start = end
-
-                if not chunk:
-                    break
-                chunks.append(chunk)
-        else:
-            # Simple character-based chunking
-            for i in range(0, len(doc), self.chunksize):
-                chunk = doc[i : i + self.chunksize]
-                if chunk:
-                    chunks.append(chunk)
+            else:
+                start = end
+            if not chunk:
+                break
+            chunks.append(chunk)
         return chunks
+
+    def _split_text_by_size(self, doc: str) -> list[str]:
+        return [
+            chunk
+            for i in range(0, len(doc), self.chunksize)
+            if (chunk := doc[i : i + self.chunksize])
+        ]
+
+    def _process_buffer_text(self, doc: str, n: bool = False) -> list[str]:
+        if self.newline:
+            return self._split_text_by_newlines(doc, n)
+        if n is True:
+            return self._split_text_into_n_chunks(doc)
+        return self._split_text_by_size(doc)
+
+    def _process_file_bytes(self, path: Path | str, n: bool = False) -> list[str]:
+        """Process a binary file path into chunks."""
+        with open(path, "rb") as f:
+            extend_to_newline = n is True and not self.newline
+            return self._process_binary_stream(
+                f,
+                n=n,
+                extend_to_newline=extend_to_newline,
+            )
 
     def _process_file(
         self,
@@ -295,107 +362,14 @@ class TextCutter(BaseModel, validate_assignment=True):
         Returns:
             list[str]: List of chunked text segments.
         """
-        # If chunking by bytes, use the legacy byte-based file reading
         if self.by_bytes:
-            chunks = []
-            with open(path, "rb") as f:
-                if n is True:
-                    if self.newline:
-                        # When newline=True, n means "N lines per chunk" (same as chunksize)
-                        lines_per_chunk = self.n
-                        while True:
-                            chunk_lines = []
-                            for _ in range(lines_per_chunk):
-                                line = f.readline()
-                                if not line:
-                                    break
-                                chunk_lines.append(line)
-                            if not chunk_lines:
-                                break
-                            chunk = b"".join(chunk_lines).decode("utf-8")
-                            chunks.append(self._normalize_text(chunk))
-                    else:
-                        file_size = os.path.getsize(str(path))
-                        chunk_size, remainder = self._calculate_chunk_size(
-                            file_size, self.n
-                        )
-                        for i in range(self.n):
-                            size = (
-                                chunk_size + remainder
-                                if i == self.n - 1
-                                else chunk_size
-                            )
-                            chunk = f.read(size)
-                            if not chunk:
-                                break
-                            chunk = self._normalize_text(chunk.decode("utf-8"))
-
-                            # Extend to end of line if not last chunk
-                            if i < self.n - 1 and chunk and not chunk.endswith("\n"):
-                                rest_of_line = f.readline()
-                                if rest_of_line:
-                                    rest_of_line = rest_of_line.decode("utf-8")
-                                    if rest_of_line.endswith("\n"):
-                                        rest_of_line = rest_of_line[:-1]
-                                        f.seek(f.tell() - 1)
-                                    chunk = chunk + rest_of_line
-                            chunks.append(chunk)
-                else:
-                    if self.newline:
-                        # Read chunksize lines at a time
-                        while True:
-                            chunk_lines = []
-                            for _ in range(self.chunksize):
-                                line = f.readline()
-                                if not line:
-                                    break
-                                chunk_lines.append(line)
-                            if not chunk_lines:
-                                break
-                            chunk = b"".join(chunk_lines).decode("utf-8")
-                            chunks.append(self._normalize_text(chunk))
-                    else:
-                        while chunk := f.read(self.chunksize):
-                            chunks.append(self._normalize_text(chunk.decode("utf-8")))
-            return chunks
+            return self._process_file_bytes(path, n)
 
         # Character-based chunking (default) - read entire file as text
         with open(path, "r", encoding="utf-8") as f:
             text = f.read()
         text = self._normalize_text(text)
         return self._process_buffer(text, n=n)
-
-    def _read_by_lines(self, file_or_buf: BinaryIO, size: int) -> str:
-        """Read file by lines up to size limit.
-
-        Args:
-            file_or_buf (BinaryIO): The file object or buffer to read from.
-            size (int): Maximum bytes to read.
-
-        Returns:
-            str: Concatenated lines up to size limit.
-        """
-        chunks: list[bytes] = []
-        bytes_read = 0
-
-        while bytes_read < size and (line := file_or_buf.readline()):
-            chunks.append(line.decode("utf-8") if isinstance(line, bytes) else line)
-            bytes_read += len(line)
-
-        return "".join(chunks)
-
-    def _read_chunks(self, buffer: BytesIO, size: int) -> bytes:
-        """Read a fixed number of bytes from a memory buffer.
-
-        Args:
-            buffer (BytesIO): The buffer to read from.
-            size (int): Number of bytes to read.
-
-        Returns:
-            bytes: A chunk of text from the buffer.
-        """
-        chunk = buffer.read(size)
-        return chunk
 
     def _set_attributes(self, **data: Any) -> None:
         """Update multiple attributes on the TextCutter instance.
@@ -482,6 +456,97 @@ class TextCutter(BaseModel, validate_assignment=True):
                     chunk = chunk.strip()
                 self._write_chunk(self.names[i], num + 1, chunk, output_dir)
 
+    def _prepare_split(
+        self,
+        docs: Optional[Path | str | list[Path | str]],
+        chunksize: Optional[int],
+        names: Optional[str | list[str]],
+        delimiter: Optional[str],
+        pad: Optional[int],
+        n: Optional[int],
+        newline: Optional[bool],
+        overlap: Optional[int],
+        by_bytes: Optional[bool],
+        file: Optional[bool],
+        merge_threshold: Optional[float],
+        merge_final: Optional[bool],
+    ) -> bool:
+        if docs:
+            self.docs = ensure_list(docs)
+        if not self.docs:
+            raise LexosException("No documents provided for splitting.")
+
+        self.chunks = []
+        self._set_attributes(
+            n=n,
+            newline=newline,
+            overlap=overlap,
+            by_bytes=by_bytes if by_bytes is not None else self.by_bytes,
+            merge_threshold=merge_threshold,
+            merge_final=merge_final,
+            delimiter=delimiter,
+            pad=pad,
+        )
+
+        if chunksize:
+            self.chunksize = chunksize
+
+        if names:
+            self.names = ensure_list(names)
+        elif file:
+            self.names = [Path(name).stem for name in ensure_list(docs)]
+        else:
+            self.names = [
+                f"doc{str(i).zfill(self.pad)}" for i in range(1, len(self.docs) + 1)
+            ]
+
+        return isinstance(self.n, int)
+
+    def _split_doc(self, doc: Path | str, split_by_num: bool, file: bool) -> list[str]:
+        return (
+            self._process_file(doc, n=split_by_num)
+            if file
+            else self._process_buffer(doc, n=split_by_num)
+        )
+
+    def _get_milestone_text(self, doc: Path | str, file: bool) -> str:
+        if not file:
+            return doc
+        try:
+            with open(doc, "r", newline="") as f:
+                return f.read()
+        except BaseException as e:
+            raise LexosException(e)
+
+    def _build_milestone_chunks(
+        self,
+        text: str,
+        milestones: list[StringSpan],
+        keep_spans: Optional[bool | str],
+    ) -> list[str]:
+        chunks: list[str] = []
+        start = 0
+        for span in milestones:
+            end = span.start
+            chunk = text[start:end]
+            if keep_spans == "preceding":
+                chunk = chunk + text[span.start : span.end + 1]
+            chunks.append(chunk)
+            start = span.end + 1
+
+        last_chunk = text[start:]
+        if keep_spans == "following" and milestones:
+            for idx in range(1, len(chunks)):
+                milestone_text = text[
+                    milestones[idx - 1].start : milestones[idx - 1].end + 1
+                ]
+                chunks[idx] = milestone_text + chunks[idx]
+            last_span = milestones[-1]
+            last_chunk = text[last_span.start : last_span.end + 1] + last_chunk
+
+        chunks.append(last_chunk)
+        return chunks
+
     @validate_call
     def split(
         self,
@@ -517,45 +582,26 @@ class TextCutter(BaseModel, validate_assignment=True):
         Returns:
             list[list[str]]: A list of chunked strings.
         """
-        if docs:
-            self.docs = ensure_list(docs)
-        if not self.docs:
-            raise LexosException("No documents provided for splitting.")
-        self.chunks = []
-        self._set_attributes(
+        split_by_num = self._prepare_split(
+            docs=docs,
+            chunksize=chunksize,
+            names=names,
+            delimiter=delimiter,
+            pad=pad,
             n=n,
             newline=newline,
             overlap=overlap,
-            by_bytes=by_bytes if by_bytes is not None else self.by_bytes,
+            by_bytes=by_bytes,
+            file=file,
             merge_threshold=merge_threshold,
             merge_final=merge_final,
-            delimiter=delimiter,
-            pad=pad,
         )
-        if chunksize:
-            self.chunksize = chunksize
-        if names:
-            self.names = ensure_list(names)
-        elif file:
-            self.names = [Path(name).stem for name in ensure_list(docs)]
-        else:
-            self.names = [
-                f"doc{str(i).zfill(self.pad)}" for i in range(1, len(self.docs) + 1)
-            ]
+
+        threshold = self.chunksize * self.merge_threshold
         for doc in self.docs:
-            split_by_num = False
-            if isinstance(self.n, int):
-                split_by_num = True
-            chunks = (
-                self._process_file(doc, n=split_by_num)
-                if file
-                else self._process_buffer(doc, n=split_by_num)
-            )
-            # Calculate the threshold here.
-            threshold = self.chunksize * self.merge_threshold
+            chunks = self._split_doc(doc, split_by_num, file)
             if chunks and (self.merge_final is True or len(chunks[-1]) < threshold):
                 chunks = list(self._merge_final_chunks(chunks))
-            # Apply overlap if specified
             if self.overlap and chunks:
                 chunks = self._apply_overlap(chunks)
             self.chunks.append(chunks)
@@ -607,45 +653,10 @@ class TextCutter(BaseModel, validate_assignment=True):
                 f"doc{str(i).zfill(self.pad)}" for i in range(1, len(self.docs) + 1)
             ]
         for doc in self.docs:
-            text = doc
-            if file:
-                try:
-                    with open(doc, "r", newline="") as f:
-                        text = f.read()
-                except BaseException as e:
-                    raise LexosException(e)
-            chunks = []
-            start = 0
-            for i, span in enumerate(milestones):
-                end = span.start
-                # Preceding: milestone text goes at end of previous chunk
-                if keep_spans == "preceding":
-                    chunk = text[start:end] + text[span.start : span.end + 1]
-                    chunks.append(chunk)
-                # Following: milestone text goes at start of next chunk
-                elif keep_spans == "following":
-                    chunk = text[start:end]
-                    # Store the milestone text to prepend to the next chunk
-                    chunks.append(chunk)
-                else:
-                    chunk = text[start:end]
-                    chunks.append(chunk)
-                start = span.end + 1
-            # Last chunk
-            last_chunk = text[start:]
-            if keep_spans == "following" and milestones:
-                # Prepend each milestone text to the next chunk (except the first chunk)
-                for idx in range(1, len(chunks)):
-                    milestone_text = text[
-                        milestones[idx - 1].start : milestones[idx - 1].end + 1
-                    ]
-                    chunks[idx] = milestone_text + chunks[idx]
-                # Also prepend the last milestone to the last chunk
-                last_span = milestones[-1]
-                last_chunk = text[last_span.start : last_span.end + 1] + last_chunk
-            chunks.append(last_chunk)
+            text = self._get_milestone_text(doc, file)
+            chunks = self._build_milestone_chunks(text, milestones, keep_spans)
             if strip:
-                chunks = [doc.strip() for doc in chunks]
+                chunks = [chunk.strip() for chunk in chunks]
             self.chunks.append(chunks)
 
         return self.chunks

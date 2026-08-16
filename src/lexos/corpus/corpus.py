@@ -1,7 +1,7 @@
 """corpus.py.
 
-Last updated: December 27, 2025
-Last tested: December 27, 2025
+Last updated: August 15, 2026
+Last tested: August 15, 2026
 
 This code is designed to work by default with UUID4 for the ID field, which is a universally unique identifier. UUID7 is a better choice but does not yet have full support in the Python standard library and Pydantic. Once that takes place, it can be easily changed in the Record model. Alternaively, the ID can be set to an incrementing integer with `id_type="integer"`.
 
@@ -19,14 +19,12 @@ import shutil
 import uuid
 from collections import Counter
 from collections.abc import Iterable
-from functools import cached_property
 from pathlib import Path
 from typing import Any, Optional
 
 import pandas as pd
 import srsly
 from pydantic import (
-    UUID4,
     BaseModel,
     ConfigDict,
     Field,
@@ -79,6 +77,9 @@ class Corpus(BaseModel):
 
     def __init__(self, **data):
         """Initialise the Corpus with a data directory and a metadata file."""
+        # Allow Path input for corpus_dir while preserving the model's string field.
+        if "corpus_dir" in data and isinstance(data["corpus_dir"], Path):
+            data["corpus_dir"] = str(data["corpus_dir"])
         super().__init__(**data)
         corpus_dir = Path(self.corpus_dir)
         Path(corpus_dir / "data").mkdir(parents=True, exist_ok=True)
@@ -239,8 +240,11 @@ class Corpus(BaseModel):
             str: A unique ID for the record.
         """
         if type == "integer":
-            # Generate an integer ID
-            return max(self.records.keys(), default=0) + 1
+            # Generate an integer ID from existing numeric keys.
+            integer_ids = [
+                int(key) for key in self.records.keys() if str(key).isdigit()
+            ]
+            return max(integer_ids, default=0) + 1
         elif type == "uuid4":
             # Generate initial UUID
             new_id = str(uuid.uuid4())
@@ -318,29 +322,169 @@ class Corpus(BaseModel):
         from pathlib import Path
         from uuid import UUID
 
-        sanitized = {}
-        for key, value in metadata.items():
-            if isinstance(value, UUID):
-                sanitized[key] = str(value)
-            elif isinstance(value, (datetime, date)):
-                sanitized[key] = value.isoformat()
-            elif isinstance(value, Path):
-                sanitized[key] = str(value)
-            elif isinstance(value, dict):
-                sanitized[key] = self._sanitize_metadata(value)  # Recursive
-            elif isinstance(value, list):
-                sanitized[key] = [
-                    self._sanitize_metadata({"item": item})["item"]
-                    if isinstance(item, dict)
-                    else str(item)
-                    if isinstance(item, (UUID, datetime, date, Path))
-                    else item
-                    for item in value
-                ]
-            else:
-                sanitized[key] = value
+        def sanitize_value(value: Any) -> Any:
+            """Sanitize a single value for JSON serialization.
 
-        return sanitized
+            Args:
+                value: The value to sanitize
+
+            Returns:
+                The sanitized value, which is JSON-serializable
+            """
+            if isinstance(value, dict):
+                return self._sanitize_metadata(value)
+            if isinstance(value, list):
+                return [sanitize_value(item) for item in value]
+            if isinstance(value, (UUID, Path)):
+                return str(value)
+            if isinstance(value, (datetime, date)):
+                return value.isoformat()
+            return value
+
+        return {key: sanitize_value(value) for key, value in metadata.items()}
+
+    def _normalize_content_items(
+        self, content: Doc | Record | str | list[Doc | Record | str]
+    ) -> list[Doc | Record | str]:
+        """Normalize add content into a list of record items."""
+        if isinstance(content, (Doc, Record, str)):
+            return [content]
+        return list(content)
+
+    def _create_record(
+        self,
+        item: Doc | Record | str,
+        record_id: str,
+        name: Optional[str],
+        is_active: Optional[bool],
+        model: Optional[str],
+        extensions: Optional[list[str]],
+        metadata: Optional[dict[str, Any]],
+    ) -> Record:
+        """Create a Record from content or return an existing Record."""
+        if isinstance(item, Record):
+            if item.id and str(item.id) in self.records:
+                raise LexosException(
+                    f"Record with ID {item.id} already exists in the Corpus."
+                )
+            return item
+
+        record_kwargs = dict(
+            id=record_id,
+            name=name,
+            is_active=is_active,
+            content=item,
+            model=model,
+            data_source=None,
+        )
+        if extensions is not None:
+            record_kwargs["extensions"] = extensions
+        if metadata is not None:
+            record_kwargs["meta"] = metadata
+        return Record(**record_kwargs)
+
+    def _normalize_ids(
+        self,
+        id: Optional[str | list[str]] = None,
+        name: Optional[str | list[str]] = None,
+    ) -> list[str]:
+        """Normalize ID and name inputs into a list of record IDs."""
+        if not id and not name:
+            raise LexosException("Must provide either an ID or a name.")
+
+        if isinstance(id, str):
+            ids = [id]
+        elif isinstance(id, list):
+            ids = id
+        else:
+            ids = []
+
+        if name and not id:
+            if isinstance(name, str):
+                name = [name]
+            ids = []
+            for n in name:
+                ids.extend(self._get_by_name(n))
+
+        return ids
+
+    def _load_record_by_id(self, id: str) -> Record:
+        """Load a record from memory or disk by ID."""
+        if id in self.records:
+            return self.records[id]
+        record = self.records[id]
+        return record._from_disk(
+            record.meta["filepath"], record.model, self.model_cache
+        )
+
+    def _remove_record_by_id(self, id: str) -> None:
+        """Remove a single record from the corpus."""
+        entry = self.records.pop(id)
+        if entry.name not in self.names:
+            raise LexosException(
+                f"Record with name {entry.name} does not exist in the Corpus."
+            )
+        self.names[entry.name].remove(str(entry.id))
+        if not self.names[entry.name]:
+            self.names.pop(entry.name)
+
+    def _filter_stats_records(self, active_only: bool) -> list[Record]:
+        """Filter records for statistics computation.
+
+        Args:
+            active_only (bool): Whether to include only active records.
+
+        Returns:
+            list[Record]: The filtered list of records.
+        """
+        if active_only:
+            return [record for record in self.records.values() if record.is_active]
+        return list(self.records.values())
+
+    def _build_stats_token_list(
+        self, records: list[Record], type: str
+    ) -> list[tuple[str, str, list[str]]]:
+        """Build a list of tokens for statistics computation.
+
+        Args:
+            records (list[Record]): The list of records to process.
+            type (str): The type of statistics to compute. Can be "tokens" or "characters".
+
+        Returns:
+            list[tuple[str, str, list[str]]]: The list of tokens for each record.
+        """
+        if type == "tokens":
+            return [
+                (str(record.id), record.name, self._get_token_strings(record))
+                for record in records
+            ]
+
+        if type == "characters":
+            return [
+                (
+                    str(record.id),
+                    record.name,
+                    list(record.content.text)
+                    if record.is_parsed
+                    else list(record.content),
+                )
+                for record in records
+            ]
+
+        raise LexosException(f"Unsupported stats type: {type}")
+
+    def _get_token_strings(self, record: Record) -> list[str]:
+        """Get the token strings from a Record.
+
+        Args:
+            record (Record): The record to extract token strings from.
+
+        Returns:
+            list[str]: The list of token strings.
+        """
+        if record.is_parsed:
+            return [token.text for token in record.content]
+        return record.content.split()
 
     @validate_call(config=model_config)
     def add(
@@ -366,50 +510,26 @@ class Corpus(BaseModel):
             id_type (str): The type of ID to generate. Can be "integer" or "uuid4". Defaults to "uuid4".
             cache (bool): Whether or not to cache the record.
         """
-        # Sanitize metadata to ensure JSON-serializable types
         if metadata is not None:
             metadata = self._sanitize_metadata(metadata)
 
-        # If content is not a list, treat it as a single item
-        if isinstance(content, (Doc, Record, str)):
-            items = [content]
-        else:
-            items = list(content)
+        items = self._normalize_content_items(content)
 
         for item in items:
-            # Generate a unique ID for the record
             new_id = self._generate_unique_id(type=id_type)
+            record = self._create_record(
+                item=item,
+                record_id=new_id,
+                name=name,
+                is_active=is_active,
+                model=model,
+                extensions=extensions,
+                metadata=metadata,
+            )
 
-            # Keep generating new UUIDs until one is not in the records dic
-            # while new_id in self.records:
-            #    new_id = str(uuid.uuid4())
-
-            if isinstance(item, Record):
-                record = item
-                if record.id and str(record.id) in self.records:
-                    raise LexosException(
-                        f"Record with ID {record.id} already exists in the Corpus."
-                    )
-            else:
-                record_kwargs = dict(
-                    id=new_id,
-                    name=name,  # Replaces self._ensure_unique_name(name),
-                    is_active=is_active,
-                    content=item,
-                    model=model,
-                    data_source=None,
-                )
-                if extensions is not None:
-                    record_kwargs["extensions"] = extensions
-                if metadata is not None:
-                    record_kwargs["meta"] = metadata
-                record = Record(**record_kwargs)
-
-            # Add arbitrary metadata properties
             if metadata:
                 record.meta.update(metadata)
 
-            # Add the record to the Corpus
             self._add_to_corpus(record, cache=cache)
 
     def _add_to_corpus_without_state_update(
@@ -629,42 +749,8 @@ class Corpus(BaseModel):
         Returns:
             Record | list[Record]: The record(s) with the given ID(s) or name(s).
         """
-        # Ensure either id or name is provided
-        if not id and not name:
-            raise LexosException(
-                "Must provide either an ID or a name to remove a record."
-            )
-
-        # Ensure id is a list
-        if isinstance(id, str):
-            ids = [id]
-        elif isinstance(id, list):
-            ids = id
-        else:
-            ids = []
-
-        # If name is provided, get the IDs from the name(s)
-        if name and not id:
-            if isinstance(name, str):
-                name = [name]
-            ids = []
-            for n in name:
-                ids.extend(self._get_by_name(n))
-
-        result = []
-        for id in ids:
-            # If the id is in the Corpus cache, return the record
-            if id in self.records.keys():
-                result.append(self.records[id])
-
-            # Otherwise, load the record from file
-            else:
-                record = self.records[id]
-                result.append(
-                    record._from_disk(
-                        record.meta["filepath"], record.model, self.model_cache
-                    )
-                )
+        ids = self._normalize_ids(id=id, name=name)
+        result = [self._load_record_by_id(record_id) for record_id in ids]
         if len(result) == 1:
             return result[0]
         return result
@@ -679,61 +765,35 @@ class Corpus(BaseModel):
         max_n_terms: int | None = None,
         token_list: list[tuple[str, str, list[str]]] = None,
     ) -> CorpusStats:
-        """Get the Corpus statistics.
+        """Get statistics for the Corpus.
 
         Args:
-            active_only (bool): If True, only include active records in the statistics. Defaults to True.
-            type (str): The type of statistics to return. Can be "tokens" or "characters". Defaults to "tokens".
-            min_df (int | None): Minimum record frequency for terms to be included in the statistics. Defaults to None.
-            max_df (int | None): Maximum record frequency for terms to be included in the statistics. Defaults to None.
+            active_only (bool): Whether to include only active records. Defaults to True.
+            type (str): The type of statistics to compute. Can be "tokens" or "characters". Defaults to "tokens".
+            min_df (int | None): Minimum document frequency for terms. Defaults to None.
+            max_df (int | None): Maximum document frequency for terms. Defaults to None.
             max_n_terms (int | None): Maximum number of terms to include in the statistics. Defaults to None.
-            token_list (list[tuple[str, str, list[str]]]): A list of tuples containing the record ID, name, and tokens. If not provided, it will be generated from the records.
+            token_list (list[tuple[str, str, list[str]]] | None): Optional pre-computed list of tokens for each record.
 
         Returns:
-            CorpusStats: An object containing the Corpus statistics.
+            CorpusStats: An object containing the computed statistics for the Corpus.
         """
+        if token_list is not None:
+            return CorpusStats(
+                docs=token_list,
+                min_df=min_df,
+                max_df=max_df,
+                max_n_terms=max_n_terms,
+            )
 
-        def get_token_strings(record: Record) -> list[str]:
-            """Get the token strings from a record.
-
-            Args:
-                record (Record): The Record object to get the token strings from.
-
-            Returns:
-                list[str]: A list of token strings from the record.
-            """
-            if record.is_parsed:
-                return [token.text for token in record.content]
-            # We could use xx_sent_ud_sm, but for now, split on whitespace
-            else:
-                return record.content.split()
-
-        if not token_list:
-            # Filter the records to only include active ones
-            if active_only:
-                records = [
-                    record for record in self.records.values() if record.is_active
-                ]
-            # Otherwise, include all records
-            else:
-                records = list(self.records.values())
-
-            # Get the token list from the records
-            if type == "tokens":
-                token_list = [
-                    (str(record.id), record.name, get_token_strings(record))
-                    for record in records
-                ]
-            elif type == "characters":
-                token_list = [
-                    (str(record.id), record.name, list(record.content.text))
-                    if record.is_parsed
-                    else (str(record.id), record.name, list(record.content))
-                    for record in records
-                ]
+        records = self._filter_stats_records(active_only)
+        token_list = self._build_stats_token_list(records, type)
 
         return CorpusStats(
-            docs=token_list, min_df=min_df, max_df=max_df, max_n_terms=max_n_terms
+            docs=token_list,
+            min_df=min_df,
+            max_df=max_df,
+            max_n_terms=max_n_terms,
         )
 
     @validate_call(config=model_config)
@@ -756,7 +816,9 @@ class Corpus(BaseModel):
         # Ensure that a corpus_dir exists, or create one if it doesn't
         if not corpus_dir:
             corpus_dir = Path(self.corpus_dir)
-            corpus_dir.mkdir(parents=True, exist_ok=True)
+        else:
+            corpus_dir = Path(corpus_dir)
+        corpus_dir.mkdir(parents=True, exist_ok=True)
 
         # If the path is a file, try to unpack it as a zip archive
         if Path(path).is_file():
@@ -806,56 +868,17 @@ class Corpus(BaseModel):
         id: Optional[str | list[str]] = None,
         name: Optional[str | list[str]] = None,
     ) -> None:
-        """Remove a record from the corpus by ID.
+        """Remove a record from the corpus by ID."""
+        ids = self._normalize_ids(id=id, name=name)
 
-        Args:
-            id (str | list[str]): The ID of the record to remove.
-            name (str | list[str]): The name of the record to remove.
-
-        Returns:
-            None
-        """
-        # Ensure either id or name is provided
-        if not id and not name:
-            raise LexosException(
-                "Must provide either an ID or a name to remove a record."
-            )
-
-        # Ensure id is a list
-        if isinstance(id, str):
-            ids = [id]
-        elif isinstance(id, list):
-            ids = id
-        else:
-            ids = []
-
-        # If name is provided, get the IDs from the name(s)
-        if name and not id:
-            if isinstance(name, str):
-                name = [name]
-            ids = []
-            for n in name:
-                ids.extend(self._get_by_name(n))
-
-        for id in ids:
-            # Remove the entry from the records dictionary and names list
+        for record_id in ids:
             try:
-                entry = self.records.pop(id)
+                self._remove_record_by_id(record_id)
             except KeyError:
                 raise LexosException(
-                    f"Record with ID {id} does not exist in the Corpus."
-                )
-            try:
-                if entry.name in self.names:
-                    self.names[entry.name].remove(str(entry.id))
-                    if not self.names[entry.name]:  # Remove empty lists
-                        self.names.pop(entry.name)
-            except KeyError:
-                raise LexosException(
-                    f"Record with name {entry.name} does not exist in the Corpus."
+                    f"Record with ID {record_id} does not exist in the Corpus."
                 )
 
-        # Update the Corpus state after removing the record
         self._update_corpus_state()
 
     @validate_call(config=model_config)
@@ -931,127 +954,28 @@ class Corpus(BaseModel):
             pd.DataFrame: A dataframe representing the records in the Corpus.
         """
         rows = []
-        for record in self.records.values():  # <- Fix the duplicate
+        for record in self.records.values():
             if record is None:  # Skip None records
                 continue
 
-            # Get model categories.
-            # NOTE: We avoid calling `model_dump()` on `Record` objects that are
-            # unparsed because Pydantic may attempt to evaluate computed fields
-            # while creating the serialized dict. Several computed properties on
-            # `Record` (e.g., `terms`, `tokens`, `num_terms`, and
-            # `num_tokens`) raise `LexosException("Record is not parsed.")`
-            # when the record is not parsed. If `model_dump()` evaluates those
-            # properties for an unparsed record, it will raise and cause
-            # `to_df()` to fail. Therefore:
-            #  - For parsed records, we call `record.model_dump()` and use the
-            #    model-dump output (it includes computed fields safely).
-            #  - For unparsed records, we *do not* call `model_dump()`; we
-            #    instead build a minimal, safe `row` from stored fields and
-            #    set any computed-like values to safe defaults (empty list,
-            #    0, or empty string). This produces robust DataFrame output
-            #    for corpora that contain a mix of parsed and unparsed
-            #    records without triggering computed-field side-effects.
-            fields_that_may_raise = {
-                "terms",
-                "tokens",
-                "num_terms",
-                "num_tokens",
-                "text",
-            }
-            # Build a dump_exclude set to prevent model_dump from computing
-            # sensitive fields on unparsed records
-            dump_exclude = set(exclude)
-            if hasattr(record, "is_parsed") and record.is_parsed:
-                # Parsed records: safely model_dump, excluding any user-requested fields
-                row = record.model_dump(exclude=list(dump_exclude))
+            # Get parsed status of the record to determine how to build the row
+            parsed = getattr(record, "is_parsed", False)
+            if parsed:
+                row = record.model_dump(exclude=list(exclude))
             else:
-                # Unparsed records: avoid model_dump to prevent computed property evaluation
-                base_fields = [
-                    "id",
-                    "name",
-                    "is_active",
-                    "content",
-                    "model",
-                    "extensions",
-                    "data_source",
-                    "meta",
-                ]
-                row = {}
-                for f in base_fields:
-                    if f in exclude:
-                        continue
-                    try:
-                        value = getattr(record, f, None)
-                    except Exception:
-                        # Defensive: if getattr triggers an error, skip and set None
-                        value = None
-                    # Serialize Doc-like content into text rather than bytes to keep DataFrame friendly
-                    if f == "content" and value is not None:
-                        try:
-                            from spacy.tokens import Doc
+                row = self._build_unparsed_row(record, exclude)
 
-                            if isinstance(value, Doc):
-                                value = value.text
-                        except Exception:
-                            pass
-                    # Ensure id is serialized to string to match model_dump output for parsed records
-                    if f == "id" and value is not None:
-                        try:
-                            value = str(value)
-                        except Exception:
-                            pass
-                    # Sanitize meta similar to model_dump
-                    if f == "meta" and value is not None:
-                        try:
-                            value = record._sanitize_metadata(value)
-                        except Exception:
-                            pass
-                    row[f] = value
+            # Patch the row with computed fields and metadata
+            row = self._patch_df_row_for_record(row, record, exclude, parsed)
+            row = self._add_metadata_to_row(row, exclude)
 
-            # Patch for unparsed records: fill terms/tokens/num_terms/num_tokens/text
-            # Only if those fields are not excluded
-            if "terms" not in exclude:
-                if hasattr(record, "is_parsed") and record.is_parsed:
-                    row["terms"] = list(record.terms)
-                else:
-                    row["terms"] = []
-            if "tokens" not in exclude:
-                if hasattr(record, "is_parsed") and record.is_parsed:
-                    row["tokens"] = record.tokens
-                else:
-                    row["tokens"] = []
-            if "num_terms" not in exclude:
-                if hasattr(record, "is_parsed") and record.is_parsed:
-                    row["num_terms"] = record.num_terms()
-                else:
-                    row["num_terms"] = 0
-            if "num_tokens" not in exclude:
-                if hasattr(record, "is_parsed") and record.is_parsed:
-                    row["num_tokens"] = record.num_tokens()
-                else:
-                    row["num_tokens"] = 0
-            if "text" not in exclude:
-                if hasattr(record, "is_parsed") and record.is_parsed:
-                    row["text"] = record.text
-                else:
-                    row["text"] = ""
-
-            # Add metadata categories, respecting exclude list
-            metadata = row.pop("meta", {})
-            for key, value in metadata.items():
-                # Exclude metadata fields if requested
-                if key in exclude or f"metadata_{key}" in exclude:
-                    continue
-                if key in row:
-                    key = f"metadata_{key}"
-                row[key] = value
-
-            # Append the row to the rows list
             rows.append(row)
 
         # Create a DataFrame from the rows
-        if rows:  # Only create DataFrame if we have data
+        if len(rows) == 0:
+            # Return empty DataFrame with basic columns if no records
+            return pd.DataFrame(columns=["id", "name", "is_active"])
+        else:
             df = pd.DataFrame(rows)
             # Fill NaN with appropriate values based on column dtype
             fill_values = {}
@@ -1063,11 +987,89 @@ class Corpus(BaseModel):
                 else:
                     fill_values[col] = ""
 
-            df = df.fillna(fill_values)  # Use assignment instead of inplace
-            return df
-        else:
-            # Return empty DataFrame with basic columns if no records
-            return pd.DataFrame(columns=["id", "name", "is_active"])
+            return df.fillna(fill_values)  # Use assignment instead of inplace
+
+    def _build_unparsed_row(self, record: Record, exclude: list[str]) -> dict[str, Any]:
+        """Build a row for an unparsed record.
+
+        Args:
+            record (Record): The unparsed record.
+            exclude (list[str]): A list of fields to exclude from the row.
+
+        Returns:
+            dict[str, Any]: A dictionary representing the row for the unparsed record.
+        """
+        base_fields = [
+            "id",
+            "name",
+            "is_active",
+            "content",
+            "model",
+            "extensions",
+            "data_source",
+            "meta",
+        ]
+        row = {}
+        for f in base_fields:
+            if f in exclude:
+                continue
+            value = getattr(record, f, None)
+            if f == "content" and isinstance(value, Doc):
+                value = value.text
+            if f == "id" and value is not None:
+                value = str(value)
+            if f == "meta" and value is not None:
+                value = record._sanitize_metadata(value)
+            row[f] = value
+        return row
+
+    def _patch_df_row_for_record(
+        self, row: dict[str, Any], record: Record, exclude: list[str], parsed: bool
+    ) -> dict[str, Any]:
+        """Patch the DataFrame row with computed fields from the record.
+
+        Args:
+            row (dict[str, Any]): The initial row dictionary.
+            record (Record): The record to extract computed fields from.
+            exclude (list[str]): A list of fields to exclude from the row.
+            parsed (bool): Whether the record is parsed.
+
+        Returns:
+        dict[str, Any]: The patched row dictionary with computed fields.
+        """
+        computed = [
+            ("terms", lambda r: list(r.terms), []),
+            ("tokens", lambda r: r.tokens, []),
+            ("num_terms", lambda r: r.num_terms(), 0),
+            ("num_tokens", lambda r: r.num_tokens(), 0),
+            ("text", lambda r: r.text, ""),
+        ]
+        for field, getter, default in computed:
+            if field in exclude:
+                continue
+            row[field] = getter(record) if parsed else default
+        return row
+
+    def _add_metadata_to_row(
+        self, row: dict[str, Any], exclude: list[str]
+    ) -> dict[str, Any]:
+        """Add metadata fields to the DataFrame row, avoiding conflicts with existing fields.
+
+        Args:
+            row (dict[str, Any]): The initial row dictionary.
+            exclude (list[str]): A list of fields to exclude from the row.
+
+        Returns:
+            dict[str, Any]: The row dictionary with metadata fields added, avoiding conflicts.
+        """
+        metadata = row.pop("meta", {})
+        for key, value in metadata.items():
+            if key in exclude or f"metadata_{key}" in exclude:
+                continue
+            if key in row:
+                key = f"metadata_{key}"
+            row[key] = value
+        return row
 
     # =============================================================================
     # COMMUNICATION ARCHITECTURE - Phase 1.5
