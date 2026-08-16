@@ -27,6 +27,8 @@ coverage.xml
 htmlcov/
 corpus_metadata.json
 corpus.db
+.complexipy_cache
+reports/
 
 # Jupyter Notebook
 .ipynb_checkpoints

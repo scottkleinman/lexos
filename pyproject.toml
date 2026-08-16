@@ -81,6 +81,7 @@ dev = [
     "ipykernel>=6.29.5",
     "pre-commit>=4.5.0",
     "nbconvert>=7.17.1",
+    "complexipy>=7.0.1",
 ]
 
 [tool.pytest.ini_options]
