@@ -1,8 +1,8 @@
 """test_tags.py.
 
-Coverage: 100%.
+Coverage: 99%. Missing: 497
 
-Last Tested: 2026-06-26
+Last Tested: 2026-16-26
 
 Test suite for lexos.scrubber.tags module.
 
@@ -458,6 +458,53 @@ class TestReplaceAttribute:
         )
         expected = (
             '<div class="replaced">Target</div><div class="replaced b">Other</div>'
+        )
+        assert normalize_output(processed, "html") == normalize_output(expected, "html")
+
+    def test_replace_attribute_with_list_replace_value(self):
+        """Ensures replace_value can be provided as a list of tokens."""
+        html = '<p class="bold italic">Test</p>'
+        processed = replace_attribute(
+            html,
+            "p",
+            "class",
+            "class",
+            mode="html",
+            attribute_value="bold",
+            replace_value=["happy"],
+            matcher_type="contains",
+        )
+        expected = '<p class="happy italic">Test</p>'
+        assert normalize_output(processed, "html") == normalize_output(expected, "html")
+
+    def test_replace_attribute_without_attribute_value(self):
+        """Ensures replace_value is applied when no attribute_value is provided."""
+        html = '<div class="keep this">Text</div>'
+        processed = replace_attribute(
+            html,
+            "div",
+            "class",
+            "class",
+            mode="html",
+            replace_value="replaced",
+            matcher_type="exact",
+        )
+        expected = '<div class="replaced">Text</div>'
+        assert normalize_output(processed, "html") == normalize_output(expected, "html")
+
+    def test_replace_attribute_skips_elements_without_attribute(self):
+        """Ensures elements missing the target attribute are skipped."""
+        html = '<div id="target" class="a">First</div><div id="other">Second</div>'
+        processed = replace_attribute(
+            html,
+            "div",
+            "class",
+            "data-class",
+            mode="html",
+            attribute_filter="id",
+        )
+        expected = (
+            '<div id="target" data-class="a">First</div><div id="other">Second</div>'
         )
         assert normalize_output(processed, "html") == normalize_output(expected, "html")
 

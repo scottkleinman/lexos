@@ -1,7 +1,7 @@
 """test_parallel_loader.py.
 
-Coverage: 98%. Missing: 56, 65, 151, 154, 274-275, 730
-Last Update: August 9, 2026
+Coverage: 98%. Missing: 57, 66, 152, 155, 275-276
+Last Update: August 16, 2026
 
 Tests for the ParallelLoader class including thread safety, concurrent operations,
 progress tracking, and error handling.
@@ -12,6 +12,7 @@ import tempfile
 import time
 import zipfile
 from pathlib import Path
+from queue import Queue
 from unittest.mock import Mock, patch
 
 import puremagic
@@ -1447,6 +1448,100 @@ class TestParallelLoaderStreaming:
             assert len(results) == 3
             # Callback should have been called
             assert len(callback_calls) > 0
+
+    def test_maybe_update_progress_calls_update(self):
+        """Test progress update helper only updates when enabled."""
+        loader = ParallelLoader(show_progress=True)
+        progress = Mock()
+
+        loader._maybe_update_progress(progress, load_task=1)
+
+        progress.update.assert_called_once_with(1, advance=1)
+
+    def test_maybe_call_callback_invokes_callback(self):
+        """Test callback helper invokes the configured callback."""
+        callback_calls = []
+
+        def callback(path, processed, total):
+            callback_calls.append((path, processed, total))
+
+        loader = ParallelLoader(show_progress=False, callback=callback)
+        loader._maybe_call_callback("/tmp/test.txt", 2, 5)
+
+        assert callback_calls == [("/tmp/test.txt", 2, 5)]
+
+    def test_process_streaming_future_success_and_failure(self):
+        """Test processing a completed future for success and failure paths."""
+        loader = ParallelLoader(show_progress=True)
+        progress = Mock()
+        callback = Mock()
+        loader.callback = callback
+        queue = Queue()
+
+        successful_future = Mock()
+        successful_future.result.return_value = [
+            ("/tmp/test.txt", "test", "text/plain", "content", None)
+        ]
+        failed_future = Mock()
+        failed_future.result.side_effect = Exception("boom")
+
+        future_to_path = {successful_future: "/tmp/test.txt"}
+        processed = loader._process_streaming_future(
+            successful_future,
+            future_to_path,
+            queue,
+            progress,
+            load_task=1,
+            total_files=1,
+            processed=0,
+        )
+
+        assert processed == 1
+        assert queue.get() == (
+            "/tmp/test.txt",
+            "test",
+            "text/plain",
+            "content",
+            None,
+        )
+        progress.update.assert_called_once_with(1, advance=1)
+        callback.assert_called_once_with("/tmp/test.txt", 1, 1)
+
+        future_to_path = {failed_future: "/tmp/test.txt"}
+        progress.reset_mock()
+        processed = loader._process_streaming_future(
+            failed_future,
+            future_to_path,
+            queue,
+            progress,
+            load_task=1,
+            total_files=1,
+            processed=1,
+        )
+
+        assert processed == 2
+        error_result = queue.get()
+        assert error_result[0] == "/tmp/test.txt"
+        assert error_result[1] == "test"
+        assert error_result[2] is None
+        assert isinstance(error_result[4], Exception)
+        progress.update.assert_called_once_with(1, advance=1)
+
+    def test_stream_results_stops_progress_and_joins_thread(self):
+        """Test that stream_results yields queued items and performs cleanup."""
+        loader = ParallelLoader(show_progress=True)
+        queue = Queue()
+        queue.put(("/tmp/test.txt", "test", "text/plain", "content", None))
+        queue.put(None)
+
+        progress = Mock()
+        worker_thread = Mock()
+
+        results = list(loader._stream_results(queue, progress, worker_thread))
+
+        assert results == [("/tmp/test.txt", "test", "text/plain", "content", None)]
+        progress.stop.assert_called_once()
+        worker_thread.join.assert_called_once_with(timeout=1.0)
 
     def test_load_with_progress_bar_setup(self):
         """Test load() with progress bar initialization (lines 609-617)."""

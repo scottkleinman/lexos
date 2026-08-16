@@ -1,7 +1,7 @@
 """parallel_loader.py.
 
-Last Update: August 9, 2026
-Last Tested: August 9, 2026
+Last Update: August 16, 2026
+Last Tested: August 16, 2026
 """
 
 import mimetypes
@@ -10,6 +10,7 @@ import threading
 import zipfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path, PurePosixPath
+from queue import Empty, Queue
 from typing import Callable, Generator, Optional, Self
 
 import puremagic
@@ -486,6 +487,54 @@ class ParallelLoader(BaseLoader):
         # Sort by priority, with unknown types at the end
         return sorted(file_list, key=lambda x: type_priority.get(x[1], 999))
 
+    def _maybe_update_progress(self, progress, load_task):
+        if self.show_progress and progress and load_task is not None:
+            progress.update(load_task, advance=1)
+
+    def _maybe_call_callback(self, path: str, processed: int, total_files: int) -> None:
+        if self.callback:
+            self.callback(path, processed, total_files)
+
+    def _process_streaming_future(
+        self,
+        future,
+        future_to_path: dict,
+        result_queue: Queue,
+        progress,
+        load_task,
+        total_files: int,
+        processed: int,
+    ) -> int:
+        path = future_to_path[future]
+        try:
+            results = future.result()
+            for result in results:
+                result_queue.put(result)
+            processed += 1
+            self._maybe_update_progress(progress, load_task)
+            self._maybe_call_callback(path, processed, total_files)
+        except Exception as e:
+            result_queue.put((str(path), Path(path).stem, None, "", e))
+            processed += 1
+            self._maybe_update_progress(progress, load_task)
+        return processed
+
+    def _stream_results(self, result_queue: Queue, progress, worker_thread):
+        try:
+            while True:
+                try:
+                    result = result_queue.get(timeout=0.1)
+                except Empty:
+                    continue
+
+                if result is None:  # Sentinel value for completion
+                    break
+                yield result
+        finally:
+            if self.show_progress and progress:
+                progress.stop()
+            worker_thread.join(timeout=1.0)
+
     @validate_call(config=model_config)
     def load(self, paths: Path | str | list[Path | str]) -> None:
         """Load files in parallel with batching and progress tracking.
@@ -627,8 +676,6 @@ class ParallelLoader(BaseLoader):
                 - text (str): The document text content (empty string if error)
                 - error (Optional[Exception]): Any error that occurred during loading
         """
-        from queue import Empty, Queue
-
         paths = ensure_list(paths)
 
         # Step 1: Prepare file list (expand directories)
@@ -696,38 +743,15 @@ class ParallelLoader(BaseLoader):
                         }
 
                         for future in as_completed(future_to_path):
-                            path = future_to_path[future]
-                            try:
-                                results = future.result()
-                                # Put each document result in queue
-                                for result in results:
-                                    result_queue.put(result)
-                                processed += 1
-
-                                # Update progress
-                                if (
-                                    self.show_progress
-                                    and progress
-                                    and load_task is not None
-                                ):
-                                    progress.update(load_task, advance=1)
-
-                                # Call custom callback if provided
-                                if self.callback:
-                                    self.callback(path, processed, total_files)
-
-                            except Exception as e:
-                                # Put error result in queue
-                                result_queue.put(
-                                    (str(path), Path(path).stem, None, "", e)
-                                )
-                                processed += 1
-                                if (
-                                    self.show_progress
-                                    and progress
-                                    and load_task is not None
-                                ):
-                                    progress.update(load_task, advance=1)
+                            processed = self._process_streaming_future(
+                                future,
+                                future_to_path,
+                                result_queue,
+                                progress,
+                                load_task,
+                                total_files,
+                                processed,
+                            )
 
             # Signal completion
             result_queue.put(None)
@@ -739,17 +763,4 @@ class ParallelLoader(BaseLoader):
         worker_thread.start()
 
         # Yield results as they become available
-        try:
-            while True:
-                try:
-                    result = result_queue.get(timeout=0.1)
-                    if result is None:  # Sentinel value for completion
-                        break
-                    yield result
-                except Empty:
-                    continue
-        finally:
-            # Cleanup progress bar
-            if self.show_progress and progress:
-                progress.stop()
-            worker_thread.join(timeout=1.0)
+        yield from self._stream_results(result_queue, progress, worker_thread)

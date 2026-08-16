@@ -7,8 +7,8 @@ and their attributes in HTML or XML documents.
 It supports both exact, contains, and regex matching for selectors and
 attributes, and can filter elements based on attributes and their values.
 
-Last Updated: June 26, 2026
-Last Tested: June 26, 2026
+Last Updated: August 16, 2026
+Last Tested: August 16, 2026
 """
 
 import importlib.util
@@ -126,6 +126,44 @@ def _match_elements(
         )
 
     return soup, elements
+
+
+def _compute_replacement_value(
+    old_attribute_value: str | list[str],
+    matcher_type: str,
+    attribute_value: Optional[str],
+    replace_value: Optional[str | list[str]],
+) -> str:
+    values = (
+        old_attribute_value
+        if isinstance(old_attribute_value, list)
+        else [old_attribute_value]
+    )
+    values = [str(v) for v in values if v is not None]
+
+    if replace_value is None:
+        return " ".join(values)
+
+    if isinstance(replace_value, list):
+        replacement = " ".join(str(v) for v in replace_value if v)
+    else:
+        replacement = replace_value
+
+    if matcher_type == "regex":
+        pattern = _compile_regex(attribute_value or "")
+        replaced_values = [
+            replacement if pattern.search(value) else value for value in values
+        ]
+        return " ".join(replaced_values)
+
+    if attribute_value is None:
+        return replacement
+
+    return " ".join(
+        part
+        for part in " ".join(values).replace(attribute_value, replacement).split(" ")
+        if part
+    )
 
 
 def _match_value(
@@ -450,76 +488,23 @@ def replace_attribute(
         selector, text, mode, matcher_type, old_attribute, attribute_value
     )
 
-    # Filter by attribute if specified
-    if attribute_filter:
-        if filter_value:
-            # Filter elements that have the attribute with the specific value
-            elements = [
-                el
-                for el in elements
-                if el.has_attr(attribute_filter)
-                and el[attribute_filter] == filter_value
-            ]
-        else:
-            # Filter elements that have the attribute regardless of value
-            elements = [el for el in elements if el.has_attr(attribute_filter)]
+    elements = _filter_elements_by_attribute(
+        elements, attribute_filter, filter_value, matcher_type
+    )
 
-    # Replace attributes in matching elements
     for element in elements:
-        if element.has_attr(old_attribute):
-            # NOTE: It appears that this block is not needed
-            # Only process attributes with the specific value if provided
-            # if matcher_type == "regex":
-            #     check_match = re.search(
-            #         attribute_value, " ".join(element[old_attribute])
-            #     )
-            # else:
-            #     check_match = " ".join(element[old_attribute])
-            # if attribute_value is not None and check_match is None:
-            #     continue # Never reached because check_match is always a string
+        if not element.has_attr(old_attribute):
+            continue
 
-            # Keep original value unless a replacement is specified
-            if replace_value:
-                # For debugging
-                # msg.text(
-                #     f"Detected attribute value '{attribute_value}' in '{element.name}'."
-                # )
-                # msg.text(f"Replaced '{old_attribute}' with '{new_attribute}'.")
-                # msg.text(f"Replaced '{attribute_value}' with '{replace_value}'.")
-                # If the old attribute is a string, split it into a list
-                old_attribute_str = " ".join(element[old_attribute])
-                if matcher_type == "regex":
-                    new_values = []
-                    pattern = _compile_regex(attribute_value)
-                    for value in element[old_attribute]:
-                        if pattern.search(value):
-                            new_values.append(replace_value)
-                        else:
-                            new_values.append(value)
-                    replace_value = new_values
-                else:
-                    if len(replace_value) == 1:
-                        replace_value = replace_value[0]
-                    # Use string replacement (current logic)
-                    replace_value = old_attribute_str.replace(
-                        attribute_value, replace_value
-                    ).split(" ")
+        value = _compute_replacement_value(
+            element[old_attribute], matcher_type, attribute_value, replace_value
+        )
 
-            value = (
-                replace_value if replace_value is not None else element[old_attribute]
-            )
-            if isinstance(value, list):
-                value = [str(v) for v in value if v]  # Remove empty strings
-                value = " ".join(value)
+        if old_attribute != new_attribute:
+            del element[old_attribute]
 
-            # Remove old attribute if the names are different
-            if old_attribute != new_attribute:
-                del element[old_attribute]
+        element[new_attribute] = value
 
-            # Set the new attribute with the appropriate value
-            element[new_attribute] = value
-
-    # Return the processed document
     return str(soup)
 
 
