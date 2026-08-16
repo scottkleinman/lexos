@@ -63,6 +63,7 @@ class PerformanceBenchmark:
     """Comprehensive storage backend performance testing framework."""
 
     def __init__(self):
+        """Initialize the performance benchmark framework."""
         self.results: List[BenchmarkResult] = []
         self.test_data_cache: Dict[str, List[Any]] = {}
 
@@ -85,7 +86,7 @@ class PerformanceBenchmark:
                         for _ in range(50)
                     ]
                 )
-            else:  # complex
+            else:  # Complex
                 text = " ".join(
                     [
                         "".join(random.choices(string.ascii_lowercase, k=12))
@@ -224,7 +225,7 @@ class PerformanceBenchmark:
             elif access_pattern == "random":
                 all_ids = [f"test_{i:06d}" for i in range(count * 2)]  # Larger pool
                 record_ids = random.sample(all_ids, count)
-            else:  # 'sparse'
+            else:  # Sparse
                 record_ids = [f"test_{i:06d}" for i in range(0, count * 10, 10)]
 
             # Run benchmark
@@ -715,9 +716,13 @@ class PerformanceBenchmark:
 if __name__ == "__main__":
     # Create mock storage backends for testing
     class MockFileBackend:
+        """Mock file-based storage backend for benchmarking."""
+
         pass
 
     class MockSQLiteBackend:
+        """Mock SQLite-based storage backend for benchmarking."""
+
         pass
 
     # Run benchmark

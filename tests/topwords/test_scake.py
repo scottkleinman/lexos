@@ -4,7 +4,7 @@ Tests for sCAKE keyterm extraction module.
 
 Coverage: 99%. Missing: 152, 247
 
-Last Updated: July 30, 2026
+Last Updated: August 15, 2026
 """
 
 import collections
@@ -73,6 +73,7 @@ class TestSCakeFunction:
 
     def test_scake_accepts_doc_input(self, sample_doc):
         """Doc input should produce non-empty results for valid text.
+
         We use normalize='lower' because a blank spaCy model has no lemmas.
         """
         results = scake(sample_doc, normalize="lower", topn=5)
