@@ -2,8 +2,8 @@
 
 This module is adapted from the R code from the 'see' package by Artjoms Šeļa (https://github.com/perechen/seetrees).
 
-Last Updated: August 17, 2026
-Last Tested: August 17, 2026
+Last Updated: August 18, 2026
+Last Tested: August 18, 2026
 """
 
 import re
@@ -397,6 +397,11 @@ class ScoreSummary(BaseModel):
         )
 
     def to_dataframe(self) -> pd.DataFrame:
+        """Convert the top distinctive features and their z-scores into a DataFrame.
+
+        Returns:
+            pd.DataFrame: DataFrame containing the top features and their z-scores.
+        """
         z_scores = self._z_scores()
         text_profile = z_scores.loc[self.target_text]
         top_features = (
@@ -414,6 +419,11 @@ class ScoreSummary(BaseModel):
         )
 
     def render_bar_chart(self) -> plt.Figure:
+        """Render a horizontal bar chart of the top distinctive features for the target text.
+
+        Returns:
+            plt.Figure: Matplotlib figure containing the bar chart.
+        """
         z_scores = self._z_scores()
         text_profile = z_scores.loc[self.target_text]
         top_features = (
@@ -1177,7 +1187,7 @@ class SeeTrees(BaseModel):
             distances = pdist(z_scores.to_numpy(), metric="cityblock") / n_features
 
         elif metric.lower() == "eder_delta":
-            # 1-based ranks for the features
+            # Assign 1-based ranks for the features
             ranks = np.arange(1, n_features + 1)
             # Apply Eder's descending linear weight formula
             eder_weights = -(ranks / n_features) + 1 + (1 / n_features)

@@ -3,9 +3,9 @@
 Tests for the SeeTrees class including DTM initialization, distance computation,
 visualization entry points, and error handling.
 
-Coverage: 97%. Missing: 115, 119, 272, 284, 330
+Coverage: 84%. Missing: 25, 196, 202-203, 226-227, 319, 328-329, 333, 366, 393, 427-480, 665, 742-750, 839-861, 867, 873-881, 936, 938, 954-968, 1058, 1063-1064, 1132, 1136, 1151, 1256-1260, 1318, 1323, 1332-1335
 
-Last Update: August 16, 2026
+Last Update: August 18, 2026
 """
 
 import warnings
