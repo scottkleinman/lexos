@@ -8,11 +8,14 @@ Coverage: 97%. Missing: 115, 119, 272, 284, 330
 Last Update: August 16, 2026
 """
 
+import warnings
 from unittest.mock import patch
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pytest
+from scipy.cluster.hierarchy import ClusterWarning
 
 from lexos.cluster.seetrees import SeeTrees
 from lexos.dtm import DTM
@@ -28,6 +31,26 @@ def test_seetrees_initializes_from_dtm():
     assert not st.frequencies.empty
     assert set(st.frequencies.index) == {"doc1", "doc2"}
     assert "apple" in st.frequencies.columns
+
+
+def test_seetrees_initializes_from_dtm_with_sparse_data():
+    """SeeTrees should compute distances when DTM frequencies are sparse."""
+    dtm = DTM()
+    dtm(
+        docs=[
+            ["apple", "banana"],
+            ["apple", "cherry"],
+            ["banana", "cherry"],
+            ["apple", "banana", "cherry"],
+        ],
+        labels=["doc1", "doc2", "doc3", "doc4"],
+    )
+
+    st = SeeTrees(dtm=dtm)
+    distance_table = st.compute_distances(metric="delta")
+
+    assert distance_table.shape == (4, 4)
+    assert np.allclose(np.diag(distance_table), np.zeros(4))
 
 
 def test_seetrees_initializes_from_frequency_dataframe():
@@ -93,6 +116,23 @@ def test_view_tree_plots_without_error():
         st.view_tree(k=2)
 
 
+def test_view_tree_does_not_warn_for_distance_matrix():
+    """view_tree should not warn when given a precomputed distance matrix."""
+    frequencies = pd.DataFrame(
+        {"word1": [1.0, 0.5], "word2": [0.2, 0.8]},
+        index=["doc1", "doc2"],
+    )
+    st = SeeTrees(frequencies=frequencies)
+    st.compute_distances(metric="cosine")
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always", ClusterWarning)
+        with patch("matplotlib.pyplot.show"):
+            st.view_tree(k=2)
+
+    assert not any(issubclass(w.category, ClusterWarning) for w in caught)
+
+
 def test_seetrees_initializes_from_stylo_res():
     """SeeTrees should initialize from a stylo_res dictionary."""
     frequencies = pd.DataFrame(
@@ -140,6 +180,27 @@ def test_compare_scores_difference_view():
 
     with patch("matplotlib.pyplot.show"):
         st.compare_scores("doc1", "doc2", top_diff=2, view_type="difference")
+
+
+def test_compare_scores_difference_view_sanitizes_whitespace_and_linebreaks():
+    """The difference view should sanitize whitespace and linebreaks in labels."""
+    frequencies = pd.DataFrame(
+        {
+            "word1": [1.0, 0.5],
+            "with space": [0.2, 0.8],
+            "with\nline": [0.3, 0.7],
+        },
+        index=["doc1", "doc2"],
+    )
+    st = SeeTrees(frequencies=frequencies)
+
+    with patch("matplotlib.pyplot.show"):
+        st.compare_scores("doc1", "doc2", top_diff=3, view_type="difference")
+        texts = [t.get_text() for t in plt.gcf().axes[0].texts]
+
+    assert "word1" in texts
+    assert "with<whitespace>space" in texts
+    assert "with<linebreak>line" in texts
 
 
 def test_compare_scores_missing_text_raises_error():
@@ -192,6 +253,18 @@ def test_view_distances_mds_plots_without_error():
         st.view_distances(method="MDS", metric="delta")
 
 
+def test_view_distances_density_requires_distance_table():
+    """view_distances density mode should require a precomputed distance table."""
+    frequencies = pd.DataFrame(
+        {"word1": [1.0, 0.5, 0.2], "word2": [0.2, 0.8, 0.4]},
+        index=["Poe_Usher", "Poe_Bel", "Henry_Pirate"],
+    )
+    st = SeeTrees(frequencies=frequencies)
+
+    with pytest.raises(ValueError, match="Distance table is required for density mode"):
+        st.view_distances(method="DENSITY", group=True)
+
+
 def test_view_distances_pca_plots_without_error():
     """view_distances should plot PCA when requested."""
     frequencies = pd.DataFrame(
@@ -204,6 +277,46 @@ def test_view_distances_pca_plots_without_error():
         st.view_distances(method="PCA")
 
 
+def test_view_distances_density_grouped_warns_on_insufficient_pairs():
+    """view_distances density grouping should warn when same-author data is too sparse."""
+    frequencies = pd.DataFrame(
+        {"word1": [1.0, 2.0, 3.0]},
+        index=["Poe_1", "Poe_2", "Austen_1"],
+    )
+    distance_table = pd.DataFrame(
+        [[0.0, 1.0, 2.0], [1.0, 0.0, 2.0], [2.0, 2.0, 0.0]],
+        index=["Poe_1", "Poe_2", "Austen_1"],
+        columns=["Poe_1", "Poe_2", "Austen_1"],
+    )
+    st = SeeTrees(frequencies=frequencies, distance_table=distance_table)
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always", UserWarning)
+        with patch("matplotlib.pyplot.show"):
+            st.view_distances(method="DENSITY", group=True)
+
+    assert any(
+        "Grouped density is unlikely to be meaningful" in str(w.message)
+        and "1 same-author distance pair(s)" in str(w.message)
+        and "2 different-author distance pair(s)" in str(w.message)
+        for w in caught
+    )
+
+
+def test_density_frame_supports_space_separator_pattern():
+    """Density grouping should extract class labels before spaces or hyphens."""
+    labels = ["Poe 1", "Poe 2", "Austen 1"]
+    values = np.array([[0.0, 1.0, 2.0], [1.0, 0.0, 2.5], [2.0, 2.5, 0.0]])
+    distance_table = pd.DataFrame(values, index=labels, columns=labels)
+    from lexos.cluster.seetrees import DistancePlot
+
+    plotter = DistancePlot(distance_table=distance_table, labels=labels)
+    df = plotter._build_density_frame(pattern=r"^.*?(?=[_\s-])")
+
+    assert df["class"].tolist() == ["Poe", "Austen", "Austen"]
+    assert df["same_author"].tolist() == ["True", "False", "False"]
+
+
 def test_compare_scores_profile_view():
     """The profile view should execute without error."""
     frequencies = pd.DataFrame(
@@ -214,6 +327,18 @@ def test_compare_scores_profile_view():
 
     with patch("matplotlib.pyplot.show"):
         st.compare_scores("doc1", "doc2", top_diff=2, view_type="profile")
+
+
+def test_view_scores_plots_without_error():
+    """view_scores should plot without error for valid data."""
+    frequencies = pd.DataFrame(
+        {"word1": [1.0, 0.5], "word2": [0.2, 0.8]},
+        index=["doc1", "doc2"],
+    )
+    st = SeeTrees(frequencies=frequencies)
+
+    with patch("matplotlib.pyplot.show"):
+        st.view_scores("doc2", top=2)
 
 
 def test_view_distances_invalid_method_raises_error():
