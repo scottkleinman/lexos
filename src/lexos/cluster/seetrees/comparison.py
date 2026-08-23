@@ -92,6 +92,23 @@ class OverlayPlot(ComparisonPlot):
     target_color: str = Field(
         default="#99c2ff", description="Color used for the target text overlay line."
     )
+    frequencies: pd.DataFrame = Field(
+        default_factory=pd.DataFrame, description="Term frequency table."
+    )
+    source_text: str = Field(default="", description="Label for the source text.")
+    target_text: str = Field(default="", description="Label for the target text.")
+    top_diff: int = Field(
+        default=10, description="Number of top differences to highlight."
+    )
+    max_rank: int = Field(
+        default=100, description="Limit for the number of features to rank."
+    )
+    title: str | None = Field(
+        default=None, description="Optional title for the comparison plot."
+    )
+    fig: plt.Figure | None = Field(
+        default=None, description="Matplotlib figure object."
+    )
 
     def __init__(self, **data):
         """Initialize the OverlayPlot with given data."""
@@ -197,6 +214,23 @@ class DifferencePlot(ComparisonPlot):
     )
     highlight_color: str = Field(
         default="red", description="Color used for highlighted difference bars."
+    )
+    frequencies: pd.DataFrame = Field(
+        default_factory=pd.DataFrame, description="Term frequency table."
+    )
+    source_text: str = Field(default="", description="Label for the source text.")
+    target_text: str = Field(default="", description="Label for the target text.")
+    top_diff: int = Field(
+        default=10, description="Number of top differences to highlight."
+    )
+    max_rank: int = Field(
+        default=100, description="Limit for the number of features to rank."
+    )
+    title: str | None = Field(
+        default=None, description="Optional title for the comparison plot."
+    )
+    fig: plt.Figure | None = Field(
+        default=None, description="Matplotlib figure object."
     )
 
     def __init__(self, **data):
