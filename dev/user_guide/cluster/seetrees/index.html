@@ -1468,6 +1468,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#saving-seetrees-plots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saving SeeTrees Plots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saving-plots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saving Plots
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -5609,6 +5631,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#saving-seetrees-plots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saving SeeTrees Plots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#saving-plots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saving Plots
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -5630,18 +5674,16 @@
 
 
 <h1 id="feature-analysis-with-seetrees">Feature Analysis with SeeTrees<a class="headerlink" href="#feature-analysis-with-seetrees" title="Permanent link">¤</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p><code>seetrees</code> is currently in beta mode. Some of the visualisation methods do not return figures that can be stored to variables. Likewise, there are currently no methods to save the plot output. For the moment, it is best called as a script or run in a Jupyter notebook where the figures can be displayed by default when the method is called.</p>
-<p>There are likely to be breaking changes in the near future, so the API documentation should likely not be considered reliable until this warning goes away.</p>
-</div>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¤</a></h2>
 <p>The <code>seetrees</code> module provides stylometric analysis and visualization tools for document-term-style data, such as comparing document profiles, computing distance matrices, visualizing document relationships, and exploring feature importance across clusters. It is particularly effective for identifying authorship patterns or stylistic shifts across a corpus.</p>
 <p>SeeTrees is adapted from the R <a href="https://github.com/perechen/seetrees" target="_blank">'see' package</a> by Artjoms Šeļa.</p>
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">¤</a></h2>
 <p>The <code>SeeTrees</code> class accepts frequency tables, distance matrices, and Lexos <code>DTM</code> objects as input. First, ensure you have your literary data organized as a frequency table (e.g., a pandas DataFrame where rows are documents and columns are word frequencies) or a Lexos DTM object (recommended).</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Assuming that you have a pre-calculated DTM object</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># st = SeeTrees(frequencies=dtm)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># If you already have a Lexos DTM object</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">st</span> <span class="o">=</span> <span class="n">SeeTrees</span><span class="p">(</span><span class="n">dtm</span><span class="o">=</span><span class="n">dtm</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Or if you already have a frequency table DataFrame</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># st = SeeTrees(frequencies=frequencies_df)</span>
 </span></code></pre></div>
 <h2 id="computing-stylometric-distances">Computing Stylometric Distances<a class="headerlink" href="#computing-stylometric-distances" title="Permanent link">¤</a></h2>
 <p>To compare how "distant" authors or texts are from one another, you must compute a distance matrix with the SeeTrees <code>compute_distances</code> method:</p>
@@ -5649,6 +5691,47 @@
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">distance_matrix</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">compute_distances</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">distance_matrix</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
 </span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Poe_Usher</th>
+<th style="text-align: right;">Poe_Bel</th>
+<th style="text-align: right;">Poe_RipVW</th>
+<th style="text-align: right;">Henry_Pirate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Poe_Usher</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.63161</td>
+<td style="text-align: right;">0.621068</td>
+<td style="text-align: right;">0.441966</td>
+</tr>
+<tr>
+<td style="text-align: left;">Poe_Bel</td>
+<td style="text-align: right;">1.63161</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.61309</td>
+<td style="text-align: right;">1.50241</td>
+</tr>
+<tr>
+<td style="text-align: left;">Poe_RipVW</td>
+<td style="text-align: right;">0.621068</td>
+<td style="text-align: right;">1.61309</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.416097</td>
+</tr>
+<tr>
+<td style="text-align: left;">Henry_Pirate</td>
+<td style="text-align: right;">0.441966</td>
+<td style="text-align: right;">1.50241</td>
+<td style="text-align: right;">0.416097</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
 <p>SeeTrees supports five common metrics for producing pairwise distance matrices from frequency data. These are passed to <code>compute_distances</code> with the <code>metric</code> parameter, as shown above.</p>
 <h3 id="choosing-a-distance-metric">Choosing a Distance Metric<a class="headerlink" href="#choosing-a-distance-metric" title="Permanent link">¤</a></h3>
 <p>Choosing between the five supported metrics often depends on whether you want to prioritize the raw volume of word usage (Manhattan/Cosine) or the standardized stylistic variance across your corpus (Cosine Delta and the other Delta metrics). The latter allows features to be compared on a common scale based on their distribution across the corpus.</p>
@@ -5672,8 +5755,8 @@
 <p>Since SeeTrees allows you to compute distance matrices easily, you can compare the results of each to see which produces a more coherent clustering for your specific dataset. For instance, you could compare Burrows' and Eder's Delta with the following the procedure to see which suits your assumptions about your documents:</p>
 <ol>
 <li><strong>Compute both matrices</strong>: You can run <code>st.compute_distances(metric="delta")</code> and then <code>st.compute_distances(metric="eder_delta")</code> to generate different dataframes.</li>
-<li><strong>Visualize the results</strong>: Use <code>view_distances()</code> with the <code>metric</code> parameter to see how authors or texts shift in 2D space (MDS) under different distance calculations.</li>
-<li><strong>Evaluate Cluster Strength</strong>: Use <code>view_tree(k=...)</code> to see which metric produces a dendrogram that better aligns with known metadata, such as authorship or genre.</li>
+<li><strong>Visualize the results</strong>: Use <code>st.get_mds_plot(...).show()</code> to see how authors or texts shift in 2D space (MDS) under different distance calculations.</li>
+<li><strong>Evaluate Cluster Strength</strong>: Use <code>st.get_tree(k=...).show()</code> to see which metric produces a dendrogram that better aligns with known metadata, such as authorship or genre.</li>
 </ol>
 <p>The visualization functions are detailed further below.</p>
 <h2 id="analyzing-feature-importance-z-scores">Analyzing Feature Importance (Z-Scores)<a class="headerlink" href="#analyzing-feature-importance-z-scores" title="Permanent link">¤</a></h2>
@@ -5684,26 +5767,116 @@
 <li>A near zero z-score indicates the feature's usage is close to the average for the corpus.</li>
 </ul>
 <h3 id="viewing-distinctive-features-for-one-text">Viewing Distinctive Features for One Text<a class="headerlink" href="#viewing-distinctive-features-for-one-text" title="Permanent link">¤</a></h3>
-<p>To see the top 20 most distinctive terms for a target text:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">st</span><span class="o">.</span><span class="n">view_scores</span><span class="p">(</span><span class="n">target_text</span><span class="o">=</span><span class="s2">&quot;Poe_FallOfHouseUsher_1839&quot;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<p>To see the top 10 most distinctive terms for a target text:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">st</span><span class="o">.</span><span class="n">get_feature_score_plot</span><span class="p">(</span><span class="n">target_text</span><span class="o">=</span><span class="s2">&quot;Henry_Pirate&quot;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">st</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></code></pre></div>
+<figure>
+  <img src="../../cluster/zscore_plot.png" alt="Sample Z-score Plot">
+  <figcaption>Sample Z-score Plot</figcaption>
+</figure>
+
+<p>The plot can get crowded, so you may have to use the pan and zoom function from the toolbar that appears when you hover over the plot. In many cases, the top features have similar z-scores, and you won't start to see variation until far down the list. If the plot does not provide readable or usable results, you can also obtain the z-scores as a pandas DataFrame.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">df</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">get_feature_summary</span><span class="p">(</span><span class="n">target_text</span><span class="o">=</span><span class="s2">&quot;Henry_Pirate&quot;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;"></th>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: right;">Z-score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">seal</td>
+<td style="text-align: right;">1.5</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">safely</td>
+<td style="text-align: right;">1.5</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">rosalies</td>
+<td style="text-align: right;">1.5</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">exhibited</td>
+<td style="text-align: right;">1.5</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">exhausted</td>
+<td style="text-align: right;">1.5</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">embraced</td>
+<td style="text-align: right;">1.5</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">miniature</td>
+<td style="text-align: right;">1.5</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">talents</td>
+<td style="text-align: right;">1.5</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">attained</td>
+<td style="text-align: right;">1.5</td>
+</tr>
+<tr>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">indies</td>
+<td style="text-align: right;">1.5</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you haven't scrubbed linebreaks and whitespace from your texts, they will appear as invisible textual features in the z-scores. In order to make them visible, they are converted to "<linebreak>" and "<whitespace>".</p>
+</div>
 <h3 id="comparing-two-documents">Comparing Two Documents<a class="headerlink" href="#comparing-two-documents" title="Permanent link">¤</a></h3>
-<p>The <code>compare_scores</code> method allows you to interpret document relationships by visualizing them through two types of profile views:</p>
+<p>You can compare two documents with two dedicated methods:</p>
 <ul>
 <li><strong>Overlay Profile ("profile")</strong>: This view overlays the z-score profiles of two different documents. By looking at where the peaks and valleys align or diverge, you can see if two authors share similar stylistic habits (e.g., both using specific function words at a high rate) or if their styles are distinct.</li>
 <li><strong>Difference Profile ("difference")</strong>: This displays a bar chart of the direct z-score differences between a target and a source document. It helps you pinpoint exactly which words are responsible for the stylistic distance between two texts.</li>
 </ul>
 <p>Here are some examples:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Compare two authors&#39; profiles</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">st</span><span class="o">.</span><span class="n">compare_scores</span><span class="p">(</span><span class="n">source_text</span><span class="o">=</span><span class="s2">&quot;Poe_FallOfHouseUsher_1839&quot;</span><span class="p">,</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>                  <span class="n">target_text</span><span class="o">=</span><span class="s2">&quot;HenryWP_ThePirate&quot;</span><span class="p">,</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>                  <span class="n">view_type</span><span class="o">=</span><span class="s2">&quot;profile&quot;</span><span class="p">)</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># Compare two authors&#39; differences</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">st</span><span class="o">.</span><span class="n">compare_scores</span><span class="p">(</span><span class="n">source_text</span><span class="o">=</span><span class="s2">&quot;Poe_FallOfHouseUsher_1839&quot;</span><span class="p">,</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>                  <span class="n">target_text</span><span class="o">=</span><span class="s2">&quot;HenryWP_ThePirate&quot;</span><span class="p">,</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>                  <span class="n">view_type</span><span class="o">=</span><span class="s2">&quot;difference&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Compare two authors&#39; profiles (overlay)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">st</span><span class="o">.</span><span class="n">get_overlay_plot</span><span class="p">(</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">source_text</span><span class="o">=</span><span class="s2">&quot;Poe_FallOfHouseUsher_1839&quot;</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">target_text</span><span class="o">=</span><span class="s2">&quot;HenryWP_ThePirate&quot;</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">top_diff</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">max_rank</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></code></pre></div>
+<figure>
+  <img src="../../cluster/overlay_plot.png" alt="Sample Overlay Plot">
+  <figcaption>Sample Overlay Plot</figcaption>
+</figure>
+
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Compare two authors&#39; differences</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">st</span><span class="o">.</span><span class="n">get_difference_plot</span><span class="p">(</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">source_text</span><span class="o">=</span><span class="s2">&quot;Poe_FallOfHouseUsher_1839&quot;</span><span class="p">,</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">target_text</span><span class="o">=</span><span class="s2">&quot;HenryWP_ThePirate&quot;</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">top_diff</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">max_rank</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></code></pre></div>
+<figure>
+  <img src="../../cluster/difference_plot.png" alt="Sample Difference Plot">
+  <figcaption>Sample Difference Plot</figcaption>
+</figure>
+
 <p>Both views rely on <strong>z-scores</strong>, which standardize word frequencies so they can be compared on a common scale. The key differences between them are:</p>
 <ul>
 <li>The profile view provides an overlay of the z-score profiles for both the source and target documents. It allows you to see the "stylistic fingerprints" of two texts simultaneously. By looking at where the peaks (high usage) and valleys (low usage) align or diverge, you can get a sense of the overall stylistic similarity between two authors or works.</li>
@@ -5711,24 +5884,43 @@
 </ul>
 <p>When using either view, you can control the number of top features displayed by using the <code>top_diff</code> parameter.</p>
 <h2 id="visualizing-document-relationships">Visualizing Document Relationships<a class="headerlink" href="#visualizing-document-relationships" title="Permanent link">¤</a></h2>
-<p>You can visualize the "stylistic space" of your corpus using Principal Components Analysis (PCA), Multidimensional Scaling (MDS), or with a density plot using the <code>view_distances</code> method. This method allows you to visualize document relationships in two-dimensional space. While they serve the same goal—showing how texts or authors cluster stylistically — they differ in their data requirements and how they process that data.</p>
+<p>You can visualize the "stylistic space" of your corpus with dedicated methods:</p>
+<ul>
+<li><code>get_pca_plot(...)</code></li>
+<li><code>get_mds_plot(...)</code></li>
+<li><code>get_density_plot(...)</code></li>
+</ul>
+<p>These methods all return plot objects that you can display with <code>.show()</code>. While they serve the same goal, showing how texts or authors cluster stylistically, they differ in their data requirements and how they process that data.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <code>group</code>, <code>author</code>, and <code>pattern</code> parameters are ignored for PCA and MDS analysis, and the <code>metric</code> and <code>random_state</code> parameters are ignored for density plots.</p>
+<p><code>get_mds_plot(...)</code> and <code>get_density_plot(...)</code> require a precomputed distance table.
+Run <code>st.compute_distances(metric=...)</code> first.</p>
 </div>
 <h3 id="principal-components-analysis">Principal Components Analysis<a class="headerlink" href="#principal-components-analysis" title="Permanent link">¤</a></h3>
-<p>The PCA method focuses on the <strong>variance in feature usage</strong>. It automatically calls <code>compute_distances</code> to calculate frequency z-scores before projection. By z-scoring the frequency data first, it identifies which features (words) contribute most to the differences between documents and maps them based on those standardized distributions.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Visualize relationships using PCA</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">st</span><span class="o">.</span><span class="n">view_distances</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;PCA&quot;</span><span class="p">)</span>
+<p>The PCA method focuses on the <strong>variance in feature usage</strong>. It projects the frequency-table data into two dimensions so you can inspect stylistic proximity. It does not require a precomputed distance matrix.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Visualize relationships using PCA</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">st</span><span class="o">.</span><span class="n">get_pca_plot</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></code></pre></div>
+<figure>
+  <img src="../../cluster/pca_plot.png" alt="Sample PCA Plot">
+  <figcaption>Sample PCA Plot</figcaption>
+</figure>
+
 <h3 id="multidimensional-scaling">Multidimensional Scaling<a class="headerlink" href="#multidimensional-scaling" title="Permanent link">¤</a></h3>
-<p>The MDS method focuses on maintaining the relative distances between documents as defined by a specific stylometric metric. It is highly flexible because you can choose which distance metric to project. MDS requires a distance matrix to be available. This table must either be provided when you initialise the <code>SeeTrees</code> object or computed using the <code>metric</code> parameter within the <code>view_distances</code> method.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Visualize relationships using MDS</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">st</span><span class="o">.</span><span class="n">view_distances</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;MDS&quot;</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span>
+<p>The MDS method focuses on maintaining the relative distances between documents as defined by a stylometric metric. MDS requires a distance matrix to be available, so compute it first with <code>compute_distances(metric=...)</code>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Visualize relationships using MDS</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">st</span><span class="o">.</span><span class="n">compute_distances</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">st</span><span class="o">.</span><span class="n">get_mds_plot</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;^.*?(?=[_\s-]|\d)&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></code></pre></div>
+<figure>
+  <img src="../../cluster/mds_plot.png" alt="Sample MDS Plot">
+  <figcaption>Sample MDS Plot</figcaption>
+  <figcaption>Sample Bootstrap Consensus Tree with custom label colors</figcaption>
+</figure>
+
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>If you attempt to use MDS without first computing a distance matrix or specifying a <code>metric</code>, the module will return a <code>ValueError: Distance table is required</code>. Conversely, PCA will fail with a <code>ValueError: Frequency data is required</code> if a valid frequency table or DTM is missing.</p>
+<p>If you attempt to use MDS without first computing a distance matrix, the module will return a <code>ValueError</code> indicating the distance table is required. Conversely, PCA will fail with a <code>ValueError</code> if valid frequency data is missing.</p>
 </div>
 <h3 id="density-plots">Density Plots<a class="headerlink" href="#density-plots" title="Permanent link">¤</a></h3>
 <p>You can use a density plot to look at how similar or different pairs of texts are in aggregate.</p>
@@ -5738,17 +5930,24 @@
 <li>If two texts are very similar, their distance is small; if they are different, the distance is larger.</li>
 </ul>
 <p>This is useful when you want to see a broad view of how text pairs are distributed by distance, to compare same-author vs different-author similarity, or to highlight one author’s distances. It is a higher-level, aggregate way to understand stylistic distance, rather than plotting individual documents in 2D as we do with PCA and MDS.</p>
-<p>To generate a density plot, set <code>method="density"</code>.</p>
+<p>To generate a density plot, call <code>get_density_plot(...)</code>.</p>
 <p>To draw one curve for pairs from the same author/class and another curve for pairs from different authors/classes, set <code>group=True</code> (the default). To draw a single curve for all pairs, set <code>group=False</code>.</p>
 <p>To highlight one author/class inside the density plot, set the <code>author</code> parameter. This is how the function decides whether two documents belong to the class. By default, the function looks for the value you set in document labels, separated by an underscore. For instance, if you have labels like "Austen_Emma" and "Austen_Pride", and you set <code>author=Austen</code>, that will be identified as the class name and all documents beginning with "Austen_" will be grouped within this class. If the default behaviour does not work for you, it is possible to customise the method of parsing labels by providing your own regex pattern to the <code>pattern</code> parameter.</p>
 <p>Internally, density view reads the list of document labels from <code>distance_table</code> and assigns each label to a class. It then computes all pairwise distances from the lower half of the distance matrix and for each pair records the distance value, whether they belong to the same class, and the class label of the first document in the pair. It then makes a table of these values and plots density curves based on the values in the table.</p>
 <p>If you set <code>group=True</code>, you get two curves: one for same-author pairs and one for different-author pairs. If the same-author curve is far to the left, that means same-author texts are generally closer together. If the different-author curve is farther right, that means different-author texts are more distant.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Visualize relationships with a density plot</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">st</span><span class="o">.</span><span class="n">view_distances</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s2">&quot;Poe&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;^.*?(?=_)&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Visualize relationships with a density plot</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">st</span><span class="o">.</span><span class="n">compute_distances</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">st</span><span class="o">.</span><span class="n">get_density_plot</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s2">&quot;Poe&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;^.*?(?=_)&quot;</span><span class="p">)</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">st</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></code></pre></div>
+<figure>
+  <img src="../../cluster/density_plot.png" alt="Sample Density Plot">
+  <figcaption>Sample Density Plot</figcaption>
+</figure>
+
 <p>If <code>group=False</code>, you will see a single overall distance distribution. This is useful to understand the general range of distances in the dataset.</p>
 <h2 id="hierarchical-clustering-and-dendrograms">Hierarchical Clustering and Dendrograms<a class="headerlink" href="#hierarchical-clustering-and-dendrograms" title="Permanent link">¤</a></h2>
-<p>The <code>view_tree()</code> method implements a hierarchical agglomerative clustering and renders a dendrogram to show how documents cluster together stylistically. In this respect, it is like the Lexos <code>dendrogram</code> module. However, SeeTrees offers some additional functionality to help you understand the textual features responsible for the clustering.</p>
+<p>The <code>get_tree()</code> method implements a hierarchical agglomerative clustering and renders a dendrogram to show how documents cluster together stylistically. In this respect, it is like the Lexos <code>dendrogram</code> module. However, SeeTrees offers some additional functionality to help you understand the textual features responsible for the clustering.</p>
 <p>When you cut the tree into (<code>k</code>) clusters, SeeTrees calculates <strong>Eta-squared</strong> (<em>η</em>^2^), which represents the proportion of total variance in a feature explained by cluster assignment. This identifies the "top terms" that actually define the clusters. It works through the following process:</p>
 <ul>
 <li>It calculates the association between a <strong>categorical grouping</strong> (the clusters defined in a dendrogram) and a <strong>numeric variable</strong> (the frequency of a specific feature).</li>
@@ -5756,19 +5955,41 @@
 <li>It identifies distinctive terms in a cluster. When you cut a dendrogram into <em>k</em> clusters, SeeTrees reports the <strong>top eta-squared features</strong> most strongly associated with the clusters, effectively highlighting the vocabulary that distinguishes one group of texts from another.</li>
 </ul>
 <p>In short, while a dendrogram shows <em>that</em> texts are similar, eta-squared explains <em>why</em> they were grouped that way by pointing to the most influential terms.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Create a dendrogram with 3 clusters</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># Ensure distances are computed first</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">st</span><span class="o">.</span><span class="n">compute_distances</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s2">&quot;cosine_delta&quot;</span><span class="p">)</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">st</span><span class="o">.</span><span class="n">view_tree</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Create a dendrogram with 3 clusters</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># Ensure distances are computed first</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">st</span><span class="o">.</span><span class="n">compute_distances</span><span class="p">(</span><span class="n">metric</span><span class="o">=</span><span class="s2">&quot;cosine_delta&quot;</span><span class="p">)</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">st</span><span class="o">.</span><span class="n">get_tree</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></code></pre></div>
+<figure>
+  <img src="../../cluster/tree_plot.png" alt="Sample Tree Plot">
+  <figcaption>Sample Tree Plot</figcaption>
+</figure>
+
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Here are some troubleshooting tips for errors you may encounter when you call <code>view_tree</code>:</p>
+<p>Here are some troubleshooting tips for errors you may encounter when you call <code>get_tree</code>:</p>
 <ul>
 <li>If you encounter a <code>ValueError: Frequency data is required</code>, ensure you initialized SeeTrees with a valid frequency table.</li>
-<li>Always run <code>compute_distances()</code> before calling <code>view_tree()</code> to avoid errors.</li>
+<li>Always run <code>compute_distances()</code> before calling <code>get_tree()</code> to avoid errors.</li>
 </ul>
 </div>
+<h2 id="saving-seetrees-plots">Saving SeeTrees Plots<a class="headerlink" href="#saving-seetrees-plots" title="Permanent link">¤</a></h2>
+<h2 id="saving-plots">Saving Plots<a class="headerlink" href="#saving-plots" title="Permanent link">¤</a></h2>
+<p>Most of the plots produced in the <code>seetrees</code> module are <code>matplotlib.Figure</code> objects. They can be saved by calling the object's <code>savefig</code> method. For instance, if you assigned your plot the the variable <code>fig</code>, you could save it as a <code>.png</code> file with</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;output.png&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Changing the extension to <code>.pdf</code> would save the file in that format. You can configure the appearance of the saved image in a number of ways (e.g. transparency, padding, orientation): see the <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html" target="_blank"><code>matplotlib</code> documentation</a> for a list of available parameters.</p>
+<p>The output of <code>get_zscore_plot</code> is a <a href="https://plotly.com/python/" target="_blank">Plotly</a> <code>Figure</code> object, which can be saved to a static image with its <code>write_image</code> method.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;output.png&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>For available configuration parameters, see the <a href="https://plotly.github.io/plotly.py-docs/generated/plotly.io.write_image.html" target="_blank">Plotly documentation</a>.</p>
+<p>If you want to save the interactive plot, use the <code>write_html</code> method:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="s2">&quot;my_chart.html&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>You can make the saved file size much smaller by loading <code>plotly.js</code> online from a Content Delivery Network (CDN) with</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="s2">&quot;my_chart.html&quot;</span><span class="p">,</span> <span class="n">include_plotlyjs</span><span class="o">=</span><span class="s2">&quot;cdn&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>For available parameters in <code>write_html</code>, see the <a href="https://plotly.github.io/plotly.py-docs/generated/plotly.io.write_html.html" target="_blank">Plotly documentation</a>.</p>
 
 
 
@@ -5789,7 +6010,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 18, 2026 21:49:14 UTC">August 18, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 23, 2026 21:26:54 UTC">August 23, 2026</span>
   </span>
 
     
