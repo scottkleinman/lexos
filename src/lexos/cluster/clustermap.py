@@ -1,12 +1,12 @@
 """clustermap.py.
 
-Last Updated: August 16, 2026
-Last Tested: August 16, 2026
+Last Updated: August 31, 2026
+Last Tested: August 31, 2026
 
-Note: These clustermap classes are highly experimental and may change in the future.
-They may require fiddling with size and layout to be readable. The clustermap may
-also not be the best way to visualize textual data, so please use with caution.
-For other possibilities see Stylo's seetrees plugin: https://github.com/perechen/seetrees.
+For Matplotlib clustermaps with one-sided unscaled data (for example, nonnegative
+term counts), defaults are auto-adjusted to improve heatmap visibility by disabling
+centered diverging scaling and using a sequential colormap. Explicit `center` and
+`cmap` arguments always override this behavior.
 """
 
 from pathlib import Path
@@ -149,7 +149,7 @@ class Clustermap(BaseModel):
     )
     cmap: Optional[str] = Field("vlag", description="The cmap for the clustermap.")
     linewidths: Optional[float] = Field(
-        0.75, description="The linewidths for the dendrograms."
+        0.0, description="The linewidths for heatmap cell borders."
     )
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
@@ -166,6 +166,9 @@ class Clustermap(BaseModel):
 
         # Get the matrix based on the data type
         matrix = _get_matrix(self.dtm)
+
+        # Adjust defaults for one-sided, unscaled data so the heatmap remains visible.
+        self._resolve_visual_defaults(matrix)
 
         # Get colour palettes for the dendrograms
         # Ensure that lists of colours are longer than the number of labels
@@ -228,6 +231,34 @@ class Clustermap(BaseModel):
 
         # Do not automatically display -- require fig.show()
         plt.close(self.fig)
+
+    def _resolve_visual_defaults(self, matrix: ArrayLike | pd.DataFrame) -> None:
+        """Resolve visual defaults from matrix distribution when not user-specified.
+
+        For one-sided, unscaled data (e.g., term counts), avoid the diverging
+        center+cmap defaults that can wash out values near zero.
+        """
+        # Keep explicit user settings untouched.
+        if (
+            "center" in self.model_fields_set
+            or "cmap" in self.model_fields_set
+            or self.z_score is not None
+            or self.standard_scale is not None
+        ):
+            return
+
+        values = np.asarray(matrix, dtype=float)
+        finite_values = values[np.isfinite(values)]
+        if finite_values.size == 0:
+            return
+
+        vmin = float(np.min(finite_values))
+        vmax = float(np.max(finite_values))
+
+        if vmin >= 0 or vmax <= 0:
+            self.center = None
+            if "cmap" not in self.model_fields_set:
+                self.cmap = "viridis"
 
     def _get_colors(self) -> ListedColormap | None:
         """Get the row and column colors for the clustermap.

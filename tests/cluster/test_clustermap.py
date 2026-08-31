@@ -1,7 +1,7 @@
 """test_clustermap.py.
 
-Coverage: 100%
-Last Updated: August 16, 2026
+Coverage: 99%. Missing: 257
+Last Updated: August 31, 2026
 """
 
 from unittest.mock import Mock, patch
@@ -714,6 +714,51 @@ class TestClustermap:
             assert cm.center == 0.5
             assert cm.cmap == "RdBu"
             assert cm.linewidths == 1.0
+
+    def test_clustermap_defaults_for_nonnegative_unscaled_data(self):
+        """Test that one-sided, unscaled data uses visible default heatmap styling."""
+        with (
+            patch("lexos.cluster.clustermap.sns.clustermap") as mock_clustermap,
+            patch("matplotlib.pyplot.close"),
+        ):
+            mock_grid = Mock()
+            mock_grid.figure = Mock()
+            mock_grid.ax_col_dendrogram = Mock()
+            mock_grid.ax_row_dendrogram = Mock()
+            mock_clustermap.return_value = mock_grid
+
+            df = pd.DataFrame([[0, 1, 2], [1, 2, 5], [0, 0, 1]])
+            Clustermap(dtm=df, z_score=None, standard_scale=None)
+
+            call_args = mock_clustermap.call_args[1]
+            assert call_args["center"] is None
+            assert call_args["cmap"] == "viridis"
+            assert call_args["linewidths"] == 0.0
+
+    def test_clustermap_preserves_user_visual_overrides(self):
+        """Test that explicit center and cmap settings are not overridden."""
+        with (
+            patch("lexos.cluster.clustermap.sns.clustermap") as mock_clustermap,
+            patch("matplotlib.pyplot.close"),
+        ):
+            mock_grid = Mock()
+            mock_grid.figure = Mock()
+            mock_grid.ax_col_dendrogram = Mock()
+            mock_grid.ax_row_dendrogram = Mock()
+            mock_clustermap.return_value = mock_grid
+
+            df = pd.DataFrame([[0, 1, 2], [1, 2, 5], [0, 0, 1]])
+            Clustermap(
+                dtm=df,
+                z_score=None,
+                standard_scale=None,
+                center=0,
+                cmap="vlag",
+            )
+
+            call_args = mock_clustermap.call_args[1]
+            assert call_args["center"] == 0
+            assert call_args["cmap"] == "vlag"
 
     def test_clustermap_single_document_raises_exception(self):
         """Test that Clustermap raises exception with single document."""
