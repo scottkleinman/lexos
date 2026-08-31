@@ -29,6 +29,22 @@
          <lastmod>2026-08-31</lastmod>
     </url>
     <url>
+         <loc>https://lexos.github.io/en/latest/dev/api/classification/</loc>
+         <lastmod>2026-08-31</lastmod>
+    </url>
+    <url>
+         <loc>https://lexos.github.io/en/latest/dev/api/classification/classifier/</loc>
+         <lastmod>2026-08-31</lastmod>
+    </url>
+    <url>
+         <loc>https://lexos.github.io/en/latest/dev/api/classification/sklearn_pipeline/</loc>
+         <lastmod>2026-08-31</lastmod>
+    </url>
+    <url>
+         <loc>https://lexos.github.io/en/latest/dev/api/classification/spacy_pipeline/</loc>
+         <lastmod>2026-08-31</lastmod>
+    </url>
+    <url>
          <loc>https://lexos.github.io/en/latest/dev/api/cluster/</loc>
          <lastmod>2026-08-31</lastmod>
     </url>
