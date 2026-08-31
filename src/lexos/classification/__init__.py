@@ -1,8 +1,7 @@
-"""Public classification API for Lexos.
+"""__init__.py.
 
-This package exposes the new backend-agnostic `Classifier` interface while
-preserving compatibility with older Lexos imports such as `Pipeline` and
-`MLPPipeline`.
+Last Updated: August 30, 2026
+Last Tested: August 30, 2026
 """
 
 from lexos.classification.classifier import (
@@ -10,10 +9,8 @@ from lexos.classification.classifier import (
     Classifier,
     ClassifierData,
 )
-from lexos.classification.mlp_pipeline import MLPPipeline
 from lexos.classification.sklearn_pipeline import SklearnClassifierPipeline
 from lexos.classification.spacy_pipeline import SpaCyTextCategorizerPipeline
-from lexos.classification.util import PredictionSaver, save_predictions
 
 Pipeline = BaseClassificationPipeline
 
@@ -24,7 +21,4 @@ __all__ = [
     "Pipeline",
     "SpaCyTextCategorizerPipeline",
     "SklearnClassifierPipeline",
-    "MLPPipeline",
-    "PredictionSaver",
-    "save_predictions",
 ]

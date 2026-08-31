@@ -19,9 +19,7 @@ from lexos.classification import (
     BaseClassificationPipeline,
     Classifier,
     ClassifierData,
-    PredictionSaver,
     SklearnClassifierPipeline,
-    save_predictions,
 )
 from lexos.classification.classifier import _is_dtm_like, _is_spacy_doc
 
@@ -44,17 +42,6 @@ class _DummyPipeline(BaseClassificationPipeline):
     @property
     def model(self):
         return object()
-
-
-def test_util_helpers_and_prediction_saver() -> None:
-    """Exercise the CSV-saving helper and prediction saver wrapper."""
-    output = Path("./.tmp_predictions.csv")
-    save_predictions(["doc-1", "doc-2"], [["A"], ["B"]], str(output))
-    assert output.exists()
-
-    saver = PredictionSaver(default_output="./.tmp_default.csv")
-    saver.save(["doc-1", "doc-2"], ["A", "B"])
-    assert Path(saver.default_output).exists()
 
 
 def test_classifier_data_alignment_and_document_helpers() -> None:
