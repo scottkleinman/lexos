@@ -18,23 +18,27 @@ A full discussion of the use of the API can be found on the website <a href="htt
 - Loads texts from a variety of sources into a common data structure.
 - Manages a corpus of texts and generates stastics about the corpus.
 - Performs text pre-processing ("scrubbing") and splitting ("cutting").
-- Performs tokenization and trains language models using <a href="https://spacy.io/" target="_blank">spaCy</a>.
+- Performs tokenization and trains language models using [spaCy](https://spacy.io/){target="_blank"}.
 - Creates assorted visualizations of term vectors.
-- Performs hierarchical and kmeans clustering.
-- Generates topic models and topic model visualizations using <a href="https://github.com/mimno/Mallet" target="_blank">MALLET</a> and <a href="https://github.com/scottkleinman/dfr-browser2" target="_blank">DFR Browser 2</a>.
+- Performs hierarchical and kmeans clustering with a variety of visualizations for text comparisons..
+- Performs classification using [spaCy](https://spacy.io/){target="_blank"}, [scikit-learn](https://scikit-learn.org/stable/){target="_blank"}, and custom architectures.
+- Generates topic models and topic model visualizations using [MALLET](https://github.com/mimno/Mallet){target="_blank"} and [DFR Browser 2](https://github.com/scottkleinman/dfr-browser2){target="_blank"}.
 
 And more!
 
 ### What's New in V0.2.0-Beta
 
-- More advanced topic modelling features, including termite plots, customisable labels, and LLM-generated labels with local or cloud-based models
-- A new Structural Stylometry module that allows you to assess the significance of punctuation and whitespace patterns in your documentation.
+- Performance optimizations and bug fixes througout.
+- A simplified public API.
 - Better HTML and XML tag handling in Scrubber.
+- New and improved clustering visualizations.
 - Improved plotting functions in Bootstrap Consensus clustering.
 - Silhouette score analysis for KMeans clustering.
+- More advanced topic modelling features, including termite plots, customisable labels, and LLM-generated labels with local or cloud-based models.
+- A new Classification module that performs text classification using a variety of architectures.
+- A new Structural Stylometry module that allows you to assess the significance of punctuation and whitespace patterns in your documentation.
 - Language model training features.
-- Innumerable optimisations providing faster processing speeds.
-- Lots of bug fixes scattered throughout the package.
+- Improved documentation and tutorials for new users (now in a separate [lexos-docs](https://github.com/scottkleinman/lexos-docs){target="_blank"} repository).
 
 ## ⏳ Installation
 
