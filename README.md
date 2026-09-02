@@ -26,7 +26,7 @@ A full discussion of the use of the API can be found on the website [Documentati
 
 And more!
 
-### What's New in V0.2.0-Beta
+### What's New in v0.2.0b
 
 - Performance optimizations and bug fixes througout.
 - A simplified public API.
@@ -84,4 +84,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📝 Citation Information
 
-Kleinman, S., (2026). Lexos. v0.2.0-beta https://github.com/scottkleinman/lexos. [10.5281/zenodo.18112379](https://doi.org/10.5281/zenodo.18112379).
+Kleinman, S., (2026). Lexos. v0.2.0b https://github.com/scottkleinman/lexos. [10.5281/zenodo.18112379](https://doi.org/10.5281/zenodo.18112379).
