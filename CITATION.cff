@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Lexos"
+type: software
+authors:
+  - family-names: "Kleinman"
+    given-names: "Scott"
+version: "0.2.0-beta"
+doi: "10.5281/zenodo.18112379"
+repository-code: "https://github.com/scottkleinman/lexos"
+license: "MIT"

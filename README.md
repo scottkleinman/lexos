@@ -84,4 +84,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📝 Citation Information
 
-Kleinman, S., (2026). Lexos. v0.2.0-beta https://github.com/scottkleinman/lexos. [doi:10.5281/zenodo.1403869](https://doi.org/10.5281/zenodo.18112380).
+Kleinman, S., (2026). Lexos. v0.2.0-beta https://github.com/scottkleinman/lexos. [10.5281/zenodo.18112379](https://doi.org/110.5281/zenodo.18112379).

@@ -1,0 +1,18 @@
+{
+  "title": "Lexos",
+  "description": "A Python library that reproduces and extends text analysis tools from the Lexos web app.",
+  "upload_type": "software",
+  "license": "mit-license",
+  "creators": [
+    {
+      "name": "Kleinman, Scott"
+    }
+  ],
+  "keywords": [
+    "digital humanities",
+    "text analysis",
+    "nlp",
+    "stylometry",
+    "lexos"
+  ]
+}
