@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build distribution
+    name: Build distribution for ref ${{ inputs.ref || github.ref }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -24,6 +24,10 @@ jobs:
         with:
           ref: ${{ inputs.ref || github.ref }}
           persist-credentials: false
+
+      - name: Clean stale build artifacts
+        run: |
+          rm -rf dist build *.egg-info
 
       - name: Install uv
         uses: astral-sh/setup-uv@v6
