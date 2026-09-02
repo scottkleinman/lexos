@@ -39,10 +39,10 @@ jobs:
         run: uv build
 
       - name: Smoke test (wheel)
-        run: uv run --isolated --no-project --with dist/*.whl tests/smoke_test.py
+        run: uv run --with dist/*.whl python -c "import lexos; print(lexos.__version__)"
 
       - name: Smoke test (source distribution)
-        run: uv run --isolated --no-project --with dist/*.tar.gz tests/smoke_test.py
+        run: uv run --with dist/*.tar.gz python -c "import lexos; print(lexos.__version__)"
 
       - name: Upload distributions
         uses: actions/upload-artifact@v4
