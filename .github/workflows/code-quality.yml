@@ -11,6 +11,17 @@ jobs:
   # ============================================
   # File Quality Checks (run first)
   # ============================================
+  check_readme_doi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Validate README DOI consistency
+        run: python tools/check_readme_doi.py README.md
+
   check_yaml:
     runs-on: ubuntu-latest
     steps:
@@ -47,7 +58,7 @@ jobs:
   # ============================================
   lock_file:
     runs-on: ubuntu-latest
-    needs: [check_yaml, check_file_formatting]
+    needs: [check_readme_doi, check_yaml, check_file_formatting]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
