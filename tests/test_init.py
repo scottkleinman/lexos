@@ -19,7 +19,7 @@ def test_package_metadata_and_info_mapping():
     """Metadata constants should match the exported __info__ mapping."""
     assert lexos.__title__ == "Lexos"
     assert lexos.__license__ == "MIT"
-    assert lexos.__status__ == "pre-release"
+    assert lexos.__status__ == "beta"
     assert lexos.__version_info__ == (0, 2, 0, "beta")
 
     assert lexos.__info__["title"] == lexos.__title__
