@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build distribution
+    name: Build distribution for ref ${{ inputs.ref || github.ref }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -24,17 +24,36 @@ jobs:
         with:
           ref: ${{ inputs.ref || github.ref }}
           persist-credentials: false
+
+      - name: Clean stale build artifacts
+        run: |
+          rm -rf dist build *.egg-info
+
       - name: Install uv
         uses: astral-sh/setup-uv@v6
+
       - name: Install Python 3.13
         run: uv python install 3.13
+
       - name: Build
         run: uv build
-      # Check that basic features work and we didn't miss to include crucial files
+
       - name: Smoke test (wheel)
-        run: uv run --isolated --no-project --with dist/*.whl tests/smoke_test.py
+        run: |
+          uv run --isolated --no-project \
+            --with dist/*.whl \
+            --with https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl \
+            --with https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.8.0/xx_sent_ud_sm-3.8.0-py3-none-any.whl \
+            python -c "import lexos; print(lexos.__version__)"
+
       - name: Smoke test (source distribution)
-        run: uv run --isolated --no-project --with dist/*.tar.gz tests/smoke_test.py
+        run: |
+          uv run --isolated --no-project \
+            --with dist/*.tar.gz \
+            --with https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl \
+            --with https://github.com/explosion/spacy-models/releases/download/xx_sent_ud_sm-3.8.0/xx_sent_ud_sm-3.8.0-py3-none-any.whl \
+            python -c "import lexos; print(lexos.__version__)"
+
       - name: Upload distributions
         uses: actions/upload-artifact@v4
         with:
