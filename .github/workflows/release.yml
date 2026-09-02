@@ -1,25 +1,29 @@
 name: Release
 
 on:
-  push:
-    tags:
-      # Publish on any tag starting with a `v`, e.g., v1.2.3
-      - v*
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref to publish (branch, tag, or SHA). Defaults to the triggering ref."
+        required: false
+        type: string
+
+concurrency:
+  group: release-pypi-${{ inputs.ref || github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  pypi:
-    name: Publish to PyPI
+  build:
+    name: Build distribution
     runs-on: ubuntu-latest
-    # Environment and permissions trusted publishing.
-    environment:
-      # Create this environment in the GitHub repository under Settings -> Environments
-      name: pypi
     permissions:
-      id-token: write
       contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+          persist-credentials: false
       - name: Install uv
         uses: astral-sh/setup-uv@v6
       - name: Install Python 3.13
@@ -31,5 +35,29 @@ jobs:
         run: uv run --isolated --no-project --with dist/*.whl tests/smoke_test.py
       - name: Smoke test (source distribution)
         run: uv run --isolated --no-project --with dist/*.tar.gz tests/smoke_test.py
+      - name: Upload distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+
+  pypi:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    # Create this environment in the GitHub repository under Settings -> Environments.
+    # Replace URL if your published project name differs from `lexos`.
+    environment:
+      name: pypi
+      url: https://pypi.org/p/lexos
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Download distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
       - name: Publish
-        run: uv publish
+        uses: pypa/gh-action-pypi-publish@release/v1
