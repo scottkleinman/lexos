@@ -1,7 +1,7 @@
 """__init__.py.
 
-Last Update: August 9, 2026
-Last Tested: August 9, 2026
+Last Update: September 2, 2026
+Last Tested: September 2, 2026
 """
 
 from importlib import import_module
@@ -14,7 +14,7 @@ from rich.table import Table
 __title__ = "Lexos"
 __license__ = "MIT"
 __copyright__ = "Copyright (c) 2022- The Lexomics Project"
-__status__ = "pre-release"
+__status__ = "beta"
 __version__ = "0.2.0-beta"
 __version_info__ = (0, 2, 0, "beta")
 __docs__ = "https://scottkleinman.github.io/lexos/"
