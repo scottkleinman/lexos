@@ -3,7 +3,7 @@
 Tests for the top-level `lexos` package initialization module.
 
 Coverage: 100%
-Last Update: August 9, 2026
+Last Update: September 3, 2026
 """
 
 import importlib
@@ -20,8 +20,8 @@ def test_package_metadata_and_info_mapping():
     assert lexos.__title__ == "Lexos"
     assert lexos.__license__ == "MIT"
     assert lexos.__status__ == "beta"
-    assert lexos.__version__ == "0.2.0b0"
-    assert lexos.__version_info__ == (0, 2, 0, "b0")
+    assert lexos.__version__ == "0.2.0b1"
+    assert lexos.__version_info__ == (0, 2, 0, "b1")
 
     assert lexos.__info__["title"] == lexos.__title__
     assert lexos.__info__["version"] == lexos.__version__

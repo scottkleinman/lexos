@@ -1,7 +1,7 @@
 """__init__.py.
 
-Last Update: September 2, 2026
-Last Tested: September 2, 2026
+Last Update: September 3, 2026
+Last Tested: September 3, 2026
 """
 
 from importlib import import_module
@@ -15,8 +15,8 @@ __title__ = "Lexos"
 __license__ = "MIT"
 __copyright__ = "Copyright (c) 2022- The Lexomics Project"
 __status__ = "beta"
-__version__ = "0.2.0b0"
-__version_info__ = (0, 2, 0, "b0")
+__version__ = "0.2.0b1"
+__version_info__ = (0, 2, 0, "b1")
 __docs__ = "https://scottkleinman.github.io/lexos/"
 __repo__ = "https://github.com/scottkleinman/lexos"
 

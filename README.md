@@ -68,7 +68,7 @@ python -m spacy download en_core_web_md # Replace with the name of your model
 
 ## 🚦Project Status
 
-The Lexos API is currently in beta. Most of the core functionality of the Lexos web app, along with new features, has been implemented and documented. As of January 2026, the API is considered feature complete and stable for general use, but some rough edges remain. Feedback is welcome.
+The Lexos API is currently in beta. Most of the core functionality of the Lexos web app, along with new features, has been implemented and documented. As of September 2026, the API is considered feature complete and stable for general use, but some rough edges remain. Feedback is welcome.
 
 I will continue to fix bugs and improve the documentation as issues arise, but no major new features are planned at this time. The beta release coincides with at a time when the landscape of digital tools is rapidly evolving and AI-assisted coding is becoming more prevalent. I am waiting to see whether there is significant adoption of the Lexos library before investing more time in developing new features. If you like Lexos, you can help by requesting new features in the [GitHub issues](https://github.com/scottkleinman/lexos/issues) (labelled as "enhancement") or [contributing](https://scottkleinman.github.io/lexos/#contributing) them yourself.
 
@@ -84,4 +84,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📝 Citation Information
 
-Kleinman, S., (2026). Lexos. v0.2.0b https://github.com/scottkleinman/lexos. [10.5281/zenodo.18112379](https://doi.org/10.5281/zenodo.18112379).
+Kleinman, S., (2026). Lexos. v0.2.0b1 https://github.com/scottkleinman/lexos. [10.5281/zenodo.18112379](https://doi.org/10.5281/zenodo.18112379).

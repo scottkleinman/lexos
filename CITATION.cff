@@ -5,7 +5,7 @@ type: software
 authors:
   - family-names: "Kleinman"
     given-names: "Scott"
-version: "0.2.0-beta"
+version: "0.2.0b1"
 doi: "10.5281/zenodo.18112379"
 repository-code: "https://github.com/scottkleinman/lexos"
 license: "MIT"
