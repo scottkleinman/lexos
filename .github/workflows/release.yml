@@ -68,7 +68,7 @@ jobs:
     # Replace URL if your published project name differs from `lexos`.
     environment:
       name: pypi
-      url: https://pypi.org/p/lexos
+      url: https://pypi.org/project/lexos
     permissions:
       id-token: write
       contents: read
