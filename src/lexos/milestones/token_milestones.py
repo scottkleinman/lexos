@@ -1,7 +1,7 @@
 """milestones.py.
 
-Last Updated: July 9, 2026
-Last Tested: July 9, 2026
+Last Updated: September 4, 2026
+Last Tested: September 4, 2026
 """
 
 import re
@@ -15,6 +15,8 @@ from spacy.matcher import Matcher, PhraseMatcher
 from spacy.schemas import DocJSONSchema
 from spacy.tokens import Doc, Span, Token
 
+from lexos.util import check_default_model
+
 from .util import (
     chars_to_tokens,
     ensure_list,
@@ -22,6 +24,8 @@ from .util import (
     lowercase_spacy_rules,
     move_milestone,
 )
+
+check_default_model()
 
 type Doclike = Doc | Span | str
 case_insensitive_flags: Enum = re.DOTALL | re.IGNORECASE | re.MULTILINE | re.UNICODE

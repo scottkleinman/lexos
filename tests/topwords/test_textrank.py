@@ -2,9 +2,9 @@
 
 Tests for TextRank keyterm extraction module.
 
-Coverage: 96%. Missing: 188, 229, 241, 249, 364
+Coverage: 100%
 
-Last Updated: July 30, 2026
+Last Updated: September 4, 2026
 """
 
 import math

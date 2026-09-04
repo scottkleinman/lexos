@@ -2,9 +2,9 @@
 
 Tests for YAKE keyterm extraction module.
 
-Coverage: 95%. Missing: 220, 256, 300, 395, 406, 442, 468, 540, 588, 600, 634, 638, 646
+Coverage: 100%
 
-Last Updated: July 30, 2026
+Last Updated: September 4, 2026
 """
 
 import pandas as pd

@@ -2,9 +2,9 @@
 
 Tests for SGRank keyterm extraction module.
 
-Coverage: 98%. Missing: 296, 330
+Coverage: 100%
 
-Last Updated: July 30, 2026
+Last Updated: September 4, 2026
 """
 
 import collections
@@ -14,10 +14,6 @@ import pytest
 import spacy
 from pydantic_core._pydantic_core import ValidationError as PydanticValidationError
 
-from lexos.topwords.keyterms.keyterms_util import (
-    _to_term_sequence,
-    terms_to_strings,
-)
 from lexos.topwords.keyterms.sgrank import (
     Candidate,
     SGRank,
@@ -27,6 +23,10 @@ from lexos.topwords.keyterms.sgrank import (
     _score_candidate_phrases,
     _validate_sgrank_args,
     sgrank,
+)
+from lexos.topwords.keyterms.util import (
+    _to_term_sequence,
+    terms_to_strings,
 )
 
 

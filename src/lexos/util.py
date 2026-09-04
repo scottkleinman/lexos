@@ -2,10 +2,11 @@
 
 This file contains helper functions used by multiple modules.
 
-Last Updated: July 15, 2026
-Last Tested: July 15, 2026
+Last Updated: September 4, 2026
+Last Tested: September 4, 2026
 """
 
+import subprocess
 import sys
 from collections import Counter
 from contextlib import contextmanager
@@ -23,6 +24,7 @@ from pydantic_extra_types.color import Color
 from spacy.attrs import ORTH
 from spacy.language import Language
 from spacy.tokens import Doc, Span
+from wasabi import msg
 
 import lexos.constants as constants
 from lexos.exceptions import LexosException
@@ -399,3 +401,21 @@ def safe_recursion_limit(n_observations: int):
         yield
     finally:
         sys.setrecursionlimit(old_limit)
+
+
+def check_default_model():
+    """Downloads the default spaCy language model if it is not installed."""
+    try:
+        nlp = spacy.load("xx_sent_ud_sm")
+    except OSError:
+        msg.info("Downloading required language model...")
+        download_model("xx_sent_ud_sm")
+
+
+def download_model(model: str = "xx_sent_ud_sm"):
+    """Download a spaCy language model.
+
+    Args:
+        model (str): The name of the spaCy language model to download and load.
+    """
+    subprocess.run([sys.executable, "-m", "spacy", "download", model])

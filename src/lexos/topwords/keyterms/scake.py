@@ -1,7 +1,7 @@
 """scake.py.
 
-Last Updated: June 28, 2026
-Last Tested: June 28, 2026
+Last Updated: September 4, 2026
+Last Tested: September 4, 2026
 
 Usage:
 
@@ -28,7 +28,7 @@ from textacy.extract.utils import get_filtered_topn_terms
 from textacy.utils import to_set
 
 from lexos.topwords import TopWords
-from lexos.topwords.keyterms.keyterms_util import (
+from lexos.topwords.keyterms.util import (
     _resolve_topn,
     _to_term_sequence,
     is_unicode_punctuation,
@@ -36,7 +36,7 @@ from lexos.topwords.keyterms.keyterms_util import (
 )
 
 validation_config = ConfigDict(
-    arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema.schema()
+    arbitrary_types_allowed=True, json_schema_extra=DocJSONSchema
 )
 
 

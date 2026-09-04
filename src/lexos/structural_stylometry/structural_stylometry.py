@@ -1,6 +1,9 @@
 """structural_stylometry.py.
 
 Scripts for performing stylometric analysis on structural features like punctuation and whitespace.
+
+Last Updated: September 4, 2026
+Last Tested: September 4, 2026
 """
 
 import re
@@ -20,6 +23,9 @@ from spacy.tokens import Doc
 
 from lexos.corpus import Corpus
 from lexos.io.loader import Loader
+from lexos.util import check_default_model
+
+check_default_model()
 
 
 class StructuralAnalyzer(BaseModel):

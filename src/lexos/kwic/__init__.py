@@ -1,7 +1,7 @@
 """kwic.py.
 
-Last Updated: July 13, 2026
-Last Tested: July ar, 2026
+Last Updated: September 4, 2026
+Last Tested: September 4, 2026
 
 A current limitation is that all spaCy docs must share the same model. This is due to the way spaCy loads models and the Matcher/PhraseMatcher, which are tied to the vocabulary of the loaded model. Without detecting the document models and loading each one, the only way to support lists of documents with different models is to create separate instances of the Kwic class for each set of documents created with a specific model.
 
@@ -36,7 +36,9 @@ from spacy.matcher import Matcher, PhraseMatcher
 from spacy.tokens import Doc
 
 from lexos.exceptions import LexosException
-from lexos.util import ensure_list
+from lexos.util import check_default_model, ensure_list
+
+check_default_model()
 
 
 class Kwic(BaseModel):

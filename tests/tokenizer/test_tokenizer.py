@@ -34,7 +34,7 @@ To run the tests for this module:
     uv run pytest tests/tokenizer/test_tokenizer.py
 
 Coverage: 100%
-Last Updated: June 27, 2026
+Last Updated: September 4, 2026
 """
 
 from typing import Generator

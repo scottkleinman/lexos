@@ -1,7 +1,7 @@
 """base_calculator.py.
 
-Last Updated: July 9, 2026
-Last tested: June 27, 2026
+Last Updated: September 4, 2026
+Last tested: September 4, 2026
 """
 
 import re
@@ -19,6 +19,9 @@ from spacy.tokens import Doc, Span, Token
 
 from lexos.exceptions import LexosException
 from lexos.rolling_windows import Windows
+from lexos.util import check_default_model
+
+check_default_model()
 
 validation_config = ConfigDict(
     arbitrary_types_allowed=True,

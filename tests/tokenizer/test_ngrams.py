@@ -37,7 +37,7 @@ To run the tests for this module:
     uv run pytest tests/tokenizer/test_ngrams.py
 
 Coverage: 100%
-Last updated: May 27, 2025
+Last updated: September 4, 2026
 """
 
 import pytest

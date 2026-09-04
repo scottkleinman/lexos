@@ -1,7 +1,7 @@
 """__init__.py.
 
-Last Updated: July 9, 2026
-Last Tested: July 9, 2026
+Last Updated: September 4, 2026
+Last Tested: September 4, 2026
 
 Current usage:
 
@@ -33,7 +33,9 @@ from spacy.schemas import DocJSONSchema
 from spacy.tokens import Doc, Token
 
 from lexos.exceptions import LexosException
-from lexos.util import ensure_list
+from lexos.util import check_default_model, ensure_list
+
+check_default_model()
 
 
 class Tokenizer(BaseModel):

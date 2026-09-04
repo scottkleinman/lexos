@@ -1,7 +1,7 @@
 """test_base_calculator.py.
 
-Coverage: 100%
-Last Updated: July 9, 2026
+Coverage: 89%. Missing: 3, 192, 372-389, 394
+Last Updated: September 4, 2026
 """
 
 import re

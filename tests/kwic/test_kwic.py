@@ -4,7 +4,7 @@ Test suite for the Kwic class.
 
 Coverage: 100%
 
-Last Update: July 13, 2026
+Last Update: September 4, 2026
 """
 
 import pandas as pd

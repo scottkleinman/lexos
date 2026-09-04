@@ -2,9 +2,9 @@
 
 Tests for sCAKE keyterm extraction module.
 
-Coverage: 99%. Missing: 152, 247
+Coverage: 94%. Missing: 167-168, 301-311
 
-Last Updated: August 15, 2026
+Last Updated: September 4, 2026
 """
 
 import collections
@@ -15,10 +15,6 @@ import pytest
 import spacy
 from pydantic_core._pydantic_core import ValidationError as PydanticValidationError
 
-from lexos.topwords.keyterms.keyterms_util import (
-    _to_term_sequence,
-    terms_to_strings,
-)
 from lexos.topwords.keyterms.scake import (
     SCake,
     _build_cooc_matrix,
@@ -29,6 +25,10 @@ from lexos.topwords.keyterms.scake import (
     _is_valid_tok_str,
     _validate_scake_args,
     scake,
+)
+from lexos.topwords.keyterms.util import (
+    _to_term_sequence,
+    terms_to_strings,
 )
 
 

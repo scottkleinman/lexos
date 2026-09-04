@@ -1,7 +1,7 @@
 """ngrams.py.
 
-Last Updated: July 9, 2026
-Last Tested: July 9, 2026
+Last Updated: September 4, 2026
+Last Tested: September 4, 2026
 
 Current usage:
 
@@ -50,6 +50,10 @@ from textacy.extract.basics import ngrams as textacy_ngrams
 
 from lexos.exceptions import LexosException
 from lexos.tokenizer import SliceTokenizer, WhitespaceTokenizer
+from lexos.util import check_default_model
+
+check_default_model()
+
 
 validation_config = ConfigDict(
     arbitrary_types_allowed=True,

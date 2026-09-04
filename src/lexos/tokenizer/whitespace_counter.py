@@ -1,7 +1,7 @@
 """whitespace_counter.py.
 
-Last Update: June 27, 2026
-Last Tested:June 27, 2026
+Last Update: September 4, 2026
+Last Tested: September 4, 2026
 
 This module provides a whitespace tokenizer that captures line breaks and counts runs of spaces.
 """
@@ -14,6 +14,9 @@ from pydantic import validate_call
 from spacy.tokens import Doc, Token
 
 from lexos.tokenizer import Tokenizer
+from lexos.util import check_default_model
+
+check_default_model()
 
 
 class WhitespaceCounter(Tokenizer):

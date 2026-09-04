@@ -1,11 +1,11 @@
-"""keyterms_util.py.
+"""util.py.
 
-Last Updated: June 28, 2026
-Last Tested: June 28, 2026
+Last Updated: September 4, 2026
+Last Tested: September 4, 2026
 
 Usage:
 
-from lexos.topwords.keyterms.keyterms_util import (
+from lexos.topwords.keyterms.util import (
     _resolve_topn,
     _to_term_sequence,
     is_unicode_punctuation,

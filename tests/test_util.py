@@ -1,7 +1,7 @@
 """Tests for util.py module.
 
-Coverage: 87%. Missing: 53-62, 157, 329-342, 354
-Last Update: July 15, 2026
+Coverage: 98%. Missing: 94-95, 606-608, 704-710
+Last Update: September 4, 2026
 """
 
 import sys
@@ -18,7 +18,9 @@ from lexos.util import (
     LexosException,
     _decode_bytes,
     _try_decode_bytes_,
+    check_default_model,
     count_doc_terms,
+    download_model,
     ensure_list,
     ensure_path,
     get_encoding,
@@ -329,6 +331,69 @@ def test_load_spacy_model_with_invalid_type():
         LexosException, match="Model must be a string or a spaCy Language object"
     ):
         load_spacy_model(123)  # type: ignore - We are testing invalid input type
+
+
+# ---------------- Test default model helpers ----------------
+
+
+def test_check_default_model_skips_download_when_model_exists(monkeypatch):
+    """Test check_default_model does nothing when the model is installed."""
+    mock_load = MagicMock()
+    mock_download = MagicMock()
+    mock_info = MagicMock()
+
+    monkeypatch.setattr("lexos.util.spacy.load", mock_load)
+    monkeypatch.setattr("lexos.util.download_model", mock_download)
+    monkeypatch.setattr("lexos.util.msg.info", mock_info)
+
+    check_default_model()
+
+    mock_load.assert_called_once_with("xx_sent_ud_sm")
+    mock_download.assert_not_called()
+    mock_info.assert_not_called()
+
+
+def test_check_default_model_downloads_missing_model(monkeypatch):
+    """Test check_default_model downloads the model when it is missing."""
+    mock_load = MagicMock(side_effect=OSError("not found"))
+    mock_download = MagicMock()
+    mock_info = MagicMock()
+
+    monkeypatch.setattr("lexos.util.spacy.load", mock_load)
+    monkeypatch.setattr("lexos.util.download_model", mock_download)
+    monkeypatch.setattr("lexos.util.msg.info", mock_info)
+
+    check_default_model()
+
+    mock_load.assert_called_once_with("xx_sent_ud_sm")
+    mock_info.assert_called_once_with("Downloading required language model...")
+    mock_download.assert_called_once_with("xx_sent_ud_sm")
+
+
+def test_download_model_uses_default_spacy_model(monkeypatch):
+    """Test download_model invokes spaCy with the default model name."""
+    mock_run = MagicMock()
+    monkeypatch.setattr("lexos.util.subprocess.run", mock_run)
+    monkeypatch.setattr("lexos.util.sys.executable", "/usr/bin/python")
+
+    download_model()
+
+    mock_run.assert_called_once_with(
+        ["/usr/bin/python", "-m", "spacy", "download", "xx_sent_ud_sm"]
+    )
+
+
+def test_download_model_uses_custom_model(monkeypatch):
+    """Test download_model accepts a custom spaCy model name."""
+    mock_run = MagicMock()
+    monkeypatch.setattr("lexos.util.subprocess.run", mock_run)
+    monkeypatch.setattr("lexos.util.sys.executable", "/usr/bin/python")
+
+    download_model("en_core_web_sm")
+
+    mock_run.assert_called_once_with(
+        ["/usr/bin/python", "-m", "spacy", "download", "en_core_web_sm"]
+    )
 
 
 # ---------------- Test normalize functions ----------------
