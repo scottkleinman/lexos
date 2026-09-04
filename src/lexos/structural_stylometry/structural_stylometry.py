@@ -21,7 +21,10 @@ from scipy.cluster.hierarchy import dendrogram, linkage
 from sklearn.decomposition import PCA
 from spacy.tokens import Doc
 
-from lexos.corpus import Corpus
+try:
+    from lexos.corpus.corpus import Corpus
+except ImportError:  # pragma: no cover - fallback for older import paths
+    from lexos.corpus import Corpus
 from lexos.io.loader import Loader
 from lexos.util import check_default_model
 

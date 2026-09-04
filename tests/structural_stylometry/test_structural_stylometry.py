@@ -136,7 +136,7 @@ def test_structural_analyzer_accepts_loader_and_corpus_inputs(
     monkeypatch, structural_module, tmp_path
 ):
     """The analyzer should normalize Loader and Corpus inputs into plain dictionaries."""
-    from lexos.corpus import Corpus
+    from lexos.corpus.corpus import Corpus
     from lexos.io.loader import Loader
 
     loader = Loader()
