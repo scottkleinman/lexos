@@ -12,7 +12,7 @@ import pandas as pd
 from html_to_markdown import convert
 from wasabi import msg
 
-from lexos.corpus import Corpus
+from lexos.corpus.corpus import Corpus
 
 
 def create_corpus_analysis_report(
