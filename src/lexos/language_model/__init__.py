@@ -5,8 +5,8 @@ on custom corpora. Handles directory setup, config generation (including
 fine-tuning via component sourcing), data conversion, training, and evaluation
 without requiring the user to edit config files or use the command line.
 
-Last Updated: July 29, 2026
-Last Tested: July 29, 2026
+Last Updated: September 7, 2026
+Last Tested: September 7, 2026
 """
 
 import importlib.util
@@ -14,13 +14,13 @@ import shutil
 import subprocess
 import sys
 import warnings
+from email.policy import default
 from pathlib import Path
 from time import time
 from typing import Any
 
 import spacy
-
-from lexos.exceptions import LexosException
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from smart_open import open as smart_open
 from spacy.cli import convert
 from spacy.cli import debug_config as spacy_debug_config
@@ -37,6 +37,8 @@ from spacy.training.loop import train as spacy_train
 from spacy.util import load_config, load_model_from_config, registry
 from thinc.api import Config, fix_random_seed, set_gpu_allocator
 from wasabi import Printer
+
+from lexos.exceptions import LexosException
 
 # The five-component Universal Dependencies pipeline used for full linguistic
 # annotation (POS, morphology, lemmas, dependency structure).
@@ -236,6 +238,37 @@ def split_conllu(
     return paths
 
 
+def _iter_export_tokens(doc: Any) -> list[Any]:
+    """Return printable tokens from a spaCy doc, dropping whitespace-only ones."""
+    return [token for token in doc if token.text.strip()]
+
+
+def _write_sentence_conllu(handle: Any, sent: Any, sent_id: int) -> int:
+    """Write a single sentence to the output file and return the updated id."""
+    tokens = _iter_export_tokens(sent)
+    if not tokens:
+        return sent_id
+
+    text_comment = " ".join(sent.text.split())
+    handle.write(f"# sent_id = auto-{sent_id + 1}\n")
+    handle.write(f"# text = {text_comment}\n")
+
+    index_map = {token.i: row for row, token in enumerate(tokens, 1)}
+    for row_number, token in enumerate(tokens, 1):
+        if token.head == token:
+            head = 0
+        else:
+            head = index_map.get(token.head.i, 0)
+        feats = str(token.morph) if token.morph else "_"
+        lemma = token.lemma_ if token.lemma_ else "_"
+        handle.write(
+            f"{row_number}\t{token.text}\t{lemma}\t{token.pos_}\t"
+            f"{token.tag_}\t{feats}\t{head}\t{token.dep_}\t_\t_\n"
+        )
+    handle.write("\n")
+    return sent_id + 1
+
+
 def export_to_conllu(
     model_path: str | Path,
     texts: list[str],
@@ -267,33 +300,7 @@ def export_to_conllu(
         for text in texts:
             doc = nlp(text)
             for sent in doc.sents:
-                # Collect only printable tokens; whitespace-only tokens
-                # (newlines, tabs spaCy preserves as tokens) break tab-separated rows.
-                tokens = [t for t in sent if t.text.strip()]
-                if not tokens:
-                    continue
-                sent_id += 1
-                # Normalise whitespace in the comment so newlines in the source
-                # text don't split the # text = line across multiple file lines.
-                text_comment = " ".join(sent.text.split())
-                f.write(f"# sent_id = auto-{sent_id}\n")
-                f.write(f"# text = {text_comment}\n")
-                # Build spaCy-index → output-row-number map for correct head refs.
-                index_map: dict[int, int] = {
-                    t.i: row for row, t in enumerate(tokens, 1)
-                }
-                for j, token in enumerate(tokens, 1):
-                    if token.head == token:
-                        head = 0
-                    else:
-                        head = index_map.get(token.head.i, 0)
-                    feats = str(token.morph) if token.morph else "_"
-                    lemma = token.lemma_ if token.lemma_ else "_"
-                    f.write(
-                        f"{j}\t{token.text}\t{lemma}\t{token.pos_}\t"
-                        f"{token.tag_}\t{feats}\t{head}\t{token.dep_}\t_\t_\n"
-                    )
-                f.write("\n")
+                sent_id = _write_sentence_conllu(f, sent, sent_id)
     msg.good(f"{sent_id} sentences written to {output_path}")
     return output_path
 
@@ -333,7 +340,7 @@ def combine_conllu(
 # ---------------------------------------------------------------------------
 
 
-class LanguageModel:
+class LanguageModel(BaseModel):
     """Manage the full lifecycle of a spaCy fine-tuning workflow.
 
     Creates and maintains a self-contained model directory with the following
@@ -350,70 +357,75 @@ class LanguageModel:
     When `base_model` is provided the config uses spaCy's component-sourcing
     mechanism to warm-start from existing model weights instead of training from
     random initialisation.
+
+
+    Enabling GPU (device 0) requires cupy and the CUDA libraries.
+
+    Sample base_model mapping:
+
+    `{"tok2vec": "en_core_web_sm", "tagger": "en_core_web_sm",
+    "morphologizer": "training/UD_English-EWT/model-best", ...}`
+
+    Components absent from the dict are initialised from scratch.
+    Mixed factory/source configurations are supported even when
+    `tok2vec` is sourced — the module reads the tok2vec output
+    width from the source model's `config.cfg` and patches it
+    into factory-defined component configs automatically.
+
+    When a recipe is provided, the file is loaded as-is, `base_model` is ignored for config generation, and `components` is replaced by the
+    recipe's `[nlp] pipeline`.  Transformer-based training is only
+    available through recipes — `base_model` sourcing is specific to tok2vec pipelines.
     """
 
-    def __init__(
-        self,
-        model_dir: str,
-        *,
-        lang: str = "en",
-        gpu: bool = False,
-        components: list[str] | None = None,
-        base_model: str | dict | None = None,
-        recipe: str | None = None,
-        force: bool = False,
-    ) -> None:
-        """Initialise the LanguageModel and create its directory structure.
+    model_dir: str = Field(..., description="Root folder for all model artefacts.")
+    config: Config | None = Field(default=None, exclude=True)
+    lang: str = Field(
+        "en",
+        description="BCP-47 language code (default 'en'). Use `'xx'` for a language-agnostic multilingual model.",
+    )
+    gpu: bool = Field(
+        False,
+        description="Use GPU for training (default False — CPU). If no GPU is detected, falls back to CPU with a warning.",
+    )
+    components: list[str] | None = Field(
+        None,
+        description="spaCy pipeline components to train. Defaults to the full Universal Dependencies pipeline "
+        '["tok2vec", "tagger", "morphologizer", "trainable_lemmatizer", "parser"].',
+    )
+    base_model: str | dict | None = Field(
+        None,
+        description="Starting point for fine-tuning.  Three forms are accepted: "
+        "`None` — train from random initialisation (scratch); "
+        "`str` — source every component from this model (installed name like "
+        '"en_core_web_sm" or a local path); '
+        "`dict[str, str]` — map each component name to its own source model.",
+    )
+    recipe: str | None = Field(
+        None,
+        description="Path to a bundled spaCy training recipe or `.cfg` file, resolved against the "
+        "module's `recipes/` folder. If not provided, a default recipe is used.",
+    )
+    force: bool = Field(
+        False,
+        description="Force overwrite of existing `config.cfg` (default False).",
+    )
 
-        Args:
-            model_dir: Root folder for all model artefacts.
-            lang: BCP-47 language code (default `"en"`).  Use `"xx"` for
-                a language-agnostic multilingual model.
-            gpu: Use GPU for training (default `False` — CPU).  Set to
-                `True` to enable GPU (device 0).  Requires cupy and the CUDA
-                libraries; see README.md for setup instructions.  If
-                `gpu=True` but no NVIDIA GPU is detected, falls back to CPU
-                with a warning.
-            components: spaCy pipeline components to train.  Defaults to the
-                full Universal Dependencies pipeline
-                ``["tok2vec", "tagger", "morphologizer",
-                "trainable_lemmatizer", "parser"]``.
-            base_model: Starting point for fine-tuning.  Three forms are
-                accepted:
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="allow")
 
-                - `None` — train from random initialisation (scratch).
-                - `str` — source every component from this model
-                  (installed name like `"en_core_web_sm"` or a local path).
-                - `dict[str, str]` — map each component name to its own
-                  source model, e.g.
-                  ``{"tok2vec": "en_core_web_sm", "tagger": "en_core_web_sm",
-                  "morphologizer": "training/UD_English-EWT/model-best", ...}``.
-                  Components absent from the dict are initialised from scratch.
-                  Mixed factory/source configurations are supported even when
-                  `tok2vec` is sourced — the module reads the tok2vec output
-                  width from the source model's `config.cfg` and patches it
-                  into factory-defined component configs automatically.
-
-            recipe: Path to a `.cfg` file, or the filename of a bundled
-                recipe (e.g. `"transformer_ud.cfg"`, resolved against the
-                module's `recipes/` folder).  When provided, the file is
-                loaded as-is, `base_model` is ignored for config generation,
-                and `components` is replaced by the recipe's
-                `[nlp] pipeline`.  Transformer-based training is only
-                available through recipes — `base_model` sourcing is
-                specific to tok2vec pipelines.
-            force: Overwrite an existing `config.cfg` if one already exists.
-        """
-        self.model_dir = Path(model_dir)
-        self.lang = lang
-        self.base_model = base_model
+    def __init__(self, model_dir: str | Path | None = None, **data):
+        """Initialise the LanguageModel and create its directory structure."""
+        if model_dir is not None:
+            data["model_dir"] = model_dir
+        super().__init__(**data)
+        self.model_dir = Path(self.model_dir)
         self.components = (
-            components if components is not None else FULL_UD_PIPELINE.copy()
+            self.components if self.components is not None else FULL_UD_PIPELINE.copy()
         )
         self.config: Config | None = None
+        object.__setattr__(self, "validate", self.validate_model)
 
         # --- GPU setup ---
-        if gpu and not _has_nvidia_gpu():
+        if self.gpu and not _has_nvidia_gpu():
             warnings.warn(
                 "gpu=True was requested but no NVIDIA GPU was detected "
                 "(nvidia-smi not found or returned no NVIDIA devices). "
@@ -423,27 +435,25 @@ class LanguageModel:
                 stacklevel=2,
             )
             self.gpu = False
-        else:
-            self.gpu = gpu
         # Device id per spaCy: 0 = GPU, -1 = CPU
         self._use_gpu: int = 0 if self.gpu else -1
 
         # --- Non-English warning ---
-        if lang not in ("en", "xx"):
+        if self.lang not in ("en", "xx"):
             warnings.warn(
-                f"lang='{lang}': the default base_model entries (en_core_web_sm "
+                f"lang='{self.lang}': the default base_model entries (en_core_web_sm "
                 "and the bundled UD English model) are English-specific. "
-                f"Make sure your base_model entries point to models trained for '{lang}'. "
+                f"Make sure your base_model entries point to models trained for '{self.lang}'. "
                 "See README.md for guidance on finding models for other languages.",
                 UserWarning,
                 stacklevel=2,
             )
 
         self._config_path = self.model_dir / "config.cfg"
-        self._assets_dir = self.model_dir / "assets" / lang
-        self._corpus_dir = self.model_dir / "corpus" / lang
-        self._metrics_dir = self.model_dir / "metrics" / lang
-        self._training_dir = self.model_dir / "training" / lang
+        self._assets_dir = self.model_dir / "assets" / self.lang
+        self._corpus_dir = self.model_dir / "corpus" / self.lang
+        self._metrics_dir = self.model_dir / "metrics" / self.lang
+        self._training_dir = self.model_dir / "training" / self.lang
 
         msg = Printer()
         for d in [
@@ -454,7 +464,7 @@ class LanguageModel:
         ]:
             d.mkdir(parents=True, exist_ok=True)
 
-        if self._config_path.exists() and not force:
+        if self._config_path.exists() and not self.force:
             msg.warn(
                 f"{self._config_path} already exists. Pass force=True to regenerate it."
             )
@@ -462,10 +472,10 @@ class LanguageModel:
             return
 
         # --- Generate or load config ---
-        if recipe is not None:
-            self._load_recipe(recipe, msg)
-        elif base_model is not None:
-            sources = self._resolve_sources(base_model)
+        if self.recipe is not None:
+            self._load_recipe(self.recipe, msg)
+        elif self.base_model is not None:
+            sources = self._resolve_sources(self.base_model)
             self.config = self._generate_finetune_config(sources)
         else:
             self.config = init_config(
@@ -749,7 +759,60 @@ class LanguageModel:
         else:
             msg.fail("One or more assets failed to convert. Check CONLL-U formatting.")
 
-    def validate(self) -> None:
+    def _validate_assets(self, errors: list[str]) -> list[Path]:
+        """Validate the asset files in the model's assets directory."""
+        assets = list(self._assets_dir.glob("*.conllu"))
+        if not assets:
+            errors.append(
+                f"No .conllu files found in {self._assets_dir}. "
+                "Run copy_assets() first."
+            )
+        else:
+            for asset in assets:
+                if asset.stat().st_size == 0:
+                    errors.append(f"Asset file is empty: {asset}")
+        return assets
+
+    def _validate_corpus(self, errors: list[str], msg: Printer) -> list[Path]:
+        """Validate the converted spaCy corpus files in the corpus directory."""
+        spacy_files = list(self._corpus_dir.glob("*.spacy"))
+        if not spacy_files:
+            msg.warn(
+                f"No .spacy files found in {self._corpus_dir}. "
+                "Run convert_assets() before train()."
+            )
+        else:
+            for spacy_file in spacy_files:
+                if spacy_file.stat().st_size == 0:
+                    errors.append(f"Corpus file is empty: {spacy_file}")
+        return spacy_files
+
+    def _validate_config(self, errors: list[str], spacy_files: list[Path]) -> None:
+        """Validate the configuration file and, when present, the training data."""
+        if not self._config_path.exists():
+            errors.append(f"Config not found: {self._config_path}")
+            return
+
+        try:
+            debug_config(self._config_path)
+        except Exception as e:
+            errors.append(f"Config validation failed: {e}")
+
+        if spacy_files:
+            try:
+                debug_data(self._config_path)
+            except LexosException as e:
+                errors.append(str(e))
+
+    def _warn_for_non_default_language(self, msg: Printer) -> None:
+        """Warn when the configured language is not one of the built-in defaults."""
+        if self.lang not in ("en", "xx"):
+            msg.warn(
+                f"lang='{self.lang}': confirm your base_model components are "
+                "appropriate for this language."
+            )
+
+    def validate_model(self) -> None:
         """Run pre-training preflight checks and print a summary.
 
         Verifies that:
@@ -767,46 +830,10 @@ class LanguageModel:
         msg = Printer()
         errors: list[str] = []
 
-        assets = list(self._assets_dir.glob("*.conllu"))
-        if not assets:
-            errors.append(
-                f"No .conllu files found in {self._assets_dir}. "
-                "Run copy_assets() first."
-            )
-        else:
-            for f in assets:
-                if f.stat().st_size == 0:
-                    errors.append(f"Asset file is empty: {f}")
-
-        spacy_files = list(self._corpus_dir.glob("*.spacy"))
-        if not spacy_files:
-            msg.warn(
-                f"No .spacy files found in {self._corpus_dir}. "
-                "Run convert_assets() before train()."
-            )
-        else:
-            for f in spacy_files:
-                if f.stat().st_size == 0:
-                    errors.append(f"Corpus file is empty: {f}")
-
-        if not self._config_path.exists():
-            errors.append(f"Config not found: {self._config_path}")
-        else:
-            try:
-                debug_config(self._config_path)
-            except Exception as e:
-                errors.append(f"Config validation failed: {e}")
-            if spacy_files:
-                try:
-                    debug_data(self._config_path)
-                except LexosException as e:
-                    errors.append(str(e))
-
-        if self.lang not in ("en", "xx"):
-            msg.warn(
-                f"lang='{self.lang}': confirm your base_model components are "
-                "appropriate for this language."
-            )
+        assets = self._validate_assets(errors)
+        spacy_files = self._validate_corpus(errors, msg)
+        self._validate_config(errors, spacy_files)
+        self._warn_for_non_default_language(msg)
 
         if errors:
             for err in errors:

@@ -2,13 +2,15 @@
 
 Test suite for LanguageModel and utilities in lexos.language_model.
 
-Coverage: 87%. Missing: 74-85, 110-123, 274, 470, 588, 805, 889, 951-953, 1006-1007, 1040, 1092-1125, 1150
+Coverage: 100%
 
-Last Updated: July 29, 2026
+Last Updated: September 7, 2026
 """
 
+import io
 import time
 import warnings
+from contextlib import nullcontext
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -21,9 +23,11 @@ from lexos.language_model import (
     _get_tok2vec_width,
     _has_nvidia_gpu,
     _patch_tok2vec_width,
+    _write_sentence_conllu,
     combine_conllu,
     debug_config,
     debug_data,
+    debug_model,
     export_to_conllu,
     fill_config,
     split_conllu,
@@ -142,10 +146,11 @@ def test_has_nvidia_gpu_smi_fails(mocker):
         "lexos.language_model.subprocess.run",
         return_value=MagicMock(returncode=1, stdout=""),
     )
-    import lexos.language_model as lm
-
     # Replace with unpatched version for this test
-    import shutil, subprocess as sp
+    import shutil
+    import subprocess as sp
+
+    import lexos.language_model as lm
 
     original = lm._has_nvidia_gpu
 
@@ -158,6 +163,33 @@ def test_has_nvidia_gpu_smi_fails(mocker):
     lm._has_nvidia_gpu = _real
     assert not lm._has_nvidia_gpu()
     lm._has_nvidia_gpu = original
+
+
+def test_has_nvidia_gpu_real_true_branch(mocker):
+    """Covers the real subprocess success branch in _has_nvidia_gpu()."""
+    mocker.patch(
+        "lexos.language_model.shutil.which", return_value="/usr/bin/nvidia-smi"
+    )
+    mocker.patch(
+        "lexos.language_model.subprocess.run",
+        return_value=MagicMock(returncode=0, stdout="NVIDIA A100"),
+    )
+    assert _has_nvidia_gpu() is True
+
+
+def test_has_nvidia_gpu_subprocess_exception_returns_false(mocker):
+    """Covers the exception branch in _has_nvidia_gpu()."""
+    mocker.patch(
+        "lexos.language_model.shutil.which", return_value="/usr/bin/nvidia-smi"
+    )
+    mocker.patch("lexos.language_model.subprocess.run", side_effect=RuntimeError("x"))
+    assert _has_nvidia_gpu() is False
+
+
+def test_has_nvidia_gpu_no_smi_returns_false_real_body(mocker):
+    """Covers the early no-smi return in the real _has_nvidia_gpu()."""
+    mocker.patch("lexos.language_model.shutil.which", return_value=None)
+    assert _has_nvidia_gpu() is False
 
 
 # ===========================================================================
@@ -550,6 +582,53 @@ def test_get_tok2vec_width_no_config_raises(tmp_path):
         _get_tok2vec_width(str(empty))
 
 
+def test_get_tok2vec_width_installed_package_without_config_raises(tmp_path, mocker):
+    """Installed package lookup with no nested config.cfg raises LexosException."""
+    mocker.patch("spacy.util.get_package_path", return_value=tmp_path)
+    with pytest.raises(
+        LexosException, match="No config.cfg found in installed package"
+    ):
+        _get_tok2vec_width("fake_model")
+
+
+def test_get_tok2vec_width_package_lookup_exception_is_wrapped(mocker):
+    """Unexpected package lookup failures are wrapped in LexosException."""
+    mocker.patch("spacy.util.get_package_path", side_effect=RuntimeError("boom"))
+    with pytest.raises(LexosException, match="Could not locate config.cfg"):
+        _get_tok2vec_width("fake_model")
+
+
+def test_get_tok2vec_width_from_installed_package_layout(tmp_path, mocker):
+    """Reads width from package_path/*/config.cfg for installed model names."""
+    package_root = tmp_path / "pkg"
+    model_dir = package_root / "en_model-1.0.0"
+    model_dir.mkdir(parents=True)
+    (model_dir / "config.cfg").write_text(
+        "\n".join(
+            [
+                "[components]",
+                "",
+                "[components.tok2vec]",
+                'factory = "tok2vec"',
+                "",
+                "[components.tok2vec.model]",
+                '@architectures = "spacy.Tok2Vec.v2"',
+                "",
+                "[components.tok2vec.model.encode]",
+                '@architectures = "spacy.MaxoutWindowEncoder.v2"',
+                "width = 88",
+                "depth = 4",
+                "window_size = 1",
+                "maxout_pieces = 3",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    mocker.patch("spacy.util.get_package_path", return_value=package_root)
+    assert _get_tok2vec_width("fake_model") == 88
+
+
 def test_patch_tok2vec_width_replaces_variable(tmp_path):
     """Replaces the ${...} string with a concrete integer, recursively."""
     _VAR = "${components.tok2vec.model.encode.width}"
@@ -608,6 +687,36 @@ def test_finetune_config_sets_lang(tmp_path):
     """Test finetune config sets lang."""
     model = _make(tmp_path, lang="xx")
     assert model.config["nlp"]["lang"] == "xx"
+
+
+def test_init_without_base_model_uses_init_config(tmp_path, mocker):
+    """When base_model is None and no recipe is provided, init_config is used."""
+    import lexos.language_model as lm
+
+    cfg = lm.Config().from_disk(lm._RECIPES_DIR / "default_ud.cfg")
+    mock_init_config = mocker.patch(
+        "lexos.language_model.init_config", return_value=cfg
+    )
+    model = LanguageModel(str(tmp_path / "model"), base_model=None)
+    mock_init_config.assert_called_once()
+    assert model.config is not None
+
+
+def test_init_reuses_existing_config_when_force_false(tmp_path):
+    """Second init in same model_dir reuses config.cfg when force is False."""
+    _make(tmp_path)
+    model = LanguageModel(
+        str(tmp_path / "model"), base_model=_DUMMY_SOURCES, force=False
+    )
+    assert model.config is not None
+
+
+def test_apply_config_defaults_noop_when_config_is_none(tmp_path):
+    """_apply_config_defaults exits early when config is None."""
+    model = _make(tmp_path)
+    model.config = None
+    model._apply_config_defaults()
+    assert model.config is None
 
 
 # ===========================================================================
@@ -803,6 +912,18 @@ def test_evaluate_no_test_file_raises(tmp_path):
         model.evaluate(model="m")
 
 
+def test_evaluate_uses_default_model_path_when_omitted(tmp_path, mocker):
+    """evaluate() should use training/{lang}/model-best when model is omitted."""
+    model = _make(tmp_path)
+    test_file = model._corpus_dir / "wt-test.spacy"
+    test_file.write_bytes(b"x")
+    mock_eval = mocker.patch("lexos.language_model.spacy_evaluate")
+    model.evaluate(test_file=str(test_file))
+    assert mock_eval.call_args.kwargs["model"] == str(
+        model._training_dir / "model-best"
+    )
+
+
 # ===========================================================================
 # train — GPU device forwarding and validation
 # ===========================================================================
@@ -920,6 +1041,19 @@ def test_package_name_includes_lang_prefix(tmp_path, mocker):
     assert expected_package_name == "en_shakespeare_sm"
 
 
+def test_package_nonzero_system_exit_raises_lexos_exception(tmp_path, mocker):
+    """Non-zero SystemExit from spacy_package is wrapped as LexosException."""
+    model = _make(tmp_path)
+    mocker.patch("lexos.language_model.spacy_package", side_effect=SystemExit(1))
+    with pytest.raises(LexosException, match="Packaging failed"):
+        model.package(
+            input_dir=str(tmp_path / "model-best"),
+            output_dir=str(tmp_path / "packages"),
+            name="m",
+            version="1.0.0",
+        )
+
+
 # ===========================================================================
 # debug_config / debug_data / fill_config
 # ===========================================================================
@@ -946,6 +1080,16 @@ def test_debug_config_string_code_path_converted(tmp_path, mocker):
     # code_path must be passed as a Path, not a string
     passed = mock_import.call_args.args[0]
     assert isinstance(passed, Path)
+
+
+def test_debug_config_nonzero_exit_raises_lexos_exception(tmp_path, mocker):
+    """Non-zero SystemExit from debug_config is wrapped as LexosException."""
+    cfg = tmp_path / "config.cfg"
+    cfg.write_text("", encoding="utf-8")
+    mocker.patch("lexos.language_model.spacy_debug_config", side_effect=SystemExit(1))
+    mocker.patch("lexos.language_model.import_code")
+    with pytest.raises(LexosException, match="debug_config found errors"):
+        debug_config(cfg)
 
 
 def test_debug_data_nonzero_exit_raises_lexos_exception(tmp_path, mocker):
@@ -978,6 +1122,17 @@ def test_debug_data_no_exit_runs_normally(tmp_path, mocker):
     assert mock_fn.call_args.kwargs["verbose"] is True
 
 
+def test_debug_data_string_code_path_converted(tmp_path, mocker):
+    """debug_data converts string code_path to Path before import_code()."""
+    cfg = tmp_path / "config.cfg"
+    cfg.write_text("", encoding="utf-8")
+    mocker.patch("lexos.language_model.spacy_debug_data")
+    mock_import = mocker.patch("lexos.language_model.import_code")
+    debug_data(cfg, code_path="/some/debug_code.py")
+    passed = mock_import.call_args.args[0]
+    assert isinstance(passed, Path)
+
+
 def test_fill_config_calls_spacy(tmp_path, mocker):
     """Test fill config calls spacy."""
     cfg = tmp_path / "config.cfg"
@@ -991,9 +1146,107 @@ def test_fill_config_calls_spacy(tmp_path, mocker):
     assert mock_fn.call_args.args[1] == cfg
 
 
+def test_fill_config_string_code_path_converted(tmp_path, mocker):
+    """fill_config converts string code_path to Path before import_code()."""
+    cfg = tmp_path / "config.cfg"
+    out = tmp_path / "filled.cfg"
+    cfg.write_text("", encoding="utf-8")
+    mocker.patch("lexos.language_model.spacy_fill_config")
+    mock_import = mocker.patch("lexos.language_model.import_code")
+    fill_config(cfg, out, code_path="/some/code.py")
+    passed = mock_import.call_args.args[0]
+    assert isinstance(passed, Path)
+
+
+def test_debug_model_runs_full_flow_with_gpu_allocator(tmp_path, mocker):
+    """debug_model wires config/model resolution and forwards print settings."""
+    cfg = tmp_path / "config.cfg"
+    cfg.write_text("", encoding="utf-8")
+
+    mocker.patch("lexos.language_model.setup_gpu")
+    mocker.patch(
+        "lexos.language_model.show_validation_error",
+        side_effect=lambda _path: nullcontext(),
+    )
+    raw_config = MagicMock()
+    raw_config.interpolate.return_value = {"training": {"gpu_allocator": "pytorch"}}
+    mocker.patch("lexos.language_model.load_config", return_value=raw_config)
+
+    nlp = MagicMock()
+    nlp.config.interpolate.return_value = {"training": {"seed": 13}}
+    nlp.get_pipe.return_value = "pipe"
+    mocker.patch("lexos.language_model.load_model_from_config", return_value=nlp)
+
+    mocker.patch("lexos.language_model.registry.resolve", return_value={"seed": 13})
+    mock_set_allocator = mocker.patch("lexos.language_model.set_gpu_allocator")
+    mock_fix_seed = mocker.patch("lexos.language_model.fix_random_seed")
+    mock_debug = mocker.patch("lexos.language_model.spacy_debug_model")
+
+    debug_model(cfg, use_gpu=0, layers=None)
+
+    mock_set_allocator.assert_called_once_with("pytorch")
+    mock_fix_seed.assert_called_once_with(13)
+    assert mock_debug.call_count == 1
+    print_settings = mock_debug.call_args.kwargs["print_settings"]
+    assert print_settings["layers"] == []
+
+
+def test_write_sentence_conllu_returns_existing_id_for_whitespace_only_sentence():
+    """Whitespace-only sentences should be skipped and leave sent_id unchanged."""
+
+    class _Token:
+        def __init__(self, text: str):
+            self.text = text
+
+    class _Sent:
+        text = " \n \t "
+
+        def __iter__(self):
+            return iter([_Token("  "), _Token("\n")])
+
+    out = io.StringIO()
+    sent_id = _write_sentence_conllu(out, _Sent(), 5)
+    assert sent_id == 5
+    assert out.getvalue() == ""
+
+
+def test_warn_for_non_default_language_uses_printer_warn(tmp_path):
+    """_warn_for_non_default_language emits a warning via Printer for non-default lang."""
+    with pytest.warns(UserWarning, match="fr"):
+        model = _make(tmp_path, lang="fr")
+    msg = MagicMock()
+    model._warn_for_non_default_language(msg)
+    msg.warn.assert_called_once()
+
+
 # ===========================================================================
 # validate
 # ===========================================================================
+
+
+def test_validate_uses_helper_methods(tmp_path, mocker):
+    """Test validate delegates checks to helper methods."""
+    model = _make(tmp_path)
+    _make_assets(model)
+    (model._corpus_dir / "train.spacy").write_bytes(b"x")
+    mocker.patch("lexos.language_model.debug_config")
+    mocker.patch("lexos.language_model.debug_data")
+
+    asset_helper = mocker.patch.object(
+        model, "_validate_assets", wraps=model._validate_assets
+    )
+    corpus_helper = mocker.patch.object(
+        model, "_validate_corpus", wraps=model._validate_corpus
+    )
+    config_helper = mocker.patch.object(
+        model, "_validate_config", wraps=model._validate_config
+    )
+
+    model.validate()
+
+    asset_helper.assert_called_once()
+    corpus_helper.assert_called_once()
+    config_helper.assert_called_once()
 
 
 def test_validate_fails_with_no_assets(tmp_path):
