@@ -58,12 +58,34 @@ Or, if you are using `uv`:
 uv add lexos
 ```
 
-Lexos uses [spaCy](https://spacy.io/) language models to obtain language-specific information about texts. By default, it comes with spaCy's multi-language model `xx_sent_ud_sm` and its small English-language `en_core_web_sm`.
+Some Lexos functions use [spaCy](https://spacy.io/) language models to obtain language-specific information about texts. To download spaCy models, run the following command:
+
+```bash
+python download_spacy_models.py xx_sent_ud_sm en_core_web_sm
+```
+
+or
+
+```bash
+uv run python download_spacy_models.py xx_sent_ud_sm en_core_web_sm
+```
+
+You can install multiple models by separating their names with spaced. If you do not run this command, Lexos will install the default `xx_sent_ud_sm` model the first time you attempt to use a feature that requires a spaCy language model.
 
 If you are working in another language or need a larger language model, you can download instructions for additional models from the [spaCy models](https://spacy.io/models) page. Use the following command:
 
 ```bash
 python -m spacy download en_core_web_md # Replace with the name of your model
+```
+
+Add `uv run` to the beginning of the command if you are using a `uv` environment.
+
+If you need to install a model from within Python, you can use Lexos' helper funtion:
+
+```python
+from lexos.util import download_spacy_model
+
+download_spacy_model("fr_core_web_sm")
 ```
 
 ## 🚦Project Status
@@ -84,4 +106,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📝 Citation Information
 
-Kleinman, S., (2026). Lexos. v0.2.0b1 https://github.com/scottkleinman/lexos. [10.5281/zenodo.18112379](https://doi.org/10.5281/zenodo.18112379).
+Kleinman, S., (2026). Lexos. v0.2.0 https://github.com/scottkleinman/lexos. [10.5281/zenodo.18112379](https://doi.org/10.5281/zenodo.18112379).
