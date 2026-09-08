@@ -7,7 +7,7 @@
 [![license](https://img.shields.io/github/license/scottkleinman/lexos)](https://img.shields.io/github/license/scottkleinman/lexos)
 [![Coverage](https://img.shields.io/badge/coverage-97%25-blue)](https://img.shields.io/badge/coverage-97%25-blue)
 
-The Lexos Python library reproduces and extends most of the text analysis tools in the [Lexos web app](http://lexos.wheatoncollege.edu/). Lexos is designed to implement many common text analysis procedures in a way that saves the user having to re-invent the wheel or figure out how to combine multiple Python packages to achieve a given result. It is intended to be used as a library in other projects to build backend functions for applications, but it can be used in standalone scripts or in Jupyter notebooks. As with the original web app, it is designed to accessible to entry-level users whilst offering power functionality for students and researchers, particularly in the Humanities. It is also designed to be as language-agnostic as possible so that it can be used for a wide variety of historical and under-resourced languages.
+The Lexos Python library reproduces and extends most of the text analysis tools in the [Lexos web app](http://lexos.wheatoncollege.edu/). Lexos is designed to implement many common text analysis procedures and create workflows in a way that saves the user having to re-invent the wheel or figure out how to combine multiple Python packages to achieve a given result. It is intended to be used as a library in other projects to build backend functions for applications, but it can be used in standalone scripts or in Jupyter notebooks. As with the original web app, it is designed to be accessible to entry-level users whilst offering power functionality for students and researchers, particularly in the Humanities. It is also designed to be as language-agnostic as possible so that it can be used for a wide variety of historical and under-resourced languages. Users can leverage existing language models or train their own.
 
 ## 📖 Documentation
 
@@ -19,14 +19,14 @@ A full discussion of the use of the API can be found on the website [Documentati
 - Manages a corpus of texts and generates stastics about the corpus.
 - Performs text pre-processing ("scrubbing") and splitting ("cutting").
 - Performs tokenization and trains language models using [spaCy](https://spacy.io/).
-- Creates assorted visualizations of term vectors.
+- Creates assorted visualizations of term/ngram vectors.
 - Performs hierarchical and kmeans clustering with a variety of visualizations for text comparisons..
 - Performs classification using [spaCy](https://spacy.io/), [scikit-learn](https://scikit-learn.org/stable/), and custom architectures.
 - Generates topic models and topic model visualizations using [MALLET](https://github.com/mimno/Mallet) and [DFR Browser 2](https://github.com/scottkleinman/dfr-browser2).
 
 And more!
 
-### What's New in v0.2.0b
+### What's New in v0.2.0
 
 - Performance optimizations and bug fixes througout.
 - A simplified public API.
@@ -70,7 +70,7 @@ or
 uv run python download_spacy_models.py xx_sent_ud_sm en_core_web_sm
 ```
 
-You can install multiple models by separating their names with spaced. If you do not run this command, Lexos will install the default `xx_sent_ud_sm` model the first time you attempt to use a feature that requires a spaCy language model.
+You can install multiple models by separating their names with spaces. If you do not run this command, Lexos will install the default `xx_sent_ud_sm` model the first time you attempt to use a feature that requires a spaCy language model.
 
 If you are working in another language or need a larger language model, you can download instructions for additional models from the [spaCy models](https://spacy.io/models) page. Use the following command:
 
