@@ -1268,6 +1268,7 @@ dev = [
     { name = "pip" },
     { name = "pluggy" },
     { name = "pre-commit" },
+    { name = "pyrmallet" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-mock" },
@@ -1333,6 +1334,7 @@ dev = [
     { name = "pip", specifier = ">=24.3.1" },
     { name = "pluggy", specifier = ">=1.4.0,<2.0.0" },
     { name = "pre-commit", specifier = ">=4.5.0" },
+    { name = "pyrmallet", specifier = ">=0.1.1" },
     { name = "pytest", specifier = ">=9.0.3" },
     { name = "pytest-cov", specifier = ">=6.1.1" },
     { name = "pytest-mock", specifier = ">=3.14.0" },
@@ -2426,6 +2428,22 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/69/56/e4d7e1bd70d997713649c5ce530b2d15a5fc2245a74ca820fc2d51d89d4d/pyphen-0.17.2.tar.gz", hash = "sha256:f60647a9c9b30ec6c59910097af82bc5dd2d36576b918e44148d8b07ef3b4aa3", size = 2079470, upload-time = "2025-01-20T13:18:36.296Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/7b/1f/c2142d2edf833a90728e5cdeb10bdbdc094dde8dbac078cee0cf33f5e11b/pyphen-0.17.2-py3-none-any.whl", hash = "sha256:3a07fb017cb2341e1d9ff31b8634efb1ae4dc4b130468c7c39dd3d32e7c3affd", size = 2079358, upload-time = "2025-01-20T13:18:29.629Z" },
+]
+
+[[package]]
+name = "pyrmallet"
+version = "0.1.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/93/ef/51b4e6db269aafe20de190c8ab09f222ecd4603b6c08ba5b2d96eb3b873d/pyrmallet-0.1.1.tar.gz", hash = "sha256:b8d7cf388f3890f0ecbb745b37e0585c71e773b1a75806ac665b718b7e8a6de1", size = 2253359, upload-time = "2026-06-17T21:15:58.016Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5f/a5/37db80aa821d421d96c62cc8850f669c0ccfadbf58c64da3a15d4b9b5c41/pyrmallet-0.1.1-cp39-abi3-macosx_10_12_x86_64.whl", hash = "sha256:25e870977c1c15098e43585ae9e167931ec68dce696791d67fc0606ad2a36324", size = 973831, upload-time = "2026-06-17T21:15:48.714Z" },
+    { url = "https://files.pythonhosted.org/packages/d9/c1/91f2a4ca959877cf595713527be5e6f321b8f5399e756e7a36f2b3053dac/pyrmallet-0.1.1-cp39-abi3-macosx_11_0_arm64.whl", hash = "sha256:42e3cd9ff8dc25e4863f4d699ccb3862eeca6c140281c58030da5df018eb9131", size = 937331, upload-time = "2026-06-17T21:15:50.639Z" },
+    { url = "https://files.pythonhosted.org/packages/28/73/4b652f1b8f841e5ad3751a27d5f749ac37b600a4c2e0d6e06c95280f121b/pyrmallet-0.1.1-cp39-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3e788ae437abf105b0a6eb79c1869143157b5c9c6a3f83e33c70ecb161212c72", size = 1066377, upload-time = "2026-06-17T21:15:52.85Z" },
+    { url = "https://files.pythonhosted.org/packages/c9/56/12420da916acb2e30e8d7d87ad784d07e8460f9472f5e8d3d1e89dbd9125/pyrmallet-0.1.1-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:84435bc7b23487815df963e6a612746f81d617192369b70fc34f6dc756f03471", size = 1072580, upload-time = "2026-06-17T21:15:54.861Z" },
+    { url = "https://files.pythonhosted.org/packages/0e/54/ce38e827565a1dd5b645a596e32dacea0b418f1f127efaaec788a40365b4/pyrmallet-0.1.1-cp39-abi3-win_amd64.whl", hash = "sha256:796c5e21b5a5e452e072203983eba22df9b624573f8fb3279acb495aa46c6ec1", size = 836258, upload-time = "2026-06-17T21:15:56.228Z" },
 ]
 
 [[package]]
