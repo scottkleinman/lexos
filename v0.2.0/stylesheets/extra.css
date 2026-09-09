@@ -1,0 +1,89 @@
+h5 {
+  text-transform: none !important;
+}
+
+/*
+[data-md-color-scheme="we1s"] {
+    --md-primary-fg-color:        #d65050;;
+    --md-primary-fg-color--light: #ECB7B7;
+    --md-primary-fg-color--dark:  #90030C;
+  }
+
+  mark.glossary {
+    background: none;
+  }
+*/
+[data-md-color-scheme="lexos"] {
+  --md-primary-fg-color:        #F3F3F3;
+  --md-primary-fg-color--light: #E3E3E3;
+  --md-primary-fg-color--dark:  #FFFFFF;
+}
+
+
+mark.glossary {
+  background: none;
+}
+
+/* Mark external links as such (also in nav) */
+a.external:hover::after, a.md-nav__link[href^="https:"]:hover::after {
+  /* https://primer.style/octicons/link-external-16 */
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="rgb(233, 235, 252)" d="M10.604 1h4.146a.25.25 0 01.25.25v4.146a.25.25 0 01-.427.177L13.03 4.03 9.28 7.78a.75.75 0 01-1.06-1.06l3.75-3.75-1.543-1.543A.25.25 0 0110.604 1zM3.75 2A1.75 1.75 0 002 3.75v8.5c0 .966.784 1.75 1.75 1.75h8.5A1.75 1.75 0 0014 12.25v-3.5a.75.75 0 00-1.5 0v3.5a.25.25 0 01-.25.25h-8.5a.25.25 0 01-.25-.25v-8.5a.25.25 0 01.25-.25h3.5a.75.75 0 000-1.5h-3.5z"></path></svg>');
+  height: 0.8em;
+  width: 0.8em;
+  margin-left: 0.2em;
+  content: ' ';
+  display: inline-block;
+}
+
+/* More space at the bottom of the page */
+.md-main__inner {
+  margin-bottom: 1.5rem;
+}
+
+
+/*--------------------------------------------------------------
+Go to top button
+--------------------------------------------------------------*/
+.go-top {
+  position: fixed !important;
+  right: 20px;
+  bottom: -45px;
+  color: #fff;
+  display: block;
+  font-size: 22px;
+  line-height: 35px;
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  visibility: hidden;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  opacity: 0;
+  z-index: 9999;
+  cursor: pointer;
+  -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      -o-border-radius: 2px;
+      border-radius: 2px;
+  -webkit-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+      -ms-transition: all 0.5s;
+        -o-transition: all 0.5s;
+          transition: all 0.5s;
+}
+
+.go-top {
+  background-color: #d65050;
+}
+
+.go-top:hover {
+  background-color: #fff;
+  border: 1px solid #000;
+}
+.go-top.show {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: alpha(opacity=100);
+  opacity: 1;
+  visibility: visible;
+  bottom : 11px;
+}
