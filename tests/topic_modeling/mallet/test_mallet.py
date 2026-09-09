@@ -1,13 +1,12 @@
 """test_mallet.py.
 
-Coverage: 98%. Missing: 249-251, 1045, 1146, 1207, 1215, 1511, 1656, 1813, 1942-1949
+Coverage: 99%. Missing: 252, 967, 1269, 1447, 1526, 1989, 2589, 2599-2600, 2748
 
-Last Updated: July 27, 2026
+Last Updated: September 8, 2026
 """
 
 import subprocess
 import textwrap
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import matplotlib.pyplot as plt
@@ -2102,6 +2101,104 @@ def test_infer_whitespace_token_no_colon_raises(tmp_model_dir, monkeypatch):
             path_to_inferencer=str(fake_inferencer_path),
             output_path=str(out),
         )
+
+
+def test_backend_factory_and_metadata_json_loading(tmp_model_dir):
+    """Exercise backend routing and metadata-loaded-from-disk fallback paths."""
+    factory_obj = Mallet(backend="pyrmallet")
+    assert factory_obj.__class__.__name__ == "PyRMallet"
+
+    with pytest.raises(ValueError):
+        Mallet(backend="not-a-real-backend")
+
+    meta_path = tmp_model_dir / "meta.json"
+    meta_path.write_text('{"path_to_training_data": "stored.mallet", "num_topics": 7}')
+    loaded = Mallet(model_dir=str(tmp_model_dir))
+    assert loaded.metadata["path_to_training_data"] == "stored.mallet"
+    assert loaded.metadata["num_topics"] == 7
+
+
+def test_update_training_progress_tracks_iteration_and_saves_message(tmp_model_dir):
+    """Ensure _update_training_progress advances the bar and sets the save message."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    pbar = MagicMock()
+    pbar.n = 0
+
+    result = m._update_training_progress(pbar, "Iteration 5:", 5, 4)
+
+    assert result == 5
+    assert pbar.n == 5
+    pbar.set_description.assert_called_once_with("Saving model files")
+    pbar.refresh.assert_called_once()
+
+
+def test_get_topic_term_probabilities_as_df_filters_selected_topics(tmp_model_dir):
+    """Exercise the DataFrame branch and topic filtering in get_topic_term_probabilities."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    with patch.object(
+        Mallet,
+        "load_topic_term_distributions",
+        MagicMock(return_value={0: {"alpha": 0.7, "beta": 0.3}, 1: {"gamma": 1.0}}),
+    ):
+        df = m.get_topic_term_probabilities(topics=[0], n=1, as_df=True)
+
+    assert list(df["Topic"]) == [0]
+    assert list(df["Term"]) == ["alpha"]
+    assert df["Probability"].iloc[0] == pytest.approx(0.7)
+
+
+def test_plot_termite_helper_validations_and_custom_labels(tmp_model_dir):
+    """Exercise plot-termite helper validation branches and custom topic labels."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+    m.metadata["topic_labels"] = {"0": "Custom Topic 0"}
+    topic_keys = [["0", "0.5", "alpha beta gamma"]]
+
+    assert m._resolve_topic_header(0, topic_keys, 2) == "Custom Topic 0: alpha beta"
+
+    title = m._resolve_time_series_title(topic_keys, 0, None)
+    assert title == "Custom Topic 0: alpha beta gamma"
+
+    components = pd.DataFrame([[0.1, 0.9], [0.8, 0.2]], columns=[0, 1])
+    with pytest.raises(ValueError):
+        m._resolve_plotly_topic_selection(components, topics=[99])
+    with pytest.raises(ValueError):
+        m._resolve_plotly_highlights(components, highlight_topics=[99])
+
+
+def test_train_flag_normalization_and_command_metadata(tmp_model_dir):
+    """Exercise relative-path normalization and the command-metadata write path."""
+    m = Mallet(model_dir=str(tmp_model_dir))
+
+    assert m._normalize_train_flag_value("topic-keys.txt") == str(
+        tmp_model_dir / "topic-keys.txt"
+    )
+    assert m._normalize_train_flag_value(None) is None
+    assert m._normalize_train_flag_value("/tmp/abs.txt") == "/tmp/abs.txt"
+
+    cmd = m._build_train_command(
+        num_topics=2,
+        num_iterations=5,
+        optimize_interval=10,
+        path_to_state="state.gz",
+        path_to_topic_keys="topic-keys.txt",
+        path_to_topic_distributions="doc-topic.txt",
+        path_to_term_weights="topic-weights.txt",
+        path_to_diagnostics="diagnostics.xml",
+        path_to_inferencer="inferencer.mallet",
+    )
+
+    assert "--output-state" in cmd
+    assert str(tmp_model_dir / "state.gz") in cmd
+    assert m.metadata[m.CANONICAL_DOC_TOPIC_KEY] == str(tmp_model_dir / "doc-topic.txt")
+    assert m.metadata[m.CANONICAL_TERM_WEIGHTS_KEY] == str(
+        tmp_model_dir / "topic-weights.txt"
+    )
+    assert m.metadata[m.CANONICAL_TOPIC_KEYS_KEY] == str(
+        tmp_model_dir / "topic-keys.txt"
+    )
+    assert m.metadata[m.CANONICAL_INFERENCER_KEY] == str(
+        tmp_model_dir / "inferencer.mallet"
+    )
 
 
 def test_track_progress_progress_updates(tmp_model_dir, monkeypatch):

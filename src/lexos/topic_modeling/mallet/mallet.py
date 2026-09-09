@@ -1,7 +1,7 @@
 """mallet.py.
 
-Last Updated: July 27, 2026
-Last Tested: July 27, 2026
+Last Updated: September 8, 2026
+Last Tested: September 8, 2026
 
 A fork of Maria Antoniak's Little Mallet Wrapper: https://github.com/maria-antoniak/little-mallet-wrapper.
 
@@ -11,6 +11,7 @@ Here is a rough summary of the changes:
 - Formatting changes, type hinting, and Pydantic validation.
 - A more object-oriented approach to keep track of paths and other metadata so that fewer arguments need to be passed to functions.
 - Support for a fuller range of MALLET keyword arguments, including the output-state-file which is needed for generating PyLDAVis and Dfr-Browser visualizations.
+- Option to choose between Java and Rust backends (using pyrmallet).
 - Optional progress tracking during training.
 - Topic clouds and termite plot visualisations.
 - More parameters for customising the plotting functions.
@@ -47,6 +48,7 @@ from lexos.visualization.cloud import MultiCloud
 # Get the path to the MALLET binary from the environment
 load_dotenv()
 MALLET_BINARY_PATH = str(Path(os.getenv("MALLET_BINARY_PATH") or "mallet").expanduser())
+model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 @validate_call
@@ -111,37 +113,70 @@ def read_file(file: Path | str) -> list[str]:
         raise LexosException(f"File {file} could not be read.")
 
 
+def _validate_directory_path(directory: Path | str) -> Path:
+    """Validate a directory argument and return a normalized Path object.
+
+    Args:
+        directory (Path | str): A directory path to validate.
+
+    Returns:
+        Path: The validated directory path.
+
+    Raises:
+        LexosException: If the path is a boolean, is not a path-like value, or does
+            not exist.
+    """
+    if isinstance(directory, bool) or not isinstance(directory, (str, Path)):
+        raise LexosException(
+            f"Invalid directory argument '{directory}'. Expected a directory path (str or Path)."
+        )
+
+    path = Path(directory)
+    if not path.is_dir():
+        raise LexosException(f"Directory {directory} does not exist.")
+
+    return path
+
+
+def _read_txt_files_in_directory(directory: Path) -> list[str]:
+    """Read all .txt files in a directory and return their contents.
+
+    Args:
+        directory (Path): The directory whose text files should be read.
+
+    Returns:
+        list[str]: The contents of each .txt file in the directory, in sorted file-name
+            order.
+
+    Notes:
+        This intentionally avoids Path.glob() because iterating over the generator can
+        disrupt tests that rely on a stable list order.
+    """
+    contents: list[str] = []
+    for path in sorted(glob.glob(f"{directory}/*.txt")):
+        file_path = Path(path)
+        if file_path.is_file():
+            with open(file_path, "r", encoding="utf-8") as file:
+                contents.append(file.read())
+    return contents
+
+
 @validate_call
 def read_dirs(dirs: Path | str | list[Path | str]) -> list[str]:
     """Import a directory or list of directories.
 
     Args:
-        dirs (Path | str | list[Path | str]): A directory or list of directories to import.
+        dirs (Path | str | list[Path | str]): A directory or list of directories to
+            import.
 
     Returns:
-        list[str]: The training data.
+        list[str]: The text contents of each .txt file found in the supplied directory or
+            directories.
     """
-    # Ensure dirs is a list
-    dirs = ensure_list(dirs)
-
-    # Retrieve file paths or raise an error if the directory does not exist
-    training_data = []
-    for dir in dirs:
-        # Validate the argument type here to provide a clear error message
-        if isinstance(dir, bool) or not isinstance(dir, (str, Path)):
-            raise LexosException(
-                f"Invalid directory argument '{dir}'. Expected a directory path (str or Path)."
-            )
-        if not Path(dir).is_dir():
-            raise LexosException(f"Directory {dir} does not exist.")
-        else:
-            # NOTE: Cannot use Path.glob() here because it returns a generator, which disrupts testing.
-            filepaths = glob.glob(f"{dir}/*.txt")
-            for path in filepaths:
-                if Path(path).is_file():
-                    with open(path, "r", encoding="utf-8") as f:
-                        training_data.append(f.read())
-
+    training_data: list[str] = []
+    for directory in ensure_list(dirs):
+        validated_path = _validate_directory_path(directory)
+        training_data.extend(_read_txt_files_in_directory(validated_path))
     return training_data
 
 
@@ -191,6 +226,8 @@ def import_docs(docs: list[str | Doc]) -> list[str]:
 class Mallet(BaseModel):
     """A class for training and using MALLET topic models."""
 
+    backend: str = "java"
+
     # IMPORTANT: The class initializes with only the `model_directory` key.
     # Functions will add canonical metadata entries as needed (e.g.
     # 'path_to_topic_distributions', 'path_to_term_weights', 'path_to_topic_keys').
@@ -207,7 +244,21 @@ class Mallet(BaseModel):
         description="A dict containing metadata generated by the class instance.",
     )
 
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+    model_config = model_config
+
+    def __new__(cls, *args: Any, backend: Optional[str] = None, **kwargs: Any):
+        """Route to the requested backend while preserving the Java-backed default as the public API."""
+        if cls is not Mallet:
+            return super().__new__(cls)
+
+        target_backend = (backend or kwargs.get("backend") or "java").lower()
+        if target_backend == "pyrmallet":
+            from lexos.topic_modeling.mallet.pyrmallet import PyRMallet
+
+            return object.__new__(PyRMallet)
+        if target_backend == "java":
+            return object.__new__(cls)
+        raise ValueError(f"Unknown MALLET backend: {target_backend!r}")
 
     # Canonical metadata keys used consistently across methods for common
     # training outputs. To preserve backward compatibility when loading
@@ -254,6 +305,12 @@ class Mallet(BaseModel):
                         f"Failed to load metadata from {meta_path}: {e}"
                     )
 
+    @model_validator(mode="after")
+    def _normalize_backend(self) -> "Mallet":
+        """Store the selected backend in the instance for downstream introspection."""
+        self.backend = str(self.backend or "java").lower()
+        return self
+
     def _metadata_get(self, keys: list[str]) -> str | None:
         """Return the first metadata value present among the provided keys or None.
 
@@ -274,55 +331,100 @@ class Mallet(BaseModel):
     # No metadata canonicalization: initialization should only set model_directory
     # and functions will add canonical keys as necessary.
 
-    def _parse_distribution_line(self, line: str) -> list[float]:
-        """Helper to parse a single MALLET distribution line.
+    def _is_sparse_distribution(self, raw_values: list[str]) -> bool:
+        """Return whether a distribution line is encoded in sparse topic:probability form.
 
-        Handles both dense (whitespace/tab separated) and sparse (topic:prob pairs) formats.
+        Args:
+            raw_values (list[str]): The non-header values from a MALLET distribution line.
+
+        Returns:
+            bool: True if the values are sparse topic:probability pairs; otherwise False.
+        """
+        return (len(raw_values) == 1 and ":" in raw_values[0]) or (
+            len(raw_values) > 0 and all(":" in value for value in raw_values)
+        )
+
+    def _parse_sparse_distribution(self, raw_values: list[str]) -> list[float]:
+        """Parse a sparse MALLET distribution using topic:probability pairs.
+
+        Args:
+            raw_values (list[str]): A list of sparse values such as ["0:0.2", "1:0.8"] or
+                ["0:0.2 1:0.8"].
+
+        Returns:
+            list[float]: A dense list of probabilities keyed by topic index.
+
+        Raises:
+            LexosException: If a topic:probability pair is malformed.
+        """
+        probability_map: dict[int, float] = {}
+        max_topic = -1
+        pairs = raw_values[0].split() if len(raw_values) == 1 else raw_values
+
+        for pair in pairs:
+            try:
+                topic_text, probability_text = pair.split(":")
+                topic_index = int(topic_text)
+                probability = float(probability_text)
+            except (ValueError, IndexError) as exc:
+                raise LexosException(f"Malformed topic:prob pair: {pair}") from exc
+
+            probability_map[topic_index] = probability
+            if topic_index > max_topic:
+                max_topic = topic_index
+
+        return [
+            float(probability_map.get(index, 0.0)) for index in range(max_topic + 1)
+        ]
+
+    def _parse_dense_distribution(self, raw_values: list[str]) -> list[float]:
+        """Parse a dense MALLET distribution from whitespace or tab-delimited floats.
+
+        Args:
+            raw_values (list[str]): The float values from a distribution line.
+
+        Returns:
+            list[float]: The parsed probability values.
+
+        Raises:
+            LexosException: If one or more values cannot be converted to floats.
+        """
+        try:
+            return [float(value) for value in raw_values]
+        except ValueError as exc:
+            raise LexosException(
+                f"Failed to parse float from distribution: {exc}"
+            ) from exc
+
+    def _parse_distribution_line(self, line: str) -> list[float]:
+        """Parse a single MALLET distribution line from either dense or sparse format.
+
+        Args:
+            line (str): A MALLET topic distribution line.
+
+        Returns:
+            list[float]: A dense list of document-topic probabilities.
+
+        Raises:
+            LexosException: If the distribution line is malformed or cannot be parsed.
         """
         line = line.strip()
-        # Try tab-delimited format first: id \t docid \t val1 \t val2 ...
         parts = line.split("\t")
         if len(parts) < 3:
-            # If no tabs, try whitespace-separated: id docid val1 val2 ...
             parts = re.split(r"\s+", line)
 
         if len(parts) < 3:
-            # Check if it's docid topic:prob (2 tokens)
             if len(parts) == 2 and ":" in parts[1]:
-                raw_vals = parts[1:]
+                raw_values = parts[1:]
             else:
                 raise LexosException(f"Malformed line: {line}")
         else:
-            raw_vals = parts[2:]
+            raw_values = parts[2:]
 
-        # Handle sparse format (topic:prob pairs)
-        # They might be in a single token '0:0.1 1:0.9' or separate tokens
-        # We check if ':' is present in all components of raw_vals
-        # or if the first/only component contains topic:prob pairs.
-        if (len(raw_vals) == 1 and ":" in raw_vals[0]) or (
-            len(raw_vals) > 0 and all(":" in v for v in raw_vals)
-        ):
-            tp_map = {}
-            max_topic = -1
-            # If it's a single token, split it by whitespace
-            pairs = raw_vals[0].split() if len(raw_vals) == 1 else raw_vals
-            for p in pairs:
-                try:
-                    t, prob = p.split(":")
-                    t_i = int(t)
-                    prob_f = float(prob)
-                    tp_map[t_i] = prob_f
-                    if t_i > max_topic:
-                        max_topic = t_i
-                except (ValueError, IndexError):
-                    raise LexosException(f"Malformed topic:prob pair: {p}")
-            return [float(tp_map.get(i, 0.0)) for i in range(max_topic + 1)]
+        if self._is_sparse_distribution(raw_values):
+            return self._parse_sparse_distribution(raw_values)
 
-        # Handle dense format (whitespace/tab separated floats)
-        try:
-            return [float(v) for v in raw_vals]
-        except ValueError as e:
-            raise LexosException(f"Failed to parse float from distribution: {e}")
+        return self._parse_dense_distribution(raw_values)
 
     @model_validator(mode="after")
     def _validate_mallet_path(self) -> "Mallet":
@@ -339,39 +441,58 @@ class Mallet(BaseModel):
 
         return self
 
-    @model_validator(mode="after")
-    def _validate_model_dir(self) -> "Mallet":
-        """Validate and create the model directory."""
-        # Assign the model directory if provided via incoming metadata
-        # (if not already provided by the model_dir field).
+    def _resolve_model_dir_value(self) -> Path | str | None:
+        """Resolve the model directory from metadata when it is not already set.
+
+        Returns:
+            Path | str | None: The model directory value if one is available; otherwise
+                None.
+        """
         if self.model_dir is None and isinstance(self.metadata, dict):
             if "model_directory" in self.metadata:
                 self.model_dir = self.metadata["model_directory"]
+        return self.model_dir
 
-        if self.model_dir is not None:
-            # Validate that model_dir is not a boolean
-            if isinstance(self.model_dir, bool):
-                raise LexosException(
-                    "Invalid `model_dir` argument: expected a path (str or Path), not a boolean."
-                )
-            # Normalize to string
-            model_dir_str = (
-                str(self.model_dir)
-                if isinstance(self.model_dir, Path)
-                else self.model_dir
+    def _ensure_valid_model_dir(self, model_dir_value: Path | str) -> None:
+        """Validate a model directory and create it if needed.
+
+        Args:
+            model_dir_value (Path | str): The directory path to validate.
+
+        Raises:
+            LexosException: If the provided value is a boolean, or if the path exists and
+                is a file instead of a directory.
+        """
+        if isinstance(model_dir_value, bool):
+            raise LexosException(
+                "Invalid `model_dir` argument: expected a path (str or Path), not a boolean."
             )
-            # Ensure the model_dir is not a file
-            p = Path(model_dir_str)
-            if p.exists() and p.is_file():
-                raise LexosException(
-                    f"The specified `model_dir` ({model_dir_str}) exists and is a file, expected a directory."
-                )
-            # Create the directory if it does not exist
-            p.mkdir(parents=True, exist_ok=True)
 
-            # Set metadata `model_directory` back to normalized string
-            self.metadata["model_directory"] = model_dir_str
+        model_dir_str = (
+            str(model_dir_value)
+            if isinstance(model_dir_value, Path)
+            else model_dir_value
+        )
+        path = Path(model_dir_str)
 
+        if path.exists() and path.is_file():
+            raise LexosException(
+                f"The specified `model_dir` ({model_dir_str}) exists and is a file, expected a directory."
+            )
+
+        path.mkdir(parents=True, exist_ok=True)
+        self.metadata["model_directory"] = model_dir_str
+
+    @model_validator(mode="after")
+    def _validate_model_dir(self) -> "Mallet":
+        """Validate and create the model directory for this instance.
+
+        Returns:
+            Mallet: The validated model instance.
+        """
+        model_dir = self._resolve_model_dir_value()
+        if model_dir is not None:
+            self._ensure_valid_model_dir(model_dir)
         return self
 
     @cached_property
@@ -456,69 +577,79 @@ class Mallet(BaseModel):
         else:
             return 0
 
-    def _import_training_data(
-        self,
-        training_data: list[str],
-        path_to_training_data: Optional[str] = None,
-        keep_sequence: bool = True,
-        remove_stopwords: bool = True,
-        preserve_case: bool = True,
-        use_pipe_from: Optional[str] = None,
-        training_ids: Optional[list[int]] = None,
-    ) -> None:
-        """Import training data from a list of documents.
+    def _resolve_training_file_paths(
+        self, path_to_training_data: Optional[str] = None
+    ) -> tuple[str, str]:
+        """Resolve the raw and formatted training-data file paths for MALLET.
 
         Args:
-            training_data (list[str]): A list of documents to import.
-            keep_sequence (bool): Whether to keep the word sequence in the documents.
-            remove_stopwords (bool): Whether to remove stopwords from the documents.
-            preserve_case (bool): Whether to preserve the case of the documents.
-            use_pipe_from (Optional[str]): Path to a MALLET pipe file to use for importing.
-            training_ids: Optional[list[int]]: A list of document ids designating a subset of the entire data set. If None, the entire dataset will be imported.
+            path_to_training_data (Optional[str]): The raw training-data path to use. If
+                not provided, a default file is created inside the model directory.
+
+        Returns:
+            tuple[str, str]: The raw training-data path and the MALLET-formatted output path.
         """
-        # Save the training data file
-        path_to_training_data = (
+        raw_path = (
             path_to_training_data
             if path_to_training_data is not None
             else str(Path(self.model_dir) / "training_data.txt")
         )
-        path_to_formatted_training_data = str(
-            Path(self.model_dir) / "training_data.mallet"
-        )
+        formatted_path = str(Path(self.model_dir) / "training_data.mallet")
+        return raw_path, formatted_path
+
+    def _write_training_data_file(
+        self,
+        training_data: list[str],
+        path_to_training_data: str,
+        training_ids: Optional[list[int]] = None,
+    ) -> tuple[int, set[str]]:
+        """Write raw training documents to disk and collect vocabulary statistics.
+
+        Args:
+            training_data (list[str]): The document texts to write.
+            path_to_training_data (str): The path to the raw training-data file.
+            training_ids (Optional[list[int]]): Optional IDs to attach to each document.
+
+        Returns:
+            tuple[int, set[str]]: The total token count and the document vocabulary set.
+        """
         total_tokens = 0
-        vocab = set()
-        training_data_file = open(path_to_training_data, "w", encoding="utf-8")
-        for i, doc in enumerate(training_data):
-            # Remove newlines and carriage returns from the document
-            doc = re.sub("[\r\n]+", " ", doc).strip()
-            if training_ids:
-                training_data_file.write(f"{training_ids[i]}\tno_label\t{doc}\n")
-            else:
-                training_data_file.write(f"{i}\tno_label\t {doc}\n")
+        vocab: set[str] = set()
 
-            # Tokenise for metadata
-            tokens = doc.split()
-            total_tokens += len(tokens)
-            vocab.update(tokens)
+        with open(path_to_training_data, "w", encoding="utf-8") as training_data_file:
+            for i, doc in enumerate(training_data):
+                doc = re.sub("[\r\n]+", " ", doc).strip()
+                document_id = training_ids[i] if training_ids else i
+                training_data_file.write(f"{document_id}\tno_label\t{doc}\n")
 
-        training_data_file.close()
-        self.metadata["path_to_training_data"] = path_to_training_data
-        self.metadata["path_to_formatted_training_data"] = (
-            path_to_formatted_training_data
-        )
-        num_docs = len(training_data)
-        self.metadata["num_docs"] = num_docs
-        # WARNING: Tokenisation relies on whitespace, so it may not be accurate for all languages
-        self.metadata["mean_num_tokens"] = (
-            total_tokens / num_docs if num_docs > 0 else 0
-        )
-        self.metadata["vocab_size"] = len(vocab)
+                tokens = doc.split()
+                total_tokens += len(tokens)
+                vocab.update(tokens)
 
-        # Write the meta file to the model directory for future reference
-        with open(Path(self.model_dir) / "meta.json", "w") as f:
-            f.write(json.dumps(self.metadata))
+        return total_tokens, vocab
 
-        # Build and execute the command to format the training data for MALLET
+    def _build_import_command(
+        self,
+        path_to_training_data: str,
+        path_to_formatted_training_data: str,
+        keep_sequence: bool = True,
+        remove_stopwords: bool = True,
+        preserve_case: bool = True,
+        use_pipe_from: Optional[str] = None,
+    ) -> list[str]:
+        """Build the MALLET import command used to format training documents.
+
+        Args:
+            path_to_training_data (str): Path to the raw text training data.
+            path_to_formatted_training_data (str): Path for the formatted MALLET file.
+            keep_sequence (bool): Whether to preserve token order.
+            remove_stopwords (bool): Whether to remove stopwords during import.
+            preserve_case (bool): Whether to preserve original casing.
+            use_pipe_from (Optional[str]): Optional MALLET pipe file to reuse.
+
+        Returns:
+            list[str]: The MALLET import command arguments.
+        """
         cmd = [
             self.path_to_mallet or "mallet",
             "import-file",
@@ -535,6 +666,59 @@ class Mallet(BaseModel):
             cmd.append("--preserve-case")
         if use_pipe_from:
             cmd.extend(["--use-pipe-from", use_pipe_from])
+        return cmd
+
+    def _import_training_data(
+        self,
+        training_data: list[str],
+        path_to_training_data: Optional[str] = None,
+        keep_sequence: bool = True,
+        remove_stopwords: bool = True,
+        preserve_case: bool = True,
+        use_pipe_from: Optional[str] = None,
+        training_ids: Optional[list[int]] = None,
+    ) -> None:
+        """Import training data from a list of documents.
+
+        Args:
+            training_data (list[str]): A list of documents to import.
+            path_to_training_data (Optional[str]): The raw text file to write before MALLET
+                import. If None, a default path is created inside the model directory.
+            keep_sequence (bool): Whether to keep the word sequence in the documents.
+            remove_stopwords (bool): Whether to remove stopwords from the documents.
+            preserve_case (bool): Whether to preserve the case of the documents.
+            use_pipe_from (Optional[str]): Path to a MALLET pipe file to use for importing.
+            training_ids (Optional[list[int]]): A list of document ids designating a subset
+                of the dataset. If None, the entire dataset is imported.
+        """
+        raw_path, formatted_path = self._resolve_training_file_paths(
+            path_to_training_data
+        )
+        total_tokens, vocab = self._write_training_data_file(
+            training_data, raw_path, training_ids
+        )
+
+        self.metadata["path_to_training_data"] = raw_path
+        self.metadata["path_to_formatted_training_data"] = formatted_path
+
+        num_docs = len(training_data)
+        self.metadata["num_docs"] = num_docs
+        self.metadata["mean_num_tokens"] = (
+            total_tokens / num_docs if num_docs > 0 else 0
+        )
+        self.metadata["vocab_size"] = len(vocab)
+
+        with open(Path(self.model_dir) / "meta.json", "w") as file:
+            file.write(json.dumps(self.metadata))
+
+        cmd = self._build_import_command(
+            raw_path,
+            formatted_path,
+            keep_sequence,
+            remove_stopwords,
+            preserve_case,
+            use_pipe_from,
+        )
         msg.info(" ".join(cmd))
         subprocess.run(cmd, check=True)
 
@@ -623,80 +807,205 @@ class Mallet(BaseModel):
 
         return WordCloud(**options)
 
+    def _format_topic_key_row(
+        self, topic: list[str], num_keys: int
+    ) -> tuple[str, str, str]:
+        """Format a single topic row for display.
+
+        Args:
+            topic (list[str]): The raw topic row from the MALLET topic-keys file.
+            num_keys (int): The maximum number of keyword tokens to display.
+
+        Returns:
+            tuple[str, str, str]: The formatted topic label, weight, and keywords.
+        """
+        keywords = " ".join(topic[2].split()[:num_keys])
+        custom_labels = self.metadata.get("topic_labels")
+        topic_label = topic[0]
+        if custom_labels and str(topic[0]) in custom_labels:
+            topic_label = custom_labels[str(topic[0])]
+        return str(topic_label), str(topic[1]), keywords
+
+    def _validate_topic_index_list(
+        self, topics: list[int], num_available_topics: int
+    ) -> None:
+        """Ensure requested topic indices fall within the available topic range.
+
+        Args:
+            topics (list[int]): Requested topic indices.
+            num_available_topics (int): Number of topics in the current model.
+
+        Raises:
+            IndexError: If any requested topic index is out of range.
+        """
+        for index in topics:
+            if index < 0 or index >= num_available_topics:
+                raise IndexError(
+                    f"Topic index {index} is out of range. Valid indices are 0 to {num_available_topics - 1}."
+                )
+
+    def _resolve_topic_keys(
+        self, num_topics: int = None, topics: list[int] = None
+    ) -> list[list[str]]:
+        """Resolve the topic rows to display and validate requested indices.
+
+        Args:
+            num_topics (int): The maximum number of topics to return when no explicit list is
+                provided.
+            topics (list[int]): The explicit topic indices to display.
+
+        Returns:
+            list[list[str]]: The selected topic rows.
+
+        Raises:
+            IndexError: If a requested topic index is outside the valid range.
+        """
+        num_available_topics = len(self.topic_keys)
+        if num_topics is not None and not topics:
+            if num_topics > num_available_topics:
+                raise IndexError(
+                    f"Requested num_topics={num_topics}, but only {num_available_topics} topics are available."
+                )
+            return self.topic_keys[:num_topics]
+
+        if topics is not None:
+            self._validate_topic_index_list(topics, num_available_topics)
+            return [self.topic_keys[i] for i in topics]
+
+        return self.topic_keys
+
+    def _build_topic_key_dataframe(
+        self, topic_keys: list[list[str]], num_keys: int
+    ) -> pd.DataFrame:
+        """Build the DataFrame used for the styled topic-key output.
+
+        Args:
+            topic_keys (list[list[str]]): The selected topic rows.
+            num_keys (int): The maximum number of keyword tokens to display.
+
+        Returns:
+            pd.DataFrame: A DataFrame with topic labels, weights, and keywords.
+        """
+        rows = []
+        for topic in topic_keys:
+            topic_label, weight, keywords = self._format_topic_key_row(topic, num_keys)
+            rows.append({"Topic": topic_label, "Weight": weight, "Keywords": keywords})
+        return pd.DataFrame(rows)
+
+    def _style_topic_key_dataframe(self, dataframe: pd.DataFrame) -> Styler:
+        """Apply notebook-friendly styling to the topic-key DataFrame.
+
+        Args:
+            dataframe (pd.DataFrame): The DataFrame to style.
+
+        Returns:
+            Styler: A styled DataFrame with left-aligned keyword text.
+        """
+        show_index = True
+        offset = 2 if show_index else 1
+        nth = dataframe.columns.get_loc("Keywords") + offset
+
+        css = [
+            {
+                "selector": f"thead th:nth-child({nth})",
+                "props": [("text-align", "left")],
+            },
+            {
+                "selector": f"td.col{dataframe.columns.get_loc('Keywords')}",
+                "props": [("text-align", "left")],
+            },
+        ]
+
+        return dataframe.style.set_table_styles(css).set_properties(
+            subset=["Keywords"], **{"text-align": "left"}
+        )
+
+    def _start_training_process(self, mallet_cmd: list[str]):
+        """Start the MALLET training subprocess and capture its output.
+
+        Args:
+            mallet_cmd (list[str]): The MALLET command to run.
+
+        Returns:
+            subprocess.Popen: The running training process.
+        """
+        return subprocess.Popen(
+            mallet_cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            bufsize=1,
+            universal_newlines=True,
+            encoding="utf-8",
+            errors="replace",
+        )
+
+    def _update_training_progress(
+        self,
+        pbar: tqdm,
+        line_str: str,
+        num_iterations: int,
+        last_iter: int,
+    ) -> int:
+        """Parse a training line and advance the progress bar when a new iteration is seen.
+
+        Args:
+            pbar (tqdm): The active progress bar.
+            line_str (str): The line emitted by MALLET.
+            num_iterations (int): Total optimization iterations.
+            last_iter (int): The last iteration already reported.
+
+        Returns:
+            int: The updated iteration value.
+        """
+        prog = re.compile(r"(?:\<|Iteration\s+)(\d+)(?:\>|:)")
+        try:
+            match = prog.search(line_str)
+            if not match:
+                return last_iter
+            this_iter = int(match.group(1))
+            if this_iter <= last_iter:
+                return last_iter
+            pbar.n = min(this_iter, num_iterations)
+            pbar.refresh()
+            if num_iterations and this_iter >= num_iterations:
+                pbar.set_description("Saving model files")
+            return this_iter
+        except (AttributeError, ValueError):
+            return last_iter
+
     def _track_progress(
         self, mallet_cmd: list[str], num_iterations: int, verbose: bool = True
     ) -> None:
-        """Track the progress of the modeling.
+        """Track the progress of the modeling run and update the tqdm bar.
 
         Args:
             mallet_cmd (list[str]): The MALLET command to run as a list of strings.
             num_iterations (int): The number of iterations for the model.
-            verbose (bool): Whether to print the MALLET output.
-
-        Notes:
-            - Prints MALLET output and updates the progress bar.
+            verbose (bool): Whether to print the MALLET output to the terminal.
         """
-        # Initialize the progress bar. tqdm.auto will use the notebook widget if available.
         pbar = tqdm(total=num_iterations or 0, desc="Training model", leave=True)
 
         try:
-            # Run the MALLET command using a line-buffered stream
-            p = subprocess.Popen(
-                mallet_cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                bufsize=1,
-                universal_newlines=True,
-                encoding="utf-8",
-                errors="replace",
-            )
-
-            # Regex to match iteration number strictly inside brackets or with text.
-            prog = re.compile(r"(?:\<|Iteration\s+)(\d+)(?:\>|:)")
-
-            # Track the last reported iteration to avoid redundant updates
+            process = self._start_training_process(mallet_cmd)
             last_iter = -1
 
-            # Process the output line by line from the text stream
-            if p.stdout:
-                for line_str in p.stdout:
+            if process.stdout:
+                for line_str in process.stdout:
                     if verbose:
-                        # Use tqdm.write to ensure the bar stays at the bottom and doesn't duplicate
                         tqdm.write(line_str.rstrip())
+                    last_iter = self._update_training_progress(
+                        pbar, line_str, num_iterations, last_iter
+                    )
 
-                    try:
-                        # Look for iteration markers in the line
-                        match = prog.search(line_str)
-                        if match:
-                            this_iter = int(match.group(1))
+            process.wait()
 
-                            # Only update if we've actually progressed
-                            if this_iter > last_iter:
-                                # Update position directly
-                                pbar.n = min(this_iter, num_iterations)
-                                pbar.refresh()
-
-                                # If we hit the final iteration, update description
-                                # because MALLET still has to write files (the "last 10%" lag).
-                                if num_iterations and this_iter >= num_iterations:
-                                    pbar.set_description("Saving model files")
-                                last_iter = this_iter
-                    except (AttributeError, ValueError):
-                        pass
-
-            # Wait for MALLET to finish writing the state and output files.
-            p.wait()
-
-            # Finalize the bar
-            if p.returncode == 0:
+            if process.returncode == 0:
                 pbar.n = num_iterations
                 pbar.set_description("Complete")
                 pbar.refresh()
             else:
-                raise subprocess.CalledProcessError(p.returncode, mallet_cmd)
-
+                raise subprocess.CalledProcessError(process.returncode, mallet_cmd)
         finally:
-            # Ensure the progress bar is closed
             pbar.close()
 
     @validate_call(config=model_config)
@@ -718,71 +1027,153 @@ class Mallet(BaseModel):
         Returns:
             str | Styler: A string or DataFrame representation of the topic keys. The DataFrame is styled for presentation in a Jupyter notebook to prevent clipping of the keywords in a Jupyter notebook. If you need an actual `DataFrame` object, reference `df.data`.
         """
-        num_available_topics = len(self.topic_keys)
-        if num_topics and not topics:
-            if num_topics > num_available_topics:
-                raise IndexError(
-                    f"Requested num_topics={num_topics}, but only {num_available_topics} topics are available."
-                )
-            topic_keys = self.topic_keys[:num_topics]
-        elif topics:
-            # Validate all indices
-            for i in topics:
-                if i < 0 or i >= num_available_topics:
-                    raise IndexError(
-                        f"Topic index {i} is out of range. Valid indices are 0 to {num_available_topics - 1}."
-                    )
-            topic_keys = [self.topic_keys[i] for i in topics]
-        else:
-            topic_keys = self.topic_keys
+        selected_topics = self._resolve_topic_keys(num_topics, topics)
         output = ""
-        for topic in topic_keys:
-            keywords = " ".join(topic[2].split()[:num_keys])
+        for topic in selected_topics:
+            topic_label, weight, keywords = self._format_topic_key_row(topic, num_keys)
+            output += f"Topic {topic_label}\t{weight}\t{keywords}\n"
 
-            # Use custom labels for the "Topic" column if available
-            custom_labels = self.metadata.get("topic_labels")
-            topic_label = topic[0]
-            if custom_labels and str(topic[0]) in custom_labels:
-                topic_label = custom_labels[str(topic[0])]
-
-            output += f"Topic {topic_label}\t{topic[1]}\t{keywords}\n"
         if as_df:
-            data = []
-            for topic in topic_keys:
-                keywords = " ".join(topic[2].split()[:num_keys])
+            dataframe = self._build_topic_key_dataframe(selected_topics, num_keys)
+            return self._style_topic_key_dataframe(dataframe)
 
-                # Use custom labels for the "Topic" column if available
-                custom_labels = self.metadata.get("topic_labels")
-                topic_label = topic[0]
-                if custom_labels and str(topic[0]) in custom_labels:
-                    topic_label = custom_labels[str(topic[0])]
-
-                data.append(
-                    {"Topic": topic_label, "Weight": topic[1], "Keywords": keywords}
-                )
-            df = pd.DataFrame(data)
-            show_index = True  # Or False
-            offset = 2 if show_index else 1
-            nth = df.columns.get_loc("Keywords") + offset
-
-            css = [
-                # Header cell of Keywords column
-                {
-                    "selector": f"thead th:nth-child({nth})",
-                    "props": [("text-align", "left")],
-                },
-                # The column cells
-                {
-                    "selector": f"td.col{df.columns.get_loc('Keywords')}",
-                    "props": [("text-align", "left")],
-                },
-            ]
-
-            styled_df = df.style.set_table_styles(css).set_properties(
-                subset=["Keywords"], **{"text-align": "left"}
-            )
-            return styled_df
         return output
+
+    def _validate_topic_index(self, topic: int, num_topics: int) -> int:
+        """Validate that a topic index is in range for the current model.
+
+        Args:
+            topic (int): The topic index to validate.
+            num_topics (int): The number of topics available in the model.
+
+        Returns:
+            int: The validated integer topic index.
+
+        Raises:
+            ValueError: If the topic index is not an integer or is outside the valid range.
+        """
+        try:
+            normalized_topic = int(topic)
+        except (TypeError, ValueError) as exc:
+            raise ValueError("Topic index must be an integer") from exc
+
+        if not (0 <= normalized_topic < num_topics):
+            raise ValueError(
+                f"Invalid topic index {normalized_topic}. Valid topic indices are 0..{num_topics - 1} (0-based)."
+            )
+        return normalized_topic
+
+    def _read_metadata_num_topics(self) -> int | None:
+        """Read the declared topic count from the model metadata, when available.
+
+        Returns:
+            int | None: The metadata-declared topic count, or None if no valid value is
+                available.
+        """
+        if "num_topics" not in self.metadata:
+            return None
+
+        try:
+            return int(self.metadata["num_topics"])
+        except (TypeError, ValueError):
+            return None
+
+    def _read_distribution_topic_count(self) -> int | None:
+        """Read the topic count implied by document-topic distributions, when available.
+
+        Returns:
+            int | None: The inferred topic count from the distribution vectors, or None if
+                there are no distributions.
+
+        Raises:
+            LexosException: If document-topic distributions use inconsistent lengths.
+        """
+        if len(self.distributions) == 0:
+            return None
+
+        lengths = {len(distribution) for distribution in self.distributions}
+        if len(lengths) > 1:
+            raise LexosException(
+                "Topic distribution lengths are inconsistent across documents; check `path_to_topic_distributions` format."
+            )
+        return next(iter(lengths))
+
+    def _resolve_num_topics(self) -> int:
+        """Determine the number of topics from metadata, topic keys, or distributions.
+
+        Returns:
+            int: The number of topics declared by the model.
+
+        Raises:
+            LexosException: If the model does not contain enough topic information to
+                determine the count.
+        """
+        num_topics = self._read_metadata_num_topics()
+        if num_topics is None:
+            try:
+                num_topics = len(self.topic_keys)
+            except Exception:
+                num_topics = None
+
+        distribution_len = self._read_distribution_topic_count()
+        if distribution_len is not None and num_topics is None:
+            num_topics = distribution_len
+
+        if num_topics is None:
+            raise LexosException(
+                "Model does not have topic information yet. Train or load a model first."
+            )
+
+        if distribution_len is not None and distribution_len != num_topics:
+            raise LexosException(
+                f"Mismatch between declared number of topics ({num_topics}) and distribution vector length ({distribution_len}). Check your training outputs."
+            )
+
+        return num_topics
+
+    def _read_training_documents(self) -> list[str]:
+        """Read the raw training data file and return the document texts.
+
+        Returns:
+            list[str]: The training documents in their original order.
+
+        Raises:
+            LexosException: If the model has not recorded a training data path.
+        """
+        if "path_to_training_data" not in self.metadata:
+            raise LexosException(
+                "No training data has been set. Please designate a path for `path_to_training_data` when you train your topic model."
+            )
+
+        with open(
+            self.metadata["path_to_training_data"], "r", encoding="utf-8"
+        ) as file:
+            training_data = file.readlines()
+        return [line.split("\t")[2].strip() for line in training_data]
+
+    def _build_top_docs_frame(
+        self, topic: int, training_data: list[str], metadata: pd.DataFrame = None
+    ) -> pd.DataFrame:
+        """Build the DataFrame of top document scores for a given topic.
+
+        Args:
+            topic (int): The topic index to inspect.
+            training_data (list[str]): The document texts loaded from the training data file.
+            metadata (pd.DataFrame): Optional metadata aligned to the document order.
+
+        Returns:
+            pd.DataFrame: A frame containing document distributions and the optional metadata.
+        """
+        distribution_data = [
+            (_distribution[topic], _document)
+            for _distribution, _document in zip(self.distributions, training_data)
+        ]
+        frame = pd.DataFrame(distribution_data, columns=["Distribution", "Document"])
+        frame.index.name = "Doc ID"
+
+        if metadata is not None:
+            frame = pd.concat([frame, metadata], axis=1)
+        return frame
 
     @validate_call(config=model_config)
     def get_top_docs(
@@ -803,92 +1194,86 @@ class Mallet(BaseModel):
             - The metadata must be in the same order as the training data.
             - The document text will get ellided by the maximum width of a pandas column. An easy way to see the full text is to set `as_str=True` and output the result with a print statement. You can also use the pandas API to extract the information with something like `top_docs.Document.tolist()`.
         """
-        # Ensure that the path to doc-topic distributions exists (resolved via canonical keys)
         if not self._metadata_has([self.CANONICAL_DOC_TOPIC_KEY]):
             raise LexosException(
                 "No topic distributions have been set. Please designate a path to the doc-topic distributions (e.g. `path_to_topic_distributions`) when you train your topic model."
             )
 
-        if "path_to_training_data" not in self.metadata:
-            raise LexosException(
-                "No training data has been set. Please designate a path for `path_to_training_data` when you train your topic model."
-            )
+        training_data = self._read_training_documents()
+        num_topics = self._resolve_num_topics()
+        topic = self._validate_topic_index(topic, num_topics)
 
-        # Read the training data file
-        with open(self.metadata["path_to_training_data"], "r", encoding="utf-8") as f:
-            training_data = f.readlines()
-        training_data = [
-            line.split("\t")[2].strip() for line in training_data
-        ]  # Skip the id and label
+        frame = self._build_top_docs_frame(topic, training_data, metadata)
+        sorted_frame = frame.sort_values(by="Distribution", ascending=False).head(n)
 
-        # Validate topic index against model's known number of topics (0-based)
-        try:
-            topic = int(topic)
-        except Exception:
-            raise ValueError("Topic index must be an integer")
-
-        num_topics = None
-        # Try the reliable metadata if present
-        if "num_topics" in self.metadata:
-            try:
-                num_topics = int(self.metadata["num_topics"])
-            except Exception:
-                num_topics = None
-        # Fall back to topic_keys if available
-        if num_topics is None:
-            try:
-                num_topics = len(self.topic_keys)
-            except Exception:
-                num_topics = None
-        # As a last resort, infer from distributions
-        distribution_len = None
-        if len(self.distributions) > 0:
-            # Ensure all distributions have the same length; otherwise raise
-            lengths = set(len(d) for d in self.distributions)
-            if len(lengths) > 1:
-                raise LexosException(
-                    "Topic distribution lengths are inconsistent across documents; check `path_to_topic_distributions` format."
-                )
-            distribution_len = next(iter(lengths))
-            if num_topics is None:
-                num_topics = distribution_len
-        if num_topics is None:
-            raise LexosException(
-                "Model does not have topic information yet. Train or load a model first."
-            )
-        # If we have both a metadata num_topics and inferred distribution length, they should match.
-        if (
-            distribution_len is not None
-            and num_topics is not None
-            and distribution_len != num_topics
-        ):
-            raise LexosException(
-                f"Mismatch between declared number of topics ({num_topics}) and distribution vector length ({distribution_len}). Check your training outputs."
-            )
-
-        if not (0 <= topic < num_topics):
-            raise ValueError(
-                f"Invalid topic index {topic}. Valid topic indices are 0..{num_topics - 1} (0-based)."
-            )
-
-        # Combine the distribution and training data, then convert to a dataframe
-        distribution_data = [
-            (_distribution[topic], _document)
-            for _distribution, _document in zip(self.distributions, training_data)
-        ]
-        df = pd.DataFrame(distribution_data, columns=["Distribution", "Document"])
-        df.index.name = "Doc ID"
-
-        # If metadata is provided, concatenate it to the dataframe
-        if metadata is not None:
-            df = pd.concat([df, metadata], axis=1)
-
-        # Sort the dataframe by distribution and return the top n documents
         if as_str:
-            return (
-                df.sort_values(by="Distribution", ascending=False).head(n).to_string()
-            )
-        return df.sort_values(by="Distribution", ascending=False).head(n)
+            return sorted_frame.to_string()
+        return sorted_frame
+
+    def _select_topic_term_rows(
+        self,
+        topic_term_probability_dict: dict[int, dict[str, float]],
+        topics: Optional[int | list[int]] = None,
+        n: int = 5,
+    ) -> list[dict[str, Any]]:
+        """Build the rows used for term-probability output and DataFrame export.
+
+        Args:
+            topic_term_probability_dict (dict[int, dict[str, float]]): The loaded topic-term
+                probabilities keyed by topic index.
+            topics (Optional[int | list[int]]): Topic index or indices to include.
+            n (int): The number of terms to include per topic.
+
+        Returns:
+            list[dict[str, Any]]: The serialized rows for every selected topic.
+        """
+        if isinstance(topics, int):
+            topics = [topics]
+
+        rows: list[dict[str, Any]] = []
+        for _topic, _term_probability_dict in topic_term_probability_dict.items():
+            if topics is not None and _topic not in topics:
+                continue
+            for _term, _probability in sorted(
+                _term_probability_dict.items(), key=lambda x: x[1], reverse=True
+            )[:n]:
+                rows.append(
+                    {
+                        "Topic": _topic,
+                        "Term": _term,
+                        "Probability": _probability,
+                    }
+                )
+        return rows
+
+    def _format_topic_term_string(
+        self,
+        topic_term_probability_dict: dict[int, dict[str, float]],
+        topics: Optional[int | list[int]] = None,
+        n: int = 5,
+    ) -> str:
+        """Format the legacy string view of topic-term probabilities.
+
+        Args:
+            topic_term_probability_dict (dict[int, dict[str, float]]): The loaded topic-term
+                probabilities keyed by topic index.
+            topics (Optional[int | list[int]]): Topic index or indices to include.
+            n (int): The number of terms to include per topic.
+
+        Returns:
+            str: The legacy string output format used by the MALLET API.
+        """
+        result = ""
+        for _topic, _term_probability_dict in topic_term_probability_dict.items():
+            if topics is not None and _topic not in topics:
+                continue
+            result += f"Topic {_topic}\n"
+            for _term, _probability in sorted(
+                _term_probability_dict.items(), key=lambda x: x[1], reverse=True
+            )[:n]:
+                result += f"\t{_term}: {_probability}\n"
+            result += "\n"
+        return result
 
     @validate_call(config=model_config)
     def get_topic_term_probabilities(
@@ -904,37 +1289,96 @@ class Mallet(BaseModel):
         Returns:
             str: A string representation of the term distribution for the given topic.
         """
+        topic_term_probability_dict = self.load_topic_term_distributions()
+        rows = self._select_topic_term_rows(topic_term_probability_dict, topics, n)
+
+        if as_df:
+            return pd.DataFrame(rows)
+        return self._format_topic_term_string(topic_term_probability_dict, topics, n)
+
+    def _prepare_termite_components(
+        self,
+        topics: Optional[int | list[int]] = None,
+    ) -> tuple[pd.DataFrame, list[int]]:
+        """Load and validate the topic-term data used for termite plotting.
+
+        Args:
+            topics (Optional[int | list[int]]): Topic index or indices to include.
+
+        Returns:
+            tuple[pd.DataFrame, list[int]]: The selected topic-term matrix and the list of
+                requested topic indices.
+
+        Raises:
+            LexosException: If no topic-term probabilities are available.
+            ValueError: If any requested topic is not available in the model.
+        """
+        topic_term_probability_dict = self.load_topic_term_distributions()
+        components = (
+            pd.DataFrame.from_dict(topic_term_probability_dict, orient="columns")
+            .fillna(0.0)
+            .sort_index()
+        )
+
+        if components.empty:
+            raise LexosException("No topic-term probabilities are available to plot.")
+
         if isinstance(topics, int):
             topics = [topics]
-        topic_term_probability_dict = self.load_topic_term_distributions()
-        # Build either a string (legacy behavior) or a DataFrame with columns
-        # Topic | Term | Probability based on the `as_df` parameter.
-        if as_df:
-            rows = []
-            for _topic, _term_probability_dict in topic_term_probability_dict.items():
-                if topics is None or _topic in topics:
-                    for _term, _probability in sorted(
-                        _term_probability_dict.items(), key=lambda x: x[1], reverse=True
-                    )[:n]:
-                        rows.append(
-                            {
-                                "Topic": _topic,
-                                "Term": _term,
-                                "Probability": _probability,
-                            }
-                        )
-            df = pd.DataFrame(rows)
-            return df
-        result = ""
-        for _topic, _term_probability_dict in topic_term_probability_dict.items():
-            if topics is None or _topic in topics:
-                result += f"Topic {_topic}\n"
-                for _term, _probability in sorted(
-                    _term_probability_dict.items(), key=lambda x: x[1], reverse=True
-                )[:n]:
-                    result += f"\t{_term}: {_probability}\n"
-                result += "\n"
-        return result
+
+        available_topics = list(components.columns)
+        selected_topics = topics if topics is not None else sorted(available_topics)
+        missing_topics = [
+            topic for topic in selected_topics if topic not in available_topics
+        ]
+        if missing_topics:
+            raise ValueError(
+                f"Requested topics {missing_topics} are not available. "
+                f"Available topics: {sorted(available_topics)}"
+            )
+
+        return components.loc[:, selected_topics], selected_topics
+
+    def _resolve_highlight_labels(
+        self,
+        components: pd.DataFrame,
+        highlight_topics: Optional[int | str | list[int | str]],
+    ) -> list[str] | None:
+        """Resolve highlighted topic labels for termite plotting.
+
+        Args:
+            components (pd.DataFrame): The selected topic-term matrix with topic labels as
+                columns.
+            highlight_topics (Optional[int | str | list[int | str]]): Topic labels or indices
+                to highlight.
+
+        Returns:
+            list[str] | None: The resolved label list, or None when no highlights are set.
+
+        Raises:
+            ValueError: If a requested highlight topic is not in the selected data.
+        """
+        if highlight_topics is None:
+            return None
+
+        custom_labels = self.metadata.get("topic_labels", {})
+        highlight_labels = []
+        for topic in ensure_list(highlight_topics):
+            if isinstance(topic, int):
+                highlight_labels.append(custom_labels.get(str(topic), f"Topic {topic}"))
+            else:
+                highlight_labels.append(topic)
+
+        missing_highlights = [
+            topic for topic in highlight_labels if topic not in components.columns
+        ]
+        if missing_highlights:
+            raise ValueError(
+                f"Highlighted topics {missing_highlights} are not available in the selected data. "
+                f"Available topics: {list(components.columns)}"
+            )
+
+        return highlight_labels
 
     @validate_call(config=model_config)
     def plot_termite(
@@ -979,31 +1423,7 @@ class Mallet(BaseModel):
                 "textacy is required for termite plots. Please install textacy and try again."
             ) from e
 
-        topic_term_probability_dict = self.load_topic_term_distributions()
-        components = (
-            pd.DataFrame.from_dict(topic_term_probability_dict, orient="columns")
-            .fillna(0.0)
-            .sort_index()
-        )
-
-        if components.empty:
-            raise LexosException("No topic-term probabilities are available to plot.")
-
-        if isinstance(topics, int):
-            topics = [topics]
-
-        available_topics = list(components.columns)
-        selected_topics = topics if topics is not None else sorted(available_topics)
-        missing_topics = [
-            topic for topic in selected_topics if topic not in available_topics
-        ]
-        if missing_topics:
-            raise ValueError(
-                f"Requested topics {missing_topics} are not available. "
-                f"Available topics: {sorted(available_topics)}"
-            )
-
-        components = components.loc[:, selected_topics]
+        components, _ = self._prepare_termite_components(topics)
 
         custom_labels = self.metadata.get("topic_labels", {})
         components.columns = [
@@ -1011,25 +1431,7 @@ class Mallet(BaseModel):
             for topic in components.columns
         ]
 
-        highlight_labels = None
-        if highlight_topics is not None:
-            highlight_labels = []
-            for topic in ensure_list(highlight_topics):
-                if isinstance(topic, int):
-                    highlight_labels.append(
-                        custom_labels.get(str(topic), f"Topic {topic}")
-                    )
-                else:
-                    highlight_labels.append(topic)
-
-            missing_highlights = [
-                topic for topic in highlight_labels if topic not in components.columns
-            ]
-            if missing_highlights:
-                raise ValueError(
-                    f"Highlighted topics {missing_highlights} are not available in the selected data. "
-                    f"Available topics: {list(components.columns)}"
-                )
+        highlight_labels = self._resolve_highlight_labels(components, highlight_topics)
 
         axis = termite_df_plot(
             components=components,
@@ -1049,6 +1451,254 @@ class Mallet(BaseModel):
             return None
 
         return axis
+
+    def _resolve_plotly_topic_selection(
+        self,
+        components: pd.DataFrame,
+        topics: Optional[int | list[int]] = None,
+    ) -> list[int]:
+        """Select and validate the topic indices used for the Plotly termite plot.
+
+        Args:
+            components (pd.DataFrame): The topic-term matrix loaded from the model.
+            topics (Optional[int | list[int]]): Topic index or indices to include.
+
+        Returns:
+            list[int]: The selected topic indices.
+
+        Raises:
+            ValueError: If any requested topic is not available in the data.
+        """
+        if isinstance(topics, int):
+            topics = [topics]
+
+        available_topics = list(components.columns)
+        selected_topics = topics if topics is not None else sorted(available_topics)
+        missing_topics = [
+            topic for topic in selected_topics if topic not in available_topics
+        ]
+        if missing_topics:
+            raise ValueError(
+                f"Requested topics {missing_topics} are not available. "
+                f"Available topics: {sorted(available_topics)}"
+            )
+        return selected_topics
+
+    def _resolve_plotly_highlights(
+        self,
+        components: pd.DataFrame,
+        highlight_topics: Optional[int | str | list[int | str]],
+    ) -> set[str]:
+        """Resolve highlighted topic labels for the Plotly termite plot.
+
+        Args:
+            components (pd.DataFrame): The selected topic-term matrix with topic labels as
+                columns.
+            highlight_topics (Optional[int | str | list[int | str]]): Topic labels or indices
+                to highlight.
+
+        Returns:
+            set[str]: The set of highlighted labels.
+
+        Raises:
+            ValueError: If any highlight target is not in the selected data.
+        """
+        custom_labels = self.metadata.get("topic_labels", {})
+        highlight_labels = set()
+        if highlight_topics is None:
+            return highlight_labels
+
+        for topic in ensure_list(highlight_topics):
+            if isinstance(topic, int):
+                highlight_labels.add(custom_labels.get(str(topic), f"Topic {topic}"))
+            else:
+                highlight_labels.add(topic)
+
+        missing_highlights = [
+            topic for topic in highlight_labels if topic not in components.columns
+        ]
+        if missing_highlights:
+            raise ValueError(
+                f"Highlighted topics {missing_highlights} are not available in the selected data. "
+                f"Available topics: {list(components.columns)}"
+            )
+
+        return highlight_labels
+
+    def _sort_plotly_termites(
+        self,
+        components: pd.DataFrame,
+        sort_terms_by: str,
+    ) -> pd.DataFrame:
+        """Sort the selected terms for the Plotly termite plot according to the chosen mode.
+
+        Args:
+            components (pd.DataFrame): The selected topic-term matrix.
+            sort_terms_by (str): The requested sorting mode.
+
+        Returns:
+            pd.DataFrame: The sorted term matrix.
+        """
+        if sort_terms_by == "alphabetical":
+            return components.sort_index()
+        if sort_terms_by == "index":
+            return components.sort_index(kind="stable")
+        if sort_terms_by == "seriation":
+            weights = components.values
+            similarity = weights @ (weights - weights.min()).T
+            laplacian = np.diag(similarity.sum(axis=1)) - similarity
+            vals, vecs = np.linalg.eigh(laplacian)
+            fiedler_idx = np.argsort(vals)[1]
+            return components.iloc[np.argsort(vecs[:, fiedler_idx])]
+        return components.loc[components.max(axis=1).sort_values(ascending=False).index]
+
+    def _validate_plotly_termite_inputs(
+        self,
+        n_terms: int,
+        marker_scale: float,
+        rank_terms_by: str,
+        sort_terms_by: str,
+    ) -> tuple[str, str]:
+        """Validate Plotly termite inputs and normalize case for sorting/ranking."""
+        if n_terms <= 0:
+            raise ValueError("`n_terms` must be greater than 0.")
+        if marker_scale <= 0:
+            raise ValueError("`marker_scale` must be greater than 0.")
+
+        rank_terms_by = rank_terms_by.lower()
+        sort_terms_by = sort_terms_by.lower()
+        if rank_terms_by not in {"max", "mean", "var"}:
+            raise ValueError("`rank_terms_by` must be one of: 'max', 'mean', 'var'.")
+        if sort_terms_by not in {"weight", "alphabetical", "index", "seriation"}:
+            raise ValueError(
+                "`sort_terms_by` must be one of: 'weight', 'alphabetical', 'index', 'seriation'."
+            )
+        return rank_terms_by, sort_terms_by
+
+    def _prepare_plotly_termite_components(
+        self,
+        topics: Optional[int | list[int]] = None,
+    ) -> tuple[pd.DataFrame, list[int]]:
+        """Load and prepare the topic-term matrix for a Plotly termite plot."""
+        topic_term_probability_dict = self.load_topic_term_distributions()
+        components = (
+            pd.DataFrame.from_dict(topic_term_probability_dict, orient="columns")
+            .fillna(0.0)
+            .sort_index()
+        )
+        if components.empty:
+            raise LexosException("No topic-term probabilities are available to plot.")
+
+        selected_topics = self._resolve_plotly_topic_selection(components, topics)
+        components = components.loc[:, selected_topics]
+        custom_labels = self.metadata.get("topic_labels", {})
+        components.columns = [
+            custom_labels.get(str(topic), f"Topic {int(topic)}")
+            for topic in components.columns
+        ]
+        return components, selected_topics
+
+    def _build_plotly_termite_figure(
+        self,
+        components: pd.DataFrame,
+        selected_topics: list[int],
+        highlight_labels: set[str],
+        n_terms: int,
+        rank_terms_by: str,
+        sort_terms_by: str,
+        marker_scale: float,
+        title: Optional[str],
+        output_path: Optional[str],
+        go: Any,
+    ) -> Any:
+        """Construct the Plotly termite figure from preprocessed topic-term data."""
+        top_terms = (
+            components.agg(rank_terms_by, axis=1)
+            .sort_values(ascending=False)
+            .head(n_terms)
+            .index
+        )
+        components = components.loc[top_terms]
+        components = self._sort_plotly_termites(components, sort_terms_by)
+
+        df_melted = components.reset_index().melt(
+            id_vars="index", var_name="Topic", value_name="Probability"
+        )
+        df_melted = df_melted.rename(columns={"index": "Term"})
+        df_melted = df_melted[df_melted["Probability"] > 0]
+
+        max_prob = df_melted["Probability"].max()
+        term_order = components.index.tolist()
+        topic_labels = list(components.columns)
+        colors = [
+            "#2596be" if topic in highlight_labels else "#d3d3d3"
+            for topic in df_melted["Topic"]
+        ]
+        ticktext = [
+            f'<span style="color:#2596be">{label}</span>'
+            if label in highlight_labels
+            else label
+            for label in topic_labels
+        ]
+
+        fig = go.Figure()
+        fig.add_trace(
+            go.Scatter(
+                x=df_melted["Topic"],
+                y=df_melted["Term"],
+                mode="markers",
+                marker={
+                    "size": df_melted["Probability"],
+                    "sizemode": "area",
+                    "sizeref": max_prob / (marker_scale**2) if max_prob > 0 else 1,
+                    "color": colors,
+                    "line": {"color": "grey", "width": 1},
+                    "sizemin": 2,
+                },
+                customdata=df_melted["Probability"],
+                hovertemplate="Topic: %{x}<br>Term: %{y}<br>Probability: %{customdata:.4f}<extra></extra>",
+            )
+        )
+
+        fig.update_layout(
+            title={"text": title, "x": 0.5, "xanchor": "center"} if title else None,
+            xaxis_tickangle=-45,
+            paper_bgcolor="white",
+            plot_bgcolor="white",
+            height=max(400, n_terms * 33 + 150),
+            width=max(400, len(selected_topics) * 60 + 150),
+            margin={"l": 120, "r": 50, "t": 150, "b": 50},
+            xaxis=dict(
+                showgrid=True,
+                gridcolor="lightgrey",
+                side="top",
+                tickmode="array",
+                tickvals=topic_labels,
+                ticktext=ticktext,
+                showline=True,
+                linewidth=1,
+                linecolor="lightgrey",
+                mirror=True,
+            ),
+            yaxis=dict(
+                showgrid=True,
+                gridcolor="lightgrey",
+                showline=True,
+                linewidth=1,
+                linecolor="lightgrey",
+                mirror=True,
+            ),
+        )
+        fig.update_yaxes(
+            autorange="reversed",
+            type="category",
+            categoryorder="array",
+            categoryarray=term_order,
+        )
+
+        if output_path:
+            fig.write_html(output_path)
+        return fig
 
     @validate_call(config=model_config)
     def plot_termite_plotly(
@@ -1085,6 +1735,9 @@ class Mallet(BaseModel):
             LexosException: If plotly isn't installed or no topic-term data is available.
             ValueError: If inputs are invalid.
         """
+        rank_terms_by, sort_terms_by = self._validate_plotly_termite_inputs(
+            n_terms, marker_scale, rank_terms_by, sort_terms_by
+        )
         try:
             import plotly.graph_objects as go
         except Exception as e:
@@ -1092,192 +1745,20 @@ class Mallet(BaseModel):
                 "plotly is required for interactive termite plots. Please install plotly and try again."
             ) from e
 
-        if n_terms <= 0:
-            raise ValueError("`n_terms` must be greater than 0.")
-        if marker_scale <= 0:
-            raise ValueError("`marker_scale` must be greater than 0.")
-
-        rank_terms_by = rank_terms_by.lower()
-        sort_terms_by = sort_terms_by.lower()
-        if rank_terms_by not in {"max", "mean", "var"}:
-            raise ValueError("`rank_terms_by` must be one of: 'max', 'mean', 'var'.")
-        if sort_terms_by not in {"weight", "alphabetical", "index", "seriation"}:
-            raise ValueError(
-                "`sort_terms_by` must be one of: 'weight', 'alphabetical', 'index', 'seriation'."
-            )
-
-        topic_term_probability_dict = self.load_topic_term_distributions()
-        components = (
-            pd.DataFrame.from_dict(topic_term_probability_dict, orient="columns")
-            .fillna(0.0)
-            .sort_index()
+        components, selected_topics = self._prepare_plotly_termite_components(topics)
+        highlight_labels = self._resolve_plotly_highlights(components, highlight_topics)
+        return self._build_plotly_termite_figure(
+            components,
+            selected_topics,
+            highlight_labels,
+            n_terms,
+            rank_terms_by,
+            sort_terms_by,
+            marker_scale,
+            title,
+            output_path,
+            go,
         )
-
-        if components.empty:
-            raise LexosException("No topic-term probabilities are available to plot.")
-
-        if isinstance(topics, int):
-            topics = [topics]
-
-        available_topics = list(components.columns)
-        selected_topics = topics if topics is not None else sorted(available_topics)
-        missing_topics = [
-            topic for topic in selected_topics if topic not in available_topics
-        ]
-        if missing_topics:
-            raise ValueError(
-                f"Requested topics {missing_topics} are not available. "
-                f"Available topics: {sorted(available_topics)}"
-            )
-
-        components = components.loc[:, selected_topics]
-
-        custom_labels = self.metadata.get("topic_labels", {})
-        components.columns = [
-            custom_labels.get(str(topic), f"Topic {int(topic)}")
-            for topic in components.columns
-        ]
-
-        # Handle highlighted labels
-        highlight_labels = set()
-        if highlight_topics is not None:
-            for topic in ensure_list(highlight_topics):
-                if isinstance(topic, int):
-                    highlight_labels.add(
-                        custom_labels.get(str(topic), f"Topic {topic}")
-                    )
-                else:
-                    highlight_labels.add(topic)
-
-            missing_highlights = [
-                topic for topic in highlight_labels if topic not in components.columns
-            ]
-            if missing_highlights:
-                raise ValueError(
-                    f"Highlighted topics {missing_highlights} are not available in the selected data. "
-                    f"Available topics: {list(components.columns)}"
-                )
-
-        # Select top terms according to the requested ranking metric.
-        # Match textacy's ranking logic exactly: agg -> sort_values -> head
-        top_terms = (
-            components.agg(rank_terms_by, axis=1)
-            .sort_values(ascending=False)
-            .head(n_terms)
-            .index
-        )
-        components = components.loc[top_terms]
-
-        if sort_terms_by == "alphabetical":
-            components = components.sort_index()
-        elif sort_terms_by == "index":
-            components = components.sort_index(kind="stable")
-        elif sort_terms_by == "seriation":
-            # Spectral seriation: sort terms such that similar topic distributions are adjacent.
-            # Calculate similarity matrix (dot product of weights minus min to ensure non-negativity)
-            weights = components.values
-            similarity = weights @ (weights - weights.min()).T
-            # Compute Laplacian matrix: L = D - S
-            laplacian = np.diag(similarity.sum(axis=1)) - similarity
-            # Find eigenvalues and eigenvectors
-            vals, vecs = np.linalg.eigh(laplacian)
-            # Use Fiedler vector (second smallest eigenvalue) to order terms
-            fiedler_idx = np.argsort(vals)[1]
-            components = components.iloc[np.argsort(vecs[:, fiedler_idx])]
-        else:  # Weight
-            components = components.loc[
-                components.max(axis=1).sort_values(ascending=False).index
-            ]
-
-        df_melted = components.reset_index().melt(
-            id_vars="index", var_name="Topic", value_name="Probability"
-        )
-        df_melted = df_melted.rename(columns={"index": "Term"})
-        df_melted = df_melted[df_melted["Probability"] > 0]
-
-        # Calculate a reasonable size reference for Plotly's area-based scaling
-        max_prob = df_melted["Probability"].max()
-        term_order = components.index.tolist()
-        topic_labels = list(components.columns)
-
-        # Generate colors for markers based on highlight status
-        colors = []
-        for topic in df_melted["Topic"]:
-            if topic in highlight_labels:
-                colors.append("#2596be")  # Highlight color
-            else:
-                colors.append("#d3d3d3")  # Light grey
-
-        # Generate topic label tick text with HTML for individual colors
-        ticktext = []
-        for label in topic_labels:
-            if label in highlight_labels:
-                ticktext.append(f'<span style="color:#2596be">{label}</span>')
-            else:
-                ticktext.append(label)
-
-        fig = go.Figure()
-        fig.add_trace(
-            go.Scatter(
-                x=df_melted["Topic"],
-                y=df_melted["Term"],
-                mode="markers",
-                marker={
-                    "size": df_melted["Probability"],
-                    "sizemode": "area",
-                    "sizeref": max_prob / (marker_scale**2) if max_prob > 0 else 1,
-                    "color": colors,
-                    "line": {"color": "grey", "width": 1},
-                    "sizemin": 2,
-                },
-                customdata=df_melted["Probability"],
-                hovertemplate="Topic: %{x}<br>Term: %{y}<br>Probability: %{customdata:.4f}<extra></extra>",
-            )
-        )
-
-        fig.update_layout(
-            title={"text": title, "x": 0.5, "xanchor": "center"} if title else None,
-            xaxis_tickangle=-45,
-            paper_bgcolor="white",
-            plot_bgcolor="white",
-            # Vertical space: scale height by number of terms
-            height=max(400, n_terms * 33 + 150),
-            # Horizontal space: scale width by number of topics to keep it tight
-            width=max(400, len(selected_topics) * 60 + 150),
-            # Adjust margins: left for keywords, top for topic labels
-            margin={"l": 120, "r": 50, "t": 150, "b": 50},
-            xaxis=dict(
-                showgrid=True,
-                gridcolor="lightgrey",
-                side="top",  # Move topic labels to the top
-                tickmode="array",
-                tickvals=topic_labels,
-                ticktext=ticktext,
-                showline=True,  # Add border
-                linewidth=1,
-                linecolor="lightgrey",
-                mirror=True,  # Mirror to create a box
-            ),
-            yaxis=dict(
-                showgrid=True,
-                gridcolor="lightgrey",
-                showline=True,  # Add border
-                linewidth=1,
-                linecolor="lightgrey",
-                mirror=True,  # Mirror to create a box
-            ),
-        )
-        fig.update_yaxes(
-            autorange="reversed",
-            type="category",
-            categoryorder="array",
-            categoryarray=term_order,
-        )
-
-        if output_path:
-            fig.write_html(output_path)
-
-        return fig
 
     @validate_call(config=model_config)
     def import_dir(
@@ -1392,52 +1873,264 @@ class Mallet(BaseModel):
             training_ids=training_ids,
         )
 
+    def _read_term_weight_rows(
+        self, term_weight_path: str
+    ) -> tuple[dict[str, dict[str, float]], dict[str, float]]:
+        """Read and validate the raw term-weight rows from the model output file.
+
+        Args:
+            term_weight_path (str): The path to the MALLET term-weight file.
+
+        Returns:
+            tuple[dict[str, dict[str, float]], dict[str, float]]: The raw topic-term weights and
+                the per-topic totals used to normalize them into probabilities.
+
+        Raises:
+            ValueError: If a row is malformed or contains an invalid numeric weight.
+        """
+        topic_term_weight_dict: dict[str, dict[str, float]] = defaultdict(
+            lambda: defaultdict(float)
+        )
+        topic_sum_dict: dict[str, float] = defaultdict(float)
+
+        with open(term_weight_path, "r") as file:
+            for line in file:
+                if not line.strip():
+                    continue
+
+                parts = line.strip().split("\t")
+                if len(parts) != 3:
+                    raise ValueError(
+                        f"Malformed line in term weights file: '{line.strip()}'"
+                    )
+
+                topic, term, weight = parts
+                try:
+                    weight_value = float(weight)
+                except Exception as exc:
+                    raise ValueError(
+                        f"Invalid weight value '{weight}' in line: '{line.strip()}'"
+                    ) from exc
+
+                topic_term_weight_dict[topic][term] = weight_value
+                topic_sum_dict[topic] += weight_value
+
+        return topic_term_weight_dict, topic_sum_dict
+
     def load_topic_term_distributions(self) -> dict[str, float]:
         """Load the topic-term distributions from a file.
 
         Returns:
             dict[str, float]: A dictionary of all topic-term distributions.
         """
-        # Ensure that the path to a term weights file has been set.
         term_weight_path = self._metadata_get([self.CANONICAL_TERM_WEIGHTS_KEY])
         if term_weight_path is None:
             raise LexosException(
                 f"No term weights have been set. Please designate a path to the term weights file (e.g. `{self.CANONICAL_TERM_WEIGHTS_KEY}`) when you train your topic model."
             )
-        topic_term_weight_dict = defaultdict(lambda: defaultdict(float))
-        topic_sum_dict = defaultdict(float)
+
         try:
-            with open(term_weight_path, "r") as f:
-                for _line in f:
-                    if not _line.strip():
-                        continue
-                    parts = _line.strip().split("\t")
-                    if len(parts) != 3:
-                        # Malformed line
-                        raise ValueError(
-                            f"Malformed line in term weights file: '{_line.strip()}'"
-                        )
-                    _topic, _term, _weight = parts
-                    try:
-                        weight_f = float(_weight)
-                    except Exception:
-                        raise ValueError(
-                            f"Invalid weight value '{_weight}' in line: '{_line.strip()}'"
-                        )
-                    topic_term_weight_dict[_topic][_term] = weight_f
-                    topic_sum_dict[_topic] += weight_f
+            topic_term_weight_dict, topic_sum_dict = self._read_term_weight_rows(
+                term_weight_path
+            )
         except FileNotFoundError:
-            # Surface file not found as filesystem error
             raise
 
         topic_term_probability_dict = defaultdict(lambda: defaultdict(float))
-        for _topic, _term_weight_dict in topic_term_weight_dict.items():
-            for _term, _weight in _term_weight_dict.items():
-                topic_term_probability_dict[int(_topic)][_term] = (
-                    _weight / topic_sum_dict[_topic]
+        for topic, term_weight_dict in topic_term_weight_dict.items():
+            for term, weight in term_weight_dict.items():
+                topic_term_probability_dict[int(topic)][term] = (
+                    weight / topic_sum_dict[topic]
                 )
 
         return topic_term_probability_dict
+
+    def _normalize_boxplot_topics(
+        self, topics: Optional[int | list[int]], num_topics: int
+    ) -> list[int]:
+        """Normalize topic selections for category boxplots.
+
+        Args:
+            topics (Optional[int | list[int]]): The selected topic index or indices.
+            num_topics (int): The number of available topics.
+
+        Returns:
+            list[int]: The list of topic indices to plot.
+        """
+        if topics is None:
+            return list(range(num_topics))
+        if isinstance(topics, int):
+            return [topics]
+        return topics
+
+    def _build_boxplot_dataframe(
+        self,
+        categories: list[str],
+        distributions: list[list[float]],
+        topic: int,
+        topic_header: str,
+        target_labels: Optional[list[str]],
+    ) -> pd.DataFrame:
+        """Build the per-topic dataframe used for a category boxplot.
+
+        Args:
+            categories (list[str]): Category labels aligned with the distributions.
+            distributions (list[list[float]]): The topic distributions for each category.
+            topic (int): The topic index used for plotting.
+            topic_header (str): The visual title for the topic.
+            target_labels (Optional[list[str]]): Optional category filters.
+
+        Returns:
+            pd.DataFrame: The data prepared for seaborn boxplot drawing.
+        """
+        rows = []
+        for label, distribution in zip(categories, distributions):
+            if target_labels and label not in target_labels:
+                continue
+            rows.append(
+                {
+                    "Probability": float(distribution[topic]),
+                    "Category": label,
+                    "Topic": topic_header,
+                }
+            )
+        return pd.DataFrame(rows)
+
+    def _render_boxplot_overlay(
+        self,
+        ax: Any,
+        overlay: Optional[str],
+        df_to_plot: pd.DataFrame,
+        overlay_kws: Optional[dict[str, Any]],
+    ) -> None:
+        """Render the optional strip/swarm overlay of raw data points on a boxplot.
+
+        Args:
+            ax (Any): The matplotlib axes to draw on.
+            overlay (Optional[str]): The overlay mode to use.
+            df_to_plot (pd.DataFrame): The boxplot data.
+            overlay_kws (Optional[dict[str, Any]]): Extra arguments for the overlay plot.
+        """
+        if overlay not in ("strip", "swarm", "none", None):
+            raise LexosException(
+                "Invalid `overlay` argument: expected 'strip', 'swarm', or 'none'."
+            )
+
+        overlay_kws = dict(overlay_kws or {})
+        try:
+            if overlay == "strip" or overlay is None:
+                sns.stripplot(
+                    data=df_to_plot,
+                    x="Category",
+                    y="Probability",
+                    color=overlay_kws.pop("color", "black"),
+                    size=overlay_kws.pop("size", 4),
+                    jitter=overlay_kws.pop("jitter", True),
+                    ax=ax,
+                    **overlay_kws,
+                )
+            elif overlay == "swarm":
+                sns.swarmplot(
+                    data=df_to_plot,
+                    x="Category",
+                    y="Probability",
+                    color=overlay_kws.pop("color", "black"),
+                    size=overlay_kws.pop("size", 4),
+                    ax=ax,
+                    **overlay_kws,
+                )
+        except Exception:
+            pass
+
+    def _resolve_topic_header(
+        self,
+        topic: int,
+        topic_keys: list[list[str]],
+        num_keys: int,
+    ) -> str:
+        """Build the display title for a topic using either custom labels or default labels.
+
+        Args:
+            topic (int): The topic index.
+            topic_keys (list[list[str]]): The model's topic-key rows.
+            num_keys (int): The number of keywords to include in the title.
+
+        Returns:
+            str: A label including the topic header and the leading keywords.
+        """
+        keywords = " ".join(topic_keys[topic][2].split()[:num_keys])
+        custom_labels = self.metadata.get("topic_labels")
+        topic_label = str(topic)
+        if custom_labels and topic_label in custom_labels:
+            return f"{custom_labels[topic_label]}: {keywords}"
+        return f"Topic {topic}: {keywords}"
+
+    def _save_plot_figure(
+        self, fig: Figure, output_path: Optional[str], topic: int
+    ) -> None:
+        """Save a figure with a topic-specific suffix when an output path is provided.
+
+        Args:
+            fig (Figure): The figure to save.
+            output_path (Optional[str]): The root output path.
+            topic (int): The topic index used in the filename.
+        """
+        if not output_path:
+            return
+        path = Path(output_path)
+        save_path = f"{path.parent / path.stem}_topic{topic}{path.suffix}"
+        fig.savefig(save_path)
+
+    def _plot_boxplot_for_topic(
+        self,
+        categories: list[str],
+        distributions: list[list[float]],
+        topic: int,
+        topic_keys: list[list[str]],
+        target_labels: Optional[list[str]],
+        output_path: Optional[str],
+        num_keys: int,
+        figsize: Optional[tuple[int, int]],
+        font_scale: Optional[float],
+        color: Optional[ColorType],
+        show: Optional[bool],
+        title: Optional[str],
+        overlay: Optional[str],
+        overlay_kws: Optional[dict[str, Any]],
+    ) -> Figure:
+        """Render a single topic boxplot and return its matplotlib figure."""
+        topic_header = self._resolve_topic_header(topic, topic_keys, num_keys)
+        df_to_plot = self._build_boxplot_dataframe(
+            categories,
+            distributions,
+            topic,
+            topic_header,
+            target_labels,
+        )
+
+        sns.set_theme(style="ticks", font_scale=font_scale)
+        fig, ax = plt.subplots(figsize=figsize) if figsize else plt.subplots()
+        sns.boxplot(
+            data=df_to_plot,
+            x="Category",
+            y="Probability",
+            color=color,
+            ax=ax,
+            showmeans=True,
+        )
+        self._render_boxplot_overlay(ax, overlay, df_to_plot, overlay_kws)
+        sns.despine()
+        plt.xticks(rotation=45, ha="right")
+        if title is None:
+            ax.set_title(topic_header)
+        else:
+            fig.suptitle(title)
+        plt.tight_layout()
+        self._save_plot_figure(fig, output_path, topic)
+        if show:
+            plt.show()
+        plt.close(fig)
+        return fig
 
     @validate_call(config=model_config)
     def plot_categories_by_topic_boxplots(
@@ -1478,126 +2171,131 @@ class Mallet(BaseModel):
         Returns:
             Figure | list[Figure]: The boxplot showing the topic associations by category.
         """
-        # Load topic_keys
         topic_keys = self.topic_keys
-
-        # Ensure that topics is a list
-        if topics is None:
-            topics = list(range(len(topic_keys)))
-        elif isinstance(topics, int):
-            topics = [topics]
-
-        # Ensure there are topic_labels
-        if not target_labels:
-            target_labels = list(set(categories))
-
-        # Combine the labels and distributions into a dataframe.
-        figs = []
-
-        # Use user-provided topic_distributions if given, else default to self.distributions
+        topics = self._normalize_boxplot_topics(topics, len(topic_keys))
+        target_labels = target_labels or list(set(categories))
         distributions = (
             topic_distributions
             if topic_distributions is not None
             else self.distributions
         )
+        figs = []
 
         for topic in topics:
-            keywords = " ".join(topic_keys[topic][2].split()[:num_keys])
-
-            # Check for custom labels to use in the topic header
-            custom_labels = self.metadata.get("topic_labels")
-            topic_label = str(topic)
-            if custom_labels and topic_label in custom_labels:
-                topic_header = f"{custom_labels[topic_label]}: {keywords}"
-            else:
-                topic_header = f"Topic {topic}: {keywords}"
-
-            dicts_to_plot = []
-            for _label, _distribution in zip(categories, distributions):
-                if not target_labels or _label in target_labels:
-                    dicts_to_plot.append(
-                        {
-                            "Probability": float(_distribution[topic]),
-                            "Category": _label,
-                            "Topic": topic_header,
-                        }
-                    )
-            df_to_plot = pd.DataFrame(dicts_to_plot)
-
-            # Validate overlay option
-            if overlay not in ("strip", "swarm", "none", None):
-                raise LexosException(
-                    "Invalid `overlay` argument: expected 'strip', 'swarm', or 'none'."
+            figs.append(
+                self._plot_boxplot_for_topic(
+                    categories,
+                    distributions,
+                    topic,
+                    topic_keys,
+                    target_labels,
+                    output_path,
+                    num_keys,
+                    figsize,
+                    font_scale,
+                    color,
+                    show,
+                    title,
+                    overlay,
+                    overlay_kws,
                 )
-
-            # Show the final plot
-            sns.set_theme(style="ticks", font_scale=font_scale)
-            # Create a figure/axes so we can overlay points for small datasets
-            if figsize:
-                fig, ax = plt.subplots(figsize=figsize)
-            else:
-                fig, ax = plt.subplots()
-            sns.boxplot(
-                data=df_to_plot,
-                x="Category",
-                y="Probability",
-                color=color,
-                ax=ax,
-                showmeans=True,
             )
-            # Overlay data points so users can see the raw values when there are
-            # too few observations to form a full box
-            overlay_kws = dict(overlay_kws or {})
-            try:
-                if overlay == "strip" or overlay is None:
-                    sns.stripplot(
-                        data=df_to_plot,
-                        x="Category",
-                        y="Probability",
-                        color=overlay_kws.pop("color", "black"),
-                        size=overlay_kws.pop("size", 4),
-                        jitter=overlay_kws.pop("jitter", True),
-                        ax=ax,
-                        **overlay_kws,
-                    )
-                elif overlay == "swarm":
-                    sns.swarmplot(
-                        data=df_to_plot,
-                        x="Category",
-                        y="Probability",
-                        color=overlay_kws.pop("color", "black"),
-                        size=overlay_kws.pop("size", 4),
-                        ax=ax,
-                        **overlay_kws,
-                    )
-                # If overlay == 'none', do nothing
-            except Exception:
-                # Overlay plotting is optional; ignore any backend failures
-                pass
-            sns.despine()
-            plt.xticks(rotation=45, ha="right")
-            # Set either the provided title or a sensible default including topic index and top keys
-            if title is None:
-                ax.set_title(topic_header)
-            else:
-                # Use a figure-level title to avoid per-subplot clobbering
-                fig.suptitle(title)
-            plt.tight_layout()
-            # Save each plot to a unique file if output_path is set
-            if output_path:
-                p = Path(output_path)
-                save_path = f"{p.parent / p.stem}_topic{topic}{p.suffix}"
-                fig.savefig(save_path)
-            figs.append(fig)
-            if show:
-                plt.show()
-            plt.close(fig)
+
         if show:
             return None
-        # If this function only generated a single figure, return it.
-        if len(figs) == 1:
-            return figs[0]
-        return figs
+        return figs[0] if len(figs) == 1 else figs
+
+    def _resolve_heatmap_topic_label(
+        self,
+        topic_index: int,
+        topic_keys: list[list[str]],
+        num_keys: int,
+    ) -> str:
+        """Build the display label used for a topic in a heatmap.
+
+        Args:
+            topic_index (int): The topic index.
+            topic_keys (list[list[str]]): The topic keyword rows.
+            num_keys (int): The number of keywords to include.
+
+        Returns:
+            str: The display label for the topic column.
+        """
+        keywords = (
+            ""
+            if topic_index >= len(topic_keys)
+            else " ".join(topic_keys[topic_index][2].split()[:num_keys])
+        )
+        custom_labels = self.metadata.get("topic_labels")
+        topic_display_name = (
+            custom_labels.get(str(topic_index), f"Topic {topic_index}")
+            if custom_labels and str(topic_index) in custom_labels
+            else f"Topic {topic_index}"
+        )
+
+        if num_keys and keywords:
+            return f"{topic_display_name}: {keywords}"
+        return topic_display_name
+
+    def _build_heatmap_rows(
+        self,
+        categories: list[str],
+        distributions: list[list[float]],
+        topic_keys: list[list[str]],
+        target_labels: Optional[list[str]],
+        num_keys: int,
+    ) -> list[dict[str, float | str]]:
+        """Build the rows used for the topic-by-category heatmap.
+
+        Args:
+            categories (list[str]): The category labels.
+            distributions (list[list[float]]): The per-category probability vectors.
+            topic_keys (list[list[str]]): The topic-key rows.
+            target_labels (Optional[list[str]]): Optional filters for categories.
+            num_keys (int): The number of term labels to include in each topic label.
+
+        Returns:
+            list[dict[str, float | str]]: The row data for the heatmap DataFrame.
+        """
+        rows: list[dict[str, float | str]] = []
+        for category_label, distribution in zip(categories, distributions):
+            if target_labels and category_label not in target_labels:
+                continue
+            for topic_index, probability in enumerate(distribution):
+                rows.append(
+                    {
+                        "Probability": float(probability),
+                        "Category": category_label,
+                        "Topic": self._resolve_heatmap_topic_label(
+                            topic_index, topic_keys, num_keys
+                        ),
+                    }
+                )
+        return rows
+
+    def _sort_heatmap_columns(self, df_norm_col: pd.DataFrame) -> pd.DataFrame:
+        """Sort the topic columns in a heatmap by topic index when possible.
+
+        Args:
+            df_norm_col (pd.DataFrame): The normalized heatmap DataFrame.
+
+        Returns:
+            pd.DataFrame: The reordered heatmap DataFrame.
+        """
+
+        def _topic_key(col):
+            try:
+                match = re.match(r"Topic\s+(\d+)", str(col))
+                if match:
+                    return (0, int(match.group(1)))
+            except Exception:
+                pass
+            return (1, str(col))
+
+        try:
+            return df_norm_col[sorted(list(df_norm_col.columns), key=_topic_key)]
+        except Exception:
+            return df_norm_col
 
     @validate_call(config=model_config)
     def plot_categories_by_topics_heatmap(
@@ -1629,84 +2327,31 @@ class Mallet(BaseModel):
         Returns:
             Figure: The heatmap showing the topic associations by category.
         """
-        # Load topic_keys
         topic_keys = self.topic_keys
-
-        # Use user-provided topic_distributions if given, else default to self.distributions
         distributions = (
             topic_distributions
             if topic_distributions is not None
             else self.distributions
         )
 
-        dicts_to_plot = []
-        for _category_label, _distribution in zip(categories, distributions):
-            if not target_labels or _category_label in target_labels:
-                for _topic, _probability in enumerate(_distribution):
-                    # Handle cases where topic_keys might be shorter than distributions
-                    if _topic < len(topic_keys):
-                        keywords = " ".join(topic_keys[_topic][2].split()[:num_keys])
-                    else:
-                        keywords = ""
-
-                    # Check for custom labels to use in the topic axis
-                    custom_labels = self.metadata.get("topic_labels")
-                    topic_id = str(_topic)
-                    if custom_labels and topic_id in custom_labels:
-                        topic_display_name = custom_labels[topic_id]
-                    else:
-                        topic_display_name = f"Topic {_topic}"
-
-                    if num_keys:
-                        if keywords:
-                            _topic_label = f"{topic_display_name}: {keywords}"
-                        else:
-                            _topic_label = f"{topic_display_name}"
-                    else:
-                        _topic_label = f"{topic_display_name}"
-
-                    dicts_to_plot.append(
-                        {
-                            "Probability": float(_probability),
-                            "Category": _category_label,
-                            "Topic": _topic_label,
-                        }
-                    )
-
-        # Create a dataframe, format it for the heatmap function, and normalize the columns.
-        df_to_plot = pd.DataFrame(dicts_to_plot)
+        rows = self._build_heatmap_rows(
+            categories,
+            distributions,
+            topic_keys,
+            target_labels,
+            num_keys,
+        )
+        df_to_plot = pd.DataFrame(rows)
         df_wide = df_to_plot.pivot_table(
             index="Category", columns="Topic", values="Probability"
         )
         df_norm_col = (df_wide - df_wide.mean()) / df_wide.std()
+        df_norm_col = self._sort_heatmap_columns(df_norm_col)
 
-        # Ensure the columns are ordered by numeric topic index where available (natural sort)
-        def _topic_key(col):
-            # Match 'Topic <num>' possibly followed by ': ...'
-            try:
-                m = re.match(r"Topic\s+(\d+)", str(col))
-                if m:
-                    return (0, int(m.group(1)))
-            except Exception:
-                pass
-            return (1, str(col))
-
-        try:
-            ordered_cols = sorted(list(df_norm_col.columns), key=_topic_key)
-            df_norm_col = df_norm_col[ordered_cols]
-        except Exception:
-            # If columns are not iterable or sorting fails (e.g., custom objects),
-            # we leave the DataFrame as-is rather than raising an exception.
-            pass
-
-        # Show the final plot
         sns.set_theme(style="ticks", font_scale=font_scale)
-        if figsize:
-            fig, ax = plt.subplots(figsize=figsize)
-        else:
-            fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=figsize) if figsize else plt.subplots()
         ax = sns.heatmap(df_norm_col, cmap=cmap, ax=ax)
-        # Set either provided title or a sensible default that indicates the content and the number of topics
+
         if title is None:
             try:
                 num_topics = len(df_norm_col.columns)
@@ -1716,8 +2361,7 @@ class Mallet(BaseModel):
                 title = f"Topics by Category ({num_topics} Topics)"
             else:
                 title = "Topics by Category"
-        if title:
-            fig.suptitle(title)
+        fig.suptitle(title)
         ax.xaxis.tick_top()
         ax.xaxis.set_label_position("top")
         plt.xticks(rotation=30, ha="left")
@@ -1727,9 +2371,68 @@ class Mallet(BaseModel):
         if show:
             plt.show()
             return None
-        else:
-            plt.close()
-            return fig
+        plt.close()
+        return fig
+
+    def _resolve_cloud_round_radius(self, round_mask: Any) -> int:
+        """Normalize the round-mask option into the integer radius expected by MultiCloud.
+
+        Args:
+            round_mask (Any): A boolean or integer-like radius specification.
+
+        Returns:
+            int: The normalized round-mask radius.
+
+        Raises:
+            LexosException: If the value cannot be interpreted as a boolean or integer radius.
+        """
+        if isinstance(round_mask, bool):
+            return 120 if round_mask else 0
+
+        try:
+            return int(round_mask) if round_mask is not None else 0
+        except Exception as exc:
+            raise LexosException(
+                "Invalid `round_mask` argument: expected a boolean or integer radius."
+            ) from exc
+
+    def _resolve_cloud_labels(self, df: pd.DataFrame) -> list[str]:
+        """Build the display labels for each topic cloud.
+
+        Args:
+            df (pd.DataFrame): The topic-term probability matrix with one row per topic.
+
+        Returns:
+            list[str]: The topic labels used by MultiCloud.
+        """
+        custom_labels = self.metadata.get("topic_labels")
+        labels = []
+        for i in range(len(df)):
+            topic_id = str(i)
+            labels.append(
+                custom_labels[topic_id]
+                if custom_labels and topic_id in custom_labels
+                else f"Topic {i}"
+            )
+        return labels
+
+    def _resolve_cloud_title(self, df: pd.DataFrame, title: Optional[str]) -> str:
+        """Resolve the title for the topic-cloud display.
+
+        Args:
+            df (pd.DataFrame): The topic-term probability matrix.
+            title (Optional[str]): An explicitly provided title.
+
+        Returns:
+            str: The final title for the MultiCloud figure.
+        """
+        if title is not None:
+            return title
+        try:
+            num_topics = len(df)
+        except Exception:
+            return "Topic Clouds"
+        return f"Topic Clouds ({num_topics} topics)" if num_topics else "Topic Clouds"
 
     @validate_call(config=model_config)
     def topic_clouds(
@@ -1775,60 +2478,23 @@ class Mallet(BaseModel):
         """
         sns.set_theme()
 
-        # Load topic-term probabilities and convert to DataFrame with topics as rows
         topic_term_probability_dict = self.load_topic_term_distributions()
         df = pd.DataFrame.from_dict(topic_term_probability_dict, orient="index").fillna(
             0
         )
-
-        # Filter the DataFrame to include only the specified topics (rows)
         if topics is not None:
             df = df.iloc[ensure_list(topics)]
 
-        # Build options dict for MultiCloud
         opts = kwargs.get("opts", {})
-        # Default to a white background unless overridden
         opts.setdefault("background_color", "white")
-        # Ensure `max_words` is present if not provided, mapping from max_terms
         if "max_words" not in opts and max_terms is not None:
             opts["max_words"] = max_terms
 
-        # Convert round_mask boolean or int into the radius integer expected by MultiCloud
-        if isinstance(round_mask, bool):
-            round_radius = 120 if round_mask else 0
-        else:
-            try:
-                round_radius = int(round_mask) if round_mask is not None else 0
-            except Exception:
-                raise LexosException(
-                    "Invalid `round_mask` argument: expected a boolean or integer radius."
-                )
+        round_radius = self._resolve_cloud_round_radius(round_mask)
+        labels = self._resolve_cloud_labels(df)
 
-        # Build label mappings for each topic based on index and custom labels
-        custom_labels = self.metadata.get("topic_labels")
-        labels = []
-        for i in range(len(df)):
-            topic_id = str(i)
-            if custom_labels and topic_id in custom_labels:
-                labels.append(custom_labels[topic_id])
-            else:
-                labels.append(f"Topic {i}")
-
-        # Build figure_opts forwarding and set a white facecolor by default
         figure_opts = kwargs.get("figure_opts", {})
         figure_opts.setdefault("facecolor", "white")
-
-        # Create the MultiCloud object with updated args compatible with the class
-        # If no explicit title supplied, create a helpful default
-        if title is None:
-            try:
-                num_topics = len(df)
-            except Exception:
-                num_topics = None
-            if num_topics is not None:
-                title = f"Topic Clouds ({num_topics} topics)"
-            else:
-                title = "Topic Clouds"
 
         mc = MultiCloud(
             data=df,
@@ -1838,19 +2504,100 @@ class Mallet(BaseModel):
             round=round_radius,
             labels=labels,
             figure_opts=figure_opts,
-            title=title,
+            title=self._resolve_cloud_title(df, title),
         )
 
-        # Save the file if requested
         if output_path:
             mc.save(output_path)
 
-        # Show the file if requested
         if show:
             mc.show()
             return None
-        else:
-            return mc.fig
+        return mc.fig
+
+    def _validate_time_series_inputs(
+        self,
+        times: list,
+        distributions: Optional[list[list[float]]],
+        topic_index: int,
+    ) -> None:
+        """Validate the inputs needed to render a time-series topic plot.
+
+        Args:
+            times (list): Time points corresponding to each document.
+            distributions (Optional[list[list[float]]]): The topic distributions per document.
+            topic_index (int): The topic to plot.
+
+        Raises:
+            LexosException: If there are no distributions or the length does not match.
+            ValueError: If the topic index is negative.
+        """
+        if distributions is None or len(distributions) == 0:
+            raise LexosException("No topic distributions available to plot.")
+        if topic_index < 0:
+            raise ValueError("topic_index must be a non-negative integer")
+        if len(times) != len(distributions):
+            raise LexosException(
+                "Length mismatch: 'times' must be the same length as topic_distributions"
+            )
+
+    def _build_time_series_rows(
+        self,
+        times: list,
+        distributions: list[list[float]],
+        topic_index: int,
+    ) -> pd.DataFrame:
+        """Build the DataFrame used for the topic-over-time line plot.
+
+        Args:
+            times (list): Time points corresponding to each document.
+            distributions (list[list[float]]): The topic probabilities for each document.
+            topic_index (int): The topic index to plot.
+
+        Returns:
+            pd.DataFrame: The rows used in the time-series plot.
+
+        Raises:
+            LexosException: If no documents contain the requested topic.
+        """
+        rows = []
+        for j, distribution in enumerate(distributions):
+            if len(distribution) <= topic_index:
+                continue
+            rows.append({"Probability": distribution[topic_index], "Time": times[j]})
+        if len(rows) == 0:
+            raise LexosException(f"No data found for topic index {topic_index}")
+        return pd.DataFrame(rows)
+
+    def _resolve_time_series_title(
+        self,
+        topic_keys: list[list[str]],
+        topic_index: int,
+        title: Optional[str],
+    ) -> Optional[str]:
+        """Resolve the title for the topic-over-time plot.
+
+        Args:
+            topic_keys (list[list[str]]): The topic-key rows.
+            topic_index (int): The topic index.
+            title (Optional[str]): An explicit title override.
+
+        Returns:
+            Optional[str]: The final title or a simple topic fallback.
+        """
+        if title is not None:
+            return title
+
+        custom_labels = self.metadata.get("topic_labels", {})
+        try:
+            topic_id = str(topic_keys[topic_index][0])
+            topic_label = custom_labels.get(topic_id, f"Topic {topic_id}")
+            if len(topic_keys[topic_index]) < 3:
+                return f"Topic {topic_index}"
+            keywords = " ".join(topic_keys[topic_index][2].split()[:5])
+            return f"{topic_label}: {keywords}"
+        except Exception:
+            return custom_labels.get(str(topic_index), f"Topic {topic_index}")
 
     @validate_call(config=model_config)
     def plot_topics_over_time(
@@ -1883,7 +2630,6 @@ class Mallet(BaseModel):
         Returns:
             Figure | None: The matplotlib figure if `show=False`, otherwise None.
         """
-        # Use provided distributions / keys or fall back to instance data
         distributions = (
             topic_distributions
             if topic_distributions is not None
@@ -1891,45 +2637,10 @@ class Mallet(BaseModel):
         )
         topic_keys = topic_keys if topic_keys is not None else self.topic_keys
 
-        if distributions is None or len(distributions) == 0:
-            raise LexosException("No topic distributions available to plot.")
+        self._validate_time_series_inputs(times, distributions, topic_index)
+        data_df = self._build_time_series_rows(times, distributions, topic_index)
 
-        if topic_index < 0:
-            raise ValueError("topic_index must be a non-negative integer")
-
-        if len(times) != len(distributions):
-            raise LexosException(
-                "Length mismatch: 'times' must be the same length as topic_distributions"
-            )
-
-        data_dicts = []
-        for j, _distribution in enumerate(distributions):
-            if len(_distribution) <= topic_index:
-                # Skip documents that don't cover the requested topic index
-                continue
-            data_dicts.append(
-                {"Probability": _distribution[topic_index], "Time": times[j]}
-            )
-
-        if len(data_dicts) == 0:
-            raise LexosException(f"No data found for topic index {topic_index}")
-
-        data_df = pd.DataFrame(data_dicts)
-
-        # Get the topic label/keywords for the title
-        if title is None:
-            try:
-                custom_labels = self.metadata.get("topic_labels", {})
-                topic_id = str(topic_keys[topic_index][0])
-                topic_label = custom_labels.get(topic_id, f"Topic {topic_id}")
-                keywords = " ".join(topic_keys[topic_index][2].split()[:5])
-                title = f"{topic_label}: {keywords}"
-            except Exception:
-                title = (
-                    custom_labels.get(str(topic_index), f"Topic {topic_index}")
-                    if title is None
-                    else title
-                )
+        title = self._resolve_time_series_title(topic_keys, topic_index, title)
 
         sns.set_theme(style="ticks", font_scale=font_scale)
         fig, ax = plt.subplots(figsize=figsize)
@@ -1937,16 +2648,6 @@ class Mallet(BaseModel):
         ax.set_xlabel("Time")
         ax.set_ylabel("Topic Probability")
 
-        # Default title
-        if title is None:
-            try:
-                custom_labels = self.metadata.get("topic_labels", {})
-                topic_id = str(topic_keys[topic_index][0])
-                topic_label = custom_labels.get(topic_id, f"Topic {topic_id}")
-                label_or_keywords = " ".join(topic_keys[topic_index][2].split()[:5])
-                title = f"{topic_label}: {label_or_keywords}"
-            except Exception:
-                pass
         if title:
             fig.suptitle(title)
 
@@ -1957,8 +2658,134 @@ class Mallet(BaseModel):
         if show:
             plt.show()
             return None
-        else:
-            return fig
+        return fig
+
+    def _normalize_train_flag_value(self, value: Any) -> Optional[str]:
+        """Normalize a MALLET training flag value to a CLI-safe string.
+
+        Args:
+            value (Any): The raw flag value.
+
+        Returns:
+            Optional[str]: The normalized value, or None if the flag is unset.
+        """
+        if not value:
+            return None
+        if isinstance(value, str) and len(Path(value).parts) == 1:
+            return str(Path(self.model_dir) / value)
+        return str(value)
+
+    def _record_train_output_metadata(self, key: str, value: str) -> None:
+        """Persist canonical metadata locations for key output files.
+
+        Args:
+            key (str): The MALLET flag name.
+            value (str): The output file path.
+        """
+        mapping = {
+            "output-doc-topics": self.CANONICAL_DOC_TOPIC_KEY,
+            "topic-word-weights-file": self.CANONICAL_TERM_WEIGHTS_KEY,
+            "output-topic-keys": self.CANONICAL_TOPIC_KEYS_KEY,
+            "inferencer-filename": self.CANONICAL_INFERENCER_KEY,
+        }
+        if key in mapping:
+            self.metadata[mapping[key]] = value
+
+    def _build_train_command(
+        self,
+        num_topics: int,
+        num_iterations: Optional[int],
+        optimize_interval: Optional[int],
+        path_to_state: Optional[str],
+        path_to_topic_keys: Optional[str],
+        path_to_topic_distributions: Optional[str],
+        path_to_term_weights: Optional[str],
+        path_to_diagnostics: Optional[str],
+        path_to_inferencer: Optional[str],
+    ) -> list[str]:
+        """Build the MALLET train-topics command and record canonical output metadata.
+
+        Args:
+            num_topics (int): The number of topics to train.
+            num_iterations (Optional[int]): The number of training iterations.
+            optimize_interval (Optional[int]): The optimization interval.
+            path_to_state (Optional[str]): State output path.
+            path_to_topic_keys (Optional[str]): Topic-key output path.
+            path_to_topic_distributions (Optional[str]): Document-topic output path.
+            path_to_term_weights (Optional[str]): Topic-word weights output path.
+            path_to_diagnostics (Optional[str]): Diagnostics output path.
+            path_to_inferencer (Optional[str]): Inferencer output path.
+
+        Returns:
+            list[str]: The full MALLET command to run.
+        """
+        path_to_formatted_training_data = str(
+            Path(self.model_dir) / "training_data.mallet"
+        )
+        cmd = [self.path_to_mallet or "mallet", "train-topics"]
+        flags = {
+            "input": path_to_formatted_training_data,
+            "num-topics": num_topics,
+            "num-iterations": num_iterations,
+            "output-state": path_to_state
+            or str(Path(self.model_dir) / "topic-state.gz"),
+            "output-topic-keys": path_to_topic_keys
+            or str(Path(self.model_dir) / "topic-keys.txt"),
+            "output-doc-topics": path_to_topic_distributions
+            or str(Path(self.model_dir) / "doc-topic.txt"),
+            "topic-word-weights-file": path_to_term_weights
+            or str(Path(self.model_dir) / "topic-weights.txt"),
+            "diagnostics-file": path_to_diagnostics
+            or str(Path(self.model_dir) / "diagnostics.xml"),
+            "inferencer-filename": path_to_inferencer
+            or str(Path(self.model_dir) / "inferencer.mallet"),
+            "optimize-interval": optimize_interval,
+        }
+
+        for key, value in flags.items():
+            normalized_value = self._normalize_train_flag_value(value)
+            if normalized_value is None:
+                continue
+            cmd.extend([f"--{key}", normalized_value])
+            self._record_train_output_metadata(key, normalized_value)
+
+        return cmd
+
+    def _record_train_metadata(
+        self,
+        flags: dict[str, Any],
+        cmd: list[str],
+        num_topics: int,
+        num_iterations: Optional[int],
+        optimize_interval: Optional[int],
+    ) -> None:
+        """Persist the training metadata used by downstream inference and inspection.
+
+        Args:
+            flags (dict[str, Any]): The training flags passed to MALLET.
+            cmd (list[str]): The command executed to train the model.
+            num_topics (int): Number of topics trained.
+            num_iterations (Optional[int]): Training iterations.
+            optimize_interval (Optional[int]): Optimization interval.
+        """
+        mapping = {
+            "output-doc-topics": self.CANONICAL_DOC_TOPIC_KEY,
+            "topic-word-weights-file": self.CANONICAL_TERM_WEIGHTS_KEY,
+            "output-topic-keys": self.CANONICAL_TOPIC_KEYS_KEY,
+            "inferencer-filename": self.CANONICAL_INFERENCER_KEY,
+        }
+        for key, value in flags.items():
+            if key not in ["num-topics", "optimize-interval"]:
+                if key in mapping:
+                    continue
+                self.metadata[f"path_to_{key.replace('-', '_')}"] = value
+        self.metadata["training_command"] = cmd
+        self.metadata["num_topics"] = num_topics
+        self.metadata["num_iterations"] = num_iterations
+        self.metadata["optimize_interval"] = optimize_interval
+
+        with open(self.model_dir / "meta.json", "w") as f:
+            f.write(json.dumps(self.metadata))
 
     @validate_call(config=model_config)
     def train(
@@ -1991,14 +2818,8 @@ class Mallet(BaseModel):
                 that can be used with `mallet infer-topics`. If not provided, defaults to
                 `model_dir/inferencer.mallet`.
         """
-        path_to_formatted_training_data = str(
-            Path(self.model_dir) / "training_data.mallet"
-        )
-
-        # Build the MALLET command
-        cmd = [self.path_to_mallet or "mallet", "train-topics"]
         flags = {
-            "input": path_to_formatted_training_data,
+            "input": str(Path(self.model_dir) / "training_data.mallet"),
             "num-topics": num_topics,
             "num-iterations": num_iterations,
             "output-state": path_to_state
@@ -2011,57 +2832,142 @@ class Mallet(BaseModel):
             or str(Path(self.model_dir) / "topic-weights.txt"),
             "diagnostics-file": path_to_diagnostics
             or str(Path(self.model_dir) / "diagnostics.xml"),
-            # Optional inferencer filename path to save a trained inferencer for later inference
             "inferencer-filename": path_to_inferencer
             or str(Path(self.model_dir) / "inferencer.mallet"),
             "optimize-interval": optimize_interval,
         }
-
-        for k, v in flags.items():
-            if v:
-                # Save file names in the model directory if they are not absolute paths
-                if isinstance(v, str) and len(Path(v).parts) == 1:
-                    v = str(Path(self.model_dir) / v)
-                cmd.extend([f"--{k}", str(v)])
-                # Set canonical metadata keys for common outputs so consumers can
-                # rely on a single key. Map train flags directly to the
-                # canonical metadata keys.
-                if k == "output-doc-topics":
-                    self.metadata[self.CANONICAL_DOC_TOPIC_KEY] = str(v)
-                if k == "topic-word-weights-file":
-                    self.metadata[self.CANONICAL_TERM_WEIGHTS_KEY] = str(v)
-                if k == "output-topic-keys":
-                    self.metadata[self.CANONICAL_TOPIC_KEYS_KEY] = str(v)
-                if k == "inferencer-filename":
-                    self.metadata[self.CANONICAL_INFERENCER_KEY] = str(v)
-
-        # Train the model
+        cmd = self._build_train_command(
+            num_topics,
+            num_iterations,
+            optimize_interval,
+            path_to_state,
+            path_to_topic_keys,
+            path_to_topic_distributions,
+            path_to_term_weights,
+            path_to_diagnostics,
+            path_to_inferencer,
+        )
         self._track_progress(cmd, num_iterations, verbose)
-        # For flags we don't have a canonical mapping for, provide a path_to_ entry
-        # to preserve other easily accessible metadata entries. Do not set legacy
-        # keys when we are mapping to a canonical key.
-        mapping = {
-            "output-doc-topics": self.CANONICAL_DOC_TOPIC_KEY,
-            "topic-word-weights-file": self.CANONICAL_TERM_WEIGHTS_KEY,
-            "output-topic-keys": self.CANONICAL_TOPIC_KEYS_KEY,
-            "inferencer-filename": self.CANONICAL_INFERENCER_KEY,
-        }
-        for k, v in flags.items():
-            if k not in ["num-topics", "optimize-interval"]:
-                if k in mapping:
-                    # Canonical keys already set earlier in the loop
-                    continue
-                self.metadata[f"path_to_{k.replace('-', '_')}"] = v
-        self.metadata["training_command"] = cmd
-        self.metadata["num_topics"] = num_topics
-        self.metadata["num_iterations"] = num_iterations
-        self.metadata["optimize_interval"] = optimize_interval
-
-        # Save the metadata to a JSON file in the model directory
-        with open(self.model_dir / "meta.json", "w") as f:
-            f.write(json.dumps(self.metadata))
-
+        self._record_train_metadata(
+            flags, cmd, num_topics, num_iterations, optimize_interval
+        )
         msg.good("Complete")
+
+    def _validate_inference_docs(
+        self, docs: list[str] | Path | str
+    ) -> tuple[str, Optional[str]]:
+        """Validate incoming inference docs and resolve raw/input paths."""
+        if isinstance(docs, (Path, str)) and Path(docs).is_file():
+            return str(docs), None
+
+        if isinstance(docs, bool) or not isinstance(docs, list):
+            raise LexosException(
+                "Invalid `docs` argument: expected a list of strings or a path to a file."
+            )
+
+        input_file = str(Path(self.model_dir) / "infer_input.txt")
+        with open(input_file, "w", encoding="utf-8") as fh:
+            for i, doc in enumerate(docs):
+                if isinstance(doc, bool) or not isinstance(doc, str):
+                    raise LexosException(
+                        "Invalid `docs` element: expected document text (str) for each item."
+                    )
+                fh.write(f"{i}\tno_label\t{doc.replace('\n', ' ')}\n")
+        return input_file, input_file
+
+    def _build_inference_import_command(
+        self,
+        input_file: str,
+        output_file: str,
+        keep_sequence: bool,
+        preserve_case: bool,
+        remove_stopwords: bool,
+        use_pipe_from: Optional[str | Path],
+    ) -> list[str]:
+        """Construct the MALLET import-file command for inference."""
+        cmd_import = [
+            self.path_to_mallet or "mallet",
+            "import-file",
+            "--input",
+            input_file,
+            "--output",
+            output_file,
+        ]
+        if keep_sequence:
+            cmd_import.append("--keep-sequence")
+        if remove_stopwords:
+            cmd_import.append("--remove-stopwords")
+        if preserve_case:
+            cmd_import.append("--preserve-case")
+        if use_pipe_from:
+            cmd_import.extend(["--use-pipe-from", str(use_pipe_from)])
+        return cmd_import
+
+    def _prepare_inference_input(
+        self,
+        docs: list[str] | Path | str,
+        keep_sequence: bool,
+        preserve_case: bool,
+        remove_stopwords: bool,
+        use_pipe_from: Optional[str | Path],
+    ) -> str:
+        """Prepare a MALLET-formatted input file for inference.
+
+        Args:
+            docs (list[str] | Path | str): Either a document file path or a list of documents.
+            keep_sequence (bool): Whether to retain sequence information in the import step.
+            preserve_case (bool): Whether to preserve case in the import step.
+            remove_stopwords (bool): Whether to remove stopwords in the import step.
+            use_pipe_from (Optional[str | Path]): A pipe file to reuse for formatting.
+
+        Returns:
+            str: The path to the MALLET-formatted input file.
+
+        Raises:
+            LexosException: If the supplied docs list is invalid or contains non-string items.
+        """
+        output_file = str(Path(self.model_dir) / "infer_input.mallet")
+        input_file, _ = self._validate_inference_docs(docs)
+        cmd_import = self._build_inference_import_command(
+            input_file,
+            output_file,
+            keep_sequence,
+            preserve_case,
+            remove_stopwords,
+            use_pipe_from,
+        )
+        subprocess.run(cmd_import, check=True)
+        return output_file
+
+    def _resolve_inference_paths(
+        self,
+        path_to_inferencer: Optional[str | Path],
+        output_path: Optional[str | Path],
+    ) -> tuple[str, str]:
+        """Resolve the inferencer and output paths for inference.
+
+        Args:
+            path_to_inferencer (Optional[str | Path]): The inferencer to use.
+            output_path (Optional[str | Path]): Optional output path for document-topic probabilities.
+
+        Returns:
+            tuple[str, str]: The inferencer path and the output doc-topics path.
+
+        Raises:
+            LexosException: If no inferencer is configured.
+        """
+        if not path_to_inferencer:
+            path_to_inferencer = self._metadata_get([self.CANONICAL_INFERENCER_KEY])
+        if not path_to_inferencer:
+            raise LexosException(
+                "No inferencer has been set. Provide `path_to_inferencer` or set it in metadata when training."
+            )
+
+        if output_path is None:
+            output_path = str(Path(self.model_dir) / "infer-doc-topics.txt")
+        else:
+            output_path = str(output_path)
+        return str(path_to_inferencer), output_path
 
     @validate_call(config=model_config)
     def infer(
@@ -2092,81 +2998,18 @@ class Mallet(BaseModel):
         """
         if use_pipe_from:
             use_pipe_from = str(use_pipe_from)
+        path_to_formatted = self._prepare_inference_input(
+            docs,
+            keep_sequence,
+            preserve_case,
+            remove_stopwords,
+            use_pipe_from,
+        )
 
-        # Accept a single file path or list of documents
-        if isinstance(docs, (Path, str)) and Path(docs).is_file():
-            # It's an input file
-            input_file = str(docs)
-            # Ensure we have a formatted mallet file if not provided
-            path_to_formatted = str(Path(self.model_dir) / "infer_input.mallet")
-            # The import-file to format the input for mallet
-            cmd_import = [
-                self.path_to_mallet or "mallet",
-                "import-file",
-                "--input",
-                input_file,
-                "--output",
-                path_to_formatted,
-            ]
-            if keep_sequence:
-                cmd_import.append("--keep-sequence")
-            if remove_stopwords:
-                cmd_import.append("--remove-stopwords")
-            if preserve_case:
-                cmd_import.append("--preserve-case")
-            if use_pipe_from:
-                cmd_import.extend(["--use-pipe-from", use_pipe_from])
-            # msg.info(" ".join(cmd_import))
-            subprocess.run(cmd_import, check=True)
-        else:
-            # Assume a list of document strings
-            if isinstance(docs, bool) or not isinstance(docs, list):
-                raise LexosException(
-                    "Invalid `docs` argument: expected a list of strings or a path to a file."
-                )
-            # Write a temporal input file
-            path_to_plain = str(Path(self.model_dir) / "infer_input.txt")
-            with open(path_to_plain, "w", encoding="utf-8") as fh:
-                for i, doc in enumerate(docs):
-                    if isinstance(doc, bool) or not isinstance(doc, str):
-                        raise LexosException(
-                            "Invalid `docs` element: expected document text (str) for each item."
-                        )
-                    fh.write(f"{i}\tno_label\t{doc.replace('\n', ' ')}\n")
-            # Format it with import-file
-            path_to_formatted = str(Path(self.model_dir) / "infer_input.mallet")
-            cmd_import = [
-                self.path_to_mallet or "mallet",
-                "import-file",
-                "--input",
-                path_to_plain,
-                "--output",
-                path_to_formatted,
-            ]
-            if keep_sequence:
-                cmd_import.append("--keep-sequence")
-            if remove_stopwords:
-                cmd_import.append("--remove-stopwords")
-            if preserve_case:
-                cmd_import.append("--preserve-case")
-            if use_pipe_from:
-                cmd_import.extend(["--use-pipe-from", str(use_pipe_from)])
-            # msg.info(" ".join(cmd_import))
-            subprocess.run(cmd_import, check=True)
-
-        # Determine the inferencer file to use
-        if not path_to_inferencer:
-            path_to_inferencer = self._metadata_get([self.CANONICAL_INFERENCER_KEY])
-        if not path_to_inferencer:
-            raise LexosException(
-                "No inferencer has been set. Provide `path_to_inferencer` or set it in metadata when training."
-            )
-
-        path_to_formatted = path_to_formatted
-        if output_path is None:
-            output_path = str(Path(self.model_dir) / "infer-doc-topics.txt")
-        else:
-            output_path = str(output_path)
+        path_to_inferencer, output_path = self._resolve_inference_paths(
+            path_to_inferencer,
+            output_path,
+        )
 
         cmd = [
             self.path_to_mallet or "mallet",
@@ -2178,15 +3021,12 @@ class Mallet(BaseModel):
             "--output-doc-topics",
             output_path,
         ]
-        # msg.info(" ".join(cmd))
         subprocess.run(cmd, check=True)
 
-        # Read the output file and return distributions
         distributions = []
         try:
             with open(output_path, "r") as f:
                 for line in f:
-                    # Skip header and blank lines
                     if not line.strip() or line.startswith("#"):
                         continue
                     distributions.append(self._parse_distribution_line(line))
@@ -2196,7 +3036,6 @@ class Mallet(BaseModel):
             )
 
         if show:
-            # User wants to display; we return None in this case for parity with other methods
             return None
         return distributions
 
@@ -2210,3 +3049,6 @@ class Mallet(BaseModel):
         self.metadata[parameter] = value
         with open(Path(self.model_dir) / "meta.json", "w") as f:
             f.write(json.dumps(self.metadata))
+
+
+JavaMallet = Mallet
