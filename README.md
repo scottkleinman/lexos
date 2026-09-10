@@ -1,6 +1,6 @@
 # The Lexos Python Library
 
-![v0.2.1](https://img.shields.io/badge/version-v0.2.1-blue)
+![v0.2.2](https://img.shields.io/badge/version-v0.2.2-blue)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-31212/)
 [![Python wheels](https://img.shields.io/badge/wheels-%E2%9C%93-4c1.svg?longCache=true&style=flat-square&logo=python&logoColor=white)](https://github.com/scottkleinman/lexos/releases)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg?style=flat-square)](https://github.com/ambv/ruff)
@@ -25,6 +25,10 @@ A full discussion of the use of the API can be found on the website [Documentati
 - Generates topic models and topic model visualizations using [MALLET](https://github.com/mimno/Mallet) and [DFR Browser 2](https://github.com/scottkleinman/dfr-browser2).
 
 And more!
+
+### What's New in v0.2.2
+
+- Minor bug fixes to spaCy model CLI installation.
 
 ### What's New in v0.2.1
 
@@ -111,4 +115,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📝 Citation Information
 
-Kleinman, S., (2026). Lexos. v0.2.1 https://github.com/scottkleinman/lexos. [10.5281/zenodo.18112379](https://doi.org/10.5281/zenodo.18112379).
+Kleinman, S., (2026). Lexos. v0.2.2 https://github.com/scottkleinman/lexos. [10.5281/zenodo.18112379](https://doi.org/10.5281/zenodo.18112379).
