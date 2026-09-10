@@ -66,13 +66,13 @@ uv add lexos
 Some Lexos functions use [spaCy](https://spacy.io/) language models to obtain language-specific information about texts. To download spaCy models, run the following command:
 
 ```bash
-lexos-download-spacy-models xx_sent_ud_sm en_core_web_sm
+download-spacy-models xx_sent_ud_sm en_core_web_sm
 ```
 
 or
 
 ```bash
-uv run lexos-download-spacy-models xx_sent_ud_sm en_core_web_sm
+uv run download-spacy-models xx_sent_ud_sm en_core_web_sm
 ```
 
 You can install multiple models by separating their names with spaces. If you do not run this command, Lexos will install the default `xx_sent_ud_sm` model the first time you attempt to use a feature that requires a spaCy language model.
