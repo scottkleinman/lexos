@@ -1595,21 +1595,49 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#import-the-mallet-class-from-the-mallet-module" class="md-nav__link">
+  <a href="#installing-mallet" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Import the Mallet class from the mallet Module
+        Installing MALLET
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing MALLET">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-the-java-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using the Java Backend
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#check-mallet-installation" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#using-the-pyrmallet-backend" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Check Mallet Installation
+        Using the PyRMallet Backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#import-the-mallet-class-from-the-mallet-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Import the Mallet class from the mallet Module
       
     </span>
   </a>
@@ -4631,6 +4659,8 @@
       
         
       
+        
+      
     
     
     
@@ -4695,6 +4725,34 @@
     
   
     mallet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api/topic_modeling/llm_labeler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    llm_labeler
   
 
     
@@ -5605,21 +5663,49 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#import-the-mallet-class-from-the-mallet-module" class="md-nav__link">
+  <a href="#installing-mallet" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Import the Mallet class from the mallet Module
+        Installing MALLET
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing MALLET">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-the-java-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using the Java Backend
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#check-mallet-installation" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#using-the-pyrmallet-backend" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Check Mallet Installation
+        Using the PyRMallet Backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#import-the-mallet-class-from-the-mallet-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Import the Mallet class from the mallet Module
       
     </span>
   </a>
@@ -5710,53 +5796,60 @@
 <h1 id="topic-modeling-with-mallet">Topic Modeling with MALLET<a class="headerlink" href="#topic-modeling-with-mallet" title="Permanent link">¤</a></h1>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¤</a></h2>
 <p>Topic modeling is a statistical method for discovering abstract themes or "topics" within a collection of documents. <a href="https://mimno.github.io/Mallet/topics.html" target="_blank">MALLET</a> is a mature tool for topic modeling used widely in the Humanities. It is a Java package that needs to be installed separately from Lexos. The Lexos <code>mallet</code> module provides a straightforward wrapper for running MALLET, managing outputs, and creating visualizations of your topic model.</p>
-<p>For more on topic modeling and installing MALLET, see Shawn Graham, Scott Weingart, and Ian Milligan's tutorial <a href="https://programminghistorian.org/en/lessons/topic-modeling-and-mallet" target="_blank">Getting Started with Topic Modeling and MALLET</a>.</p>
 <p>The Lexos <code>mallet</code> module integrates Maria Antoniak's <a href="https://github.com/maria-antoniak/little-mallet-wrapper" target="_blank">Litte Mallet Wrapper</a> functions with a slightly simplified API that manages file paths. For more advanced methods of exploring a topic model, see the Lexos integration of <a href="../dfr_browser2/">DFR Browser 2</a>.</p>
 <p>In the examples below, we will use a sample dataset of English-language fiction from David Bamman's <a href="https://github.com/DBamman/litbank">LitBank</a>. Additional texts were collected by Allen Riddell for <a href="https://github.com/ariddell/tatom">TAToM: Text Analysis with Topic Models for the Humanities and Social Sciences</a>.</p>
+<h2 id="installing-mallet">Installing MALLET<a class="headerlink" href="#installing-mallet" title="Permanent link">¤</a></h2>
+<p>MALLET does not come packaged with Lexos; it must be installed separately. Lexos can interface with MALLET through one of two backends: a wrapper for the original Java-based MALLET binary or through David Mimno's more recent port of MALLET to Rust, which is accessible through the PyRMallet Python binding. The latter has a much simpler installation procedure.</p>
+<h3 id="using-the-java-backend">Using the Java Backend<a class="headerlink" href="#using-the-java-backend" title="Permanent link">¤</a></h3>
+<p>To use the original Java-based MALLET binary, you need to download and install MALLET from its official website. Once installed, ensure that the MALLET binary is accessible from your system's PATH or note its installation path for later use. You will also need to have the Java Developer's Kit (JDK) installed on your system. For useful account of the installation procedure, Shawn Graham, Scott Weingart, and Ian Milligan's tutorial <a href="https://programminghistorian.org/en/lessons/topic-modeling-and-mallet" target="_blank">Getting Started with Topic Modeling and MALLET</a>.</p>
+<p>After installation, you should verify that MALLET is correctly installed and accessible from your system's PATH. For instance, if your MALLET binary is located at <code>~/mallet/bin</code>, you can run the following command in a terminal:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>~/mallet/bin/mallet
+</span></code></pre></div>
+<p>If you are using a Jupyter notebook, you can configure the path to your MALLET binary and run</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">mallet_binary_path</span> <span class="o">=</span> <span class="s2">&quot;/path/to/mallet&quot;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="err">!$</span><span class="n">mallet_binary_path</span>
+</span></code></pre></div>
+<p>If you receive a list of commands, MALLET is installed and the path is correct. Alternatively, on the command line, you can type the path to your MALLET binary and hit Enter. You should see the same list of commands.</p>
+<h3 id="using-the-pyrmallet-backend">Using the PyRMallet Backend<a class="headerlink" href="#using-the-pyrmallet-backend" title="Permanent link">¤</a></h3>
+<p>PyRMallet is a Python binding for David Mimno's Rust port of MALLET, which simplifies the installation process compared to the original Java-based MALLET binary. To use PyRMallet, you need to do is install it via pip:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span>pyrmallet
+</span></code></pre></div>
+<p>or, if you are using <code>uv</code>, you can add it to your environment with</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>uv<span class="w"> </span>add<span class="w"> </span>pyrmallet
+</span></code></pre></div>
 <hr />
 <h2 id="import-the-mallet-class-from-the-mallet-module">Import the <code>Mallet</code> class from the <code>mallet</code> Module<a class="headerlink" href="#import-the-mallet-class-from-the-mallet-module" title="Permanent link">¤</a></h2>
 <p>First, import the <code>Mallet</code> class and helper functions from the Lexos <code>mallet</code> module.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mallet</span><span class="p">,</span> <span class="n">import_docs</span><span class="p">,</span> <span class="n">import_files</span><span class="p">,</span> <span class="n">read_file</span><span class="p">,</span> <span class="n">read_dirs</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mallet</span><span class="p">,</span> <span class="n">import_docs</span><span class="p">,</span> <span class="n">import_files</span><span class="p">,</span> <span class="n">read_file</span><span class="p">,</span> <span class="n">read_dirs</span>
 </span></code></pre></div>
-<hr />
-<h2 id="check-mallet-installation">Check Mallet Installation<a class="headerlink" href="#check-mallet-installation" title="Permanent link">¤</a></h2>
-<p>Verify that MALLET is installed and accessible by calling the MALLET binary. For instance, if your MALLET binary is located at <code>~/mallet/bin</code>, you can run the following command in a terminal:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>~/mallet/bin/mallet
-</span></code></pre></div>
-<p>If you are using a Jupyter notebook, you can configure the path to your MALLET binary and run</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">mallet_binary_path</span> <span class="o">=</span> <span class="s2">&quot;/path/to/mallet&quot;</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="err">!$</span><span class="n">mallet_binary_path</span>
-</span></code></pre></div>
-<p>If you receive a list of commands, MALLET is installed and the path is correct.</p>
-<p>Or on the command line, type the path to your MALLET binary and hit Enter. You should see the same list of commands.</p>
 <hr />
 <h2 id="load-your-data">Load Your Data<a class="headerlink" href="#load-your-data" title="Permanent link">¤</a></h2>
 <p>Your data must take the form of a list of strings or spaCy <code>Doc</code> objects. Example data:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">sample_docs</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="s2">&quot;The quick brown fox jumps over the lazy dog.&quot;</span><span class="p">,</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="s2">&quot;Never jump over the lazy dog quickly.&quot;</span><span class="p">,</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="s2">&quot;A fast brown fox leaps over sleeping dogs.&quot;</span><span class="p">,</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="s2">&quot;Dogs are great pets for families.&quot;</span><span class="p">,</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="s2">&quot;Foxes are wild animals found in forests.&quot;</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">]</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">training_data</span> <span class="o">=</span> <span class="n">import_docs</span><span class="p">(</span><span class="n">sample_docs</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">sample_docs</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="s2">&quot;The quick brown fox jumps over the lazy dog.&quot;</span><span class="p">,</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="s2">&quot;Never jump over the lazy dog quickly.&quot;</span><span class="p">,</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="s2">&quot;A fast brown fox leaps over sleeping dogs.&quot;</span><span class="p">,</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="s2">&quot;Dogs are great pets for families.&quot;</span><span class="p">,</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="s2">&quot;Foxes are wild animals found in forests.&quot;</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="p">]</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="n">training_data</span> <span class="o">=</span> <span class="n">import_docs</span><span class="p">(</span><span class="n">sample_docs</span><span class="p">)</span>
 </span></code></pre></div>
 <p>This just copies the list <code>sample_docs</code> into a new list called <code>training_data</code> but ensures that the raw text strings are copied if your sample docs are spaCy <code>Doc</code> objects.</p>
 <p>Because topic modelling normally uses a large number of documents, you will most likely want to import them from a directory or line-delimited file. The <code>read_dirs()</code> and <code>read_file()</code> functions will read your documents into a list of strings.</p>
 <h3 id="reading-directories">Reading Directories<a class="headerlink" href="#reading-directories" title="Permanent link">¤</a></h3>
 <p>The <code>read_dirs()</code> function will read all text files in a directory (or list of directories) into a list of strings where each file is treated as a separate document. Note that the order of the documents in the list is important, as it will be used for document indexes in the topic model.</p>
 <p>In the examples below, we will use the <code>litbank_texts</code> folder distributed with MALLET, which contains text from 12 Wikipedia articles.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.topic_modeling.mallet</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_dirs</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">corpus_dir</span> <span class="o">=</span> <span class="s2">&quot;litbank_texts&quot;</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">training_data</span> <span class="o">=</span> <span class="n">read_dirs</span><span class="p">(</span><span class="n">corpus_dir</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.topic_modeling.mallet</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_dirs</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">corpus_dir</span> <span class="o">=</span> <span class="s2">&quot;litbank_texts&quot;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">training_data</span> <span class="o">=</span> <span class="n">read_dirs</span><span class="p">(</span><span class="n">corpus_dir</span><span class="p">)</span>
 </span></code></pre></div>
 <h3 id="reading-from-a-file">Reading from a File<a class="headerlink" href="#reading-from-a-file" title="Permanent link">¤</a></h3>
 <p>You can also load documents from a single file using the <code>read_file()</code> function. Here each line in the file is treated as a separate document. Again, the order of documents will be used for document indexes in the topic model.</p>
 <p>Note: Technically, MALLET expects the tab-delimited file where the first column is an index, the second is an optional label, and the third is the document text itself. The <code>read_file()</code> function accepts files in this format, as well as files containing only texts.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.topic_modeling.mallet</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_file</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">corpus_file</span> <span class="o">=</span> <span class="s2">&quot;sample_data.txt&quot;</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">training_data</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">corpus_file</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.topic_modeling.mallet</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_file</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">corpus_file</span> <span class="o">=</span> <span class="s2">&quot;sample_data.txt&quot;</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">training_data</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">corpus_file</span><span class="p">)</span>
 </span></code></pre></div>
 <hr />
 <h2 id="train-a-topic-model">Train a Topic Model<a class="headerlink" href="#train-a-topic-model" title="Permanent link">¤</a></h2>
@@ -5768,12 +5861,16 @@
 </ol>
 <p>The model <code>metadata</code> property returns a dictionary containing paths to output files and model statistics.</p>
 <p>Start by creating a <code>Mallet</code> instance:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">model_dir</span> <span class="o">=</span> <span class="s2">&quot;mallet_model&quot;</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">path_to_mallet</span> <span class="o">=</span> <span class="s2">&quot;/path/to/your/mallet/binary&quot;</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">mallet_model</span> <span class="o">=</span> <span class="n">Mallet</span><span class="p">(</span><span class="n">model_dir</span><span class="o">=</span><span class="n">model_dir</span><span class="p">,</span> <span class="n">path_to_mallet</span><span class="o">=</span><span class="n">path_to_mallet</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">model_dir</span> <span class="o">=</span> <span class="s2">&quot;mallet_model&quot;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">path_to_mallet</span> <span class="o">=</span> <span class="s2">&quot;/path/to/your/mallet/binary&quot;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">mallet_model</span> <span class="o">=</span> <span class="n">Mallet</span><span class="p">(</span><span class="n">model_dir</span><span class="o">=</span><span class="n">model_dir</span><span class="p">,</span> <span class="n">path_to_mallet</span><span class="o">=</span><span class="n">path_to_mallet</span><span class="p">)</span>
 </span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By default, the <code>Mallet</code> class uses the Java backend and requires path to your MALLET binary file. If you are using the PyRMallet backend, you do not need to provide the path to the MALLET binary (although a default path will be stored in your model's metadata).</p>
+</div>
 <p>Now import your training data into the model instance with <code>import_data</code>.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="n">training_data</span><span class="o">=</span><span class="n">training_data</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">import_data</span><span class="p">(</span><span class="n">training_data</span><span class="o">=</span><span class="n">training_data</span><span class="p">)</span>
 </span></code></pre></div>
 <p>You can configure the following parameters:</p>
 <ul>
@@ -5785,29 +5882,29 @@
 <p>When you train a model, MALLET creates a "pipe" file that records the sequence of data processing steps (such as tokenization, stopword removal, case normalization, etc.). This file is saved in your model directory with the extension <code>.mallet</code>.</p>
 <p>If you later want to import new documents for inference or further modeling, you can use <code>use_pipe_from</code> with the path to the <code>.mallet</code> file. This guarantees consistency between training and inference, so your new documents are handled identically to your training set.</p>
 <p>Finally, train your model:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">num_topics</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">num_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">num_topics</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">num_iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span></code></pre></div>
 <p>If <code>verbose</code> is set to <code>True</code>, you will see something like:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>✔<span class="w"> </span>Training<span class="w"> </span>topics...
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>Mallet<span class="w"> </span>LDA:<span class="w"> </span><span class="m">20</span><span class="w"> </span>topics,<span class="w"> </span><span class="m">5</span><span class="w"> </span>topic<span class="w"> </span>bits,<span class="w"> </span><span class="m">11111</span><span class="w"> </span>topic<span class="w"> </span>mask
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Data<span class="w"> </span>loaded.
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>max<span class="w"> </span>tokens:<span class="w"> </span><span class="m">147</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>total<span class="w"> </span>tokens:<span class="w"> </span><span class="m">1245</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>&lt;<span class="m">10</span>&gt;<span class="w"> </span>LL/token:<span class="w"> </span>-9.11285
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>&lt;<span class="m">20</span>&gt;<span class="w"> </span>LL/token:<span class="w"> </span>-8.87062
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>&lt;<span class="m">30</span>&gt;<span class="w"> </span>LL/token:<span class="w"> </span>-8.71832
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>&lt;<span class="m">40</span>&gt;<span class="w"> </span>LL/token:<span class="w"> </span>-8.61369
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="m">0</span><span class="w">       </span><span class="m">0</span>.25<span class="w">    </span>average<span class="w"> </span>Test<span class="w"> </span>energy<span class="w"> </span>Hill<span class="w"> </span>energies<span class="w"> </span>ended<span class="w"> </span>innings<span class="w"> </span>batsman<span class="w"> </span>day<span class="w"> </span>predictions<span class="w"> </span>accurate<span class="w"> </span>holds<span class="w"> </span>neutron
-</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>properties<span class="w"> </span>predict<span class="w"> </span>Dulong–Petit<span class="w"> </span>classical<span class="w"> </span>mechanics<span class="w"> </span>statistical<span class="w"> </span>handicapper
-</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="m">1</span><span class="w">       </span><span class="m">0</span>.25<span class="w">    </span>back<span class="w"> </span>Gilbert<span class="w"> </span>year<span class="w"> </span>actors<span class="w"> </span>drama<span class="w"> </span>Greek<span class="w"> </span>productions<span class="w"> </span>England<span class="w"> </span>movie<span class="w"> </span>accomplishments<span class="w"> </span>romance<span class="w"> </span>Actress
-</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>graduating<span class="w"> </span>retiring<span class="w"> </span>apex<span class="w"> </span>habitat<span class="w"> </span>introduction<span class="w"> </span>continent<span class="w"> </span>mainland<span class="w"> </span>commonly
-</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>
-</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>...
-</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>
-</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>Total<span class="w"> </span>time:<span class="w"> </span><span class="m">0</span><span class="w"> </span>seconds
-</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>
-</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>✔<span class="w"> </span>Complete
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>✔<span class="w"> </span>Training<span class="w"> </span>topics...
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>Mallet<span class="w"> </span>LDA:<span class="w"> </span><span class="m">20</span><span class="w"> </span>topics,<span class="w"> </span><span class="m">5</span><span class="w"> </span>topic<span class="w"> </span>bits,<span class="w"> </span><span class="m">11111</span><span class="w"> </span>topic<span class="w"> </span>mask
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Data<span class="w"> </span>loaded.
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>max<span class="w"> </span>tokens:<span class="w"> </span><span class="m">147</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>total<span class="w"> </span>tokens:<span class="w"> </span><span class="m">1245</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>&lt;<span class="m">10</span>&gt;<span class="w"> </span>LL/token:<span class="w"> </span>-9.11285
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>&lt;<span class="m">20</span>&gt;<span class="w"> </span>LL/token:<span class="w"> </span>-8.87062
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>&lt;<span class="m">30</span>&gt;<span class="w"> </span>LL/token:<span class="w"> </span>-8.71832
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>&lt;<span class="m">40</span>&gt;<span class="w"> </span>LL/token:<span class="w"> </span>-8.61369
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="m">0</span><span class="w">       </span><span class="m">0</span>.25<span class="w">    </span>average<span class="w"> </span>Test<span class="w"> </span>energy<span class="w"> </span>Hill<span class="w"> </span>energies<span class="w"> </span>ended<span class="w"> </span>innings<span class="w"> </span>batsman<span class="w"> </span>day<span class="w"> </span>predictions<span class="w"> </span>accurate<span class="w"> </span>holds<span class="w"> </span>neutron
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>properties<span class="w"> </span>predict<span class="w"> </span>Dulong–Petit<span class="w"> </span>classical<span class="w"> </span>mechanics<span class="w"> </span>statistical<span class="w"> </span>handicapper
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="m">1</span><span class="w">       </span><span class="m">0</span>.25<span class="w">    </span>back<span class="w"> </span>Gilbert<span class="w"> </span>year<span class="w"> </span>actors<span class="w"> </span>drama<span class="w"> </span>Greek<span class="w"> </span>productions<span class="w"> </span>England<span class="w"> </span>movie<span class="w"> </span>accomplishments<span class="w"> </span>romance<span class="w"> </span>Actress
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>graduating<span class="w"> </span>retiring<span class="w"> </span>apex<span class="w"> </span>habitat<span class="w"> </span>introduction<span class="w"> </span>continent<span class="w"> </span>mainland<span class="w"> </span>commonly
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>...
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>Total<span class="w"> </span>time:<span class="w"> </span><span class="m">0</span><span class="w"> </span>seconds
+</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>
+</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>✔<span class="w"> </span>Complete
 </span></code></pre></div>
 <p>This is a display of the state of your model after each iteration. It can be quite long, so it may be truncated in a notebook environment. If you are not interested in observing this output, you can set <code>verbose=False</code>.</p>
 <p>The <code>train()</code> method takes the following parameters:</p>
@@ -5821,53 +5918,53 @@
 <hr />
 <h2 id="loading-an-existing-model">Loading an Existing Model<a class="headerlink" href="#loading-an-existing-model" title="Permanent link">¤</a></h2>
 <p>Sometimes you need to load an existing model into memory, rather than creating one from scratch. You can do this easily by instantiating a new <code>Mallet</code> object with the existing <code>model_dir</code> path.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Import the Mallet class</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mallet</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Initialize Mallet model</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">mallet_model</span> <span class="o">=</span> <span class="n">Mallet</span><span class="p">(</span><span class="n">model_dir</span><span class="o">=</span><span class="s2">&quot;mallet_model&quot;</span><span class="p">)</span>
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># View the previously-generated metadata for the trained model</span>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">metadata</span>
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
-</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="o">---</span>
-</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>
-</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="c1">## After Training</span>
-</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>
-</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="n">After</span> <span class="n">training</span><span class="p">,</span> <span class="n">you</span> <span class="n">can</span> <span class="n">inspect</span> <span class="n">various</span> <span class="n">model</span> <span class="n">properties</span><span class="p">:</span>
-</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
-</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="o">-</span> <span class="err">`</span><span class="n">mallet_model</span><span class="o">.</span><span class="n">metadata</span><span class="err">`</span><span class="p">:</span> <span class="n">Returns</span> <span class="n">a</span> <span class="n">dictionary</span> <span class="n">of</span> <span class="n">information</span> <span class="n">about</span> <span class="n">the</span> <span class="n">model</span><span class="p">,</span> <span class="n">especially</span> <span class="n">the</span> <span class="n">paths</span> <span class="ow">and</span> <span class="n">commands</span> <span class="n">that</span> <span class="n">were</span> <span class="n">used</span> <span class="n">to</span> <span class="n">generate</span> <span class="n">the</span> <span class="n">model</span><span class="o">.</span>
-</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="o">-</span> <span class="err">`</span><span class="n">mallet_model</span><span class="o">.</span><span class="n">topic_keys</span><span class="err">`</span><span class="p">:</span> <span class="n">A</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">lists</span> <span class="n">where</span> <span class="n">each</span> <span class="n">sublist</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">topic</span> <span class="n">keys</span> <span class="k">for</span> <span class="n">a</span> <span class="n">given</span> <span class="n">topic</span><span class="o">.</span>
-</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="o">-</span> <span class="err">`</span><span class="n">mallet_model</span><span class="o">.</span><span class="n">distributions</span><span class="err">`</span><span class="p">:</span> <span class="n">A</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">lists</span> <span class="n">where</span> <span class="n">each</span> <span class="n">inner</span> <span class="nb">list</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">topic</span> <span class="n">distribution</span> <span class="k">for</span> <span class="n">a</span> <span class="n">single</span> <span class="n">document</span><span class="p">:</span> <span class="n">how</span> <span class="n">much</span> <span class="n">each</span> <span class="n">topic</span> <span class="n">contributes</span> <span class="n">to</span> <span class="n">the</span> <span class="n">document</span> <span class="p">(</span><span class="n">sums</span> <span class="n">to</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span>
-</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="o">-</span> <span class="err">`</span><span class="n">mallet_model</span><span class="o">.</span><span class="n">num_docs</span><span class="err">`</span><span class="p">:</span> <span class="n">The</span> <span class="n">number</span> <span class="n">of</span> <span class="n">documents</span> <span class="n">used</span> <span class="n">to</span> <span class="n">generate</span> <span class="n">the</span> <span class="n">model</span><span class="o">.</span>
-</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="o">-</span> <span class="err">`</span><span class="n">mallet_model</span><span class="o">.</span><span class="n">vocab_size</span><span class="err">`</span><span class="p">:</span> <span class="n">The</span> <span class="n">number</span> <span class="n">of</span> <span class="n">unique</span> <span class="n">terms</span> <span class="n">used</span> <span class="n">by</span> <span class="n">the</span> <span class="n">trained</span> <span class="n">model</span><span class="o">.</span>
-</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="o">-</span> <span class="err">`</span><span class="n">mallet_model</span><span class="o">.</span><span class="n">mean_num_tokens</span><span class="err">`</span><span class="p">:</span> <span class="n">The</span> <span class="n">mean</span> <span class="n">number</span> <span class="n">of</span> <span class="n">tokens</span> <span class="n">per</span> <span class="n">document</span><span class="o">.</span>
-</span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>
-</span><span id="__span-10-23"><a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="n">These</span> <span class="n">properties</span> <span class="n">allow</span> <span class="n">you</span> <span class="n">to</span> <span class="n">inspect</span> <span class="n">the</span> <span class="n">model</span><span class="p">,</span> <span class="n">analyze</span> <span class="n">results</span><span class="p">,</span> <span class="ow">and</span> <span class="n">use</span> <span class="n">outputs</span> <span class="k">for</span> <span class="n">further</span> <span class="n">processing</span><span class="o">.</span>
-</span><span id="__span-10-24"><a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>
-</span><span id="__span-10-25"><a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="err">!!!</span> <span class="n">note</span> <span class="s2">&quot;Setting Metadata Values&quot;</span>
-</span><span id="__span-10-26"><a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>    <span class="n">In</span> <span class="n">most</span> <span class="n">cases</span><span class="p">,</span> <span class="n">you</span> <span class="n">will</span> <span class="ow">not</span> <span class="n">want</span> <span class="n">to</span> <span class="n">change</span> <span class="n">the</span> <span class="n">metadata</span> <span class="n">values</span><span class="p">,</span> <span class="n">which</span> <span class="n">are</span> <span class="nb">set</span> <span class="n">automatically</span> <span class="n">by</span> <span class="k">class</span><span class="w"> </span><span class="nc">methods</span><span class="o">.</span> <span class="n">However</span><span class="p">,</span> <span class="ow">in</span> <span class="n">some</span> <span class="n">cases</span> <span class="n">you</span> <span class="n">may</span> <span class="n">wish</span> <span class="n">to</span> <span class="n">add</span> <span class="n">additional</span> <span class="n">information</span> <span class="n">to</span> <span class="n">the</span> <span class="n">model</span><span class="s1">&#39;s metadata, such as author or version number. Use the `set_metadata` method to do this.</span>
-</span><span id="__span-10-27"><a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>
-</span><span id="__span-10-28"><a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>    <span class="err">```</span><span class="n">python</span>
-</span><span id="__span-10-29"><a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a>    <span class="n">mallet_model</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">,</span> <span class="s2">&quot;John Smith&quot;</span><span class="p">)</span>
-</span><span id="__span-10-30"><a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>    <span class="n">mallet_model</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0&quot;</span><span class="p">)</span>
-</span><span id="__span-10-31"><a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a>    <span class="err">```</span>
-</span><span id="__span-10-32"><a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a>
-</span><span id="__span-10-33"><a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a>    <span class="n">Any</span> <span class="n">values</span> <span class="n">you</span> <span class="n">add</span> <span class="k">with</span> <span class="n">the</span> <span class="err">`</span><span class="n">set_metadata</span><span class="err">`</span> <span class="n">method</span> <span class="n">will</span> <span class="n">automatically</span> <span class="n">be</span> <span class="n">saved</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">model</span><span class="s1">&#39;s `meta.json` file and will be available if you need to reload the model (see below).</span>
-</span><span id="__span-10-34"><a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a>
-</span><span id="__span-10-35"><a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a><span class="o">---</span>
-</span><span id="__span-10-36"><a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a>
-</span><span id="__span-10-37"><a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a><span class="c1">## Display Topics and Top Words</span>
-</span><span id="__span-10-38"><a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a>
-</span><span id="__span-10-39"><a id="__codelineno-10-39" name="__codelineno-10-39" href="#__codelineno-10-39"></a><span class="n">Once</span> <span class="n">you</span> <span class="n">have</span> <span class="n">created</span> <span class="n">your</span> <span class="n">model</span><span class="p">,</span> <span class="n">you</span> <span class="n">can</span> <span class="n">display</span> <span class="n">the</span> <span class="n">discovered</span> <span class="n">topics</span> <span class="ow">and</span> <span class="n">their</span> <span class="n">top</span> <span class="n">words</span> <span class="n">using</span> <span class="err">`</span><span class="n">get_keys</span><span class="p">()</span><span class="err">`</span><span class="o">.</span> <span class="n">This</span> <span class="n">method</span> <span class="n">takes</span> <span class="n">the</span> <span class="n">following</span> <span class="n">parameters</span><span class="p">:</span>
-</span><span id="__span-10-40"><a id="__codelineno-10-40" name="__codelineno-10-40" href="#__codelineno-10-40"></a>
-</span><span id="__span-10-41"><a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a><span class="o">-</span> <span class="err">`</span><span class="n">num_topics</span><span class="err">`</span><span class="p">:</span> <span class="n">The</span> <span class="n">number</span> <span class="n">of</span> <span class="n">topics</span> <span class="n">to</span> <span class="n">get</span> <span class="n">keys</span> <span class="k">for</span><span class="o">.</span> <span class="n">If</span> <span class="err">`</span><span class="kc">None</span><span class="err">`</span><span class="p">,</span> <span class="n">get</span> <span class="n">keys</span> <span class="k">for</span> <span class="nb">all</span> <span class="n">topics</span><span class="o">.</span>
-</span><span id="__span-10-42"><a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a><span class="o">-</span> <span class="err">`</span><span class="n">topics</span><span class="err">`</span><span class="p">:</span> <span class="n">A</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">topic</span> <span class="n">indices</span> <span class="n">to</span> <span class="n">get</span> <span class="n">keys</span> <span class="k">for</span><span class="o">.</span> <span class="n">If</span> <span class="err">`</span><span class="kc">None</span><span class="err">`</span><span class="p">,</span> <span class="n">get</span> <span class="n">keys</span> <span class="k">for</span> <span class="nb">all</span> <span class="n">topics</span><span class="o">.</span>
-</span><span id="__span-10-43"><a id="__codelineno-10-43" name="__codelineno-10-43" href="#__codelineno-10-43"></a><span class="o">-</span> <span class="err">`</span><span class="n">num_keys</span><span class="err">`</span><span class="p">:</span> <span class="n">The</span> <span class="n">number</span> <span class="n">of</span> <span class="n">key</span> <span class="n">terms</span> <span class="n">to</span> <span class="n">output</span> <span class="k">for</span> <span class="n">each</span> <span class="n">topic</span><span class="o">.</span>
-</span><span id="__span-10-44"><a id="__codelineno-10-44" name="__codelineno-10-44" href="#__codelineno-10-44"></a><span class="o">-</span> <span class="err">`</span><span class="n">as_df</span><span class="err">`</span><span class="p">:</span> <span class="n">Whether</span> <span class="n">to</span> <span class="k">return</span> <span class="n">the</span> <span class="n">result</span> <span class="k">as</span> <span class="n">a</span> <span class="n">pandas</span> <span class="n">DataFrame</span> <span class="n">instead</span> <span class="n">of</span> <span class="n">a</span> <span class="n">string</span><span class="o">.</span> <span class="n">The</span> <span class="n">default</span> <span class="ow">is</span> <span class="err">`</span><span class="kc">True</span><span class="err">`</span><span class="o">.</span>
-</span><span id="__span-10-45"><a id="__codelineno-10-45" name="__codelineno-10-45" href="#__codelineno-10-45"></a>
-</span><span id="__span-10-46"><a id="__codelineno-10-46" name="__codelineno-10-46" href="#__codelineno-10-46"></a><span class="err">```</span><span class="n">python</span>
-</span><span id="__span-10-47"><a id="__codelineno-10-47" name="__codelineno-10-47" href="#__codelineno-10-47"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">get_keys</span><span class="p">(</span><span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Import the Mallet class</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mallet</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Initialize Mallet model</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="n">mallet_model</span> <span class="o">=</span> <span class="n">Mallet</span><span class="p">(</span><span class="n">model_dir</span><span class="o">=</span><span class="s2">&quot;mallet_model&quot;</span><span class="p">)</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="c1"># View the previously-generated metadata for the trained model</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">metadata</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="o">---</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="c1">## After Training</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="n">After</span> <span class="n">training</span><span class="p">,</span> <span class="n">you</span> <span class="n">can</span> <span class="n">inspect</span> <span class="n">various</span> <span class="n">model</span> <span class="n">properties</span><span class="p">:</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="o">-</span> <span class="err">`</span><span class="n">mallet_model</span><span class="o">.</span><span class="n">metadata</span><span class="err">`</span><span class="p">:</span> <span class="n">Returns</span> <span class="n">a</span> <span class="n">dictionary</span> <span class="n">of</span> <span class="n">information</span> <span class="n">about</span> <span class="n">the</span> <span class="n">model</span><span class="p">,</span> <span class="n">especially</span> <span class="n">the</span> <span class="n">paths</span> <span class="ow">and</span> <span class="n">commands</span> <span class="n">that</span> <span class="n">were</span> <span class="n">used</span> <span class="n">to</span> <span class="n">generate</span> <span class="n">the</span> <span class="n">model</span><span class="o">.</span>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="o">-</span> <span class="err">`</span><span class="n">mallet_model</span><span class="o">.</span><span class="n">topic_keys</span><span class="err">`</span><span class="p">:</span> <span class="n">A</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">lists</span> <span class="n">where</span> <span class="n">each</span> <span class="n">sublist</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">topic</span> <span class="n">keys</span> <span class="k">for</span> <span class="n">a</span> <span class="n">given</span> <span class="n">topic</span><span class="o">.</span>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="o">-</span> <span class="err">`</span><span class="n">mallet_model</span><span class="o">.</span><span class="n">distributions</span><span class="err">`</span><span class="p">:</span> <span class="n">A</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">lists</span> <span class="n">where</span> <span class="n">each</span> <span class="n">inner</span> <span class="nb">list</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">topic</span> <span class="n">distribution</span> <span class="k">for</span> <span class="n">a</span> <span class="n">single</span> <span class="n">document</span><span class="p">:</span> <span class="n">how</span> <span class="n">much</span> <span class="n">each</span> <span class="n">topic</span> <span class="n">contributes</span> <span class="n">to</span> <span class="n">the</span> <span class="n">document</span> <span class="p">(</span><span class="n">sums</span> <span class="n">to</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="o">-</span> <span class="err">`</span><span class="n">mallet_model</span><span class="o">.</span><span class="n">num_docs</span><span class="err">`</span><span class="p">:</span> <span class="n">The</span> <span class="n">number</span> <span class="n">of</span> <span class="n">documents</span> <span class="n">used</span> <span class="n">to</span> <span class="n">generate</span> <span class="n">the</span> <span class="n">model</span><span class="o">.</span>
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="o">-</span> <span class="err">`</span><span class="n">mallet_model</span><span class="o">.</span><span class="n">vocab_size</span><span class="err">`</span><span class="p">:</span> <span class="n">The</span> <span class="n">number</span> <span class="n">of</span> <span class="n">unique</span> <span class="n">terms</span> <span class="n">used</span> <span class="n">by</span> <span class="n">the</span> <span class="n">trained</span> <span class="n">model</span><span class="o">.</span>
+</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="o">-</span> <span class="err">`</span><span class="n">mallet_model</span><span class="o">.</span><span class="n">mean_num_tokens</span><span class="err">`</span><span class="p">:</span> <span class="n">The</span> <span class="n">mean</span> <span class="n">number</span> <span class="n">of</span> <span class="n">tokens</span> <span class="n">per</span> <span class="n">document</span><span class="o">.</span>
+</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>
+</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="n">These</span> <span class="n">properties</span> <span class="n">allow</span> <span class="n">you</span> <span class="n">to</span> <span class="n">inspect</span> <span class="n">the</span> <span class="n">model</span><span class="p">,</span> <span class="n">analyze</span> <span class="n">results</span><span class="p">,</span> <span class="ow">and</span> <span class="n">use</span> <span class="n">outputs</span> <span class="k">for</span> <span class="n">further</span> <span class="n">processing</span><span class="o">.</span>
+</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>
+</span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="err">!!!</span> <span class="n">note</span> <span class="s2">&quot;Setting Metadata Values&quot;</span>
+</span><span id="__span-12-26"><a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>    <span class="n">In</span> <span class="n">most</span> <span class="n">cases</span><span class="p">,</span> <span class="n">you</span> <span class="n">will</span> <span class="ow">not</span> <span class="n">want</span> <span class="n">to</span> <span class="n">change</span> <span class="n">the</span> <span class="n">metadata</span> <span class="n">values</span><span class="p">,</span> <span class="n">which</span> <span class="n">are</span> <span class="nb">set</span> <span class="n">automatically</span> <span class="n">by</span> <span class="k">class</span><span class="w"> </span><span class="nc">methods</span><span class="o">.</span> <span class="n">However</span><span class="p">,</span> <span class="ow">in</span> <span class="n">some</span> <span class="n">cases</span> <span class="n">you</span> <span class="n">may</span> <span class="n">wish</span> <span class="n">to</span> <span class="n">add</span> <span class="n">additional</span> <span class="n">information</span> <span class="n">to</span> <span class="n">the</span> <span class="n">model</span><span class="s1">&#39;s metadata, such as author or version number. Use the `set_metadata` method to do this.</span>
+</span><span id="__span-12-27"><a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>
+</span><span id="__span-12-28"><a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>    <span class="err">```</span><span class="n">python</span>
+</span><span id="__span-12-29"><a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>    <span class="n">mallet_model</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">,</span> <span class="s2">&quot;John Smith&quot;</span><span class="p">)</span>
+</span><span id="__span-12-30"><a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a>    <span class="n">mallet_model</span><span class="o">.</span><span class="n">set_metadata</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;1.0&quot;</span><span class="p">)</span>
+</span><span id="__span-12-31"><a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a>    <span class="err">```</span>
+</span><span id="__span-12-32"><a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>
+</span><span id="__span-12-33"><a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>    <span class="n">Any</span> <span class="n">values</span> <span class="n">you</span> <span class="n">add</span> <span class="k">with</span> <span class="n">the</span> <span class="err">`</span><span class="n">set_metadata</span><span class="err">`</span> <span class="n">method</span> <span class="n">will</span> <span class="n">automatically</span> <span class="n">be</span> <span class="n">saved</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">model</span><span class="s1">&#39;s `meta.json` file and will be available if you need to reload the model (see below).</span>
+</span><span id="__span-12-34"><a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a>
+</span><span id="__span-12-35"><a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a><span class="o">---</span>
+</span><span id="__span-12-36"><a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a>
+</span><span id="__span-12-37"><a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a><span class="c1">## Display Topics and Top Words</span>
+</span><span id="__span-12-38"><a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a>
+</span><span id="__span-12-39"><a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a><span class="n">Once</span> <span class="n">you</span> <span class="n">have</span> <span class="n">created</span> <span class="n">your</span> <span class="n">model</span><span class="p">,</span> <span class="n">you</span> <span class="n">can</span> <span class="n">display</span> <span class="n">the</span> <span class="n">discovered</span> <span class="n">topics</span> <span class="ow">and</span> <span class="n">their</span> <span class="n">top</span> <span class="n">words</span> <span class="n">using</span> <span class="err">`</span><span class="n">get_keys</span><span class="p">()</span><span class="err">`</span><span class="o">.</span> <span class="n">This</span> <span class="n">method</span> <span class="n">takes</span> <span class="n">the</span> <span class="n">following</span> <span class="n">parameters</span><span class="p">:</span>
+</span><span id="__span-12-40"><a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a>
+</span><span id="__span-12-41"><a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a><span class="o">-</span> <span class="err">`</span><span class="n">num_topics</span><span class="err">`</span><span class="p">:</span> <span class="n">The</span> <span class="n">number</span> <span class="n">of</span> <span class="n">topics</span> <span class="n">to</span> <span class="n">get</span> <span class="n">keys</span> <span class="k">for</span><span class="o">.</span> <span class="n">If</span> <span class="err">`</span><span class="kc">None</span><span class="err">`</span><span class="p">,</span> <span class="n">get</span> <span class="n">keys</span> <span class="k">for</span> <span class="nb">all</span> <span class="n">topics</span><span class="o">.</span>
+</span><span id="__span-12-42"><a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a><span class="o">-</span> <span class="err">`</span><span class="n">topics</span><span class="err">`</span><span class="p">:</span> <span class="n">A</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">topic</span> <span class="n">indices</span> <span class="n">to</span> <span class="n">get</span> <span class="n">keys</span> <span class="k">for</span><span class="o">.</span> <span class="n">If</span> <span class="err">`</span><span class="kc">None</span><span class="err">`</span><span class="p">,</span> <span class="n">get</span> <span class="n">keys</span> <span class="k">for</span> <span class="nb">all</span> <span class="n">topics</span><span class="o">.</span>
+</span><span id="__span-12-43"><a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a><span class="o">-</span> <span class="err">`</span><span class="n">num_keys</span><span class="err">`</span><span class="p">:</span> <span class="n">The</span> <span class="n">number</span> <span class="n">of</span> <span class="n">key</span> <span class="n">terms</span> <span class="n">to</span> <span class="n">output</span> <span class="k">for</span> <span class="n">each</span> <span class="n">topic</span><span class="o">.</span>
+</span><span id="__span-12-44"><a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a><span class="o">-</span> <span class="err">`</span><span class="n">as_df</span><span class="err">`</span><span class="p">:</span> <span class="n">Whether</span> <span class="n">to</span> <span class="k">return</span> <span class="n">the</span> <span class="n">result</span> <span class="k">as</span> <span class="n">a</span> <span class="n">pandas</span> <span class="n">DataFrame</span> <span class="n">instead</span> <span class="n">of</span> <span class="n">a</span> <span class="n">string</span><span class="o">.</span> <span class="n">The</span> <span class="n">default</span> <span class="ow">is</span> <span class="err">`</span><span class="kc">True</span><span class="err">`</span><span class="o">.</span>
+</span><span id="__span-12-45"><a id="__codelineno-12-45" name="__codelineno-12-45" href="#__codelineno-12-45"></a>
+</span><span id="__span-12-46"><a id="__codelineno-12-46" name="__codelineno-12-46" href="#__codelineno-12-46"></a><span class="err">```</span><span class="n">python</span>
+</span><span id="__span-12-47"><a id="__codelineno-12-47" name="__codelineno-12-47" href="#__codelineno-12-47"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">get_keys</span><span class="p">(</span><span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span></code></pre></div>
 <p><img alt="Topic Keys table" src="../images/topic_keys.png" title="Topic Keys table" /></p>
 <hr />
@@ -5895,7 +5992,7 @@ mallet_model.set_metadata("topic_labels", custom_labels)</p>
 <li><code>metadata</code>: A Dataframe with the metadata in the same order as the training data. This can include information such as document labels.</li>
 <li><code>as_str</code>: Whether to return the result as a string instead of a pandas DataFrame. The default is <code>False</code>.</li>
 </ul>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">get_top_docs</span><span class="p">(</span><span class="n">topic</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">get_top_docs</span><span class="p">(</span><span class="n">topic</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </span></code></pre></div>
 <p><img alt="Top documents table" src="../images/top_doc_topics.png" title="Top documents table" /></p>
 <hr />
@@ -5906,7 +6003,7 @@ mallet_model.set_metadata("topic_labels", custom_labels)</p>
 <li><code>n</code>: The number of key terms to display.</li>
 <li><code>as_df</code>: Whether to return the result as a string instead of a pandas DataFrame. The default is <code>False</code>.</li>
 </ul>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">get_topic_term_probabilities</span><span class="p">(</span><span class="n">topics</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">get_topic_term_probabilities</span><span class="p">(</span><span class="n">topics</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span></code></pre></div>
 <p><img alt="Topic-Term Probabilities table" src="../images/topic_term_probabilities.png" title="Topic-Term Probabilities table" /></p>
 <hr />
@@ -5924,26 +6021,26 @@ mallet_model.set_metadata("topic_labels", custom_labels)</p>
 <li><code>output_path</code>: Optional path for saving the figure.</li>
 <li><code>rc_params</code>: Optional matplotlib style overrides passed to <code>textacy</code>.</li>
 </ul>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">ax</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_termite</span><span class="p">(</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="n">topics</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="n">highlight_topics</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="n">n_terms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">sort_terms_by</span><span class="o">=</span><span class="s2">&quot;seriation&quot;</span><span class="p">,</span>
-</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;termite_plot.png&quot;</span>
-</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">ax</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_termite</span><span class="p">(</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">topics</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="n">highlight_topics</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">n_terms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    <span class="n">sort_terms_by</span><span class="o">=</span><span class="s2">&quot;seriation&quot;</span><span class="p">,</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;termite_plot.png&quot;</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="p">)</span>
 </span></code></pre></div>
 <p><img alt="Termite plot of topics 0-3" src="../images/termite_plot.png" title="Termite plot of topics 0-3" /></p>
 <p>If <code>output_path</code> is omitted, the method returns the matplotlib axis so you can customize or display the figure in your notebook environment.</p>
 <p>You can also use the <code>plot_termite_plotly</code> method to generate an interactive version. The Plotly version allows you to adjust the scaling of the circles with <code>marker_scale</code>. You can use this to minimize differences in appearance between the Plotly and the non-Plotly outputs.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">fig</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_termite_plotly</span><span class="p">(</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="n">topics</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="n">highlight_topics</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="n">n_terms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="n">rank_terms_by</span><span class="o">=</span><span class="s2">&quot;max&quot;</span><span class="p">,</span>
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    <span class="n">sort_terms_by</span><span class="o">=</span><span class="s2">&quot;seriation&quot;</span><span class="p">,</span>
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    <span class="n">marker_scale</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="c1"># The default setting is 25, which can make the circles appear too large in some cases. Adjust as needed.</span>
-</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="p">)</span>
-</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">fig</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_termite_plotly</span><span class="p">(</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="n">topics</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="n">highlight_topics</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="n">n_terms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>    <span class="n">rank_terms_by</span><span class="o">=</span><span class="s2">&quot;max&quot;</span><span class="p">,</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="n">sort_terms_by</span><span class="o">=</span><span class="s2">&quot;seriation&quot;</span><span class="p">,</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    <span class="n">marker_scale</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="c1"># The default setting is 25, which can make the circles appear too large in some cases. Adjust as needed.</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="p">)</span>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></code></pre></div>
 <p>The <code>output_path</code> parameter saves to an HTML file.</p>
 <iframe src="images/termite_plot.html" width="100%" height="600px" style="border: none;"></iframe>
@@ -5973,8 +6070,8 @@ mallet_model.set_metadata("topic_labels", custom_labels)</p>
 <li>Use <code>'none'</code> if you only want to see the boxplot summary and not individual data points (useful for large datasets).</li>
 </ul>
 <p>The cell below will run a basic example.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;Concepts&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;Battles&quot;</span><span class="p">,</span> <span class="s2">&quot;Texts&quot;</span><span class="p">,</span> <span class="s2">&quot;Texts&quot;</span><span class="p">,</span> <span class="s2">&quot;Animals&quot;</span><span class="p">,</span> <span class="s2">&quot;Planets&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">]</span>
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_categories_by_topic_boxplots</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;Concepts&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;Battles&quot;</span><span class="p">,</span> <span class="s2">&quot;Texts&quot;</span><span class="p">,</span> <span class="s2">&quot;Texts&quot;</span><span class="p">,</span> <span class="s2">&quot;Animals&quot;</span><span class="p">,</span> <span class="s2">&quot;Planets&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">]</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_categories_by_topic_boxplots</span><span class="p">(</span><span class="n">categories</span><span class="p">)</span>
 </span></code></pre></div>
 <p><img alt="Box plot of Topic 1" src="../images/topic-10-boxplot.png" title="Box plot of Topic 1" /></p>
 <hr />
@@ -5991,16 +6088,16 @@ mallet_model.set_metadata("topic_labels", custom_labels)</p>
 <li><code>show</code>: Whether to display the plot (<code>True</code>) or just return the figure object (<code>False</code>).</li>
 <li><code>title</code>: Custom title for the plot. If not provided, a default is used.</li>
 </ul>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;Concepts&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;Battles&quot;</span><span class="p">,</span> <span class="s2">&quot;Texts&quot;</span><span class="p">,</span> <span class="s2">&quot;Texts&quot;</span><span class="p">,</span> <span class="s2">&quot;Animals&quot;</span><span class="p">,</span> <span class="s2">&quot;Planets&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">]</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_categories_by_topics_heatmap</span><span class="p">(</span>
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="n">categories</span><span class="o">=</span><span class="n">categories</span><span class="p">,</span>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="n">num_keys</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
-</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="n">font_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
-</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Topic-Category Heatmap&quot;</span>
-</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;Concepts&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;Battles&quot;</span><span class="p">,</span> <span class="s2">&quot;Texts&quot;</span><span class="p">,</span> <span class="s2">&quot;Texts&quot;</span><span class="p">,</span> <span class="s2">&quot;Animals&quot;</span><span class="p">,</span> <span class="s2">&quot;Planets&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">,</span> <span class="s2">&quot;People&quot;</span><span class="p">]</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_categories_by_topics_heatmap</span><span class="p">(</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="n">categories</span><span class="o">=</span><span class="n">categories</span><span class="p">,</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>    <span class="n">num_keys</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>    <span class="n">font_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Topic-Category Heatmap&quot;</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="p">)</span>
 </span></code></pre></div>
 <p><img alt="Heatmap showing topics by category" src="../images/topic-heatmap.png" title="Heatmap showing topics by category" /></p>
 <div class="admonition note">
@@ -6026,7 +6123,7 @@ mallet_model.set_metadata("topic_labels", custom_labels)</p>
 <li>Pass <code>opts</code> in <code>**kwargs</code> to control word cloud appearance (e.g., background color, colormap). Accepts arguments for the Python <a href="https://amueller.github.io/word_cloud/generated/wordcloud.WordCloud.html#wordcloud.WordCloud" target="_blank">wordcloud</a> package.</li>
 <li>Pass <code>figure_opts</code> in <code>**kwargs</code> to control figure-level options using <code>matplotlib</code> (e.g., facecolor).</li>
 </ul>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">topic_clouds</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">topic_clouds</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span></code></pre></div>
 <p><img alt="Topic clouds" src="../images/topic-word-clouds.png" title="Topic clouds" /></p>
 <h2 id="visualizing-topic-trends-over-time">Visualizing Topic Trends Over Time<a class="headerlink" href="#visualizing-topic-trends-over-time" title="Permanent link">¤</a></h2>
@@ -6048,8 +6145,8 @@ mallet_model.set_metadata("topic_labels", custom_labels)</p>
 <ul>
 <li>The <code>times</code> list must be the same length and order as the documents in the training data.</li>
 </ul>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">2002</span><span class="p">,</span> <span class="mi">2003</span><span class="p">,</span> <span class="mi">2004</span><span class="p">,</span> <span class="mi">2005</span><span class="p">,</span> <span class="mi">2006</span><span class="p">,</span> <span class="mi">2007</span><span class="p">,</span> <span class="mi">2008</span><span class="p">,</span> <span class="mi">2009</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2011</span><span class="p">,</span> <span class="mi">2012</span><span class="p">]</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_topics_over_time</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">topic_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2001</span><span class="p">,</span> <span class="mi">2002</span><span class="p">,</span> <span class="mi">2003</span><span class="p">,</span> <span class="mi">2004</span><span class="p">,</span> <span class="mi">2005</span><span class="p">,</span> <span class="mi">2006</span><span class="p">,</span> <span class="mi">2007</span><span class="p">,</span> <span class="mi">2008</span><span class="p">,</span> <span class="mi">2009</span><span class="p">,</span> <span class="mi">2010</span><span class="p">,</span> <span class="mi">2011</span><span class="p">,</span> <span class="mi">2012</span><span class="p">]</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_topics_over_time</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">topic_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span></code></pre></div>
 <p><img alt="Topics over time line chart" src="../images/topic-10-over-time.png" title="Topics over time line chart" /></p>
 <hr />
@@ -6063,75 +6160,75 @@ mallet_model.set_metadata("topic_labels", custom_labels)</p>
 <li>path_to_inferencer`: Path to the inferencer file created during training. This is used to infer topics for new documents.</li>
 </ul>
 <p>In the example below, we read three texts from the <code>additional_texts</code> folder and define our paths relative to out model directory.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Read the new documents for inference</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">additional_dir</span> <span class="o">=</span> <span class="s2">&quot;additional_texts&quot;</span>
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="n">additional_docs</span> <span class="o">=</span> <span class="n">read_dirs</span><span class="p">(</span><span class="n">additional_dir</span><span class="p">)</span>
-</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
-</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="c1"># Define paths to your pipe file, output path, and inferencer file</span>
-</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="n">pipe_file</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">model_dir</span> <span class="o">/</span> <span class="s2">&quot;training_data.mallet&quot;</span>
-</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="n">path_to_inferencer</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;path_to_inferencer&#39;</span><span class="p">]</span>
-</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="n">output_path</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">model_dir</span> <span class="o">/</span> <span class="s2">&quot;new_doc_topics.txt&quot;</span>
-</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>
-</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="c1"># Use the Mallet class&#39;s infer() method to get topic distributions</span>
-</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="n">inferred_topics</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">additional_docs</span><span class="p">,</span> <span class="n">path_to_inferencer</span><span class="o">=</span><span class="n">path_to_inferencer</span><span class="p">,</span> <span class="n">use_pipe_from</span><span class="o">=</span><span class="n">pipe_file</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">)</span>
-</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>
-</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="c1"># Display the inferred topic distributions (also saved to the output_path)</span>
-</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First Two Distributions:&quot;</span><span class="p">)</span>
-</span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dist</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inferred_topics</span><span class="p">[:</span><span class="mi">2</span><span class="p">]):</span>
-</span><span id="__span-19-16"><a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Document </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">dist</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># Read the new documents for inference</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">additional_dir</span> <span class="o">=</span> <span class="s2">&quot;additional_texts&quot;</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="n">additional_docs</span> <span class="o">=</span> <span class="n">read_dirs</span><span class="p">(</span><span class="n">additional_dir</span><span class="p">)</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="c1"># Define paths to your pipe file, output path, and inferencer file</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="n">pipe_file</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">model_dir</span> <span class="o">/</span> <span class="s2">&quot;training_data.mallet&quot;</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="n">path_to_inferencer</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;path_to_inferencer&#39;</span><span class="p">]</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="n">output_path</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">model_dir</span> <span class="o">/</span> <span class="s2">&quot;new_doc_topics.txt&quot;</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="c1"># Use the Mallet class&#39;s infer() method to get topic distributions</span>
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="n">inferred_topics</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">additional_docs</span><span class="p">,</span> <span class="n">path_to_inferencer</span><span class="o">=</span><span class="n">path_to_inferencer</span><span class="p">,</span> <span class="n">use_pipe_from</span><span class="o">=</span><span class="n">pipe_file</span><span class="p">,</span> <span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">)</span>
+</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>
+</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="c1"># Display the inferred topic distributions (also saved to the output_path)</span>
+</span><span id="__span-21-14"><a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First Two Distributions:&quot;</span><span class="p">)</span>
+</span><span id="__span-21-15"><a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dist</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inferred_topics</span><span class="p">[:</span><span class="mi">2</span><span class="p">]):</span>
+</span><span id="__span-21-16"><a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Document </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">dist</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <p>This will output</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>Rewriting extended pipe from mallet_model/training_data.mallet
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>  Instance ID = aa26dc31-29d3-42b1-b4a1-89a31b9cb449
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>First Two Distributions:
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>Document 0: [0.03701587759523014, 0.22562284679833042, 0.011659133624194816, 0.002089723344164718, 0.05482355134447515, 0.3132625834708346, 0.0011246840846130227, 0.00875726731924916, 0.005425182463279581, 0.0013473854522018753, 0.1560084238479422, 0.014117284325535412, 0.10390895731894548, 0.005292742634827119, 0.0019167923579688285, 0.04280442602096767, 0.0013246091759711973, 0.004029924652703965, 0.008940321094880905, 0.0005282830736837843]
-</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>
-</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>Document 1: [0.04276331790842658, 0.11287681572179306, 0.022736045794555307, 0.01648919393485762, 0.05502635415146537, 0.11588804624647527, 0.00856333391392494, 0.0890756981614076, 0.02915079847037649, 0.0010344730189665156, 0.18701993312212353, 0.012668273493168633, 0.012715348488343447, 0.041008989754911886, 0.011172857813115408, 0.15024808522457125, 0.006581476617065313, 0.00015573977570333965, 0.08273940381087777, 0.0020858145778706724]
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>Rewriting extended pipe from mallet_model/training_data.mallet
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>  Instance ID = aa26dc31-29d3-42b1-b4a1-89a31b9cb449
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>First Two Distributions:
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>Document 0: [0.03701587759523014, 0.22562284679833042, 0.011659133624194816, 0.002089723344164718, 0.05482355134447515, 0.3132625834708346, 0.0011246840846130227, 0.00875726731924916, 0.005425182463279581, 0.0013473854522018753, 0.1560084238479422, 0.014117284325535412, 0.10390895731894548, 0.005292742634827119, 0.0019167923579688285, 0.04280442602096767, 0.0013246091759711973, 0.004029924652703965, 0.008940321094880905, 0.0005282830736837843]
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>Document 1: [0.04276331790842658, 0.11287681572179306, 0.022736045794555307, 0.01648919393485762, 0.05502635415146537, 0.11588804624647527, 0.00856333391392494, 0.0890756981614076, 0.02915079847037649, 0.0010344730189665156, 0.18701993312212353, 0.012668273493168633, 0.012715348488343447, 0.041008989754911886, 0.011172857813115408, 0.15024808522457125, 0.006581476617065313, 0.00015573977570333965, 0.08273940381087777, 0.0020858145778706724]
 </span></code></pre></div>
 <p>Now combine the old and the new distributions. Since some of our visualization methods involve categories and times, we create categories and times lists that include our new documents.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># Combine training and new distributions</span>
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">all_distributions</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">distributions</span> <span class="o">+</span> <span class="n">inferred_topics</span>
-</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>
-</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="c1"># Create a combined categories list (must match the length and order of all_distributions)</span>
-</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="n">new_categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Brontë, Charlotte&quot;</span><span class="p">,</span> <span class="s2">&quot;Brontë, Charlotte&quot;</span><span class="p">,</span> <span class="s2">&quot;Richardson, Samuel&quot;</span><span class="p">]</span>
-</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="n">all_categories</span> <span class="o">=</span> <span class="n">categories</span> <span class="o">+</span> <span class="n">new_categories</span>
-</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>
-</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="c1"># Create a combined times list (must match the length and order of all_distributions)</span>
-</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="n">new_times</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1846</span><span class="p">,</span> <span class="mi">1853</span><span class="p">,</span> <span class="mi">1740</span><span class="p">]</span>
-</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="n">all_times</span> <span class="o">=</span> <span class="n">times</span> <span class="o">+</span> <span class="n">new_times</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># Combine training and new distributions</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">all_distributions</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">distributions</span> <span class="o">+</span> <span class="n">inferred_topics</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="c1"># Create a combined categories list (must match the length and order of all_distributions)</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="n">new_categories</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Brontë, Charlotte&quot;</span><span class="p">,</span> <span class="s2">&quot;Brontë, Charlotte&quot;</span><span class="p">,</span> <span class="s2">&quot;Richardson, Samuel&quot;</span><span class="p">]</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="n">all_categories</span> <span class="o">=</span> <span class="n">categories</span> <span class="o">+</span> <span class="n">new_categories</span>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="c1"># Create a combined times list (must match the length and order of all_distributions)</span>
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="n">new_times</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1846</span><span class="p">,</span> <span class="mi">1853</span><span class="p">,</span> <span class="mi">1740</span><span class="p">]</span>
+</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="n">all_times</span> <span class="o">=</span> <span class="n">times</span> <span class="o">+</span> <span class="n">new_times</span>
 </span></code></pre></div>
 <p>Now we can use any of the visualization methods. For instance, here are boxplots for the combined distributions:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_categories_by_topic_boxplots</span><span class="p">(</span>
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>    <span class="n">topics</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>    <span class="n">categories</span><span class="o">=</span><span class="n">all_categories</span><span class="p">,</span>
-</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>    <span class="n">topic_distributions</span><span class="o">=</span><span class="n">all_distributions</span><span class="p">,</span>  <span class="c1"># Pass the combined distributions</span>
-</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>    <span class="n">show</span><span class="o">=</span><span class="kc">True</span>
-</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_categories_by_topic_boxplots</span><span class="p">(</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>    <span class="n">topics</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>    <span class="n">categories</span><span class="o">=</span><span class="n">all_categories</span><span class="p">,</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>    <span class="n">topic_distributions</span><span class="o">=</span><span class="n">all_distributions</span><span class="p">,</span>  <span class="c1"># Pass the combined distributions</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>    <span class="n">show</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="p">)</span>
 </span></code></pre></div>
 <p><img alt="Box plot of Topic 3 with combined distributions" src="../images/topic-10-boxplot-combined.png" title="Box plot of Topic 3 with combined distributions" /></p>
 <p>The code below will produce heatmap and topic over time visualizations.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_categories_by_topics_heatmap</span><span class="p">(</span>
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    <span class="n">all_categories</span><span class="p">,</span>
-</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>    <span class="n">topic_distributions</span><span class="o">=</span><span class="n">all_distributions</span><span class="p">,</span>
-</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>    <span class="n">num_keys</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
-</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>    <span class="n">font_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
-</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Topic-Category Heatmap (Combined Distributions)&quot;</span>
-</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_categories_by_topics_heatmap</span><span class="p">(</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>    <span class="n">all_categories</span><span class="p">,</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>    <span class="n">topic_distributions</span><span class="o">=</span><span class="n">all_distributions</span><span class="p">,</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>    <span class="n">num_keys</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>    <span class="n">font_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>    <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Topic-Category Heatmap (Combined Distributions)&quot;</span>
+</span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="p">)</span>
 </span></code></pre></div>
 <p><img alt="Heatmap with combined distributions" src="../images/topic-heatmap-combined.png" title="Heatmap with combined distributions" /></p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1846</span><span class="p">,</span> <span class="mi">1853</span><span class="p">,</span> <span class="mi">1740</span><span class="p">]</span>
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_topics_over_time</span><span class="p">(</span>
-</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>    <span class="n">times</span><span class="o">=</span><span class="n">all_times</span><span class="p">,</span>
-</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>    <span class="n">topic_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>    <span class="n">topic_distributions</span><span class="o">=</span><span class="n">all_distributions</span><span class="p">,</span>
-</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Topic 0 Trend (Combined Distributions)&quot;</span><span class="p">,</span>
-</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
-</span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
-</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>    <span class="n">show</span><span class="o">=</span><span class="kc">True</span>
-</span><span id="__span-24-10"><a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">times</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1846</span><span class="p">,</span> <span class="mi">1853</span><span class="p">,</span> <span class="mi">1740</span><span class="p">]</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">plot_topics_over_time</span><span class="p">(</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>    <span class="n">times</span><span class="o">=</span><span class="n">all_times</span><span class="p">,</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>    <span class="n">topic_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>    <span class="n">topic_distributions</span><span class="o">=</span><span class="n">all_distributions</span><span class="p">,</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Topic 0 Trend (Combined Distributions)&quot;</span><span class="p">,</span>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+</span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>    <span class="n">show</span><span class="o">=</span><span class="kc">True</span>
+</span><span id="__span-26-10"><a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="p">)</span>
 </span></code></pre></div>
 <p><img alt="Heatmap and topics over time line graph with combined distributions" src="../images/topic0-over-time-combined.png" title="Topic 0 over time line graph with combined distributions" /></p>
 <hr />
@@ -6143,11 +6240,11 @@ mallet_model.set_metadata("topic_labels", custom_labels)</p>
 </div>
 <p>First, configure the <code>TopicLabelerConfig</code>. You must provide either an <code>api_key</code> (for cloud providers) or a <code>base_url</code> (for local providers). Attempting to create a configuration without one of these will raise a validation error.</p>
 <p>By default, the prompt sent to the LLM is as follows:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>Analyze the following high-frequency words from a topic model cluster:
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>Words: [the list of words in the topic]
-</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>Contextual context snippet: [an optional text snippet supplied with the `documents_snippet` parameter]
-</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>Provide 1 concise, clear title/label (3-5 words max) summarizing this topic.
-</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>Return ONLY the plain text label without any preamble or quotes.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>Analyze the following high-frequency words from a topic model cluster:
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>Words: [the list of words in the topic]
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>Contextual context snippet: [an optional text snippet supplied with the `documents_snippet` parameter]
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>Provide 1 concise, clear title/label (3-5 words max) summarizing this topic.
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>Return ONLY the plain text label without any preamble or quotes.
 </span></code></pre></div>
 <p>You can send a custom prompt to the LLM by providing a string to the <code>prompt</code> parameter. The list of words in each topic will be appended to your prompt. You can also provide an optional snippet of text from your documents with the <code>documents_snippet</code> parameter, which will be included in the prompt to provide context for the LLM. This is especially useful if your topics are highly abstract or if you want to provide additional context for the LLM to consider when generating labels.</p>
 <p>You can further modify the labelling process with the following parameters:</p>
@@ -6160,46 +6257,46 @@ mallet_model.set_metadata("topic_labels", custom_labels)</p>
 </ul>
 <p>Depending upon which LLM you choose, you may have to play around with the settings a lot to obtain clean and consistent feedback -- especially when using a local model -- in a reasonable amount of time.</p>
 <p>Here is an example of how to use the LLM labeler with a local model.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.topic_modeling.mallet.llm_labeler</span><span class="w"> </span><span class="kn">import</span> <span class="n">TopicLabelerConfig</span><span class="p">,</span> <span class="n">label_mallet_topics</span>
-</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>
-</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="n">sample_prompt</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>    <span class="sa">f</span><span class="s2">&quot;Analyze the high-frequency words from an LDA topic model cluster in the list below:</span><span class="se">\n</span><span class="s2">&quot;</span>
-</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>    <span class="sa">f</span><span class="s2">&quot;Provide 1 concise, clear label (3-5 words max) summarizing this topic. &quot;</span>
-</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>    <span class="sa">f</span><span class="s2">&quot;Return ONLY the plain text label without any preamble or quotes.&quot;</span>
-</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="p">)</span>
-</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>
-</span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="c1"># Configure the labeler for a local model</span>
-</span><span id="__span-26-10"><a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="n">config</span> <span class="o">=</span> <span class="n">TopicLabelerConfig</span><span class="p">(</span>
-</span><span id="__span-26-11"><a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a>    <span class="n">provider</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">,</span> <span class="c1"># Should be local for local models</span>
-</span><span id="__span-26-12"><a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a>    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;llama-3.2-1b-instruct&quot;</span><span class="p">,</span>
-</span><span id="__span-26-13"><a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a>    <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;http://172.17.160.1:1234/v1/chat/completions&quot;</span><span class="p">,</span> <span class="c1"># Required for local models</span>
-</span><span id="__span-26-14"><a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a>    <span class="n">max_tokens</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
-</span><span id="__span-26-15"><a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a>    <span class="n">temperature</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span>
-</span><span id="__span-26-16"><a id="__codelineno-26-16" name="__codelineno-26-16" href="#__codelineno-26-16"></a>    <span class="n">prompt</span><span class="o">=</span><span class="n">sample_prompt</span>
-</span><span id="__span-26-17"><a id="__codelineno-26-17" name="__codelineno-26-17" href="#__codelineno-26-17"></a><span class="p">)</span>
-</span><span id="__span-26-18"><a id="__codelineno-26-18" name="__codelineno-26-18" href="#__codelineno-26-18"></a>
-</span><span id="__span-26-19"><a id="__codelineno-26-19" name="__codelineno-26-19" href="#__codelineno-26-19"></a><span class="c1"># Specify the path to the topic keys file generated by your trained Mallet model</span>
-</span><span id="__span-26-20"><a id="__codelineno-26-20" name="__codelineno-26-20" href="#__codelineno-26-20"></a><span class="n">topic_keys_path</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;path_to_topic_keys&quot;</span><span class="p">]</span>
-</span><span id="__span-26-21"><a id="__codelineno-26-21" name="__codelineno-26-21" href="#__codelineno-26-21"></a>
-</span><span id="__span-26-22"><a id="__codelineno-26-22" name="__codelineno-26-22" href="#__codelineno-26-22"></a><span class="c1"># Specify topic numbers to label or None for all topics</span>
-</span><span id="__span-26-23"><a id="__codelineno-26-23" name="__codelineno-26-23" href="#__codelineno-26-23"></a><span class="n">topic_nums</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># Or use a zero-indexed list like [0, 1]</span>
-</span><span id="__span-26-24"><a id="__codelineno-26-24" name="__codelineno-26-24" href="#__codelineno-26-24"></a>
-</span><span id="__span-26-25"><a id="__codelineno-26-25" name="__codelineno-26-25" href="#__codelineno-26-25"></a><span class="c1"># Generate the topic labels mapping from your trained Mallet model using the LLM labeler</span>
-</span><span id="__span-26-26"><a id="__codelineno-26-26" name="__codelineno-26-26" href="#__codelineno-26-26"></a><span class="n">topic_labels</span> <span class="o">=</span> <span class="n">label_mallet_topics</span><span class="p">(</span><span class="n">topic_keys_path</span><span class="o">=</span><span class="n">topic_keys_path</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">topic_nums</span><span class="o">=</span><span class="n">topic_nums</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.topic_modeling.mallet.llm_labeler</span><span class="w"> </span><span class="kn">import</span> <span class="n">TopicLabelerConfig</span><span class="p">,</span> <span class="n">label_mallet_topics</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="n">sample_prompt</span> <span class="o">=</span> <span class="p">(</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>    <span class="sa">f</span><span class="s2">&quot;Analyze the high-frequency words from an LDA topic model cluster in the list below:</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>    <span class="sa">f</span><span class="s2">&quot;Provide 1 concise, clear label (3-5 words max) summarizing this topic. &quot;</span>
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>    <span class="sa">f</span><span class="s2">&quot;Return ONLY the plain text label without any preamble or quotes.&quot;</span>
+</span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a><span class="p">)</span>
+</span><span id="__span-28-8"><a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>
+</span><span id="__span-28-9"><a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="c1"># Configure the labeler for a local model</span>
+</span><span id="__span-28-10"><a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="n">config</span> <span class="o">=</span> <span class="n">TopicLabelerConfig</span><span class="p">(</span>
+</span><span id="__span-28-11"><a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a>    <span class="n">provider</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">,</span> <span class="c1"># Should be local for local models</span>
+</span><span id="__span-28-12"><a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a>    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;llama-3.2-1b-instruct&quot;</span><span class="p">,</span>
+</span><span id="__span-28-13"><a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a>    <span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;http://172.17.160.1:1234/v1/chat/completions&quot;</span><span class="p">,</span> <span class="c1"># Required for local models</span>
+</span><span id="__span-28-14"><a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a>    <span class="n">max_tokens</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+</span><span id="__span-28-15"><a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a>    <span class="n">temperature</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span>
+</span><span id="__span-28-16"><a id="__codelineno-28-16" name="__codelineno-28-16" href="#__codelineno-28-16"></a>    <span class="n">prompt</span><span class="o">=</span><span class="n">sample_prompt</span>
+</span><span id="__span-28-17"><a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a><span class="p">)</span>
+</span><span id="__span-28-18"><a id="__codelineno-28-18" name="__codelineno-28-18" href="#__codelineno-28-18"></a>
+</span><span id="__span-28-19"><a id="__codelineno-28-19" name="__codelineno-28-19" href="#__codelineno-28-19"></a><span class="c1"># Specify the path to the topic keys file generated by your trained Mallet model</span>
+</span><span id="__span-28-20"><a id="__codelineno-28-20" name="__codelineno-28-20" href="#__codelineno-28-20"></a><span class="n">topic_keys_path</span> <span class="o">=</span> <span class="n">mallet_model</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;path_to_topic_keys&quot;</span><span class="p">]</span>
+</span><span id="__span-28-21"><a id="__codelineno-28-21" name="__codelineno-28-21" href="#__codelineno-28-21"></a>
+</span><span id="__span-28-22"><a id="__codelineno-28-22" name="__codelineno-28-22" href="#__codelineno-28-22"></a><span class="c1"># Specify topic numbers to label or None for all topics</span>
+</span><span id="__span-28-23"><a id="__codelineno-28-23" name="__codelineno-28-23" href="#__codelineno-28-23"></a><span class="n">topic_nums</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># Or use a zero-indexed list like [0, 1]</span>
+</span><span id="__span-28-24"><a id="__codelineno-28-24" name="__codelineno-28-24" href="#__codelineno-28-24"></a>
+</span><span id="__span-28-25"><a id="__codelineno-28-25" name="__codelineno-28-25" href="#__codelineno-28-25"></a><span class="c1"># Generate the topic labels mapping from your trained Mallet model using the LLM labeler</span>
+</span><span id="__span-28-26"><a id="__codelineno-28-26" name="__codelineno-28-26" href="#__codelineno-28-26"></a><span class="n">topic_labels</span> <span class="o">=</span> <span class="n">label_mallet_topics</span><span class="p">(</span><span class="n">topic_keys_path</span><span class="o">=</span><span class="n">topic_keys_path</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">topic_nums</span><span class="o">=</span><span class="n">topic_nums</span><span class="p">)</span>
 </span></code></pre></div>
 <p>The output is a dictionary mapping topic indices to the generated labels. You can inspect the labels and modify them as needed.</p>
 <p>With a cloud-based model, use a configuration like the one below:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">config</span> <span class="o">=</span> <span class="n">TopicLabelerConfig</span><span class="p">(</span>
-</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>    <span class="n">provider</span><span class="o">=</span><span class="s2">&quot;gemini&quot;</span><span class="p">,</span>
-</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gemini-3.6-flash&quot;</span><span class="p">,</span>
-</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;your_api_key&quot;</span><span class="p">,</span> <span class="c1"># Required for cloud providers</span>
-</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>    <span class="n">max_tokens</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
-</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>    <span class="n">temperature</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
-</span><span id="__span-27-7"><a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="n">config</span> <span class="o">=</span> <span class="n">TopicLabelerConfig</span><span class="p">(</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>    <span class="n">provider</span><span class="o">=</span><span class="s2">&quot;gemini&quot;</span><span class="p">,</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gemini-3.6-flash&quot;</span><span class="p">,</span>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>    <span class="n">api_key</span><span class="o">=</span><span class="s2">&quot;your_api_key&quot;</span><span class="p">,</span> <span class="c1"># Required for cloud providers</span>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>    <span class="n">max_tokens</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>    <span class="n">temperature</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="p">)</span>
 </span></code></pre></div>
 <p>Change any labels you want Once you are satisfied with the labels, you can commit them to your topic model instance by adding them to the metadata "topic_labels" key.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1"># Add the labels to the model&#39;s metadata</span>
-</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;topic_labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">topic_labels</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># Add the labels to the model&#39;s metadata</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="n">mallet_model</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;topic_labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">topic_labels</span>
 </span></code></pre></div>
 
 
@@ -6221,7 +6318,7 @@ mallet_model.set_metadata("topic_labels", custom_labels)</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 10, 2026 18:24:51 UTC">August 10, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 10, 2026 19:29:44 UTC">September 10, 2026</span>
   </span>
 
     
