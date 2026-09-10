@@ -413,17 +413,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#downloading-language-models" class="md-nav__link">
+  <a href="#download-language-models" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Downloading Language Models
+        Download Language Models
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="Download Language Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#downloading-language-models-using-python" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -431,6 +432,11 @@
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -4699,6 +4705,8 @@
       
         
       
+        
+      
     
     
     
@@ -4763,6 +4771,34 @@
     
   
     mallet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/topic_modeling/llm_labeler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    llm_labeler
   
 
     
@@ -5712,17 +5748,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#downloading-language-models" class="md-nav__link">
+  <a href="#download-language-models" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Downloading Language Models
+        Download Language Models
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="Download Language Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#downloading-language-models-using-python" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -5730,6 +5767,11 @@
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -5863,21 +5905,27 @@
 <p>By default, <code>uv</code> installs the latest version of Lexos. To update to the latest version with <code>pip</code>, use</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>lexos
 </span></code></pre></div>
-<h2 id="downloading-language-models">Downloading Language Models<a class="headerlink" href="#downloading-language-models" title="Permanent link">¤</a></h2>
-<p>Many features of Lexos use language models created for the Python <a href="https://spacy.io/" target="_blank"><code>spaCy</code></a> natural language processing library. It is good practice to download spaCy's multi-language model <a href="https://spacy.io/models/xx#xx_sent_ud_sm" target="_blank"><code>xx_sent_ud_sm</code></a> and, if possible, a small model for your chosen language (e.g. <a href="https://spacy.io/models/en#en_core_web_sm" target="_blank"><code>en_core_web_sm</code></a>). To do this, run the following additional command:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>download_spacy_models.py<span class="w"> </span>xx_sent_ud_sm<span class="w"> </span>en_core_web_sm
+<h2 id="download-language-models">Download Language Models<a class="headerlink" href="#download-language-models" title="Permanent link">¤</a></h2>
+<p>Many features of Lexos use language models created for the Python <a href="https://spacy.io/" target="_blank"><code>spaCy</code></a> natural language processing library.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For information on how Lexos uses language models, see <a href="../user_guide/tokenizing_texts/">Tokenizing Texts</a>.</p>
+</div>
+<p>To ensure all features work correctly, it is recommended to download spaCy's multi-language model <a href="https://spacy.io/models/xx#xx_sent_ud_sm" target="_blank"><code>xx_sent_ud_sm</code></a> and, if possible, a small model for your chosen language (e.g. <a href="https://spacy.io/models/en#en_core_web_sm" target="_blank"><code>en_core_web_sm</code></a>) <em>before</em> using Lexos. If you try to use a Lexos module that requires a language model without performing this step, Lexos will attempt to download <code>xx_sent_ud_sm</code> model automatically.</p>
+<p>To download the language models in advance, run the following additional command:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>uv<span class="w"> </span>run<span class="w"> </span>download-spacy-models<span class="w"> </span>xx_sent_ud_sm<span class="w"> </span>en_core_web_sm
 </span></code></pre></div>
 <p>or</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python<span class="w"> </span>download_spacy_models.py<span class="w"> </span>xx_sent_ud_sm<span class="w"> </span>en_core_web_sm
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>python<span class="w"> </span>download-spacy-models<span class="w"> </span>xx_sent_ud_sm<span class="w"> </span>en_core_web_sm
 </span></code></pre></div>
 <p>You can download as many models as you want by separating their names with spaces.</p>
 <p>The <code>xx_sent_ud_sm</code> model is a minimal model that can be used for sentence and token segmentation in a variety of languages, while the <code>en_core_web_sm</code> model is specifically for English text. If you are working in another language or need a larger language, you may need to download additional language models. You can find information on available models on the <a href="https://spacy.io/models" target="_blank"><code>spaCy</code> models</a> page.</p>
-<p>It is recommended to download the language models before using Lexos to ensure all features work correctly. If you try to use a Lexos module that requires a language model without performing this step, Lexos will attempt to download the default <code>xx_sent_ud_sm</code> model. For information on how Lexos uses language models, see <a href="../user_guide/tokenizing_texts/">Tokenizing Texts</a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The native spaCy download command <code>uv run python -m spacy download xx_sent_ud_sm</code> or <code>python -m spacy download xx_sent_ud_sm</code> should also work.</p>
+<p>There are a number of alternative ways to install spaCy models from the command line. For instance, you can run the download command as a Python module: <code>python -m lexos.download_spacy_models xx_sent_ud_sm</code> or <code>uv run python -m lexos.download_spacy_models xx_sent_ud_sm</code>.</p>
+<p>The native spaCy download command should also work:  <code>uv run python -m spacy download xx_sent_ud_sm</code> or <code>python -m spacy download xx_sent_ud_sm</code>.</p>
 </div>
-<h2 id="downloading-language-models-using-python">Downloading Language Models Using Python<a class="headerlink" href="#downloading-language-models-using-python" title="Permanent link">¤</a></h2>
+<h3 id="downloading-language-models-using-python">Downloading Language Models Using Python<a class="headerlink" href="#downloading-language-models-using-python" title="Permanent link">¤</a></h3>
 <p>If you are working in Python, Lexos has a helper function to download models programmatically. You can use the <code>lexos.download_spacy_model</code> function to download any spaCy model. For instance, to download the small Chinese model <code>zh_core_web_sm</code>, you can use the following code:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">download_spacy_model</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
@@ -5955,7 +6003,7 @@ Update your package manager:</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 9, 2026 22:14:01 UTC">September 9, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 10, 2026 19:29:44 UTC">September 10, 2026</span>
   </span>
 
     
