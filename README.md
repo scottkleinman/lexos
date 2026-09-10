@@ -1,6 +1,6 @@
 # The Lexos Python Library
 
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/scottkleinman/lexos?sort=semver)
+![v0.2.1](https://img.shields.io/badge/version-v0.2.1-blue)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-31212/)
 [![Python wheels](https://img.shields.io/badge/wheels-%E2%9C%93-4c1.svg?longCache=true&style=flat-square&logo=python&logoColor=white)](https://github.com/scottkleinman/lexos/releases)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg?style=flat-square)](https://github.com/ambv/ruff)
@@ -25,6 +25,11 @@ A full discussion of the use of the API can be found on the website [Documentati
 - Generates topic models and topic model visualizations using [MALLET](https://github.com/mimno/Mallet) and [DFR Browser 2](https://github.com/scottkleinman/dfr-browser2).
 
 And more!
+
+### What's New in v0.2.1
+
+- Smoother spaCy model installation process.
+- A refactored `mallet` module now provides access to both Java and a [`pyrmallet`](https://github.com/mimno/RustMallet/tree/main/pyrmallet) backends. This allows users to install the Rust version of MALLET with `pip install pyrmallet`, rather than the more complicated procedure of installing downloading and installing MALLET and JDK.
 
 ### What's New in v0.2.0
 
@@ -61,13 +66,13 @@ uv add lexos
 Some Lexos functions use [spaCy](https://spacy.io/) language models to obtain language-specific information about texts. To download spaCy models, run the following command:
 
 ```bash
-python download_spacy_models.py xx_sent_ud_sm en_core_web_sm
+lexos-download-spacy-models xx_sent_ud_sm en_core_web_sm
 ```
 
 or
 
 ```bash
-uv run python download_spacy_models.py xx_sent_ud_sm en_core_web_sm
+uv run lexos-download-spacy-models xx_sent_ud_sm en_core_web_sm
 ```
 
 You can install multiple models by separating their names with spaces. If you do not run this command, Lexos will install the default `xx_sent_ud_sm` model the first time you attempt to use a feature that requires a spaCy language model.
@@ -106,4 +111,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📝 Citation Information
 
-Kleinman, S., (2026). Lexos. v0.2.0 https://github.com/scottkleinman/lexos. [10.5281/zenodo.18112379](https://doi.org/10.5281/zenodo.18112379).
+Kleinman, S., (2026). Lexos. v0.2.1 https://github.com/scottkleinman/lexos. [10.5281/zenodo.18112379](https://doi.org/10.5281/zenodo.18112379).
