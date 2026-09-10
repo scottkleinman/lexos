@@ -1,6 +1,6 @@
 [project]
 name = "lexos"
-version = "0.2.0"
+version = "0.2.1"
 description = "A Python library that reproduces and extends text analysis tools from the Lexos web app. Designed for entry-level students and researchers in the Humanities, with language-agnostic support for historical and under-resourced languages."
 readme = "README.md"
 license = "MIT"
@@ -58,6 +58,9 @@ gpu = [
 transformers = [
     "spacy-transformers>=1.3.5,<1.4.0",
 ]
+
+[project.scripts]
+download-spacy-models = "lexos.download_spacy_models:main"
 
 [build-system]
 requires = ["hatchling"]
