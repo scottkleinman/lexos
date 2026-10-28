@@ -1,7 +1,7 @@
 """loader.py.
 
-Last Update: August 9, 2026
-Last Tested: August 9, 2026
+Last Update: October 28, 2026
+Last Tested: October 28, 2026
 """
 
 import mimetypes
@@ -64,7 +64,25 @@ class Loader(BaseLoader):
         """
         if Path(path).suffix == ".pickle":
             return "application/vnd.python.pickle"
-        results = puremagic.magic_string(file_start, path)
+
+        if not file_start:
+            mime_type = None
+            guessed, _ = mimetypes.guess_type(path)
+            mime_type = guessed
+
+            if mime_type == "application/octet-stream":
+                mime_type = None
+
+            if not mime_type and Path(path).suffix.lower() in PLAIN_TEXT_EXTENSIONS:
+                mime_type = "text/plain"
+
+            return mime_type
+
+        try:
+            results = puremagic.magic_string(file_start, path)
+        except puremagic.main.PureValueError:
+            results = []
+
         if not results:
             mime_type = None
         else:
@@ -146,6 +164,10 @@ class Loader(BaseLoader):
         with open(path, "rb") as fin:
             with zipfile.ZipFile(fin) as zip:
                 for info in zip.infolist():
+                    is_dir = getattr(info, "is_dir", None)
+                    if callable(is_dir) and is_dir() is True:
+                        continue
+
                     safe_filename = _sanitize_zip_filename(info.filename)
                     try:
                         # Get the mime type of the file

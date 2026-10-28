@@ -1,7 +1,7 @@
 """parallel_loader.py.
 
-Last Update: August 16, 2026
-Last Tested: August 16, 2026
+Last Update: October 28, 2026
+Last Tested: October 28, 2026
 """
 
 import mimetypes
@@ -125,34 +125,46 @@ class ParallelLoader(BaseLoader):
         if Path(path).suffix == ".pickle":
             mime_type = "application/vnd.python.pickle"
         else:
-            try:
-                file_start_str = decode(file_start)
-            except (UnicodeDecodeError, AttributeError):
-                file_start_str = ""
-
-            try:
-                results = puremagic.magic_string(file_start_str, path)
-            except puremagic.main.PureValueError:
-                results = []
-            if not results:
+            if not file_start:
                 mime_type = None
-            else:
-                mime_type = results[0].mime_type
-
-                # Fallback for ambiguous types: trust extension for known text files.
-                if not mime_type or mime_type == "":
-                    guessed, _ = mimetypes.guess_type(path)
-                    mime_type = guessed
-
+                guessed, _ = mimetypes.guess_type(path)
+                mime_type = guessed
                 if mime_type == "application/octet-stream":
-                    guessed, _ = mimetypes.guess_type(path)
-                    if guessed:
-                        mime_type = guessed
-                    elif Path(path).suffix.lower() in PLAIN_TEXT_EXTENSIONS:
-                        mime_type = "text/plain"
-
+                    mime_type = None
                 if not mime_type and Path(path).suffix.lower() in PLAIN_TEXT_EXTENSIONS:
                     mime_type = "text/plain"
+            else:
+                try:
+                    file_start_str = decode(file_start)
+                except (UnicodeDecodeError, AttributeError):
+                    file_start_str = ""
+
+                try:
+                    results = puremagic.magic_string(file_start_str, path)
+                except puremagic.main.PureValueError:
+                    results = []
+                if not results:
+                    mime_type = None
+                else:
+                    mime_type = results[0].mime_type
+
+                    # Fallback for ambiguous types: trust extension for known text files.
+                    if not mime_type or mime_type == "":
+                        guessed, _ = mimetypes.guess_type(path)
+                        mime_type = guessed
+
+                    if mime_type == "application/octet-stream":
+                        guessed, _ = mimetypes.guess_type(path)
+                        if guessed:
+                            mime_type = guessed
+                        elif Path(path).suffix.lower() in PLAIN_TEXT_EXTENSIONS:
+                            mime_type = "text/plain"
+
+                    if (
+                        not mime_type
+                        and Path(path).suffix.lower() in PLAIN_TEXT_EXTENSIONS
+                    ):
+                        mime_type = "text/plain"
 
         # Cache the result
         self._mime_cache[path_str] = mime_type
@@ -234,6 +246,10 @@ class ParallelLoader(BaseLoader):
             with open(path, "rb") as fin:
                 with zipfile.ZipFile(fin) as zip:
                     for info in zip.infolist():
+                        is_dir = getattr(info, "is_dir", None)
+                        if callable(is_dir) and is_dir() is True:
+                            continue
+
                         try:
                             # Get the mime type of the file
                             file_bytes = zip.read(info.filename)

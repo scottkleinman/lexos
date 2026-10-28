@@ -1,7 +1,7 @@
 """test_parallel_loader.py.
 
-Coverage: 98%. Missing: 57, 66, 152, 155, 275-276
-Last Update: August 16, 2026
+Coverage: 100%
+Last Update: 28 October, 2026
 
 Tests for the ParallelLoader class including thread safety, concurrent operations,
 progress tracking, and error handling.
@@ -199,12 +199,57 @@ class TestParallelLoaderMimeType:
         assert _sanitize_zip_filename("../evil.txt") == "evil.txt"
         assert _sanitize_zip_filename("./nested/../keep.txt") == "keep.txt"
         assert _sanitize_zip_filename("..") == ".."
+        assert _sanitize_zip_filename("/nested/file.txt") == "nested/file.txt"
+        assert _sanitize_zip_filename("/") == ""
 
     def test_get_mime_type_text(self, parallel_loader):
         """Test MIME type detection for text files."""
         file_start = b"This is a text file"
         mime_type = parallel_loader._get_mime_type("test.txt", file_start)
         assert mime_type in ["text/plain", "text/x-python", None]  # Varies by system
+
+    def test_get_mime_type_empty_file_start_falls_back_to_extension(
+        self, parallel_loader
+    ):
+        """Empty content should fall back to extension-based detection."""
+        with patch(
+            "lexos.io.parallel_loader.mimetypes.guess_type",
+            return_value=("application/octet-stream", None),
+        ):
+            assert parallel_loader._get_mime_type("notes.txt", b"") == "text/plain"
+
+    def test_get_mime_type_puremagic_value_error_falls_back_to_none(
+        self, parallel_loader
+    ):
+        """Puremagic empty-input errors should not crash MIME detection and should return None."""
+        with patch(
+            "lexos.io.parallel_loader.puremagic.magic_string",
+            side_effect=puremagic.main.PureValueError("Input was empty"),
+        ):
+            assert parallel_loader._get_mime_type("notes.txt", b"abc") is None
+
+    def test_get_mime_type_octet_stream_and_plain_text_fallback(self, parallel_loader):
+        """Octet-stream and extension-based fallbacks should resolve cleanly."""
+        with patch("lexos.io.parallel_loader.puremagic.magic_string") as mock_magic:
+            mock_magic.return_value = [Mock(mime_type="application/octet-stream")]
+            with patch(
+                "lexos.io.parallel_loader.mimetypes.guess_type",
+                return_value=(None, None),
+            ):
+                assert (
+                    parallel_loader._get_mime_type("archive.txt", b"abc")
+                    == "text/plain"
+                )
+
+        with patch("lexos.io.parallel_loader.puremagic.magic_string") as mock_magic:
+            mock_magic.return_value = [Mock(mime_type="")]
+            with patch(
+                "lexos.io.parallel_loader.mimetypes.guess_type",
+                return_value=(None, None),
+            ):
+                assert (
+                    parallel_loader._get_mime_type("notes.txt", b"abc") == "text/plain"
+                )
 
     def test_get_mime_type_pickle(self, parallel_loader):
         """Test MIME type detection for pickle files."""
@@ -393,6 +438,49 @@ class TestParallelLoaderLoadZipFiles:
             results = parallel_loader._load_zip_file(str(zip_path))
 
         assert any(isinstance(item[4], ValueError) for item in results)
+
+    def test_load_zip_file_error_for_decode_in_processing_block(
+        self, parallel_loader, tmp_path
+    ):
+        """ZIP decode failures in the processing block should be captured as errors."""
+        zip_path = tmp_path / "archive.zip"
+        with zipfile.ZipFile(zip_path, "w") as zf:
+            zf.writestr("sample.txt", "hello")
+
+        original_decode = __import__(
+            "lexos.io.parallel_loader", fromlist=["decode"]
+        ).decode
+        call_count = 0
+
+        def flaky_decode(data):
+            nonlocal call_count
+            call_count += 1
+            if call_count == 2:
+                raise RuntimeError("boom")
+            return original_decode(data)
+
+        with patch("lexos.io.parallel_loader.decode", side_effect=flaky_decode):
+            results = parallel_loader._load_zip_file(str(zip_path))
+
+        assert len(results) == 1
+        assert isinstance(results[0][4], RuntimeError)
+        assert results[0][2] == "text/plain"
+
+    def test_load_zip_file_ignores_empty_directory_entry(
+        self, parallel_loader, tmp_path
+    ):
+        """ZIP directory entries should be skipped rather than MIME-typed."""
+        zip_path = tmp_path / "archive.zip"
+        with zipfile.ZipFile(zip_path, "w") as zf:
+            zf.writestr("empty_dir/", b"")
+            zf.writestr("empty_dir/file.txt", "hello from zip")
+
+        results = parallel_loader._load_zip_file(str(zip_path))
+
+        assert len(results) == 1
+        assert results[0][1] == "file"
+        assert results[0][0].endswith("empty_dir/file.txt")
+        assert results[0][3] == "hello from zip"
 
     def test_pdf_load_page_error(self, parallel_loader, tmp_path):
         """Test PDF loading when PdfReader raises an error."""

@@ -1,7 +1,7 @@
 """test_loader.py.
 
-Coverage: 95%. Missing: 37, 78-82, 85
-Last Update: 9 August, 2026
+Coverage: 100%
+Last Update: 28 October, 2026
 
 Note: Some tests use mocked data, but real files in temporary directories are
 created where functions have context managers (since those are hard to mock).
@@ -15,6 +15,7 @@ from typing import Generator
 from unittest.mock import MagicMock, Mock, mock_open, patch
 
 import pandas as pd
+import puremagic
 import pytest
 
 from lexos.exceptions import LexosException
@@ -25,6 +26,7 @@ from lexos.io.loader import (
     ZIP_TYPES,
     DataLoader,
     Loader,
+    _sanitize_zip_filename,
 )
 
 # Fixtures
@@ -167,6 +169,90 @@ def test_loader_init(loader):
     assert loader.names == []
     assert loader.texts == []
     assert loader.errors == []
+
+
+def test_sanitize_zip_filename_empty_returns_empty_string():
+    """Sanitization should handle entries that are just the root path."""
+    assert _sanitize_zip_filename(".") == ""
+    assert _sanitize_zip_filename("/") == ""
+
+
+def test_get_mime_type_empty_file_start_falls_back_to_extension(loader):
+    """Empty content should fall back to extension-based MIME detection."""
+    with patch(
+        "lexos.io.loader.mimetypes.guess_type",
+        return_value=("application/octet-stream", None),
+    ):
+        assert loader._get_mime_type("notes.txt", b"") == "text/plain"
+
+
+def test_get_mime_type_puremagic_empty_value_error_falls_back_to_guess(loader):
+    """Puremagic empty-input failures should not crash MIME detection."""
+    with patch(
+        "lexos.io.loader.puremagic.magic_string",
+        side_effect=puremagic.main.PureValueError("Input was empty"),
+    ):
+        with patch(
+            "lexos.io.loader.mimetypes.guess_type",
+            return_value=("text/plain", None),
+        ):
+            assert loader._get_mime_type("notes.txt", b"abc") == "text/plain"
+
+
+def test_get_mime_type_octet_stream_guessed_and_plain_text_fallback(loader):
+    """Octet-stream values should resolve via extension and mimetypes guesses."""
+    with patch("lexos.io.loader.puremagic.magic_string") as mock_magic:
+        mock_magic.return_value = [Mock(mime_type="application/octet-stream")]
+        with patch(
+            "lexos.io.loader.mimetypes.guess_type",
+            return_value=("text/plain", None),
+        ):
+            assert loader._get_mime_type("archive.txt", b"abc") == "text/plain"
+
+    with patch("lexos.io.loader.puremagic.magic_string") as mock_magic:
+        mock_magic.return_value = [Mock(mime_type="application/octet-stream")]
+        with patch(
+            "lexos.io.loader.mimetypes.guess_type",
+            return_value=(None, None),
+        ):
+            assert loader._get_mime_type("notes.txt", b"abc") == "text/plain"
+
+    with patch("lexos.io.loader.puremagic.magic_string", return_value=[]):
+        with patch("lexos.io.loader.mimetypes.guess_type", return_value=(None, None)):
+            assert loader._get_mime_type("notes.txt", b"abc") == "text/plain"
+
+
+def test_sample_dataframe_fixture(sample_dataframe):
+    """The sample DataFrame fixture yields the expected records."""
+    expected = pd.DataFrame(
+        [
+            {"name": "test1", "text": "test1"},
+            {"name": "test2", "text": "test2"},
+            {"name": "test3", "text": "test3"},
+        ]
+    )
+    pd.testing.assert_frame_equal(sample_dataframe, expected)
+
+
+def test_sample_dataframe_invalid_fixture(sample_dataframe_invalid_data):
+    """The invalid sample DataFrame fixture yields the expected schema."""
+    expected = pd.DataFrame(
+        [
+            {"title": "test1", "content": "test1"},
+            {"title": "test2", "content": "test2"},
+            {"title": "test3", "content": "test3"},
+        ]
+    )
+    pd.testing.assert_frame_equal(sample_dataframe_invalid_data, expected)
+
+
+def test_loader_with_data_fixture(loader_with_data, sample_paths, sample_mime_types):
+    """The loader_with_data fixture populates loader state correctly."""
+    assert loader_with_data.paths == sample_paths
+    assert loader_with_data.mime_types == sample_mime_types
+    assert loader_with_data.names == ["test1", "test2", "test3"]
+    assert loader_with_data.texts == ["test1", "test2", "test3"]
+    assert loader_with_data.errors == []
 
 
 def test_loader_data(
@@ -706,6 +792,20 @@ def test_load_zip_empty(loader):
     assert len(loader.names) == 0
     assert len(loader.mime_types) == 0
     assert len(loader.texts) == 0
+
+
+def test_load_zip_empty_directory_entry_is_ignored(loader, tmp_path):
+    """Directory entries should not be treated as files or MIME-typed content."""
+    zip_path = tmp_path / "archive.zip"
+    with zipfile.ZipFile(zip_path, "w") as zf:
+        zf.writestr("empty_dir/", b"")
+        zf.writestr("empty_dir/file.txt", "hello from zip")
+
+    loader._load_zip_file(zip_path)
+
+    assert len(loader.texts) == 1
+    assert loader.names == ["file"]
+    assert loader.errors == []
 
 
 def test_load_invalid_content(loader):
