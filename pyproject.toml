@@ -26,7 +26,7 @@ dependencies = [
     "puremagic>=2.2.0",
     "pydantic>=2.10.4",
     "pydantic-extra-types>=2.10.2",
-    "pypdf>=6.14.2",
+    "pypdf>=6.19.0",
     "python-docx>=1.1.2",
     "python-dotenv>=1.2.2",
     "rich>=13.9.4",
@@ -81,7 +81,7 @@ dev = [
     "tabulate>=0.9.0",
     "ipykernel>=6.29.5",
     "pre-commit>=4.5.0",
-    "nbconvert>=7.17.1",
+    "nbconvert>=7.17.2",
     "complexipy>=7.0.1",
     "pyrmallet>=0.1.1",
 ]
@@ -98,7 +98,7 @@ filterwarnings = [
 [tool.uv]
 override-dependencies = [
     "urllib3>=2.7.0",  # Address vulnerabilities in third-party libraries
-    "pillow>=12.3.0",
+    "pillow>=13.0.0",
     "soupsieve>=2.8.4",
     "GitPython>=3.1.55",
     "setuptools>=83.0.0",
