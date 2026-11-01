@@ -18,7 +18,7 @@ dependencies = [
     "ipywidgets>=8.1.6",
     "javaobj-py3>=0.4.4",
     "matplotlib>=3.10.0",
-    "msgpack>=1.1.0",
+    "msgpack>=1.2.4",
     "natsort>=8.4.0",
     "nbformat>=5.10.4",
     "pandas>=2.2.3",
@@ -97,7 +97,7 @@ filterwarnings = [
 
 [tool.uv]
 override-dependencies = [
-    "urllib3>=2.7.0",  # Address vulnerabilities in third-party libraries
+    "urllib3>=2.8.0",  # Address vulnerabilities in third-party libraries
     "pillow>=13.0.0",
     "soupsieve>=2.8.4",
     "GitPython>=3.1.55",
