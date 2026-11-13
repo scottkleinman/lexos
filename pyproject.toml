@@ -109,6 +109,7 @@ override-dependencies = [
     "transformers>=5.22.1",
     "anyio>=4.14.2",
     "certifi>=2026.10.18",
+    "soupsieve>=4.0.0",
 ]
 
 [tool.ruff.lint]
