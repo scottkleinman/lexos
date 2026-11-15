@@ -11,7 +11,7 @@ MIN_ENCODING_DETECT = 10000
 MIN_NEWLINE_DETECT = 1000
 
 # Mime types
-TEXT_TYPES = {"text/plain", "text/html", "text/xml"}
+TEXT_TYPES = {"text/plain", "text/html", "text/xml", "application/xml"}
 PDF_TYPES = {"application/pdf"}
 DOCX_TYPES = {"application/vnd.openxmlformats-officedocument.wordprocessingml.document"}
 ZIP_TYPES = {"application/zip"}
