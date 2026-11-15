@@ -7,8 +7,8 @@ and their attributes in HTML or XML documents.
 It supports both exact, contains, and regex matching for selectors and
 attributes, and can filter elements based on attributes and their values.
 
-Last Updated: August 16, 2026
-Last Tested: August 16, 2026
+Last Updated: November 15, 2026
+Last Tested: November 15, 2026
 """
 
 import importlib.util
@@ -382,6 +382,49 @@ def remove_element(
 
     # Return the processed document
     return str(soup)
+
+
+def extract_element(
+    text: str,
+    selector: str,
+    mode: str = "html",
+    matcher_type: str = "exact",
+    attribute: str = None,
+    attribute_value: str = None,
+) -> str:
+    """Extract the first matching HTML/XML element and return it as a string.
+
+    This is useful in scrubber pipelines when downstream steps should process
+    only a selected sub-tree of the original document.
+
+    Args:
+        text: HTML or XML text to process
+        selector: Tag name or CSS selector to match elements for extraction
+        mode: Parser mode, either "html" or "xml"
+        matcher_type: Type of match to perform, either "exact", "contains", or "regex"
+        attribute: Optional attribute name to filter elements
+        attribute_value: Optional value for the attribute filter
+
+    Returns:
+        A string containing only the first matched element, or an empty string
+        when no elements match.
+
+    Raises:
+        LexosException: If mode is not "html" or "xml"
+
+    Examples:
+        >>> text = "<root><div>Skip</div><section id='main'>Keep</section></root>"
+        >>> extract_element(text, "section")
+        "<section id='main'>Keep</section>"
+        >>> extract_element(text, "section", attribute="id", attribute_value="missing")
+        ""
+    """
+    _, elements = _match_elements(
+        selector, text, mode, matcher_type, attribute, attribute_value
+    )
+    if not elements:
+        return ""
+    return str(elements[0])
 
 
 def remove_tag(

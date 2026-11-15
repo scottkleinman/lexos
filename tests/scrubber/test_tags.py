@@ -1,8 +1,8 @@
 """test_tags.py.
 
-Coverage: 99%. Missing: 497
+Coverage: 99%. Missing: 540
 
-Last Tested: 2026-16-26
+Last Tested: 2026-11-15
 
 Test suite for lexos.scrubber.tags module.
 
@@ -25,6 +25,7 @@ from lexos.scrubber.tags import (
     _match_elements,
     _match_value,
     _parse_document,
+    extract_element,
     remove_attribute,
     remove_comments,
     remove_doctype,
@@ -340,6 +341,39 @@ class TestRemoveElement:
         """Tests LexosException for invalid mode."""
         with pytest.raises(LexosException):
             remove_element(HTML_FOR_ELEMENT_REMOVE, "p", mode="invalid")
+
+
+# --- Tests for extract_element ---
+class TestExtractElement:
+    """Tests for the extract_element function."""
+
+    def test_extract_html_element(self):
+        """Ensures the first matching HTML element is extracted."""
+        html = (
+            "<div>Drop</div><section id='main'>Keep</section><section>Later</section>"
+        )
+        processed = extract_element(html, "section", mode="html")
+        expected = "<section id='main'>Keep</section>"
+        assert normalize_output(processed, "html") == normalize_output(expected, "html")
+
+    def test_extract_xml_element(self):
+        """Ensures the first matching XML element is extracted."""
+        xml = "<root><item role='skip'>A</item><item role='keep'>B</item></root>"
+        processed = extract_element(
+            xml, "item", mode="xml", attribute="role", attribute_value="keep"
+        )
+        expected = "<item role='keep'>B</item>"
+        assert normalize_output(processed, "xml") == normalize_output(expected, "xml")
+
+    def test_extract_no_match_returns_empty_string(self):
+        """Ensures extraction returns an empty string when nothing matches."""
+        processed = extract_element("<root><a>1</a></root>", "missing", mode="xml")
+        assert processed == ""
+
+    def test_extract_invalid_mode(self):
+        """Tests LexosException for invalid mode."""
+        with pytest.raises(LexosException):
+            extract_element("<root><a>1</a></root>", "a", mode="invalid")
 
 
 # --- Tests for replace_attribute ---
