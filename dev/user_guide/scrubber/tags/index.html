@@ -5644,6 +5644,7 @@
 <p>The <code>tag</code> component of Scrubber is a submodule containing functions for transforming HTML and XML content (if you simply wish to remove all tags, using <code>remove.tags</code> is more efficient). These markup languages wrap content into <strong>elements</strong> indicated by angular brackets. Each element can further contain <strong>attributes</strong>, the <strong>value</strong> of which is contained within quotation marks. For example, the markup <code>&lt;span id="1"&gt;John Smith&lt;/span&gt;</code> indicates that the content "John Smith" is a <code>span</code> element with an <code>id</code> attribute, the value of which is "1". The functions in Scrubber's tag component allow you to manipulate the elements, attributes, and content by choosing a <strong>selector</strong> (usually the name of an element) and providing filters if only certain occurrences of this selector should be changed. This allows for some fairly nuanced transformations to be applied to the markup. For instance, in many cases Scrubber could be used to transform XML content into HTML markup for presentation on the web. This page offers an overview of the component functions. For a fuller description of their usage, see the <a href="../../../api/scrubber/tags/">API documentation</a>.</p>
 <p>Here is a list of the functions available in the <code>replace</code> component:</p>
 <ul>
+<li><code>extract_element</code>: Returns a single element, optionally identified by an attribute value.</li>
 <li><code>remove_attribute</code>: Removes all instances of an attribute in a specified element.</li>
 <li><code>remove_comments</code>: Removes all comments from the text.</li>
 <li><code>remove_doctype</code>: Removes the HTML document type declaration or XML declaration from the text.</li>
@@ -5735,7 +5736,7 @@
 <p>The example below shows how the components can used in a Scrubber pipeline. The partial functions are created for clarity so that you can see what each function does. In practice, you could also use the functions directly in the pipeline without creating partials.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.scrubber</span><span class="w"> </span><span class="kn">import</span> <span class="n">Scrubber</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.scrubber.replace</span><span class="w"> </span><span class="kn">import</span> <span class="n">remove_element</span><span class="p">,</span> <span class="n">replace_tag</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">lexos.scrubber.tags</span><span class="w"> </span><span class="kn">import</span> <span class="n">remove_element</span><span class="p">,</span> <span class="n">replace_tag</span>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># Create partial functions for specific transformations</span>
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">remove_p_by_class_value</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">remove_element</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;remove&quot;</span><span class="p">)</span>
@@ -5751,6 +5752,10 @@
 </span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="nb">print</span><span class="p">(</span><span class="n">scrubbed_text</span><span class="p">)</span>
 </span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="c1"># &lt;span&gt;Hello world&lt;/span&gt;&lt;span class=&quot;change&quot;&gt;Hello, world!&lt;/span&gt;</span>
 </span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using the <code>extract_element</code> function can be a good way to begin a pipeline. For instance, you can start by extracting the <code>body</code> element of an XML document and do any subsequent transformations on purely on the extracted content.</p>
+</div>
 
 
 
@@ -5771,7 +5776,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 4, 2026 17:18:43 UTC">August 4, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 15, 2026 23:11:34 UTC">November 15, 2026</span>
   </span>
 
     
