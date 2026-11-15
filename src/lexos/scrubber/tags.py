@@ -18,7 +18,6 @@ from typing import Optional
 
 from bs4 import BeautifulSoup, Comment
 
-# from wasabi import msg
 from lexos.exceptions import LexosException
 
 
