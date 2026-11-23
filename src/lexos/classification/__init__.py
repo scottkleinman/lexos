@@ -9,6 +9,7 @@ from lexos.classification.classifier import (
     Classifier,
     ClassifierData,
 )
+from lexos.classification.mlp_pipeline import MLPClassifierPipeline, MLPPipeline
 from lexos.classification.sklearn_pipeline import SklearnClassifierPipeline
 from lexos.classification.spacy_pipeline import SpaCyTextCategorizerPipeline
 
@@ -18,6 +19,8 @@ __all__ = [
     "BaseClassificationPipeline",
     "Classifier",
     "ClassifierData",
+    "MLPClassifierPipeline",
+    "MLPPipeline",
     "Pipeline",
     "SpaCyTextCategorizerPipeline",
     "SklearnClassifierPipeline",

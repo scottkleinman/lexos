@@ -1,0 +1,15 @@
+{
+  "name": "classifier",
+  "language": "en",
+  "exclusive_classes": false,
+  "architecture": "bow",
+  "epochs": 1,
+  "score_ranking": "document",
+  "_labels": [
+    "finance",
+    "history",
+    "literature"
+  ],
+  "_target_label_count": 1,
+  "_global_label_rank": {}
+}
